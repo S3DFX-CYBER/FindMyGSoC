@@ -54,6 +54,7 @@ jobs:
         run: node .github/scripts/update-mentor-stats.js
 
       - name: Commit stats when changed
+        if: github.event.pull_request.head.repo.full_name == github.repository
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
