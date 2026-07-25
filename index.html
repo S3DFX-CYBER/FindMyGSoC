@@ -1769,10 +1769,10 @@ kbd:hover{
             })();
           </script>
           <script>
-            // 1. Element Catch Karein
+            // 1. Get DOM Elements
             const clearAllFiltersBtn = document.getElementById('clearAllFilters');
 
-            // 2. Helper Function (Filter check karne ke liye)
+            // 2. Helper function to check active filters and toggle visibility
             function updateClearAllButtonVisibility() {
               const hasActiveFilters = (typeof activeFilters !== 'undefined' && activeFilters.length > 0) || 
                                       (typeof selectedTags !== 'undefined' && selectedTags.size > 0);
@@ -1784,7 +1784,7 @@ kbd:hover{
               }
             }
 
-            // 3. Click Event Listener (Reset Filter Logic)
+            // 3. Click event listener to reset filter state
             clearAllFiltersBtn?.addEventListener('click', () => {
               if (typeof activeFilters !== 'undefined') activeFilters = [];
               if (typeof selectedTags !== 'undefined') selectedTags.clear();
