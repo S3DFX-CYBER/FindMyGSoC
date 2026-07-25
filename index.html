@@ -1720,6 +1720,12 @@ kbd:hover{
           </div>
         </div>
       </div>
+      <button 
+        id="clearAllFilters" 
+        class="hidden text-xs font-bold uppercase tracking-wider text-red-500 hover:text-red-600 transition-colors cursor-pointer" 
+        type="button">
+        Clear All Filters
+      </button>
       <!-- Sidebar -->
       <div class="space-y-6">
         <div class="bg-white rounded-2xl p-6 border border-zinc-100">
@@ -1761,6 +1767,37 @@ kbd:hover{
               const fallback = document.getElementById('deadlines-empty-fallback');
               if (fallback) fallback.style.display = activeCount === 0 ? 'block' : 'none';
             })();
+          </script>
+          <script>
+            // 1. Element Catch Karein
+            const clearAllFiltersBtn = document.getElementById('clearAllFilters');
+
+            // 2. Helper Function (Filter check karne ke liye)
+            function updateClearAllButtonVisibility() {
+              const hasActiveFilters = (typeof activeFilters !== 'undefined' && activeFilters.length > 0) || 
+                                      (typeof selectedTags !== 'undefined' && selectedTags.size > 0);
+              
+              if (hasActiveFilters) {
+                clearAllFiltersBtn?.classList.remove('hidden');
+              } else {
+                clearAllFiltersBtn?.classList.add('hidden');
+              }
+            }
+
+            // 3. Click Event Listener (Reset Filter Logic)
+            clearAllFiltersBtn?.addEventListener('click', () => {
+              if (typeof activeFilters !== 'undefined') activeFilters = [];
+              if (typeof selectedTags !== 'undefined') selectedTags.clear();
+
+              document.querySelectorAll('.filter-chip.active, .tag-chip.active').forEach(chip => {
+                chip.classList.remove('active');
+              });
+
+              clearAllFiltersBtn?.classList.add('hidden');
+
+              if (typeof renderOrgs === 'function') renderOrgs();
+              else if (typeof filterOrganizations === 'function') filterOrganizations();
+            });
           </script>
         </div>
         <div class="bg-gradient-to-br from-primary to-primary-container text-white rounded-2xl p-6 relative overflow-hidden">
