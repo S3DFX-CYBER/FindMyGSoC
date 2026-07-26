@@ -1168,18 +1168,19 @@ kbd:hover{
       .premium-footer {
         padding-bottom: calc(
           var(--section-fab-bottom)
-          (var(--section-fab-size) + var(--section-fab-gap)) * 2
-          env(safe-area-inset-bottom)
-          16px
+          + (var(--section-fab-size) + var(--section-fab-gap)) * 2
+          + env(safe-area-inset-bottom)
+          + 16px
         );
       }
-
-      .premium-footer .footer-legal-row {
-        padding-right: calc(
-          var(--section-fab-right)
-          var(--section-fab-size)
-          env(safe-area-inset-right)
-          8px
+    
+      .footer-social-row {
+        max-width: calc(
+          100%
+          - var(--section-fab-right)
+          - var(--section-fab-size)
+          - env(safe-area-inset-right)
+          - 8px
         );
       }
     } 
