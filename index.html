@@ -1674,6 +1674,12 @@ kbd:hover{
       <div>
         <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Scholarly Sandbox</span>
         <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Watchlist.</h2>
+        <button 
+          id="clearAllFilters" 
+          class="hidden text-xs font-bold uppercase tracking-wider text-red-500 hover:text-red-600 transition-colors cursor-pointer mt-2" 
+          type="button">
+          Clear All Filters
+        </button>
         <p class="text-zinc-600 mt-4 max-w-2xl">Curate your open-source journey. Track organizations, monitor deadlines, and prepare your proposals for GSoC 2026.</p>
       </div>
       <button id="clearAllBookmarksBtn"
@@ -1774,29 +1780,27 @@ kbd:hover{
 
             // 2. Helper function to check active filters and toggle visibility
             function updateClearAllButtonVisibility() {
-              const hasActiveFilters = (typeof activeFilters !== 'undefined' && activeFilters.length > 0) || 
-                                      (typeof selectedTags !== 'undefined' && selectedTags.size > 0);
+              const hasActiveFilters = (typeof selectedLanguages !== 'undefined' && selectedLanguages.size > 0) ||
+                                      (typeof activeChip !== 'undefined' && activeChip !== null) ||
+                                      (document.getElementById('searchInput')?.value.trim() !== '') ||
+                                      (document.getElementById('categoryFilter')?.value !== 'all') ||
+                                      (document.getElementById('complexityFilter')?.value !== 'all');
               
-              if (hasActiveFilters) {
-                clearAllFiltersBtn?.classList.remove('hidden');
-              } else {
-                clearAllFiltersBtn?.classList.add('hidden');
+              if (clearAllFiltersBtn) {
+                if (hasActiveFilters) {
+                  clearAllFiltersBtn.classList.remove('hidden');
+                } else {
+                  clearAllFiltersBtn.classList.add('hidden');
+                }
               }
             }
 
             // 3. Click event listener to reset filter state
             clearAllFiltersBtn?.addEventListener('click', () => {
-              if (typeof activeFilters !== 'undefined') activeFilters = [];
-              if (typeof selectedTags !== 'undefined') selectedTags.clear();
-
-              document.querySelectorAll('.filter-chip.active, .tag-chip.active').forEach(chip => {
-                chip.classList.remove('active');
-              });
-
-              clearAllFiltersBtn?.classList.add('hidden');
-
-              if (typeof renderOrgs === 'function') renderOrgs();
-              else if (typeof filterOrganizations === 'function') filterOrganizations();
+              if (typeof clearAllFilters === 'function') {
+                clearAllFilters(); // Native clearAllFilters handles UI state reset properly
+              }
+              updateClearAllButtonVisibility();
             });
           </script>
         </div>
@@ -4521,6 +4525,11 @@ if(org.ideas){
     if (selectedLanguages.size)            params.set('lang', [...selectedLanguages].join(','));
     if (activeChip)                        params.set('chip', activeChip);
     history.replaceState(null, '', params.toString() ? '?' + params.toString() : location.pathname);
+  
+  // Wire visibility check whenever filters are updated
+    if (typeof updateClearAllButtonVisibility === 'function') {
+      updateClearAllButtonVisibility();
+    }
   }
 
   function applySecondarySort(a, b, sortType) {
@@ -4586,6 +4595,11 @@ if(org.ideas){
     });
     const mobToggle = document.getElementById('matchAllLanguagesToggleMobile');
     if (mobToggle) mobToggle.checked = false;
+
+    // Hide clear button after resetting all filters
+    if (typeof updateClearAllButtonVisibility === 'function') {
+      updateClearAllButtonVisibility();
+    }
   };
 
   // Shared search function to handle filter application, with optional badge tracking
