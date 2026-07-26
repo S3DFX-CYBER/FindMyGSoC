@@ -1674,14 +1674,6 @@ kbd:hover{
       <div>
         <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Scholarly Sandbox</span>
         <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Watchlist.</h2>
-        <button 
-          id="clearAllFiltersOrg" 
-          onclick="clearAllFilters()" 
-          class="px-3 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors flex items-center gap-1" 
-          title="Clear all search and filters">
-          <span class="material-symbols-outlined text-sm">filter_alt_off</span>
-          <span class="hidden sm:inline">Clear Filters</span>
-        </button>
         <p class="text-zinc-600 mt-4 max-w-2xl">Curate your open-source journey. Track organizations, monitor deadlines, and prepare your proposals for GSoC 2026.</p>
       </div>
       <button id="clearAllBookmarksBtn"
@@ -5839,22 +5831,18 @@ if(e.key.toLowerCase()==='r'){
 
     function updateClearAllButtonVisibility() {
       const hasActiveFilters = 
-        (typeof selectedLanguages !== 'undefined' && selectedLanguages.size > 0) ||
-        (typeof activeChip !== 'undefined' && activeChip !== null) ||
+        (selectedLanguages?.size > 0) ||
+        (activeChip !== null && activeChip !== undefined) ||
         (document.getElementById('searchInput')?.value.trim() !== '') ||
         (document.getElementById('categoryFilter')?.value !== 'all') ||
         (document.getElementById('complexityFilter')?.value !== 'all');
 
       if (clearAllFiltersBtn) {
-        if (hasActiveFilters) {
-          clearAllFiltersBtn.classList.remove('hidden');
-        } else {
-          clearAllFiltersBtn.classList.add('hidden');
-        }
+        clearAllFiltersBtn.classList.toggle('hidden', !hasActiveFilters);
       }
     }
 
-    // Expose safely to global scope so applyFilters() can invoke it
+    // Safely attach to window for applyFilters() access
     window.updateClearAllButtonVisibility = updateClearAllButtonVisibility;
 
     clearAllFiltersBtn?.addEventListener('click', () => {
