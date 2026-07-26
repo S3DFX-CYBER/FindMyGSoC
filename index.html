@@ -1163,6 +1163,27 @@ kbd:hover{
         border-radius: 999px;
       }
     }
+
+    @media (max-width: 768px) {
+      .premium-footer {
+        padding-bottom: calc(
+          var(--section-fab-bottom)
+          (var(--section-fab-size) + var(--section-fab-gap)) * 2
+          env(safe-area-inset-bottom)
+          16px
+        );
+      }
+
+      .premium-footer .footer-legal-row {
+        padding-right: calc(
+          var(--section-fab-right)
+          var(--section-fab-size)
+          env(safe-area-inset-right)
+          8px
+        );
+      }
+    } 
+
 @media (pointer: coarse) {
   .filter-chip.bg-orange-600:hover {
     background-color: #ea580c !important;
