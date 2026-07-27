@@ -5819,34 +5819,6 @@ if(e.key.toLowerCase()==='r'){
     if (e.target === this) closeOrgPicker();
   });
 </script>
-<!-- Moved script before closing body tag & wrapped in IIFE -->
-<script>
-  (function () {
-    const clearAllFiltersBtn = document.getElementById('clearAllFilters');
 
-    function updateClearAllButtonVisibility() {
-      const hasActiveFilters = 
-        (selectedLanguages?.size > 0) ||
-        (activeChip !== null && activeChip !== undefined) ||
-        (document.getElementById('searchInput')?.value.trim() !== '') ||
-        (document.getElementById('categoryFilter')?.value !== 'all') ||
-        (document.getElementById('complexityFilter')?.value !== 'all');
-
-      if (clearAllFiltersBtn) {
-        clearAllFiltersBtn.classList.toggle('hidden', !hasActiveFilters);
-      }
-    }
-
-    // Safely attach to window for applyFilters() access
-    window.updateClearAllButtonVisibility = updateClearAllButtonVisibility;
-
-    clearAllFiltersBtn?.addEventListener('click', () => {
-      if (typeof clearAllFilters === 'function') {
-        clearAllFilters();
-      }
-
-    });
-  })();
-</script>
 </body>
 </html>
