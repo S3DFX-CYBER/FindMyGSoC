@@ -1569,7 +1569,7 @@ kbd:hover{
         <option value="stars">GitHub Stars</option>
         <option value="gfi">Good First Issues</option>
       </select>
-      <button id="clearFiltersBtn" onclick="clearAllFilters()" class="px-3 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors flex items-center gap-1" title="Clear all search and filters">
+      <button id="clearAllFilters" class="hidden px-3 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors cursor-pointer">
         <span class="material-symbols-outlined text-sm">filter_alt_off</span>
         <span class="hidden sm:inline">Clear Filters</span>
       </button>
@@ -1720,12 +1720,7 @@ kbd:hover{
           </div>
         </div>
       </div>
-      <button 
-        id="clearAllFilters" 
-        class="hidden text-xs font-bold uppercase tracking-wider text-red-500 hover:text-red-600 transition-colors cursor-pointer" 
-        type="button">
-        Clear All Filters
-      </button>
+
       <!-- Sidebar -->
       <div class="space-y-6">
         <div class="bg-white rounded-2xl p-6 border border-zinc-100">
@@ -5849,7 +5844,7 @@ if(e.key.toLowerCase()==='r'){
       if (typeof clearAllFilters === 'function') {
         clearAllFilters();
       }
-      
+
     });
   })();
 </script>

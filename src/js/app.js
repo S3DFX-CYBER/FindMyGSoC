@@ -1104,6 +1104,9 @@ function applyFilters() {
     history.replaceState(null, '', params.toString() ? '?' + params.toString() : location.pathname);
   }
 }
+if (typeof updateClearAllButtonVisibility === 'function') {
+  updateClearAllButtonVisibility();
+}
 
 function applySecondarySort(a, b, sortType) {
   if (sortType === 'years-desc') return b.years - a.years;
@@ -1281,6 +1284,23 @@ if (typeof document !== 'undefined' && document.addEventListener) {
   }, true);
 }
 
+function updateClearAllButtonVisibility() {
+  const clearBtn = document.getElementById('clearAllFilters');
+  if (!clearBtn) return;
+
+  const hasActiveFilters = 
+    (typeof selectedLanguages !== 'undefined' && selectedLanguages.size > 0) ||
+    (typeof activeChip !== 'undefined' && activeChip !== null) ||
+    (typeof activeFilters !== 'undefined' && activeFilters.length > 0) ||
+    (document.getElementById('searchInput')?.value.trim() !== '') ||
+    (document.getElementById('categoryFilter')?.value !== 'all') ||
+    (document.getElementById('complexityFilter')?.value !== 'all');
+
+  clearBtn.classList.toggle('hidden', !hasActiveFilters);
+}
+
+// Attach to global window object
+globalThis.updateClearAllButtonVisibility = updateClearAllButtonVisibility;
 globalThis.clearAllFilters = function () {
   const searchInput = document.getElementById('searchInput');
   if (searchInput) searchInput.value = '';
@@ -1309,6 +1329,9 @@ globalThis.clearAllFilters = function () {
 
   renderSelectedLanguages();
   applyFilters();
+  if (typeof updateClearAllButtonVisibility === 'function') {
+    updateClearAllButtonVisibility();
+  }
 };
 
 // ══════════════════════════════════════════════
