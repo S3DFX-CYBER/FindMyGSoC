@@ -1540,21 +1540,112 @@ kbd:hover{
   </div>
 
   <!-- ═══════════════════ ALL 4 FILTER DROPDOWNS + CLEAR ═══════════════════ -->
-  <div class="flex flex-wrap items-center justify-between gap-3 mb-8">
-    <p class="font-label text-xs uppercase tracking-widest text-zinc-500">Showing <strong id="orgCount" data-org-count>184</strong> of <span data-org-total>184</span> organizations</p>
-    <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-      <select id="categoryFilter" aria-label="Filter by category" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
-        <option value="all">Categories: All</option>
-        <option value="web">Web</option>
-        <option value="programming">Programming</option>
-        <option value="science">Science</option>
-        <option value="os">OS</option>
-        <option value="infra">Infra</option>
-        <option value="security">Security</option>
-        <option value="data">Data</option>
-        <option value="media">Media</option>
-        <option value="other">Other</option>
-      </select>
+  <<div class="flex flex-wrap items-center justify-between gap-3 mb-8">
+  <p class="font-label text-xs uppercase tracking-widest text-zinc-500">
+    SHOWING <strong id="orgCount">184</strong> OF <span>184</span> ORGS
+  </p>
+
+  <!-- Self-Contained Clear Filters Button -->
+  <button id="clearAllFilters" onclick="clearAllFiltersInline()" style="display: none !important;" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl cursor-pointer transition-all">
+    <span class="material-symbols-outlined text-sm">filter_alt_off</span>
+    <span>Clear Filters</span>
+  </button>
+</div>
+
+<!-- Inline Guaranteed Execution Script -->
+<script>
+  function syncClearBtnState() {
+    const btn = document.getElementById('clearAllFilters');
+    if (!btn) return;
+
+    try {
+      // 1. Search Bar
+      const s1 = document.getElementById('searchInput')?.value?.trim() || '';
+      const s2 = document.getElementById('hero-search')?.value?.trim() || '';
+      const hasSearch = s1 !== '' || s2 !== '';
+
+      // 2. Select Dropdowns
+      const cat = (document.getElementById('categoryFilter')?.value || 'all').toLowerCase();
+      const comp = (document.getElementById('complexityFilter')?.value || 'all').toLowerCase();
+      const hasCat = cat !== 'all' && cat !== '';
+      const hasComp = comp !== 'all' && comp !== '';
+
+      // 3. Memory Set / Array
+      let hasLangs = false;
+      if (typeof selectedLanguages !== 'undefined' && selectedLanguages) {
+        hasLangs = selectedLanguages.size ? selectedLanguages.size > 0 : selectedLanguages.length > 0;
+      }
+
+      // 4. Active Chips
+      let hasChip = false;
+      if (typeof activeChip !== 'undefined' && activeChip !== null) {
+        hasChip = activeChip !== 'all' && activeChip !== '' && activeChip !== 'none';
+      }
+
+      // 5. URL Query Params
+      const params = new URLSearchParams(window.location.search);
+      const hasUrl = 
+        !!(params.get('q') && params.get('q').trim() !== '') ||
+        !!(params.get('cat') && params.get('cat') !== 'all') ||
+        !!(params.get('comp') && params.get('comp') !== 'all') ||
+        !!(params.get('lang') && params.get('lang').trim() !== '') ||
+        !!(params.get('chip') && params.get('chip') !== 'all' && params.get('chip').trim() !== '');
+
+      const isAnyActive = hasSearch || hasCat || hasComp || hasLangs || hasChip || hasUrl;
+
+      if (isAnyActive) {
+        btn.style.setProperty('display', 'inline-flex', 'important');
+      } else {
+        btn.style.setProperty('display', 'none', 'important');
+      }
+    } catch (e) {
+      btn.style.setProperty('display', 'none', 'important');
+    }
+  }
+
+  function clearAllFiltersInline() {
+    // Reset Inputs
+    const i1 = document.getElementById('searchInput'); if (i1) i1.value = '';
+    const i2 = document.getElementById('hero-search'); if (i2) i2.value = '';
+    const c1 = document.getElementById('categoryFilter'); if (c1) c1.value = 'all';
+    const c2 = document.getElementById('complexityFilter'); if (c2) c2.value = 'all';
+
+    // Clear Variables
+    if (typeof selectedLanguages !== 'undefined' && selectedLanguages) {
+      if (selectedLanguages.clear) selectedLanguages.clear();
+      else if (Array.isArray(selectedLanguages)) selectedLanguages.length = 0;
+    }
+    if (typeof activeChip !== 'undefined') activeChip = 'all';
+
+    // Clear URL
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    // Trigger standard app renders if available
+    if (typeof renderSelectedLanguages === 'function') renderSelectedLanguages();
+    if (typeof applyFilters === 'function') applyFilters();
+    if (typeof renderOrgs === 'function') renderOrgs();
+
+    syncClearBtnState();
+  }
+
+  // Self loop
+  setInterval(syncClearBtnState, 150);
+</script>
+  <!-- Missing Select Tag Added Back Below -->
+  <select id="categoryFilter" aria-label="Filter by category" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:outline-none cursor-pointer">
+    <option value="all">Categories: All</option>
+    <option value="web">Web</option>
+    <option value="programming">Programming</option>
+    <option value="science">Science</option>
+    <option value="os">OS</option>
+    <option value="infra">Infra</option>
+    <option value="security">Security</option>
+    <option value="data">Data</option>
+    <option value="media">Media</option>
+    <option value="other">Other</option>
+  </select>
       <select id="complexityFilter" aria-label="Filter by complexity" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
         <option value="all">Complexity: All</option>
         <option value="beginner">Beginner</option>
@@ -1569,10 +1660,7 @@ kbd:hover{
         <option value="stars">GitHub Stars</option>
         <option value="gfi">Good First Issues</option>
       </select>
-      <button id="clearAllFilters" class="hidden px-3 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors cursor-pointer">
-        <span class="material-symbols-outlined text-sm">filter_alt_off</span>
-        <span class="hidden sm:inline">Clear Filters</span>
-      </button>
+      
     </div>
   </div>
   
@@ -1591,7 +1679,7 @@ kbd:hover{
     <div class="text-6xl mb-4">🔍</div>
     <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2">No organizations match your current filters.</h3>
     <p class="text-zinc-500 dark:text-zinc-400 mb-8">Try adjusting your search or clearing some filters.</p>
-    <button onclick="clearAllFilters()" class="px-8 py-3 bg-primary text-white rounded-xl font-bold hover:bg-orange-600 transition-colors shadow-lg shadow-primary/20">
+    <button id="emptyStateClearBtn" onclick="clearAllFilters()"class="px-8 py-3 bg-primary text-white rounded-xl font-bold hover:bg-orange-600 transition-colors shadow-lg shadow-primary/20">
       Clear All Filters
     </button>
   </div>
@@ -1599,7 +1687,7 @@ kbd:hover{
   <div class="mt-12 flex justify-center" id="loadMoreContainer" style="display:none">
     <button id="loadMoreBtn" class="px-10 py-4 bg-primary text-white font-headline font-bold rounded-full text-sm hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-primary/20 flex items-center gap-2">
       View More Organizations <span class="material-symbols-outlined text-lg">expand_more</span>
-    </button>
+    </button> 
   </div>
 </section>
 

@@ -1088,7 +1088,7 @@ function applyFilters() {
     filteredOrgs.sort((a, b) => searchComparator(a, b, search, sort));
   } else {
     filteredOrgs.sort((a, b) => applySecondarySort(a, b, sort));
-  }
+  }fv
 
   renderOrgs(true);
 
@@ -1101,11 +1101,10 @@ function applyFilters() {
   if (selectedLanguages.size) params.set('lang', [...selectedLanguages].join(','));
   if (activeChip) params.set('chip', activeChip);
   if (typeof history !== 'undefined' && typeof history.replaceState === 'function' && typeof location !== 'undefined') {
-    history.replaceState(null, '', params.toString() ? '?' + params.toString() : location.pathname);
-  }
-}
-if (typeof updateClearAllButtonVisibility === 'function') {
-  updateClearAllButtonVisibility();
+        history.replaceState(null, '', params.toString() ? '?' + params.toString() : location.pathname);
+    }
+
+    updateClearAllButtonVisibility();
 }
 
 function applySecondarySort(a, b, sortType) {
@@ -1118,6 +1117,7 @@ function applySecondarySort(a, b, sortType) {
 }
 
 function renderOrgs(reset = true) {
+  updateClearAllButtonVisibility();
   const grid = document.getElementById('orgGrid');
   const emptyState = document.getElementById('emptyState');
   if (!grid) return;
@@ -1284,55 +1284,7 @@ if (typeof document !== 'undefined' && document.addEventListener) {
   }, true);
 }
 
-function updateClearAllButtonVisibility() {
-  const clearBtn = document.getElementById('clearAllFilters');
-  if (!clearBtn) return;
 
-  const hasActiveFilters = 
-    (typeof selectedLanguages !== 'undefined' && selectedLanguages.size > 0) ||
-    (typeof activeChip !== 'undefined' && activeChip !== null) ||
-    (typeof activeFilters !== 'undefined' && activeFilters.length > 0) ||
-    (document.getElementById('searchInput')?.value.trim() !== '') ||
-    (document.getElementById('categoryFilter')?.value !== 'all') ||
-    (document.getElementById('complexityFilter')?.value !== 'all');
-
-  clearBtn.classList.toggle('hidden', !hasActiveFilters);
-}
-
-// Attach to global window object
-globalThis.updateClearAllButtonVisibility = updateClearAllButtonVisibility;
-globalThis.clearAllFilters = function () {
-  const searchInput = document.getElementById('searchInput');
-  if (searchInput) searchInput.value = '';
-  const heroSearch = document.getElementById('hero-search');
-  if (heroSearch) heroSearch.value = '';
-
-  const categoryFilter = document.getElementById('categoryFilter');
-  if (categoryFilter) categoryFilter.value = 'all';
-  const complexityFilter = document.getElementById('complexityFilter');
-  if (complexityFilter) complexityFilter.value = 'all';
-  const sortSelect = document.getElementById('sortSelect');
-  if (sortSelect) sortSelect.value = 'alpha';
-
-  // Reset chips
-  document.querySelectorAll('.filter-chip').forEach(chip => {
-    chip.classList.remove('bg-orange-600', 'text-white');
-    chip.classList.add('bg-surface-container-highest');
-  });
-
-  activeChip = null;
-  selectedLanguages.clear();
-  document.querySelectorAll('.pill.active').forEach(p => {
-    p.classList.remove('active');
-    p.setAttribute('aria-pressed', 'false');
-  });
-
-  renderSelectedLanguages();
-  applyFilters();
-  if (typeof updateClearAllButtonVisibility === 'function') {
-    updateClearAllButtonVisibility();
-  }
-};
 
 // ══════════════════════════════════════════════
 // LIVE GITHUB STATS - API INTEGRATED FLOW
@@ -2414,6 +2366,16 @@ function applyStaleDataNotice() {
 // INITIALIZATION
 // ══════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  // Bind Clear All Filters button
+  const clearBtn = document.getElementById('clearAllFilters');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (typeof clearAllFilters === 'function') {
+        clearAllFilters();
+      }
+    });
+  updateClearAllButtonVisibility();
+  }
   // Sync bookmarks from storage initially
   ORGS.forEach(o => {
     if (o.github && ghCache[o.github]) {
@@ -2653,3 +2615,179 @@ if (typeof module !== 'undefined' && module.exports) {
     renderGoodFirstIssues
   };
 }
+document.addEventListener('DOMContentLoaded', () => {
+  updateClearAllButtonVisibility();
+});
+
+window.addEventListener('popstate', () => {
+  updateClearAllButtonVisibility();
+}); 
+setInterval(() => {
+  const clearBtn = document.getElementById('clearAllFilters');
+  if (!clearBtn) return;
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const hasUrlParams = 
+    (searchParams.get('q') && searchParams.get('q').trim() !== '') ||
+    (searchParams.get('cat') && searchParams.get('cat') !== 'all') ||
+    (searchParams.get('comp') && searchParams.get('comp') !== 'all') ||
+    (searchParams.get('lang') && searchParams.get('lang').trim() !== '') ||
+    (searchParams.get('chip') && searchParams.get('chip').trim() !== '' && searchParams.get('chip') !== 'all');
+
+  const searchVal = document.getElementById('searchInput')?.value.trim() || '';
+  const catVal = document.getElementById('categoryFilter')?.value || 'all';
+  const compVal = document.getElementById('complexityFilter')?.value || 'all';
+
+  const hasSearch = searchVal !== '';
+  const hasCat = catVal !== 'all' && catVal !== '';
+  const hasComp = compVal !== 'all' && compVal !== '';
+  const hasLangs = typeof selectedLanguages !== 'undefined' && selectedLanguages && (selectedLanguages.size > 0 || selectedLanguages.length > 0);
+  const hasChip = typeof activeChip !== 'undefined' && activeChip && activeChip !== 'all';
+
+  if (hasUrlParams || hasSearch || hasCat || hasComp || hasLangs || hasChip) {
+    clearBtn.style.setProperty('display', 'inline-flex', 'important');
+  } else {
+    clearBtn.style.setProperty('display', 'none', 'important');
+  }
+}, 200);
+// Robust, Single-Source-of-Truth Visibility Evaluator
+function updateClearAllButtonVisibility() {
+  const clearBtn = document.getElementById('clearAllFilters');
+  if (!clearBtn) return;
+
+  // 1. Search Inputs
+  const searchInput = document.getElementById('searchInput');
+  const heroSearch = document.getElementById('hero-search');
+  const searchVal = (searchInput?.value || heroSearch?.value || '').trim();
+
+  // 2. Select Dropdowns
+  const categoryFilter = document.getElementById('categoryFilter');
+  const complexityFilter = document.getElementById('complexityFilter');
+  const catVal = categoryFilter ? categoryFilter.value.toLowerCase() : 'all';
+  const compVal = complexityFilter ? complexityFilter.value.toLowerCase() : 'all';
+
+  // 3. Selected Language Tags in UI (Direct DOM Check)
+  const selectedLangTags = document.querySelectorAll('.selectedLangsStripMobile, #selectedLangsStripMobile, [id*="selectedLangs"]');
+  const hasLangTagsDOM = document.querySelectorAll('span[data-lang], .selected-lang-chip, .pill.active').length > 0;
+
+  // 4. Memory Checks
+  const hasSelectedLangs = (typeof selectedLanguages !== 'undefined' && selectedLanguages && (selectedLanguages.size > 0 || selectedLanguages.length > 0)) || hasLangTagsDOM;
+  const hasActiveChip = typeof activeChip !== 'undefined' && activeChip !== null && activeChip !== '' && activeChip !== 'all';
+
+  // 5. URL Params
+  const searchParams = new URLSearchParams(window.location.search);
+  const hasUrlParams = 
+    !!(searchParams.get('q') && searchParams.get('q').trim() !== '') ||
+    !!(searchParams.get('cat') && searchParams.get('cat') !== 'all') ||
+    !!(searchParams.get('comp') && searchParams.get('comp') !== 'all') ||
+    !!(searchParams.get('lang') && searchParams.get('lang').trim() !== '') ||
+    !!(searchParams.get('chip') && searchParams.get('chip').trim() !== '' && searchParams.get('chip') !== 'all');
+
+  const isAnyFilterActive = 
+    searchVal !== '' ||
+    (catVal !== 'all' && catVal !== '') ||
+    (compVal !== 'all' && compVal !== '') ||
+    hasSelectedLangs ||
+    hasActiveChip ||
+    hasUrlParams;
+
+  if (isAnyFilterActive) {
+    clearBtn.style.setProperty('display', 'inline-flex', 'important');
+  } else {
+    clearBtn.style.setProperty('display', 'none', 'important');
+  }
+}
+
+// Global scope binds
+window.updateClearAllButtonVisibility = updateClearAllButtonVisibility;
+setInterval(updateClearAllButtonVisibility, 200);
+
+// Master visibility evaluator
+function syncClearButton() {
+  const btn = document.getElementById('clearAllFilters');
+  if (!btn) return;
+
+  // 1. Search Bar
+  const searchInput = document.getElementById('searchInput');
+  const heroSearch = document.getElementById('hero-search');
+  const searchVal = (searchInput?.value || heroSearch?.value || '').trim();
+
+  // 2. Dropdowns
+  const catVal = document.getElementById('categoryFilter')?.value || 'all';
+  const compVal = document.getElementById('complexityFilter')?.value || 'all';
+
+  // 3. Language Selection State
+  const hasLangs = typeof selectedLanguages !== 'undefined' && selectedLanguages && 
+    ((selectedLanguages.size && selectedLanguages.size > 0) || (selectedLanguages.length && selectedLanguages.length > 0));
+
+  // 4. Chip State
+  const hasChip = typeof activeChip !== 'undefined' && activeChip !== null && activeChip !== '' && activeChip !== 'all';
+
+  // 5. Check URL parameters (only count if they aren't 'all' or empty)
+  const params = new URLSearchParams(window.location.search);
+  const urlHasFilters = 
+    (params.get('q') && params.get('q').trim() !== '') ||
+    (params.get('cat') && params.get('cat') !== 'all') ||
+    (params.get('comp') && params.get('comp') !== 'all') ||
+    (params.get('lang') && params.get('lang').trim() !== '') ||
+    (params.get('chip') && params.get('chip') !== 'all' && params.get('chip').trim() !== '');
+
+  // Active condition
+  const isAnyFilterActive = 
+    searchVal !== '' ||
+    (catVal !== 'all' && catVal !== '') ||
+    (compVal !== 'all' && compVal !== '') ||
+    hasLangs ||
+    hasChip ||
+    urlHasFilters;
+
+  // Toggle display
+  if (isAnyFilterActive) {
+    btn.style.setProperty('display', 'inline-flex', 'important');
+  } else {
+    btn.style.setProperty('display', 'none', 'important');
+  }
+}
+
+// Reset Function
+function clearAllFilters() {
+  // Clear inputs
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
+  const heroSearch = document.getElementById('hero-search');
+  if (heroSearch) heroSearch.value = '';
+
+  // Reset selects
+  const categoryFilter = document.getElementById('categoryFilter');
+  if (categoryFilter) categoryFilter.value = 'all';
+  const complexityFilter = document.getElementById('complexityFilter');
+  if (complexityFilter) complexityFilter.value = 'all';
+
+  // Clear Global JS variables
+  if (typeof selectedLanguages !== 'undefined' && selectedLanguages.clear) {
+    selectedLanguages.clear();
+  }
+  if (typeof activeChip !== 'undefined') {
+    activeChip = 'all';
+  }
+
+  // Clear URL without page reload
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
+  // Trigger grid re-render if available
+  if (typeof renderSelectedLanguages === 'function') renderSelectedLanguages();
+  if (typeof applyFilters === 'function') applyFilters();
+  if (typeof renderOrgs === 'function') renderOrgs();
+
+  // Instantly re-evaluate visibility
+  syncClearButton();
+}
+
+// Bind globally
+window.clearAllFilters = clearAllFilters;
+window.syncClearButton = syncClearButton;
+
+// Continuous state sync
+setInterval(syncClearButton, 100);
