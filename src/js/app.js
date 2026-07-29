@@ -1088,7 +1088,7 @@ function applyFilters() {
     filteredOrgs.sort((a, b) => searchComparator(a, b, search, sort));
   } else {
     filteredOrgs.sort((a, b) => applySecondarySort(a, b, sort));
-  }fv
+  }
 
   renderOrgs(true);
 
