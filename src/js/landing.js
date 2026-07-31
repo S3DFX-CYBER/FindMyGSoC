@@ -214,14 +214,22 @@ function setActiveCompetitorTab(key) {
   document.querySelectorAll('.compare-tab-btn').forEach((btn) => {
     const isActive = btn.dataset.competitor === key;
     btn.setAttribute('aria-selected', String(isActive));
+    btn.setAttribute('tabindex', isActive ? '0' : '-1');
     btn.classList.remove(...TAB_ACTIVE_CLASSES, ...TAB_INACTIVE_CLASSES);
     btn.classList.add('border', ...(isActive ? TAB_ACTIVE_CLASSES : TAB_INACTIVE_CLASSES));
+
+    if (isActive) {
+      const panel = document.getElementById('comparisonTabpanel');
+      if (panel) { panel.setAttribute('aria-labelledby', btn.id); }
+    }
   });
 }
 
 function initComparisonTabs() {
   const container = document.getElementById('competitorTabs');
   if (!container) { return; }
+
+  const tabs = Array.from(container.querySelectorAll('.compare-tab-btn'));
 
   const activate = (key) => {
     const competitor = COMPETITORS.find((c) => c.key === key);
@@ -235,6 +243,28 @@ function initComparisonTabs() {
     const btn = e.target.closest('.compare-tab-btn');
     if (!btn) { return; }
     activate(btn.dataset.competitor);
+  });
+
+  container.addEventListener('keydown', (e) => {
+    const currentIndex = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+
+    let targetIndex = null;
+    if (e.key === 'ArrowRight') {
+      targetIndex = (currentIndex + 1) % tabs.length;
+    } else if (e.key === 'ArrowLeft') {
+      targetIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    } else if (e.key === 'Home') {
+      targetIndex = 0;
+    } else if (e.key === 'End') {
+      targetIndex = tabs.length - 1;
+    } else {
+      return;
+    }
+
+    e.preventDefault();
+    const targetTab = tabs[targetIndex];
+    targetTab.focus();
+    activate(targetTab.dataset.competitor);
   });
 
   activate(COMPETITORS[0].key);
