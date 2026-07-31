@@ -73,6 +73,7 @@ const COMPARISON_DATA = [
   { feature: 'No login or signup needed',  fmg: 'primary',   gsoc: 'secondary', god: 'secondary', gh: 'secondary' },
 ];
 
+/** Competitors data (for mobile viewport 1-on-1 tabbed comparision)**/
 const COMPETITORS = [
   { key: 'gsoc', label: 'GSoC Portal', href: null },
   { key: 'god', label: 'gsocorganizations.dev', href: 'https://www.gsocorganizations.dev/' },
