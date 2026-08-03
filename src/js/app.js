@@ -2631,6 +2631,26 @@ window.addEventListener('beforeunload', () => {
 });
 
 // ══════════════════════════════════════════════
+// READING PROGRESS BAR
+// ══════════════════════════════════════════════
+function updateReadingProgress() {
+  const progressBar = document.getElementById('readingProgressBar');
+  if (!progressBar) { return; }
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  if (docHeight > 0) {
+    const progress = Math.min((scrollTop / docHeight) * 100, 100);
+    progressBar.style.width = progress + '%';
+    progressBar.setAttribute('aria-valuenow', Math.round(progress));
+  }
+}
+
+// Update progress on scroll and on page load (passive for performance)
+window.addEventListener('scroll', updateReadingProgress, { passive: true });
+window.addEventListener('resize', updateReadingProgress, { passive: true });
+document.addEventListener('DOMContentLoaded', updateReadingProgress);
+
+// ══════════════════════════════════════════════
 // EXPORT FOR NODE ENVIRONMENT TESTING COMPATIBILITY
 // ══════════════════════════════════════════════
 if (typeof module !== 'undefined' && module.exports) {

@@ -956,3 +956,17 @@ body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',sans-
   transition: opacity 0.2s ease, transform 0.2s ease;
   pointer-events: none;
 }
+
+/* ── Reading Progress Bar ── */
+.reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange), #f97316);
+  z-index: 9999;
+  width: 0%;
+  transition: width 100ms ease-out;
+  will-change: width;
+  pointer-events: none;
+}

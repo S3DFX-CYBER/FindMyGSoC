@@ -409,4 +409,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Live org statistics
   renderLiveStats();
+
+  // ── Reading Progress Bar ──
+  function updateReadingProgress() {
+    const progressBar = document.getElementById('readingProgressBar');
+    if (!progressBar) { return; }
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight > 0) {
+      const progress = Math.min((scrollTop / docHeight) * 100, 100);
+      progressBar.style.width = progress + '%';
+      progressBar.setAttribute('aria-valuenow', Math.round(progress));
+    }
+  }
+  updateReadingProgress();
+  window.addEventListener('scroll', updateReadingProgress, { passive: true });
+  window.addEventListener('resize', updateReadingProgress, { passive: true });
 });
