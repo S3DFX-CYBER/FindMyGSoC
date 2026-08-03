@@ -1174,6 +1174,29 @@ kbd:hover{
   }
 }
 
+/* Focus-visible styles for filter controls */
+.filter-chip:focus-visible,
+.pill:focus-visible {
+  outline: 2px solid var(--orange, #f46b0e);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+.mobile-filter-option:focus-visible {
+  outline: 2px solid var(--orange, #f46b0e);
+  outline-offset: 1px;
+  border-radius: 8px;
+}
+.clear-filters-btn:focus-visible {
+  outline: 2px solid var(--orange, #f46b0e);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+#loadMoreBtn:focus-visible {
+  outline: 2px solid var(--orange, #f46b0e);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
@@ -1469,30 +1492,30 @@ kbd:hover{
     <div class="flex gap-2 mb-3">
     <!-- Mobile: Filters dropdown (replaces chips) -->
     <div class="relative flex-1" id="mobileFilterDropdownWrap">
-      <button id="mobileFilterBtn" onclick="toggleMobileFilterDropdown()" class="w-full flex items-center justify-between px-3 py-2.5 bg-surface-container-highest rounded-xl text-xs font-bold text-on-surface border border-transparent hover:border-primary transition-colors">
+      <button id="mobileFilterBtn" onclick="toggleMobileFilterDropdown()" aria-expanded="false" aria-controls="mobileFilterPanel" class="w-full flex items-center justify-between px-3 py-2.5 bg-surface-container-highest rounded-xl text-xs font-bold text-on-surface border border-transparent hover:border-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
         <span class="flex items-center gap-1.5">
           <span class="material-symbols-outlined text-sm text-primary">tune</span>
           <span id="mobileFilterLabel">Filters</span>
         </span>
         <span class="material-symbols-outlined text-sm transition-transform" id="mobileFilterChevron">expand_more</span>
       </button>
-      <div id="mobileFilterPanel" class="hidden absolute left-0 top-full mt-1 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-zinc-100 dark:border-zinc-700 z-30 p-2 flex flex-col gap-1" style="min-width:180px">
-        <button id="mob-chip-veteran" data-mobile-chip="chip-veteran" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+      <div id="mobileFilterPanel" role="menu" aria-hidden="true" class="hidden absolute left-0 top-full mt-1 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-zinc-100 dark:border-zinc-700 z-30 p-2 flex flex-col gap-1" style="min-width:180px">
+        <button id="mob-chip-veteran" data-mobile-chip="chip-veteran" onclick="toggleMobileChip(this)" role="menuitem" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
           <span class="material-symbols-outlined text-sm">military_tech</span> Veterans Only
         </button>
-        <button id="mob-chip-newcomer" data-mobile-chip="chip-newcomer" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+        <button id="mob-chip-newcomer" data-mobile-chip="chip-newcomer" onclick="toggleMobileChip(this)" role="menuitem" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
           <span class="material-symbols-outlined text-sm">fiber_new</span> Newcomers
         </button>
-        <button id="mob-chip-hot" data-mobile-chip="chip-hot" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+        <button id="mob-chip-hot" data-mobile-chip="chip-hot" onclick="toggleMobileChip(this)" role="menuitem" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
           <span class="material-symbols-outlined text-sm">local_fire_department</span> High Competition
         </button>
-        <button id="mob-chip-chill" data-mobile-chip="chip-chill" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+        <button id="mob-chip-chill" data-mobile-chip="chip-chill" onclick="toggleMobileChip(this)" role="menuitem" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
           <span class="material-symbols-outlined text-sm">sentiment_satisfied</span> Low Competition
         </button>
-        <button id="mob-chip-active" data-mobile-chip="chip-active" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+        <button id="mob-chip-active" data-mobile-chip="chip-active" onclick="toggleMobileChip(this)" role="menuitem" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
           <span class="material-symbols-outlined text-sm">bolt</span> Actively Maintained
         </button>
-        <button id="mob-chip-bookmarked" data-mobile-chip="chip-bookmarked" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+        <button id="mob-chip-bookmarked" data-mobile-chip="chip-bookmarked" onclick="toggleMobileChip(this)" role="menuitem" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
           <span class="material-symbols-outlined text-sm icon-fill" style="color:#f59e0b">star</span> Bookmarked
         </button>
       </div>
@@ -1500,27 +1523,27 @@ kbd:hover{
 
     <!-- Mobile: Languages dropdown (replaces language pills) -->
     <div class="relative flex-1" id="mobileLangDropdownWrap">
-      <button id="mobileLangBtn" onclick="toggleMobileLangDropdown()" class="w-full flex items-center justify-between px-3 py-2.5 bg-surface-container-highest rounded-xl text-xs font-bold text-on-surface border border-transparent hover:border-primary transition-colors">
+      <button id="mobileLangBtn" onclick="toggleMobileLangDropdown()" aria-expanded="false" aria-controls="mobileLangPanel" class="w-full flex items-center justify-between px-3 py-2.5 bg-surface-container-highest rounded-xl text-xs font-bold text-on-surface border border-transparent hover:border-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
         <span class="flex items-center gap-1.5">
           <span class="material-symbols-outlined text-sm text-primary">code</span>
           <span id="mobileLangLabel">Languages</span>
         </span>
         <span class="material-symbols-outlined text-sm transition-transform" id="mobileLangChevron">expand_more</span>
       </button>
-      <div id="mobileLangPanel" class="hidden absolute right-0 top-full mt-1 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-zinc-100 dark:border-zinc-700 z-30 p-2" style="min-width:240px">
+      <div id="mobileLangPanel" role="menu" aria-hidden="true" class="hidden absolute right-0 top-full mt-1 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-zinc-100 dark:border-zinc-700 z-30 p-2" style="min-width:240px">
         <div class="flex flex-wrap gap-1.5 p-1">
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Python" onclick="toggleMobileLangPill(this)">Python</button>
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="JavaScript" onclick="toggleMobileLangPill(this)">JavaScript</button>
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="TypeScript" onclick="toggleMobileLangPill(this)">TypeScript</button>
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="C/C++" onclick="toggleMobileLangPill(this)">C/C++</button>
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Java" onclick="toggleMobileLangPill(this)">Java</button>
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Rust" onclick="toggleMobileLangPill(this)">Rust</button>
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Go" onclick="toggleMobileLangPill(this)">Go</button>
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Ruby" onclick="toggleMobileLangPill(this)">Ruby</button>
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Haskell" onclick="toggleMobileLangPill(this)">Haskell</button>
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Scala" onclick="toggleMobileLangPill(this)">Scala</button>
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="ML/AI" onclick="toggleMobileLangPill(this)">ML/AI</button>
-          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Robotics" onclick="toggleMobileLangPill(this)">Robotics</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="Python" onclick="toggleMobileLangPill(this)">Python</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="JavaScript" onclick="toggleMobileLangPill(this)">JavaScript</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="TypeScript" onclick="toggleMobileLangPill(this)">TypeScript</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="C/C++" onclick="toggleMobileLangPill(this)">C/C++</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="Java" onclick="toggleMobileLangPill(this)">Java</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="Rust" onclick="toggleMobileLangPill(this)">Rust</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="Go" onclick="toggleMobileLangPill(this)">Go</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="Ruby" onclick="toggleMobileLangPill(this)">Ruby</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="Haskell" onclick="toggleMobileLangPill(this)">Haskell</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="Scala" onclick="toggleMobileLangPill(this)">Scala</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="ML/AI" onclick="toggleMobileLangPill(this)">ML/AI</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" data-lang="Robotics" onclick="toggleMobileLangPill(this)">Robotics</button>
         </div>
         <div class="mt-2 px-1 flex items-center gap-2 border-t border-zinc-100 dark:border-zinc-700 pt-2">
           <label class="inline-flex items-center gap-2 cursor-pointer select-none">
@@ -2674,28 +2697,56 @@ kbd:hover{
   // ── Mobile Filter & Language Dropdown Logic ──────────────────────────────
   globalThis.toggleMobileFilterDropdown = function() {
     const panel = document.getElementById('mobileFilterPanel');
+    const btn = document.getElementById('mobileFilterBtn');
     const chevron = document.getElementById('mobileFilterChevron');
     if (!panel) return;
     const isOpen = !panel.classList.contains('hidden');
     panel.classList.toggle('hidden', isOpen);
+    if (btn) btn.setAttribute('aria-expanded', !isOpen);
+    if (panel) panel.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
     if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
     // close lang panel if open
-    document.getElementById('mobileLangPanel')?.classList.add('hidden');
+    const langPanel = document.getElementById('mobileLangPanel');
+    const langBtn = document.getElementById('mobileLangBtn');
+    if (langPanel) {
+      langPanel.classList.add('hidden');
+      langPanel.setAttribute('aria-hidden', 'true');
+    }
+    if (langBtn) langBtn.setAttribute('aria-expanded', 'false');
     const lc = document.getElementById('mobileLangChevron');
     if (lc) lc.style.transform = '';
+    // Focus first item when opening
+    if (!isOpen) {
+      const firstItem = panel.querySelector('button, [tabindex]:not([tabindex="-1"])');
+      if (firstItem) setTimeout(() => firstItem.focus(), 50);
+    }
   };
 
   globalThis.toggleMobileLangDropdown = function() {
     const panel = document.getElementById('mobileLangPanel');
+    const btn = document.getElementById('mobileLangBtn');
     const chevron = document.getElementById('mobileLangChevron');
     if (!panel) return;
     const isOpen = !panel.classList.contains('hidden');
     panel.classList.toggle('hidden', isOpen);
+    if (btn) btn.setAttribute('aria-expanded', !isOpen);
+    if (panel) panel.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
     if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
     // close filter panel if open
-    document.getElementById('mobileFilterPanel')?.classList.add('hidden');
+    const filterPanel = document.getElementById('mobileFilterPanel');
+    const filterBtn = document.getElementById('mobileFilterBtn');
+    if (filterPanel) {
+      filterPanel.classList.add('hidden');
+      filterPanel.setAttribute('aria-hidden', 'true');
+    }
+    if (filterBtn) filterBtn.setAttribute('aria-expanded', 'false');
     const fc = document.getElementById('mobileFilterChevron');
     if (fc) fc.style.transform = '';
+    // Focus first item when opening
+    if (!isOpen) {
+      const firstItem = panel.querySelector('button, [tabindex]:not([tabindex="-1"])');
+      if (firstItem) setTimeout(() => firstItem.focus(), 50);
+    }
   };
 
   // Close mobile dropdowns when clicking outside
@@ -2703,14 +2754,45 @@ kbd:hover{
     const filterWrap = document.getElementById('mobileFilterDropdownWrap');
     const langWrap = document.getElementById('mobileLangDropdownWrap');
     if (filterWrap && !filterWrap.contains(e.target)) {
-      document.getElementById('mobileFilterPanel')?.classList.add('hidden');
+      const panel = document.getElementById('mobileFilterPanel');
+      const btn = document.getElementById('mobileFilterBtn');
+      if (panel) { panel.classList.add('hidden'); panel.setAttribute('aria-hidden', 'true'); }
+      if (btn) btn.setAttribute('aria-expanded', 'false');
       const fc = document.getElementById('mobileFilterChevron');
       if (fc) fc.style.transform = '';
     }
     if (langWrap && !langWrap.contains(e.target)) {
-      document.getElementById('mobileLangPanel')?.classList.add('hidden');
+      const panel = document.getElementById('mobileLangPanel');
+      const btn = document.getElementById('mobileLangBtn');
+      if (panel) { panel.classList.add('hidden'); panel.setAttribute('aria-hidden', 'true'); }
+      if (btn) btn.setAttribute('aria-expanded', 'false');
       const lc = document.getElementById('mobileLangChevron');
       if (lc) lc.style.transform = '';
+    }
+  });
+
+  // Close mobile dropdowns on Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Escape') return;
+    const filterPanel = document.getElementById('mobileFilterPanel');
+    const langPanel = document.getElementById('mobileLangPanel');
+    if (filterPanel && !filterPanel.classList.contains('hidden')) {
+      const btn = document.getElementById('mobileFilterBtn');
+      filterPanel.classList.add('hidden');
+      filterPanel.setAttribute('aria-hidden', 'true');
+      if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.focus(); }
+      const fc = document.getElementById('mobileFilterChevron');
+      if (fc) fc.style.transform = '';
+      e.preventDefault();
+    }
+    if (langPanel && !langPanel.classList.contains('hidden')) {
+      const btn = document.getElementById('mobileLangBtn');
+      langPanel.classList.add('hidden');
+      langPanel.setAttribute('aria-hidden', 'true');
+      if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.focus(); }
+      const lc = document.getElementById('mobileLangChevron');
+      if (lc) lc.style.transform = '';
+      e.preventDefault();
     }
   });
 
