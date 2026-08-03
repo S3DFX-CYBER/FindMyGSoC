@@ -2446,6 +2446,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })();
 
+  // Restore scroll position from sessionStorage
+  (function restoreScrollPosition() {
+    const savedPos = sessionStorage.getItem('scrollPos');
+    if (savedPos) {
+      const pos = parseInt(savedPos, 10);
+      if (!isNaN(pos)) {
+        requestAnimationFrame(() => {
+          window.scrollTo(0, pos);
+        });
+      }
+      sessionStorage.removeItem('scrollPos');
+    }
+  })();
+
   updateCountdown();
   const countdownTimer = setInterval(updateCountdown, 60000);
   if (typeof countdownTimer.unref === 'function') countdownTimer.unref();
@@ -2607,6 +2621,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+});
+
+// ══════════════════════════════════════════════
+// SCROLL POSITION MEMORY — save on page unload
+// ══════════════════════════════════════════════
+window.addEventListener('beforeunload', () => {
+  sessionStorage.setItem('scrollPos', String(window.scrollY));
 });
 
 // ══════════════════════════════════════════════
