@@ -1173,6 +1173,14 @@ kbd:hover{
     color: revert !important;
   }
 }
+.filter-chip:focus-visible {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+  border-radius: 9999px;
+}
+.dark .filter-chip:focus-visible {
+  outline-color: #fb923c;
+}
 
 </style>
   <link rel="manifest" href="manifest.json" />
@@ -1430,12 +1438,12 @@ kbd:hover{
   <!-- ═══════════════════ FILTER CHIPS (desktop only) ═══════════════════ -->
   <div class="mb-6 fade-up hidden md:block" style="animation-delay:.3s">
     <div class="flex flex-wrap gap-2 mb-4">
-      <button id="chip-veteran" data-tooltip="Organizations that participated in GSoC for many years" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">military_tech</span> Veterans Only</button>
-      <button id="chip-newcomer" data-tooltip="Good for first-time contributors and beginners" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">fiber_new</span> Newcomers</button>
-      <button id="chip-hot" data-tooltip="Highly competitive organizations with many applicants" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">local_fire_department</span> High Competition</button>
-      <button id="chip-chill" data-tooltip="Organizations with relatively fewer applicants" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">sentiment_satisfied</span> Low Competition</button>
-      <button id="chip-active" data-tooltip="Organizations with recent GitHub activity" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">bolt</span> Actively Maintained</button>
-      <button id="chip-bookmarked" data-tooltip="Organizations you saved for later" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm icon-fill" style="color:#f59e0b">star</span> Bookmarked</button>
+      <button id="chip-veteran" data-tooltip="Organizations that participated in GSoC for many years" aria-pressed="false" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">military_tech</span> Veterans Only</button>
+      <button id="chip-newcomer" data-tooltip="Good for first-time contributors and beginners" aria-pressed="false" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">fiber_new</span> Newcomers</button>
+      <button id="chip-hot" data-tooltip="Highly competitive organizations with many applicants" aria-pressed="false" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">local_fire_department</span> High Competition</button>
+      <button id="chip-chill" data-tooltip="Organizations with relatively fewer applicants" aria-pressed="false" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">sentiment_satisfied</span> Low Competition</button>
+      <button id="chip-active" data-tooltip="Organizations with recent GitHub activity" aria-pressed="false" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">bolt</span> Actively Maintained</button>
+      <button id="chip-bookmarked" data-tooltip="Organizations you saved for later" aria-pressed="false" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm icon-fill" style="color:#f59e0b">star</span> Bookmarked</button>
     </div>
     <div class="flex flex-wrap gap-2">
       <button class="pill px-3 py-1.5 rounded-full bg-surface-container-high border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Python" aria-pressed="false" onclick="togglePill(this)">Python</button>
@@ -4514,6 +4522,7 @@ if(org.ideas){
     document.querySelectorAll('.filter-chip').forEach(chip => {
       chip.classList.remove('bg-orange-600', 'text-white');
       chip.classList.add('bg-surface-container-highest');
+      chip.setAttribute('aria-pressed', 'false');
     });
     if (typeof activeChip !== 'undefined') {
       activeChip = null;
@@ -4631,6 +4640,9 @@ if(org.ideas){
 
   // Quick-filter chips — mutually exclusive with each other, but additive with
   // language pills, search, and dropdown filters. applyFilters() reads activeChip.
+  function updateChipAriaPressed(chip) {
+    chip.setAttribute('aria-pressed', chip.classList.contains('bg-orange-600') ? 'true' : 'false');
+  }
   document.querySelectorAll('.filter-chip').forEach(chip => {
     chip.addEventListener('click', () => {
       const text = chip.textContent.trim().toLowerCase();
@@ -4640,12 +4652,14 @@ if(org.ideas){
       document.querySelectorAll('.filter-chip').forEach(c => {
         c.classList.remove('bg-orange-600', 'text-white');
         c.classList.add('bg-surface-container-highest');
+        updateChipAriaPressed(c);
       });
 
       if (!isCurrentlyActive) {
         // Activate the clicked chip
         chip.classList.add('bg-orange-600', 'text-white');
         chip.classList.remove('bg-surface-container-highest');
+        updateChipAriaPressed(chip);
 
         // Map chip text → activeChip key used by applyFilters()
         if (text.includes('bookmarked'))         activeChip = 'bookmarked';
@@ -4661,6 +4675,14 @@ if(org.ideas){
       }
 
       applyFilters();
+    });
+
+    // Keyboard support: Enter/Space toggle the chip
+    chip.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        chip.click();
+      }
     });
   });
 
@@ -5164,6 +5186,9 @@ if(org.ideas){
         if (key === chip) {
           el.classList.add('bg-orange-600', 'text-white');
           el.classList.remove('bg-surface-container-highest');
+          el.setAttribute('aria-pressed', 'true');
+        } else {
+          el.setAttribute('aria-pressed', 'false');
         }
       });
     }
