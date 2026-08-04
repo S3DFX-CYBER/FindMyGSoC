@@ -1,10 +1,101 @@
 // src/js/recommendation-ui.js
 
-/* global analyzeGitHubUser, extractSkills, getRecommendations, escapeHtml, openModal, toggleCompare, toggleBookmark */
+/* global analyzeGitHubUser, extractSkills, getRecommendations, openModal, toggleCompare, toggleBookmark, pdfjsLib */
 
 let currentAbortController = null;
 let currentRequestId = 0;
 let lastRecommendations = [];
+
+// Scoped local escaper — deliberately does NOT touch globalThis.escapeHtml.
+// index.html and app.js already own that global name in the browser; this module
+// keeps its own graceful fallback so card rendering never depends on load order.
+const safeEscapeHtml = (value) => String(value)
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;')
+  .replaceAll("'", '&#039;');
+
+// Both CDNs serve byte-identical builds for pdfjs-dist@3.11.174 (verified 2026-08-01
+// by downloading each file from both CDNs and computing SHA-384 independently):
+//   - pdf.min.js          = 320,004 bytes -> sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e
+//   - pdf.worker.min.js   = 1,087,212 bytes -> sha384-SnzOobpRMLXZ52iJvZm/C0fYw0OQemTXzTjIsdsfMcrCtCEe9qgzxTd3RSklO5x2
+// The same hash is therefore correct for both jsdelivr and cdnjs.
+const PDFJS_SRI_HASH = "sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e";
+const PDFJS_WORKER_SRI_HASH = "sha384-SnzOobpRMLXZ52iJvZm/C0fYw0OQemTXzTjIsdsfMcrCtCEe9qgzxTd3RSklO5x2";
+const PDFJS_CDN_PRIMARY = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/";
+const PDFJS_CDN_FALLBACK = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+
+// new Worker(workerSrc) has no SRI support, so the worker is fetched with fetch(),
+// verified against PDFJS_WORKER_SRI_HASH, and served from a blob URL instead.
+// Any fetch failure or integrity mismatch throws so ensurePdfJsLoaded surfaces the
+// "PDF library failed to load" error rather than silently loading an unverified worker.
+async function loadPdfWorkerWithIntegrity() {
+  let lastErr = null;
+  for (const src of [PDFJS_CDN_PRIMARY, PDFJS_CDN_FALLBACK]) {
+    try {
+      const res = await fetch(src + "pdf.worker.min.js");
+      if (!res.ok) {
+        lastErr = new Error("Failed to fetch PDF worker from " + src);
+        continue;
+      }
+      const buffer = await res.arrayBuffer();
+      if (!globalThis.crypto || !crypto.subtle) {
+        throw new Error("crypto.subtle unavailable — cannot verify PDF worker integrity.");
+      }
+      const digest = await crypto.subtle.digest('SHA-384', buffer);
+      const hashB64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
+      if (('sha384-' + hashB64) !== PDFJS_WORKER_SRI_HASH) {
+        lastErr = new Error("PDF worker integrity check failed for " + src);
+        continue;
+      }
+      if (pdfWorkerBlobUrl) URL.revokeObjectURL(pdfWorkerBlobUrl);
+      pdfWorkerBlobUrl = URL.createObjectURL(new Blob([buffer], { type: 'text/javascript' }));
+      pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerBlobUrl;
+      return;
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error("Failed to load PDF worker from both CDNs.");
+}
+
+let pdfWorkerBlobUrl = null;
+let pdfLoadingPromise = null;
+function ensurePdfJsLoaded() {
+  if (pdfLoadingPromise) return pdfLoadingPromise;
+  if (typeof pdfjsLib !== 'undefined' && pdfjsLib.getDocument) {
+    return Promise.resolve();
+  }
+  const loading = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = PDFJS_CDN_PRIMARY + "pdf.min.js";
+    script.integrity = PDFJS_SRI_HASH;
+    script.crossOrigin = "anonymous";
+    script.onload = () => {
+      loadPdfWorkerWithIntegrity().then(resolve, reject);
+    };
+    script.onerror = () => {
+      const fallback = document.createElement('script');
+      fallback.src = PDFJS_CDN_FALLBACK + "pdf.min.js";
+      fallback.integrity = PDFJS_SRI_HASH;
+      fallback.crossOrigin = "anonymous";
+      fallback.onload = () => {
+        loadPdfWorkerWithIntegrity().then(resolve, reject);
+      };
+      fallback.onerror = () => reject(new Error("Failed to load PDF.js from both CDNs."));
+      document.head.appendChild(fallback);
+    };
+    document.head.appendChild(script);
+  });
+  pdfLoadingPromise = loading;
+  loading.catch(() => {
+    // Only clear on failure so a later call can retry; on success the resolved
+    // promise stays cached and concurrent callers share a single load.
+    if (pdfLoadingPromise === loading) pdfLoadingPromise = null;
+  });
+  return pdfLoadingPromise;
+}
 
 /**
  * Encapsulates the heavy analytical logic into a single async pipe.
@@ -50,16 +141,7 @@ globalThis.handleRecImgError = function(img, name) {
   }
 };
 
-// Internal safety helper in case globalThis.escapeHtml is not yet initialized
-const safeEscapeHtml = (str) => {
-  if (typeof escapeHtml === 'function') return escapeHtml(str);
-  return String(str)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
-};
+// safeEscapeHtml is a scoped local escaper (defined above) — no global mutation.
 
 
 function handleBookmarkAction(e, btn) {
@@ -203,23 +285,112 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Handle file upload
   if (fileUpload) {
-    fileUpload.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+    let currentUploadToken = 0;
+    const DEFAULT_PLACEHOLDER = "Paste your resume or list your skills here (e.g. Python, React, Machine Learning)...";
 
-      const MAX_RESUME_SIZE = 5 * 1024 * 1024; //5MB
+    const VALID_MIME_TYPES = {
+      pdf: 'application/pdf',
+      txt: 'text/plain'
+    };
+
+    const validateResumeFile = (file) => {
+      const MAX_RESUME_SIZE = 5 * 1024 * 1024;
       if (file.size > MAX_RESUME_SIZE) {
         showError(`File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Please upload a file under 5MB.`);
         fileUpload.value = '';
+        return null;
+      }
+      const fileName = file.name.toLowerCase();
+      const ext = fileName.endsWith('.pdf') ? 'pdf' : fileName.endsWith('.txt') ? 'txt' : null;
+      if (!ext) {
+        showError("Unsupported file type. Please upload a .pdf or .txt file.");
+        fileUpload.value = '';
+        return null;
+      }
+      const expectedMime = VALID_MIME_TYPES[ext];
+      if (file.type && file.type !== expectedMime) {
+        showError(`File type mismatch: expected .${ext} but got "${file.type}". Please upload a valid .${ext} file.`);
+        fileUpload.value = '';
+        return null;
+      }
+      return ext;
+    };
+
+    const parsePdfResume = async (file, token) => {
+      try {
+        await ensurePdfJsLoaded();
+      } catch (err) {
+        if (token !== currentUploadToken) return;
+        showError("PDF library failed to load. Please try again after refreshing the page.");
+        fileUpload.value = '';
         return;
       }
+      if (token !== currentUploadToken) return;
+      resumeText.placeholder = "Parsing PDF...";
+      const arrayBuffer = await file.arrayBuffer();
+      if (token !== currentUploadToken) return;
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let text = '';
+      for (let i = 1; i <= pdf.numPages; i++) {
+        if (token !== currentUploadToken) return;
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        const pageText = content.items
+          .map(item => item.str + (item.hasEOL ? '\n' : ''))
+          .join('');
+        text += pageText + '\n';
+      }
+      if (token !== currentUploadToken) return;
+      const parsedText = text.trim();
+      if (!parsedText) {
+        if (token !== currentUploadToken) return;
+        fileUpload.value = '';
+        resumeText.placeholder = DEFAULT_PLACEHOLDER;
+        showError("No extractable text found. This PDF may be image-based. Please upload a searchable PDF or paste text manually.");
+        return;
+      }
+      if (token !== currentUploadToken) return;
+      resumeText.value = parsedText;
+      resumeText.placeholder = DEFAULT_PLACEHOLDER;
+    };
 
-      file.text().then(text => {
+    const readTextResume = async (file, token) => {
+      try {
+        const text = await file.text();
+        if (token !== currentUploadToken) return;
         resumeText.value = text;
-      }).catch(err => {
+      } catch (err) {
+        if (token !== currentUploadToken) return;
         console.error("File Read Error:", err);
+        fileUpload.value = '';
         showError("Failed to read file. Please make sure it's a valid text format.");
-      });
+      }
+    };
+
+    fileUpload.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const token = ++currentUploadToken;
+      resumeText.placeholder = DEFAULT_PLACEHOLDER;
+      errorState.classList.add('hidden');
+
+      const fileType = validateResumeFile(file);
+      if (!fileType) return;
+
+      try {
+        if (fileType === 'pdf') {
+          await parsePdfResume(file, token);
+        } else {
+          await readTextResume(file, token);
+        }
+      } catch (err) {
+        if (token !== currentUploadToken) return;
+        resumeText.placeholder = DEFAULT_PLACEHOLDER;
+        console.error("Upload Error:", err);
+        fileUpload.value = '';
+        showError("Failed to read PDF file. Please make sure it's a valid PDF.");
+      }
     });
   }
 
@@ -375,3 +546,12 @@ document.addEventListener('DOMContentLoaded', () => {
     resultsContainer.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${html}</div>${showMoreHtml}`;
   }
 });
+
+// ══════════════════════════════════════════════
+// EXPORT FOR NODE ENVIRONMENT TESTING COMPATIBILITY
+// ══════════════════════════════════════════════
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    safeEscapeHtml
+  };
+}
