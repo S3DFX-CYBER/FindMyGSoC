@@ -1164,7 +1164,7 @@ kbd:hover{
       }
     }
 
-    @media (max-width: 639px) {
+    @media (max-width: 768px) {
       .premium-footer {
         padding-bottom: calc(
           var(--section-fab-bottom)
@@ -1182,6 +1182,12 @@ kbd:hover{
           - env(safe-area-inset-right)
           - 8px
         );
+      }
+    }
+
+    @media (min-width: 769px) {
+      .premium-footer {
+        padding-bottom: 1.5rem;
       }
     } 
 
