@@ -2,22 +2,28 @@
     const progressBar = document.getElementById("scrollProgressBar");
     if (!progressBar) return;
 
+    let ticking = false;
+
     const updateProgress = () => {
-        const scrollTop = window.scrollY;
-        const scrollHeight =
-            document.documentElement.scrollHeight - window.innerHeight;
-
-        const progress =
-            scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-
+        const scrollTop = globalThis.scrollY;
+        const scrollHeight = document.documentElement.scrollHeight - globalThis.innerHeight;
+        const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
         progressBar.style.width = `${progress}%`;
+        ticking = false;
     };
 
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
+    const onScroll = () => {
+        if (!ticking) {
+            requestAnimationFrame(updateProgress);
+            ticking = true;
+        }
+    };
+
+    globalThis.addEventListener("scroll", onScroll, { passive: true });
+    globalThis.addEventListener("resize", onScroll);
 
     if ("ResizeObserver" in window) {
-        new ResizeObserver(updateProgress).observe(document.body);
+        new ResizeObserver(onScroll).observe(document.body);
     }
 
     updateProgress();
