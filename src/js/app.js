@@ -719,10 +719,8 @@ function handleGlobalKeydown(e) {
   if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
 
   const anyModalOpen = !!document.querySelector('.modal-bg.open, .modal-bg.compare-bg.open, #proposalModal.open, #proposalModal[open]');
-  const anyModalOpen = !!document.querySelector('.modal-bg.open, .modal-bg.compare-bg.open, #proposalModal.open, #proposalModal[open]');
 if (anyModalOpen) return;
 
-const n = filteredOrgs.length;
   const n = filteredOrgs.length;
   if (!anyModalOpen && e.key === '?') {
     e.preventDefault();
