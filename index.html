@@ -5362,8 +5362,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('keydown', (e) => {
   const active = document.activeElement;
   const isTyping = active && (
-    ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName) ||
-    active.id === 'searchInput'
+    ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName)
   );
 
   const helpModalOpen =
