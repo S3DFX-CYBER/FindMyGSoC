@@ -1,0 +1,320 @@
+/* stylelint-disable property-no-vendor-prefix */
+html,
+body {
+  scroll-behavior: smooth !important;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+
+.icon-fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.glass {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.hero-bg {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(244, 107, 14, 0.08) 0%, transparent 70%),
+    radial-gradient(circle at 10% 20%, rgba(244, 107, 14, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0, 108, 71, 0.04) 0%, transparent 40%);
+}
+
+.dark .hero-bg {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(249, 115, 22, 0.12) 0%, transparent 70%),
+    radial-gradient(circle at 10% 20%, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(52, 211, 153, 0.05) 0%, transparent 50%);
+}
+
+/* Hero gradient text — reliable cross-browser, no clipping */
+.hero-gradient-text {
+  background: linear-gradient(100deg, #9d4300 0%, #f97316 45%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-style: italic;
+  display: block;
+  line-height: 1.15;
+  padding: 0.1em 0.05em 0.2em;
+}
+
+@keyframes badge-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.hero-badge {
+  background: linear-gradient(90deg, rgba(249, 115, 22, 0.12) 0%, rgba(249, 115, 22, 0.25) 50%, rgba(249, 115, 22, 0.12) 100%);
+  background-size: 200% auto;
+  animation: badge-shimmer 3s linear infinite;
+}
+
+/* Keyframe Animations */
+@keyframes pulse-orb {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(1) translate(0, 0);
+  }
+
+  50% {
+    opacity: 0.25;
+    transform: scale(1.1) translate(15px, -15px);
+  }
+}
+
+.animate-pulse-orb {
+  animation: pulse-orb 8s infinite ease-in-out;
+}
+
+@keyframes float-dashboard {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float {
+  animation: float-dashboard 5s infinite ease-in-out;
+}
+
+@keyframes blink-caret {
+  0%,
+  100% {
+    border-color: transparent;
+  }
+
+  50% {
+    border-color: #f97316;
+  }
+}
+
+@keyframes typing-search {
+  0%,
+  100% {
+    content: "";
+  }
+
+  5%,
+  15% {
+    content: "p";
+  }
+
+  20%,
+  30% {
+    content: "py";
+  }
+
+  35%,
+  45% {
+    content: "pyt";
+  }
+
+  50%,
+  60% {
+    content: "pyth";
+  }
+
+  65%,
+  75% {
+    content: "pytho";
+  }
+
+  80%,
+  95% {
+    content: "python";
+  }
+}
+
+.typing-sim::after {
+  content: "";
+  animation: typing-search 8s infinite steps(1);
+}
+
+.typing-caret {
+  border-right: 2px solid;
+  animation: blink-caret 0.75s step-end infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.25, 0, 0, 1) infinite;
+}
+
+/* Sliding Underlines */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #f97316;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Bento Cards */
+.bento-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(244, 107, 14, 0.08);
+}
+
+.dark .bento-card:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.step-line {
+  background: linear-gradient(to bottom, var(--orange) 0%, var(--border) 100%);
+}
+
+.faq-trigger[aria-expanded="true"] .faq-icon {
+  transform: rotate(180deg);
+}
+
+.faq-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, padding 0.3s ease;
+}
+
+.faq-trigger[aria-expanded="true"] + .faq-content {
+  max-height: 500px;
+}
+
+.border:has(.faq-trigger[aria-expanded="true"]) {
+  border-color: rgba(244, 107, 14, 0.4);
+  box-shadow: 0 4px 20px rgba(244, 107, 14, 0.05);
+}
+
+/* Hero entry animations */
+.hero-entry {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.hero-loaded .hero-entry-1 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.05s;
+}
+
+body.hero-loaded .hero-entry-2 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.15s;
+}
+
+body.hero-loaded .hero-entry-3 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.28s;
+}
+
+body.hero-loaded .hero-entry-4 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.40s;
+}
+
+body.hero-loaded .hero-entry-5 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.52s;
+}
+
+body.hero-loaded .hero-entry-6 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.65s;
+}
+
+/* Respect accessibility preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    scroll-behavior: auto !important;
+  }
+
+  .animate-ping,
+  .animate-pulse,
+  .animate-pulse-orb,
+  .animate-pulse-ring,
+  .animate-float,
+  .hero-badge {
+    animation: none !important;
+  }
+
+  /* Entrance animations and transitions */
+  .hero-entry,
+  .hiw-step {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .bento-card,
+  .nav-link::after,
+  .faq-content,
+  .faq-icon,
+  .typing-sim::after,
+  .typing-caret {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Static fallback for typing simulation */
+  .typing-sim::after {
+    content: "python" !important;
+  }
+
+  .typing-caret {
+    border-right-color: transparent !important;
+  }
+}

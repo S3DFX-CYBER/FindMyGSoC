@@ -1384,6 +1384,43 @@ function fmt(n) { return (!n && n !== 0) ? '—' : n >= 1000 ? (n / 1000).toFixe
 // ══════════════════════════════════════════════
 // MODAL DETAILS POPULATOR
 // ══════════════════════════════════════════════
+
+function renderModalHeader(org) {
+  const isBookmarked = bookmarkedSet.has(org.name);
+  const isComparing = compareList.includes(org.name);
+  const ideasLinkHTML = (() => {
+    const u = sanitizeHrefUrl(org.ideas);
+    return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span>💡</span><span>Visit ideas page</span></a>` : '';
+  })();
+
+  return `
+    <span class="category-tag">${escapeHtml(String(org.cat).toUpperCase())}</span>
+      <div class="flex items-start justify-between pr-10 gap-4">
+        <div>
+          <h2>${escapeHtml(org.name)}</h2>
+          <p class="text-zinc-500">GSoC Partner for ${escapeHtml(String(org.years))} Years</p>
+          ${ideasLinkHTML}
+        </div>
+        <div class="flex flex-col items-end gap-2">
+          <button id="modalCompareBtn" data-compare-org="${escapeHtml(org.name)}" class="text-[10px] font-bold uppercase tracking-widest ${isComparing ? 'text-primary' : 'text-orange-400'} hover:text-primary flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Add to compare'}
+          </button>
+          <button
+            id="modalBookmarkBtn"
+            class="bookmark-btn ${isBookmarked ? 'active' : 'text-orange-300'} flex-shrink-0"
+            data-bookmark-org="${escapeHtml(org.name)}"
+            aria-label="${isBookmarked ? 'Remove bookmark' : 'Add to Watchlist'}"
+            title="${isBookmarked ? 'Remove bookmark' : 'Add to Watchlist'}"
+          >
+            <span class="material-symbols-outlined text-2xl ${isBookmarked ? 'icon-fill' : ''}">
+              star
+            </span>
+          </button>
+        </div>
+      </div>
+      `;
+}
+globalThis.renderModalHeader = renderModalHeader;
 globalThis.openModal = function (name, triggerElement = null) {
   const org = ORGS.find(o => o.name === name);
   if (!org) return;
@@ -1393,12 +1430,7 @@ globalThis.openModal = function (name, triggerElement = null) {
 
   const mHeader = document.getElementById('mHeader');
   if (mHeader) {
-    const category = getCategoryMeta(org.cat);
-    mHeader.innerHTML = safeHTML`
-      <span class="category-tag text-[10px] font-label font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${category.className}">${category.label}</span>
-      <h2 id="orgModalTitle" class="text-2xl font-bold font-headline mt-2">${org.name}</h2>
-      <p class="text-zinc-500 text-xs mt-1">GSoC Partner for ${String(org.years)} Years</p>
-    `;
+    mHeader.innerHTML = renderModalHeader(org);
   }
 
   const mDesc = document.getElementById('mDesc');
@@ -1728,7 +1760,7 @@ async function renderGoodFirstIssues() {
       card.className = 'bg-white dark:bg-zinc-900 rounded-xl p-5 border border-zinc-100 dark:border-zinc-800 hover:shadow-lg transition-all group cursor-pointer';
 
       const safeUrl = sanitizeHrefUrl(issue.url);
-      if (safeUrl) card.addEventListener?.('click', () => window.open(safeUrl, '_blank'));
+      if (safeUrl) card.addEventListener?.('click', () => globalThis.open(safeUrl, '_blank'));
 
       const labelsHtml = (issue.labels || []).slice(0, 2)
         .map(l => safeHTML`<span class="text-[10px] px-2 py-0.5 bg-green-100 text-green-700 rounded font-bold">${l}</span>`);
@@ -2591,6 +2623,7 @@ if (typeof module !== 'undefined' && module.exports) {
     orgMatchesLanguages,
     applySecondarySort,
     openModal,
+    renderModalHeader,
     closeModal,
     safeHTML,
     rawHTML,

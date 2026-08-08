@@ -298,6 +298,6 @@ const BadgeSystem = (function() {
 })();
 
 // Make it globally available
-if (typeof window !== 'undefined') {
-  window.BadgeSystem = BadgeSystem;
+if (typeof globalThis !== 'undefined') {
+  globalThis.BadgeSystem = BadgeSystem;
 }

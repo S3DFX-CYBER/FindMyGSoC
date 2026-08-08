@@ -200,6 +200,36 @@ kbd:hover{
         font-size:11px;
     }
 }
+    /* Mobile filter/language dropdown styles */
+    .mobile-filter-option.bg-orange-600,
+    .mobile-filter-option.bg-orange-600:hover {
+      background: #c2410c !important;
+      color: #fff !important;
+    }
+    .mobile-lang-pill.active {
+      border-color: #9d4300 !important;
+      color: #9d4300 !important;
+      background: #fff7ed !important;
+    }
+    .dark #mobileFilterPanel,
+    .dark #mobileLangPanel {
+      background: #27272a !important;
+      border-color: #3f3f46 !important;
+    }
+    .dark .mobile-filter-option:hover {
+      background: #3f3f46 !important;
+    }
+    .dark .mobile-lang-pill {
+      background: #3f3f46 !important;
+      border-color: #52525b !important;
+      color: #d4d4d8 !important;
+    }
+    .dark .mobile-lang-pill.active {
+      border-color: #f97316 !important;
+      color: #f97316 !important;
+      background: #431407 !important;
+    }
+
     /* Screen reader only - for accessibility */
     .sr-only {
       position: absolute;
@@ -269,7 +299,7 @@ kbd:hover{
     }
     .close-btn:hover { background: #e8e8e8; color: #1a1c1c; }
     
-    .modal-header { padding: 3rem 3rem 1.5rem; flex-shrink: 0; }
+    .modal-header { padding: 2rem 2rem; flex-shrink: 0; }
     .category-tag {
       background: rgba(157, 67, 0, 0.1);
       color: #9d4300;
@@ -282,22 +312,22 @@ kbd:hover{
       margin-bottom: 1rem;
     }
     .modal-header h2 { font-size: 2.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 0.5rem; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .modal-header p { color: #584237; font-size: 1rem; line-height: 1.5; }
+    .modal-header p { color: #584237; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.5rem;}
 
     .modal-body {padding: 0 3rem 3rem; overflow-y: auto; flex: 1; min-height: 0; }
-    .section-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #aaa; margin-bottom: 1rem; margin-top: 2rem; border-bottom: 1px solid #f3f3f3; padding-bottom: 0.5rem; }
+    .section-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #555; margin-bottom: 0.5rem; margin-top: 2rem; border-bottom: 1px solid #f3f3f3; padding-bottom: 0.5rem; }
     
     .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; }
-    .metric-card { background: #f9f9f9; padding: 1.2rem; border-radius: 1.2rem; border: 1px solid #eee; text-align: center; }
+    .metric-card { background: #faf5f0; padding: 0.5rem 1.5rem 0.5rem 1.5rem; border-radius: 1.2rem; border: 1px solid #cb692c; text-align: center; }
     .metric-value { font-size: 1.25rem; font-weight: 800; color: #1a1c1c; margin-bottom: 0.2rem; }
-    .metric-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: #888; }
+    .metric-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: #555; }
 
-    .github-stats-container { background: #1a1a1a; border-radius: 1.5rem; padding: 1.5rem; color: #fff; display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; position: relative; overflow: hidden; justify-content: space-between; }
+    .github-stats-container { background: #1a1a1a; border-radius: 1.5rem; padding: 1rem; color: #fff; display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; position: relative; overflow: hidden; justify-content: space-between; }
     .gh-fetch { background: #333; color: #aaa; border: none; padding: 0.3rem 0.8rem; border-radius: 99px; font-size: 0.65rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-left: auto; align-self: flex-start; flex-shrink: 0; }
     .gh-fetch:hover { background: #444; color: #fff; }
     .gh-stat-item { font-family: 'Fira Code', monospace; font-size: 0.75rem; color: #4ade80; display: flex; align-items: center; gap: 0.5rem; }
 
-    .tech-tags, .fit-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tech-tags, .fit-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.2rem; }
     .tech-tag { background: #f3f4f6; color: #4b5563; font-size: 0.7rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid #e5e7eb; }
     .fit-tag { background: #eff6ff; color: #2563eb; font-size: 0.7rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid #dbeafe; }
     .mentor-link-chip { display:inline-flex; align-items:center; gap:.45rem; background:#fff7ed; color:#9d4300; border:1px solid #fed7aa; border-radius:999px; padding:.45rem .75rem; font-size:.75rem; font-weight:700; }
@@ -314,8 +344,9 @@ kbd:hover{
     .timeline-grid a.timeline-year-link.current-year { background: #fffbeb; color: #92400e; border-color: #fbbf24; font-weight: 700; }
     .timeline-grid a.timeline-year-link.current-year:hover { border-color: #92400e; background: #fef3c7; color: #78350f; }
 
-    .modal-footer { padding: 2rem 3rem 3rem; background: #f9f9f9; display: flex; gap: 1rem; border-top: 1px solid #eee; flex-shrink: 0; }
-    .modal-cta { flex: 1; padding: 1rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.2s; }
+    .modal-footer { padding: 1.5rem 2rem; background: #f9f9f9; display: flex; gap: 1rem; border-top: 1px solid #eee; flex-shrink: 1; }
+    .modal-footer-secondary { display: flex; gap: 1rem; margin-left: auto; }
+    .modal-cta { flex: 1; padding: 0.75rem; border-radius: 1rem; font-size: 0.65rem; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.2s; }
     .modal-ideas-link { background: #9d4300; color: white; }
     .modal-ideas-link:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(157, 67, 0, 0.3); }
     .modal-repo-link { background: white; color: #1a1c1c; border: 1px solid #ddd; }
@@ -577,9 +608,13 @@ kbd:hover{
     @media (max-width: 640px) {
       .modal-header { padding: 1rem 1.5rem 0.5rem; flex-shrink: 0; }
       .modal-header h2 { font-size: 1.6rem; }
+      .metric-card { padding: 0.5rem 1rem; margin-top: 0.5rem;}
+      .metric-value { font-size: 1rem; }
+      .metric-label { font-size: 0.6rem; }
       .modal-body { padding: 0 1.5rem 2rem; min-height: 0; }
-      .modal-footer { padding: 0.75rem 1.5rem; flex-direction: column; flex-shrink: 0; }
-      .modal-cta { width: 100%; padding: 0.6rem 1rem; font-size: 0.85rem; }
+      .modal-footer { padding: 1rem; gap: 1rem; flex-direction: column; flex-shrink: 0; }
+      .modal-footer-secondary { display: flex; gap: 1rem; width: 100%; }
+      .modal-footer-secondary .modal-cta { flex-direction:column; flex: 1 1 0; min-width:0; width: auto; padding: 0.3rem 0.4rem; font-size: 0.65rem; min-height: 30px; }
       .proposal-header { padding: 0.6rem 1rem; gap: 0.4rem; position: relative; }
       .proposal-header-title { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
       .proposal-header-title h2 { font-size: 0.95rem; }
@@ -1166,25 +1201,33 @@ kbd:hover{
 <!-- ═══════════════════ NAVBAR ═══════════════════ -->
 <header class="fixed top-0 w-full z-50 bg-white/80 glass shadow-sm">
   <div class="flex items-center justify-between px-4 sm:px-6 py-3 max-w-7xl mx-auto w-full">
-    <div class="flex items-center gap-3 sm:gap-4 md:gap-8">
+    <div class="flex items-center gap-1.5 sm:gap-4 xl:gap-8">
       <!-- Hamburger menu button (mobile only) -->
-      <button id="menuBtn" onclick="toggleMenu()" class="inline-flex md:hidden shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-lg transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <button id="menuBtn" onclick="toggleMenu()" class="inline-flex lg:hidden shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-lg transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
         <span class="material-symbols-outlined text-zinc-600">menu</span>
       </button>
-      
+
+      <!-- Home button (links back to landing page) -->
+      <a href="/" 
+         class="inline-flex shrink-0 items-center gap-1 px-1.5 sm:px-2 py-2 hover:bg-zinc-100/50 rounded-lg transition-colors text-zinc-600 hover:text-zinc-900"
+         aria-label="Go to home page" title="Home">
+        <span class="material-symbols-outlined text-lg">home</span>
+        <span class="hidden xs:inline text-sm font-medium whitespace-nowrap">Home</span>
+      </a>
+
       <a href="#timeline" class="flex items-center gap-2" id="logoLink">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center flex-shrink-0">
           <span class="text-white font-bold text-sm">G</span>
         </div>
-      <span class="text-base sm:text-lg font-extrabold tracking-tight text-zinc-900 font-headline whitespace-nowrap">
-        <span class="hidden sm:inline">GSoC 2026 </span>
-        <span class="text-primary italic">Org Finder</span>
-      </span>
+        <span class="text-base sm:text-lg font-extrabold tracking-tight text-zinc-900 font-headline whitespace-nowrap">
+          <span class="hidden sm:inline">GSoC 2026 </span>
+          <span class="text-primary italic">Org Finder</span>
+        </span>
       </a>
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+      <nav class="hidden lg:flex items-center gap-4 xl:gap-6 text-sm font-medium">
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#timeline" data-section="timeline">Timeline</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#orgs" data-section="orgs">Organizations</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#ai-recommender" data-section="ai-recommender">AI Recommender</a>
+        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors whitespace-nowrap" href="#ai-recommender" data-section="ai-recommender">AI Recommender</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#watchlist" data-section="watchlist">Watchlist</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#issues" data-section="issues">Issues</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#mentors" data-section="mentors">Mentors</a>
@@ -1226,13 +1269,14 @@ kbd:hover{
       </button>
     
       <a href="https://github.com/S3DFX-CYBER/GSoC-Org-Finder-" target="_blank" rel="noopener noreferrer"
-        class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors">
-    
+        class="hidden sm:flex items-center gap-2 px-3 xl:px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors whitespace-nowrap">
+
         <span class="material-symbols-outlined text-sm">
           star
         </span>
-    
-        Star & Contribute
+
+        <span class="lg:hidden xl:inline">Star & Contribute</span>
+        <span class="hidden lg:inline xl:hidden">Star</span>
       </a>
     
     </div>
@@ -1240,7 +1284,7 @@ kbd:hover{
 </header>
 
 <!-- Mobile Menu Overlay -->
-<div id="mobileMenu" class="fixed inset-0 z-50 hidden md:hidden" style="z-index:60;" role="dialog" aria-modal="true" aria-label="Navigation menu">
+<div id="mobileMenu" class="fixed inset-0 z-50 hidden lg:hidden" style="z-index:60;" role="dialog" aria-modal="true" aria-label="Navigation menu">
   <!-- Backdrop -->
   <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleMenu()" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMenu()" tabindex="0" role="button" aria-label="Close menu"></div>
   
@@ -1335,17 +1379,17 @@ kbd:hover{
       </div>
       <!-- Stat Badges -->
       <div class="flex flex-wrap gap-3 sm:gap-4">
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm">
+        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
           <span class="material-symbols-outlined text-primary text-lg">groups</span>
-          <div><p class="text-[10px] sm:text-xs text-zinc-500">Total Orgs</p><p class="font-bold text-sm" data-org-count>184</p></div>
+          <div><p class="text-xs sm:text-sm text-zinc-500">Total Orgs</p><p class="font-bold text-lg" data-org-count>184</p></div>
         </div>
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm">
+        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
           <span class="material-symbols-outlined text-secondary text-lg">code</span>
-          <div><p class="text-[10px] sm:text-xs text-zinc-500">Languages</p><p class="font-bold text-sm">30+</p></div>
+          <div><p class="text-xs sm:text-sm text-zinc-500">Languages</p><p class="font-bold text-lg">30+</p></div>
         </div>
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm">
+        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
           <span class="material-symbols-outlined text-primary-container text-lg">category</span>
-          <div><p class="text-[10px] sm:text-xs text-zinc-500">Domains</p><p class="font-bold text-sm">15+</p></div>
+          <div><p class="text-xs sm:text-sm text-zinc-500">Domains</p><p class="font-bold text-lg">15+</p></div>
         </div>
       </div>
     </div>
@@ -1383,8 +1427,8 @@ kbd:hover{
     <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Organizations</h2>
     <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Browse and filter GSoC 2026 organizations by tech stack, difficulty level, and interests to discover projects that match your skills and goals.</p>
   </div>
-  <!-- ═══════════════════ FILTER CHIPS ═══════════════════ -->
-  <div class="mb-6 fade-up" style="animation-delay:.3s">
+  <!-- ═══════════════════ FILTER CHIPS (desktop only) ═══════════════════ -->
+  <div class="mb-6 fade-up hidden md:block" style="animation-delay:.3s">
     <div class="flex flex-wrap gap-2 mb-4">
       <button id="chip-veteran" data-tooltip="Organizations that participated in GSoC for many years" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">military_tech</span> Veterans Only</button>
       <button id="chip-newcomer" data-tooltip="Good for first-time contributors and beginners" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">fiber_new</span> Newcomers</button>
@@ -1415,9 +1459,7 @@ kbd:hover{
         <input id="matchAllLanguagesToggle" type="checkbox" class="rounded border-zinc-300 text-primary focus:ring-primary" aria-describedby="languageLogicHint"/>
         <span class="text-xs text-zinc-600 font-medium">Match all selected languages </span>
       </label>
-      <span id="languageLogicHint" 
-        class="text-xs text-primary font-medium italic">
-      </span>
+      <span id="languageLogicHint" class="text-xs text-primary font-medium italic"></span>
     </div>
   </div>
 
@@ -1450,6 +1492,113 @@ kbd:hover{
         </div>
       </div>
       <select id="categoryFilter" aria-label="Filter by category" class="bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600">
+
+  <!-- ═══════════════════ MOBILE FILTER DROPDOWNS ═══════════════════ -->
+  <div class="mb-4 md:hidden fade-up" style="animation-delay:.3s">
+    <!-- Row 1: Filters + Languages side by side -->
+    <div class="flex gap-2 mb-3">
+    <!-- Mobile: Filters dropdown (replaces chips) -->
+    <div class="relative flex-1" id="mobileFilterDropdownWrap">
+      <button id="mobileFilterBtn" onclick="toggleMobileFilterDropdown()" class="w-full flex items-center justify-between px-3 py-2.5 bg-surface-container-highest rounded-xl text-xs font-bold text-on-surface border border-transparent hover:border-primary transition-colors">
+        <span class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-primary">tune</span>
+          <span id="mobileFilterLabel">Filters</span>
+        </span>
+        <span class="material-symbols-outlined text-sm transition-transform" id="mobileFilterChevron">expand_more</span>
+      </button>
+      <div id="mobileFilterPanel" class="hidden absolute left-0 top-full mt-1 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-zinc-100 dark:border-zinc-700 z-30 p-2 flex flex-col gap-1" style="min-width:180px">
+        <button id="mob-chip-veteran" data-mobile-chip="chip-veteran" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm">military_tech</span> Veterans Only
+        </button>
+        <button id="mob-chip-newcomer" data-mobile-chip="chip-newcomer" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm">fiber_new</span> Newcomers
+        </button>
+        <button id="mob-chip-hot" data-mobile-chip="chip-hot" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm">local_fire_department</span> High Competition
+        </button>
+        <button id="mob-chip-chill" data-mobile-chip="chip-chill" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm">sentiment_satisfied</span> Low Competition
+        </button>
+        <button id="mob-chip-active" data-mobile-chip="chip-active" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm">bolt</span> Actively Maintained
+        </button>
+        <button id="mob-chip-bookmarked" data-mobile-chip="chip-bookmarked" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm icon-fill" style="color:#f59e0b">star</span> Bookmarked
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile: Languages dropdown (replaces language pills) -->
+    <div class="relative flex-1" id="mobileLangDropdownWrap">
+      <button id="mobileLangBtn" onclick="toggleMobileLangDropdown()" class="w-full flex items-center justify-between px-3 py-2.5 bg-surface-container-highest rounded-xl text-xs font-bold text-on-surface border border-transparent hover:border-primary transition-colors">
+        <span class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-primary">code</span>
+          <span id="mobileLangLabel">Languages</span>
+        </span>
+        <span class="material-symbols-outlined text-sm transition-transform" id="mobileLangChevron">expand_more</span>
+      </button>
+      <div id="mobileLangPanel" class="hidden absolute right-0 top-full mt-1 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-zinc-100 dark:border-zinc-700 z-30 p-2" style="min-width:240px">
+        <div class="flex flex-wrap gap-1.5 p-1">
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Python" onclick="toggleMobileLangPill(this)">Python</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="JavaScript" onclick="toggleMobileLangPill(this)">JavaScript</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="TypeScript" onclick="toggleMobileLangPill(this)">TypeScript</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="C/C++" onclick="toggleMobileLangPill(this)">C/C++</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Java" onclick="toggleMobileLangPill(this)">Java</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Rust" onclick="toggleMobileLangPill(this)">Rust</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Go" onclick="toggleMobileLangPill(this)">Go</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Ruby" onclick="toggleMobileLangPill(this)">Ruby</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Haskell" onclick="toggleMobileLangPill(this)">Haskell</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Scala" onclick="toggleMobileLangPill(this)">Scala</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="ML/AI" onclick="toggleMobileLangPill(this)">ML/AI</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Robotics" onclick="toggleMobileLangPill(this)">Robotics</button>
+        </div>
+        <div class="mt-2 px-1 flex items-center gap-2 border-t border-zinc-100 dark:border-zinc-700 pt-2">
+          <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+            <input id="matchAllLanguagesToggleMobile" type="checkbox" class="rounded border-zinc-300 text-primary focus:ring-primary"/>
+            <span class="text-xs text-zinc-600 font-medium">Match all</span>
+          </label>
+          <span id="languageLogicHintMobile" class="text-xs text-primary font-medium italic"></span>
+        </div>
+      </div>
+    </div>
+    </div><!-- end row 1 -->
+
+    <!-- Mobile selected langs strip -->
+    <div id="selectedLangsStripMobile" class="flex flex-wrap items-center gap-2 min-h-[28px]">
+      <span class="empty-state"></span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ ALL 4 FILTER DROPDOWNS + CLEAR ═══════════════════ -->
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-8">
+    <p class="font-label text-xs uppercase tracking-widest text-zinc-500">Showing <strong id="orgCount"
+        data-org-count>184</strong> of <span data-org-total>184</span> organizations</p>
+    <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+      <!-- Export Dropdown -->
+      <div class="relative" id="exportDropdownWrapper">
+        <button id="exportBtn" onclick="toggleExportDropdown()" aria-haspopup="true" aria-expanded="false"
+          aria-controls="exportDropdownMenu" title="Export filtered results"
+          class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container-highest text-xs font-bold hover:bg-primary hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none">
+          <span class="material-symbols-outlined text-sm">download</span>
+          Export
+          <span class="material-symbols-outlined text-sm" id="exportChevron">expand_more</span>
+        </button>
+        <div id="exportDropdownMenu" role="group" aria-label="Export format"
+          class="hidden absolute right-0 mt-2 w-44 bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-700 rounded-xl shadow-xl z-20 overflow-hidden">
+          <button onclick="exportResults('csv')"
+            class="w-full flex items-center gap-2 px-4 py-3 text-xs font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-orange-50 dark:hover:bg-zinc-800 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm">description</span>
+            Download CSV
+          </button>
+          <button onclick="exportResults('json')"
+            class="w-full flex items-center gap-2 px-4 py-3 text-xs font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-orange-50 dark:hover:bg-zinc-800 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm">data_object</span>
+            Download JSON
+          </button>
+        </div>
+      </div>
+      <select id="categoryFilter" aria-label="Filter by category"
+        class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
         <option value="all">Categories: All</option>
         <option value="web">Web</option>
         <option value="programming">Programming</option>
@@ -1461,13 +1610,13 @@ kbd:hover{
         <option value="media">Media</option>
         <option value="other">Other</option>
       </select>
-      <select id="complexityFilter" aria-label="Filter by complexity" class="bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600">
+      <select id="complexityFilter" aria-label="Filter by complexity" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
         <option value="all">Complexity: All</option>
         <option value="beginner">Beginner</option>
         <option value="intermediate">Intermediate</option>
         <option value="advanced">Advanced</option>
       </select>
-      <select id="sortSelect" aria-label="Sort organizations" class="bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600">
+      <select id="sortSelect" aria-label="Sort organizations" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
         <option value="alpha">Sort: A-Z</option>
         <option value="years-desc">Years (High-Low)</option>
         <option value="years-asc">Years (Low-High)</option>
@@ -1475,9 +1624,9 @@ kbd:hover{
         <option value="stars">GitHub Stars</option>
         <option value="gfi">Good First Issues</option>
       </select>
-      <button id="clearFiltersBtn" onclick="clearAllFilters()" class="px-4 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors flex items-center gap-1" title="Clear all search and filters">
+      <button id="clearFiltersBtn" onclick="clearAllFilters()" class="px-3 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors flex items-center gap-1" title="Clear all search and filters">
         <span class="material-symbols-outlined text-sm">filter_alt_off</span>
-        Clear Filters
+        <span class="hidden sm:inline">Clear Filters</span>
       </button>
     </div>
   </div>
@@ -1489,7 +1638,7 @@ kbd:hover{
     aria-label="Organization search query"
   />
   
-  <div class="org-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="orgGrid">
+  <div class="org-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 scrollable-directory org-directory" id="orgGrid">
     <!-- Organizations will be rendered here dynamically -->
     <div class="col-span-full py-20 text-center animate-pulse">
       <p class="text-zinc-400 font-headline italic">Loading organization directory...</p>
@@ -1801,7 +1950,7 @@ kbd:hover{
       </div>
     </div>
 
-    <div id="mentorGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 scrollable-directory mentor-directory" id="mentorGrid">
       <div class="col-span-full bg-white rounded-2xl border border-zinc-100 p-8 text-center">
         <p class="text-sm text-zinc-500">Loading mentor contact data...</p>
       </div>
@@ -1815,7 +1964,7 @@ kbd:hover{
   </div>
   <div id="mentorPagination" class="mt-10 flex flex-nowrap items-center justify-center gap-1 overflow-x-auto no-scrollbar" aria-label="Mentor pagination"></div>
 </section>
- 
+
 <!-- ═══════════════════ CONTRIBUTOR GUIDE ═══════════════════ -->
 <section id="guide" class="py-20 px-6 max-w-7xl mx-auto">
   <div class="mb-12">
@@ -1971,7 +2120,7 @@ kbd:hover{
       <h3 class="font-bold mb-2">Report Issues</h3>
       <p class="text-sm text-zinc-600">Found a bug or have a feature request? Open an issue.</p>
     </a>
-    <a href="https://discord.gg/mgWV3xSV7" target="_blank" rel="noopener noreferrer" class="bg-white border border-zinc-200 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all text-center group">
+    <a href="https://discord.gg/jYrbHKtn8t" target="_blank" rel="noopener noreferrer" class="bg-white border border-zinc-200 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all text-center group">
       <div class="w-12 h-12 rounded-xl bg-zinc-100 flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-100 transition-colors">
         <span class="material-symbols-outlined text-zinc-600 group-hover:text-primary">forum</span>
       </div>
@@ -2032,12 +2181,14 @@ kbd:hover{
       <button type="button" id="mDraftBtn" class="modal-cta modal-proposal-link flex items-center justify-center gap-2">
         <span class="material-symbols-outlined text-lg">edit_document</span> Open Proposal Builder
       </button>
-      <a href="#" target="_blank" rel="noopener noreferrer" id="mIdeasBtn" class="modal-cta modal-ideas-link flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined text-lg">lightbulb</span> Project Ideas
-      </a>
-      <a href="#" target="_blank" rel="noopener noreferrer" id="mRepoBtn" class="modal-cta modal-repo-link flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined text-lg">code</span> Repository
-      </a>
+      <div class="modal-footer-secondary">
+        <a href="#" target="_blank" rel="noopener noreferrer" id="mIdeasBtn" class="modal-cta modal-ideas-link flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-lg">lightbulb</span> Project Ideas
+        </a>
+        <a href="#" target="_blank" rel="noopener noreferrer" id="mRepoBtn" class="modal-cta modal-repo-link flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-lg">code</span> Repository
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -2220,7 +2371,7 @@ kbd:hover{
     updateThemeIcon();
   })();
 
-  window.toggleTheme = function(){
+  globalThis.toggleTheme = function(){
     const isDark = document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     updateThemeIcon();
@@ -2241,7 +2392,7 @@ kbd:hover{
   // ══════════════════════════════════════════════
   // MOBILE MENU
   // ══════════════════════════════════════════════
-  const desktopNavMediaQuery = window.matchMedia('(min-width: 768px)');
+  const desktopNavMediaQuery = globalThis.matchMedia('(min-width: 1024px)');
 
   function openMobileMenu(){
     const menu = document.getElementById('mobileMenu');
@@ -2544,7 +2695,7 @@ kbd:hover{
     container.innerHTML = badges + clearAll;
   }
 
-  window.unselectLanguage = function(lang) {
+  globalThis.unselectLanguage = function(lang) {
     selectedLanguages.delete(lang);
     const pillBtn = document.querySelector(`.pill[data-lang="${lang}"]`);
     if (pillBtn) {
@@ -2555,7 +2706,7 @@ kbd:hover{
     applyFilters();
   }
 
-  window.clearAllLanguages = function() {
+  globalThis.clearAllLanguages = function() {
     selectedLanguages.clear();
     document.querySelectorAll('.pill.active').forEach(p => {
       p.classList.remove('active');
@@ -2568,7 +2719,7 @@ kbd:hover{
   // NOTE: toggleLanguageMode removed — the matchAllLanguagesToggle checkbox
   // uses a direct event listener (line ~1538) and does not use onclick=.
 
-  window.togglePill = function(el) {
+  globalThis.togglePill = function(el) {
     const langDisplay = el.dataset.lang || '';
     const langKey = langDisplay.trim().toLowerCase();
     if (!langKey) return;
@@ -2584,6 +2735,141 @@ kbd:hover{
     }
     applyFilters();
   };
+
+  // ── Mobile Filter & Language Dropdown Logic ──────────────────────────────
+  globalThis.toggleMobileFilterDropdown = function() {
+    const panel = document.getElementById('mobileFilterPanel');
+    const chevron = document.getElementById('mobileFilterChevron');
+    if (!panel) return;
+    const isOpen = !panel.classList.contains('hidden');
+    panel.classList.toggle('hidden', isOpen);
+    if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+    // close lang panel if open
+    document.getElementById('mobileLangPanel')?.classList.add('hidden');
+    const lc = document.getElementById('mobileLangChevron');
+    if (lc) lc.style.transform = '';
+  };
+
+  globalThis.toggleMobileLangDropdown = function() {
+    const panel = document.getElementById('mobileLangPanel');
+    const chevron = document.getElementById('mobileLangChevron');
+    if (!panel) return;
+    const isOpen = !panel.classList.contains('hidden');
+    panel.classList.toggle('hidden', isOpen);
+    if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+    // close filter panel if open
+    document.getElementById('mobileFilterPanel')?.classList.add('hidden');
+    const fc = document.getElementById('mobileFilterChevron');
+    if (fc) fc.style.transform = '';
+  };
+
+  // Close mobile dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    const filterWrap = document.getElementById('mobileFilterDropdownWrap');
+    const langWrap = document.getElementById('mobileLangDropdownWrap');
+    if (filterWrap && !filterWrap.contains(e.target)) {
+      document.getElementById('mobileFilterPanel')?.classList.add('hidden');
+      const fc = document.getElementById('mobileFilterChevron');
+      if (fc) fc.style.transform = '';
+    }
+    if (langWrap && !langWrap.contains(e.target)) {
+      document.getElementById('mobileLangPanel')?.classList.add('hidden');
+      const lc = document.getElementById('mobileLangChevron');
+      if (lc) lc.style.transform = '';
+    }
+  });
+
+  // Mobile chip toggle — mirrors the real filter-chip
+  globalThis.toggleMobileChip = function(mobileBtn) {
+    const targetId = mobileBtn.dataset.mobileChip;
+    const realChip = document.getElementById(targetId);
+    // Toggle the real chip (triggers existing filter logic)
+    if (realChip) realChip.click();
+    // Update mobile button visual state
+    const isActive = realChip ? realChip.classList.contains('bg-orange-600') : false;
+    mobileBtn.classList.toggle('bg-orange-600', isActive);
+    mobileBtn.classList.toggle('text-white', isActive);
+    // Update label on the trigger button
+    syncMobileFilterLabel();
+  };
+
+  function syncMobileFilterLabel() {
+    const activeChips = document.querySelectorAll('.filter-chip.bg-orange-600');
+    const label = document.getElementById('mobileFilterLabel');
+    if (!label) return;
+    if (activeChips.length === 0) {
+      label.textContent = 'Filters';
+    } else {
+      label.textContent = `Filters (${activeChips.length})`;
+    }
+    // Also sync mobile button states
+    document.querySelectorAll('.mobile-filter-option').forEach(btn => {
+      const targetId = btn.dataset.mobileChip;
+      const realChip = document.getElementById(targetId);
+      const isActive = realChip?.classList.contains('bg-orange-600') || false;
+      btn.classList.toggle('bg-orange-600', isActive);
+      btn.classList.toggle('text-white', isActive);
+    });
+  }
+
+  // Mobile language pill toggle — reuses existing selectedLanguages set + applyFilters
+  globalThis.toggleMobileLangPill = function(btn) {
+    const lang = btn.dataset.lang;
+    if (!lang) return;
+    const isActive = btn.classList.toggle('active');
+    btn.style.borderColor = isActive ? '#9d4300' : '';
+    btn.style.color = isActive ? '#9d4300' : '';
+    btn.style.background = isActive ? '#fff7ed' : '';
+    if (isActive) selectedLanguages.add(lang);
+    else selectedLanguages.delete(lang);
+    // Also sync the desktop pill
+    const desktopPill = document.querySelector(`.pill[data-lang="${lang}"]`);
+    if (desktopPill) {
+      desktopPill.classList.toggle('active', isActive);
+      desktopPill.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    }
+    renderSelectedLanguages();
+    syncMobileLangLabel();
+    applyFilters();
+  };
+
+  function syncMobileLangLabel() {
+    const label = document.getElementById('mobileLangLabel');
+    if (!label) return;
+    label.textContent = selectedLanguages.size > 0 ? `Languages (${selectedLanguages.size})` : 'Languages';
+  }
+
+  // Keep mobile strip in sync with renderSelectedLanguages
+  const _origRender = renderSelectedLanguages;
+  renderSelectedLanguages = function() {
+    _origRender();
+    // Sync mobile strip
+    const mobileStrip = document.getElementById('selectedLangsStripMobile');
+    if (mobileStrip) {
+      const mainStrip = document.getElementById('selectedLangsStrip');
+      mobileStrip.innerHTML = mainStrip ? mainStrip.innerHTML : '';
+    }
+    syncMobileLangLabel();
+    syncMobileFilterLabel();
+    // Sync mobile lang pill visuals
+    document.querySelectorAll('.mobile-lang-pill').forEach(btn => {
+      const lang = btn.dataset.lang;
+      const isActive = selectedLanguages.has(lang);
+      btn.style.borderColor = isActive ? '#9d4300' : '';
+      btn.style.color = isActive ? '#9d4300' : '';
+      btn.style.background = isActive ? '#fff7ed' : '';
+      btn.classList.toggle('active', isActive);
+    });
+  };
+
+  // Sync mobile toggle with real matchAllLanguagesToggle
+  document.getElementById('matchAllLanguagesToggleMobile')?.addEventListener('change', function(e) {
+    const realToggle = document.getElementById('matchAllLanguagesToggle');
+    if (realToggle) {
+      realToggle.checked = e.target.checked;
+      realToggle.dispatchEvent(new Event('change'));
+    }
+  });
 
   function createDefaultMentorEntry(org) {
     return {
@@ -2696,11 +2982,6 @@ kbd:hover{
       return;
     }
 
-    const fallbackIdeasLink = (function(){
-      const u = sanitizeHrefUrl(org.ideas);
-      return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span>💡</span><span>Visit ideas page</span></a>` : '';
-    })();
-
     const sections = [];
     if (entry.status === 'ok' && (entry.channels || []).length > 0) {
       sections.push(`
@@ -2745,8 +3026,7 @@ kbd:hover{
       }
       container.innerHTML = `
         <div class="rounded-2xl border border-dashed border-zinc-200 p-5">
-          <p class="text-sm text-zinc-600 mb-3">${message}</p>
-          <div class="flex flex-wrap gap-2">${fallbackIdeasLink || '<span class="text-xs text-zinc-400">No ideas page listed.</span>'}</div>
+          <p class="text-sm text-zinc-600">${message}</p>
         </div>
       `;
       return;
@@ -2755,7 +3035,6 @@ kbd:hover{
     container.innerHTML = `
       <div class="space-y-4">
         ${sections.join('')}
-        ${fallbackIdeasLink ? `<div class="flex flex-wrap gap-2">${fallbackIdeasLink}</div>` : ''}
       </div>
     `;
   }
@@ -2765,6 +3044,18 @@ kbd:hover{
       org,
       entry: getMentorEntry(org.name)
     }));
+  }
+  function scrollDirectoryToTop(gridId) {
+    const grid = document.getElementById(gridId);
+    if (grid) {
+      grid.scrollTop = 0;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const header = document.querySelector('nav') || document.querySelector('header');
+      const headerHeight = header ? header.getBoundingClientRect().height : 80;
+      const SCROLL_OFFSET = 16;
+      const gridTop = grid.getBoundingClientRect().top + window.scrollY - headerHeight - SCROLL_OFFSET;
+      window.scrollTo({ top: gridTop, behavior: prefersReduced ? 'auto' : 'smooth' });
+    }
   }
 
   function renderMentorFinder(reset = true) {
@@ -2927,9 +3218,8 @@ kbd:hover{
     renderPaginationControls('mentorPagination', filteredRecords.length, mentorCurrentPage, (page) => {
       mentorCurrentPage = page;
       renderMentorFinder(false);
-      document.getElementById('mentors')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollDirectoryToTop('mentorGrid');
     });
-
     attachOrgCardListeners(grid);
   }
 
@@ -3139,7 +3429,7 @@ const connector = !isLast
   }
 
   // Organizational Logo Fallbacks
-  window.handleImgError = function(img, orgName) {
+  globalThis.handleImgError = function(img, orgName) {
     if (!img.dataset.triedClearbit) {
       img.dataset.triedClearbit = 'true';
       const domain = orgName.toLowerCase().replace(/[^a-z0-9]/g, '') + '.org';
@@ -3240,17 +3530,19 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       const isBookmarked = bookmarkedSet.has(org.name);
       const isComparing = compareList.includes(org.name);
       const card = document.createElement('article');
-      card.className = 'group bg-white rounded-2xl p-6 border border-zinc-100 transition-all hover:shadow-xl hover:border-primary/20 animate-fade-up';
+      card.className = 'group bg-white rounded-2xl p-6 border border-zinc-100 transition-all hover:shadow-xl hover:border-primary/20 animate-fade-up cursor-pointer';
       card.dataset.org = org.name;
-      
+      //add event listener to open org modal, when clicking anywhere
+      card.addEventListener('click', () => {
+          openModal(org.name);
+      });
       const githubOwner = githubOwnerFromValue(org.github);
       const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
       
       card.innerHTML = `
         <div class="flex justify-between items-start mb-4">
-          <div class="w-14 h-14 rounded-xl bg-surface-container-low flex items-center justify-center p-2 overflow-hidden">
-            <img src="${escapeHtml(logoUrl)}" data-org-name="${escapeHtml(org.name)}" alt="${escapeHtml(org.name + ' logo')}" class="w-full h-full object-contain rounded-lg" />
-            <div class="logo-placeholder hidden w-full h-full items-center justify-center text-primary font-bold text-xl bg-primary/5"></div>
+          <div class="w-14 h-14 flex-shrink-0 rounded-xl bg-surface-container-low flex items-center justify-center p-2 overflow-hidden">
+            <img src="${escapeHtml(logoUrl)}" data-org-name="${escapeHtml(org.name)}" alt="${escapeHtml(org.name + ' logo')}" class="w-full h-full object-contain rounded-lg" width="56" height="56" />            <div class="logo-placeholder hidden w-full h-full items-center justify-center text-primary font-bold text-xl bg-primary/5"></div>
           </div>
           <div class="flex items-center gap-2">
             <span class="bg-primary/10 text-primary text-[10px] font-label uppercase tracking-widest px-2 py-1 rounded-full font-bold">${escapeHtml(String(org.years))}y Veteran</span>
@@ -3291,7 +3583,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     renderPaginationControls('orgPagination', filteredOrgs.length, orgCurrentPage, (page) => {
       orgCurrentPage = page;
       renderOrgs(false);
-      document.getElementById('orgs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollDirectoryToTop('orgGrid');
     });
   }
 
@@ -3328,8 +3620,26 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
         e.stopPropagation();
         openModal(btn.dataset.openOrg);
       });
-btn.__orgListenerAttached = true;
+      btn.__orgListenerAttached = true;
     });
+  }
+
+  function showToast(msg) {
+    let t = document.getElementById('compareToast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'compareToast';
+      t.setAttribute('role', 'status');
+      t.setAttribute('aria-live', 'polite');
+      t.setAttribute('aria-atomic', 'true');
+      t.className = 'compare-toast';
+      t.style.opacity = '0';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    clearTimeout(t._hideTimeout);
+    requestAnimationFrame(() => requestAnimationFrame(() => { t.style.opacity = '1'; }));
+    t._hideTimeout = setTimeout(() => { t.style.opacity = '0'; }, 2200);
   }
 
   function toggleCompare(e, name) {
@@ -3339,14 +3649,13 @@ btn.__orgListenerAttached = true;
       compareList.splice(idx, 1);
     } else {
       if (compareList.length >= 3) {
-        alert("You can only compare up to 3 organizations at a time.");
+        showToast("You can only compare up to 3 organizations at a time.");
         return;
       }
       compareList.push(name);
     }
     renderOrgs(true);
     renderCompare();
-
     document.dispatchEvent(new CustomEvent('compareListChanged'));
   }
 
@@ -3535,7 +3844,7 @@ btn.__orgListenerAttached = true;
   // ══════════════════════════════════════════════
   let prevFocusBeforeAnalytics = null;
 
-  window.openAnalytics = function() {
+  globalThis.openAnalytics = function() {
     // Save current focus
     prevFocusBeforeAnalytics = document.activeElement;
 
@@ -3555,7 +3864,7 @@ btn.__orgListenerAttached = true;
     }, 100);
   };
 
-  window.closeAn = function() {
+  globalThis.closeAn = function() {
     document.getElementById('anBg')?.classList.remove('open');
     document.body.style.overflow = 'auto';
 
@@ -3566,7 +3875,7 @@ btn.__orgListenerAttached = true;
     prevFocusBeforeAnalytics = null;
   };
 
-  window.closeAnEvent = function(e) {
+  globalThis.closeAnEvent = function(e) {
     if (e.target.id === 'anBg') {
       closeAn();
     }
@@ -3774,8 +4083,11 @@ btn.__orgListenerAttached = true;
         .join('');
 
       const item = document.createElement('div');
-      item.className = 'bg-white rounded-2xl p-3 sm:p-5 border border-zinc-100 flex gap-3 sm:gap-4 items-start hover:shadow-lg hover:border-primary/20 transition-all animate-fade-up';
+      item.className = 'bg-white rounded-2xl p-3 sm:p-5 border border-zinc-100 flex gap-3 sm:gap-4 items-start hover:shadow-lg hover:border-primary/20 transition-all animate-fade-up cursor-pointer';
       item.dataset.watchlistOrg = org.name;
+      item.addEventListener('click', () => {
+          openModal(org.name);
+      });
 
       item.innerHTML = `
         <!-- Logo -->
@@ -4018,7 +4330,55 @@ btn.__orgListenerAttached = true;
       });
     });
   }
+  function setModalLinkState(button, url) {
+    if (!button) return;
+    if (url) {
+      button.href = url;
+      button.removeAttribute('aria-disabled');
+      button.removeAttribute('tabindex');
+      button.classList.remove('opacity-50', 'pointer-events-none');
+    } else {
+      button.removeAttribute('href');
+      button.setAttribute('aria-disabled', 'true');
+      button.setAttribute('tabindex', '-1');
+      button.classList.add('opacity-50', 'pointer-events-none');
+    }
+  }
+  function renderModalHeader(org){
+    const isBookmarked = bookmarkedSet.has(org.name);
+    const isComparing = compareList.includes(org.name);
+    const ideasLinkHTML = (function(){
+      const u = sanitizeHrefUrl(org.ideas);
+      return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span>💡</span><span>Visit ideas page</span></a>` : '';
+    })();
 
+    return `
+      <span class="category-tag">${escapeHtml(String(org.cat).toUpperCase())}</span>
+        <div class="flex items-start justify-between pr-10 gap-4">
+          <div>
+            <h2>${escapeHtml(org.name)}</h2>
+            <p class="text-zinc-500">GSoC Partner for ${escapeHtml(String(org.years))} Years</p>
+            ${ideasLinkHTML}
+          </div>
+          <div class="flex flex-col items-end gap-2">
+            <button id="modalCompareBtn" data-compare-org="${escapeHtml(org.name)}" class="text-[10px] font-bold uppercase tracking-widest ${isComparing ? 'text-primary' : 'text-orange-400'} hover:text-primary flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Add to compare'}
+            </button>
+            <button
+              id="modalBookmarkBtn"
+              class="bookmark-btn ${isBookmarked ? 'active' : 'text-orange-300'} flex-shrink-0"
+              data-bookmark-org="${escapeHtml(org.name)}"
+              aria-label="${isBookmarked ? 'Remove bookmark' : 'Add to Watchlist'}"
+              title="${isBookmarked ? 'Remove bookmark' : 'Add to Watchlist'}"
+            >
+              <span class="material-symbols-outlined text-2xl ${isBookmarked ? 'icon-fill' : ''}">
+                star
+              </span>
+            </button>
+          </div>
+        </div>
+      `;
+  }
   function openModal(name) {
     const org = ORGS.find(o => o.name === name);
     if (!org) return;
@@ -4028,40 +4388,35 @@ btn.__orgListenerAttached = true;
     if (typeof BadgeSystem !== 'undefined') {
       BadgeSystem.trackOrgView();
     }
-    const isBookmarked = bookmarkedSet.has(org.name);
 
-    document.getElementById('mHeader').innerHTML = `
-      <span class="category-tag">${escapeHtml(String(org.cat).toUpperCase())}</span>
-      <div class="flex items-start justify-between pr-10">
-        <div>
-          <h2>${escapeHtml(org.name)}</h2>
-          <p class="text-zinc-500">GSoC Partner for ${escapeHtml(String(org.years))} Years</p>
-        </div>
-        <button
-          id="modalBookmarkBtn"
-          class="bookmark-btn ${isBookmarked ? 'active' : 'text-zinc-300'} flex-shrink-0 mt-1"
-          data-bookmark-org="${escapeHtml(org.name)}"
-          aria-label="${isBookmarked ? 'Remove bookmark' : 'Add to Watchlist'}"
-          title="${isBookmarked ? 'Remove bookmark' : 'Add to Watchlist'}"
-        >
-          <span class="material-symbols-outlined text-2xl ${isBookmarked ? 'icon-fill' : ''}">
-            star
-          </span>
-        </button>
-      </div>
-    `;
+    const mHeader = document.getElementById('mHeader');
+    if (mHeader) {
+        mHeader.innerHTML = renderModalHeader(org);
+    }
+
     const modalBookmarkBtn = document.getElementById('modalBookmarkBtn');
     if (modalBookmarkBtn) {
       modalBookmarkBtn.addEventListener('click', (e) => {
         toggleBookmark(e, org.name);
         const nowBookmarked = bookmarkedSet.has(org.name);
         modalBookmarkBtn.classList.toggle('active', nowBookmarked);
-        modalBookmarkBtn.classList.toggle('text-zinc-300', !nowBookmarked);
+        modalBookmarkBtn.classList.toggle('text-orange-300', !nowBookmarked);
         const icon = modalBookmarkBtn.querySelector('.material-symbols-outlined');
         if (icon) icon.classList.toggle('icon-fill', nowBookmarked);
         const label = nowBookmarked ? 'Remove bookmark' : 'Add to Watchlist';
         modalBookmarkBtn.setAttribute('aria-label', label);
         modalBookmarkBtn.setAttribute('title', label);
+      });
+    }
+
+    const modalCompareBtn = document.getElementById('modalCompareBtn');
+    if (modalCompareBtn) {
+      modalCompareBtn.addEventListener('click', (e) => {
+        toggleCompare(e, modalCompareBtn.dataset.compareOrg);
+        const nowComparing = compareList.includes(org.name);
+        modalCompareBtn.classList.toggle('text-primary', nowComparing);
+        modalCompareBtn.classList.toggle('text-orange-400', !nowComparing);
+        modalCompareBtn.innerHTML = `<span class="material-symbols-outlined text-sm">${nowComparing ? 'check_circle' : 'compare_arrows'}</span> ${nowComparing ? 'Comparing' : 'Add to compare'}`;
       });
     }
 
@@ -4094,18 +4449,11 @@ btn.__orgListenerAttached = true;
       }
     }
     document.getElementById('mTimeline').innerHTML = timelineHtml;
-
     // Sanitize and set idea/repo links
     const ideasUrl = sanitizeHrefUrl(org.ideas);
     const repoUrl = sanitizeHrefUrl(githubUrlFromValue(org.github));
-    const ideasBtn = document.getElementById('mIdeasBtn');
-    const repoBtn = document.getElementById('mRepoBtn');
-    if (ideasBtn) {
-      if (ideasUrl) ideasBtn.href = ideasUrl; else ideasBtn.removeAttribute('href');
-    }
-    if (repoBtn) {
-      if (repoUrl) repoBtn.href = repoUrl; else repoBtn.removeAttribute('href');
-    }
+    setModalLinkState(document.getElementById('mIdeasBtn'), ideasUrl);
+    setModalLinkState(document.getElementById('mRepoBtn'), repoUrl);
 
 // Copy link button
 const oldCopy = document.getElementById('mIdeasCopyBtn');
@@ -4227,7 +4575,7 @@ if(org.ideas){
     return a.name.localeCompare(b.name);
   }
 
-  window.clearAllFilters = function() {
+  globalThis.clearAllFilters = function() {
     document.getElementById('searchInput').value = '';
     document.getElementById('categoryFilter').value = 'all';
     document.getElementById('complexityFilter').value = 'all';
@@ -4266,6 +4614,21 @@ if(org.ideas){
     filteredOrgs = [...ORGS];
     renderOrgs(true);
     applyFilters(); // to reset URL params
+
+    // Reset mobile dropdowns
+    document.getElementById('mobileFilterLabel') && (document.getElementById('mobileFilterLabel').textContent = 'Filters');
+    document.getElementById('mobileLangLabel') && (document.getElementById('mobileLangLabel').textContent = 'Languages');
+    document.querySelectorAll('.mobile-filter-option').forEach(btn => {
+      btn.classList.remove('bg-orange-600', 'text-white');
+    });
+    document.querySelectorAll('.mobile-lang-pill').forEach(btn => {
+      btn.classList.remove('active');
+      btn.style.borderColor = '';
+      btn.style.color = '';
+      btn.style.background = '';
+    });
+    const mobToggle = document.getElementById('matchAllLanguagesToggleMobile');
+    if (mobToggle) mobToggle.checked = false;
   };
 
   // Shared search function to handle filter application, with optional badge tracking
@@ -4451,7 +4814,7 @@ if(org.ideas){
         const card = document.createElement('div');
         card.className = 'bg-white rounded-xl p-5 border border-zinc-100 hover:shadow-lg transition-all group cursor-pointer';
         const safeUrl = sanitizeHrefUrl(issue.url);
-        if (safeUrl) card.onclick = () => window.open(safeUrl, '_blank');
+        if (safeUrl) card.onclick = () => globalThis.open(safeUrl, '_blank');
         const safeRepo = escapeHtml(issue.repo || '');
         const safeTitle = escapeHtml(issue.title || '');
         const labelsHtml = (issue.labels || []).slice(0,2).map(l => `<span class="text-[10px] px-2 py-0.5 bg-green-100 text-green-700 rounded font-bold">${escapeHtml(l)}</span>`).join('');
@@ -4900,7 +5263,7 @@ if(org.ideas){
   
   class SafeHTMLString extends String {}
   SafeHTMLString.prototype.__isSafeHTML = true;
-
+ 
   function safeHTML(strings, ...values) {
     let result = '';
     for (let i = 0; i < strings.length; i++) {
@@ -4930,7 +5293,7 @@ if(org.ideas){
 <script type="module" src="agent/scripts/speed-insights.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
+    globalThis.addEventListener('load', () => {
       navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
     });
   }
@@ -5133,7 +5496,7 @@ if (helpModalOpen || orgModalOpen || proposalModalOpen) {
     if(e.key.toLowerCase()==='h'){
         e.preventDefault();
 
-        window.scrollTo({
+        globalThis.scrollTo({
             top:0,
             behavior:'smooth'
         });
@@ -5142,12 +5505,12 @@ if (helpModalOpen || orgModalOpen || proposalModalOpen) {
     // Reset filters
 if(e.key.toLowerCase()==='r'){
     e.preventDefault();
-    window.clearAllFilters();
+    globalThis.clearAllFilters();
     return;
 }
 });
 
-  window.closeHelpModal = closeHelpModal;
+  globalThis.closeHelpModal = closeHelpModal;
 
 });
 </script>
@@ -5267,6 +5630,8 @@ if(e.key.toLowerCase()==='r'){
     .map(id => document.getElementById(id))
     .filter(Boolean);
   const mainHeader = document.querySelector("header.fixed.top-0");
+  const nextBtn = document.getElementById("nextSectionBtn");
+  const prevBtn = document.getElementById("prevSectionBtn");
 
   let currentSection = 0;
   const sectionIndicatorValue = document.getElementById("sectionScrollIndicatorValue");
@@ -5317,6 +5682,13 @@ if(e.key.toLowerCase()==='r'){
       }
     });
 
+    if (prevBtn) {
+      prevBtn.disabled = (currentSection === 0);
+    }
+    if (nextBtn) {
+      nextBtn.disabled = (currentSection === sections.length - 1);
+    }
+
     updateSectionIndicator();
   }
 
@@ -5331,40 +5703,50 @@ if(e.key.toLowerCase()==='r'){
 
   const logoLink = document.getElementById("logoLink");
 
+  let isNavClicking = false;
+  let navScrollEndTimer = null;
+
+  function triggerSmoothScroll(index) {
+    const targetSection = sections[index];
+    if (!targetSection) return;
+
+    isNavClicking = true;
+    currentSection = index;
+    updateNavState();
+    scrollToSectionIndex(index);
+
+    // Reset scroll-end timer in case scroll event doesn't fire (already at target)
+    clearTimeout(navScrollEndTimer);
+    navScrollEndTimer = setTimeout(() => {
+      isNavClicking = false;
+      updateCurrentSection();
+    }, 150);
+  }
+
   if (logoLink) {
     logoLink.addEventListener("click", (event) => {
       event.preventDefault();
-      setCurrentSectionById("timeline");
-      scrollToSectionIndex(currentSection);
+      triggerSmoothScroll(0); // timeline is at index 0
     });
   }
-
-  let isNavClicking = false;
-  let navClickTimer = null;
 
   document.querySelectorAll(".desktop-nav-link").forEach(link => {
     link.addEventListener("click", (e) => {
       e.preventDefault(); // stop browser anchor scroll
-      isNavClicking = true;
-      clearTimeout(navClickTimer);
-      setCurrentSectionById(link.dataset.section);
-      scrollToSectionIndex(currentSection);
-      navClickTimer = setTimeout(() => {
-        isNavClicking = false;
-      }, 1500);
+      const nextSectionIndex = sections.findIndex(section => section.id === link.dataset.section);
+      if (nextSectionIndex !== -1) {
+        triggerSmoothScroll(nextSectionIndex);
+      }
     });
   });
 
   document.querySelectorAll(".mobile-menu-link").forEach(link => {
     link.addEventListener("click", (e) => {
       e.preventDefault(); // stop browser anchor scroll
-      isNavClicking = true;
-      clearTimeout(navClickTimer);
-      setCurrentSectionById(link.dataset.section);
-      scrollToSectionIndex(currentSection);
-      navClickTimer = setTimeout(() => {
-        isNavClicking = false;
-      }, 1500);
+      const nextSectionIndex = sections.findIndex(section => section.id === link.dataset.section);
+      if (nextSectionIndex !== -1) {
+        triggerSmoothScroll(nextSectionIndex);
+      }
 
       if (typeof globalThis.toggleMenu === "function") {
         globalThis.toggleMenu();
@@ -5373,58 +5755,66 @@ if(e.key.toLowerCase()==='r'){
   });
 
   function updateCurrentSection() {
-      if (isNavClicking) return;
-      const offset = getSectionDetectionOffset() + 10;
-      let found = 0;
-      let closestDistance = Infinity;
-      sections.forEach((section, index) => {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= offset) {
-          const distance = offset - rect.top;
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            found = index;
-          }
-        }
-      });
-      currentSection = found;
+    if (isNavClicking) return;
+
+    // Check if scrolled to bottom of the page
+    if (globalThis.innerHeight + globalThis.scrollY >= document.documentElement.scrollHeight - 50) {
+      currentSection = sections.length - 1;
       updateNavState();
+      return;
     }
 
-    const visibleSections = new Set();
+    const viewportTop = getSectionDetectionOffset();
+    const viewportBottom = globalThis.innerHeight;
+    
+    let maxVisibleHeight = 0;
+    let found = 0;
 
-    const observer = new IntersectionObserver((entries) => {
-       if (isNavClicking) return;
-        entries.forEach(entry => {
-          const index = sections.indexOf(entry.target);
-          if (index === -1) return;
-          if (entry.isIntersecting) {
-            visibleSections.add(index);
-          } else {
-            visibleSections.delete(index);
-          }
-        });
-        if (visibleSections.size === 0) {
-          return;
-        }
-        currentSection = Math.min(...visibleSections);
-        updateNavState();
-    }, {
-      rootMargin: `-${(mainHeader?.clientHeight || 0) + 10}px 0px -60% 0px`,
-      threshold: 0
+    sections.forEach((section, index) => {
+      const rect = section.getBoundingClientRect();
+      const visibleTop = Math.max(rect.top, viewportTop);
+      const visibleBottom = Math.min(rect.bottom, viewportBottom);
+      
+      const visibleHeight = visibleBottom - visibleTop;
+      if (visibleHeight > maxVisibleHeight) {
+        maxVisibleHeight = visibleHeight;
+        found = index;
+      }
     });
 
-    sections.forEach(section => observer.observe(section));
-    window.addEventListener("resize", updateCurrentSection);
-    updateCurrentSection();
+    currentSection = found;
+    updateNavState();
+  }
 
-  const nextBtn = document.getElementById("nextSectionBtn");
-  const prevBtn = document.getElementById("prevSectionBtn");
+  // Scroll listener debounced with requestAnimationFrame
+  let rafPending = false;
+  globalThis.addEventListener("scroll", () => {
+    if (isNavClicking) {
+      // During smooth scroll, debounce the scroll-end timer to release lock
+      clearTimeout(navScrollEndTimer);
+      navScrollEndTimer = setTimeout(() => {
+        isNavClicking = false;
+        updateCurrentSection();
+      }, 100);
+      return;
+    }
+
+    if (!rafPending) {
+      globalThis.requestAnimationFrame(() => {
+        updateCurrentSection();
+        rafPending = false;
+      });
+      rafPending = true;
+    }
+  }, { passive: true });
+
+  globalThis.addEventListener("resize", updateCurrentSection);
+  updateCurrentSection();
 
   function addClickFeedback(btn, direction) {
     if (!btn) return;
     btn.addEventListener("click", (e) => {
-      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const prefersReducedMotion = globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       // Icon bounce animation
       const animClass = direction === "up" ? "bounce-up-active" : "bounce-down-active";
@@ -5466,15 +5856,13 @@ if(e.key.toLowerCase()==='r'){
 
   nextBtn?.addEventListener("click", () => {
     if (currentSection < sections.length - 1) {
-      scrollToSectionIndex(currentSection + 1);
+      triggerSmoothScroll(currentSection + 1);
     }
   });
 
   prevBtn?.addEventListener("click", () => {
     if (currentSection > 0) {
-      scrollToSectionIndex(currentSection - 1);
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      triggerSmoothScroll(currentSection - 1);
     }
   });
 })();

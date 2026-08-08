@@ -4,9 +4,9 @@
     "description": "GSoC 2026 Organisation Finder",
     "private": true,
     "scripts": {
-        "lint:js": "eslint src/js/app.js src/js/org.js agent/scripts/validate-ideas-urls.js agent/scripts/extract-mentors.js agent/scripts/validate-mentors.js api/github.js src/js/githubAnalyzer.js src/js/skillExtractor.js src/js/recommender.js src/js/recommendation-ui.js src/js/footer.js",
-        "lint:css": "stylelint src/styles.css",
-        "lint:html": "htmlhint --config .htmlhintrc index.html privacy.html",
+        "lint:js": "eslint src/js/app.js src/js/org.js src/js/tailwind-config.js agent/scripts/validate-ideas-urls.js agent/scripts/extract-mentors.js agent/scripts/validate-mentors.js api/github.js src/js/githubAnalyzer.js src/js/skillExtractor.js src/js/recommender.js src/js/recommendation-ui.js src/js/footer.js",
+        "lint:css": "stylelint src/styles.css src/landing.css",
+        "lint:html": "htmlhint --config .htmlhintrc index.html privacy.html landing.html",
         "lint": "npm run lint:js && npm run lint:css && npm run lint:html",
         "validate:data": "node agent/scripts/validate-generated-data.js",
         "test": "node --test tests/**/*.test.js"
@@ -20,4 +20,6 @@
     "dependencies": {
         "@vercel/speed-insights": "^2.0.0"
     }
+
 }
+
