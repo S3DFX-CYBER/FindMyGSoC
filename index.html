@@ -1462,37 +1462,7 @@ kbd:hover{
       <span id="languageLogicHint" class="text-xs text-primary font-medium italic"></span>
     </div>
   </div>
-
-  <div class="flex items-center justify-between mb-8 flex-wrap gap-3">
-    <p class="font-label text-xs uppercase tracking-widest text-zinc-500">
-      Showing <strong id="orgCount">184</strong> of <strong data-org-total>184</strong> organizations
-    </p>
-    <div class="flex items-center gap-3 flex-wrap">
-      <!-- Export Dropdown -->
-      <div class="relative" id="exportDropdownWrapper">
-        <button id="exportBtn" onclick="toggleExportDropdown()" aria-haspopup="true" aria-expanded="false"
-          aria-controls="exportDropdownMenu" title="Export filtered results"
-          class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container-highest text-xs font-bold hover:bg-primary hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none">
-          <span class="material-symbols-outlined text-sm">download</span>
-          Export
-          <span class="material-symbols-outlined text-sm" id="exportChevron">expand_more</span>
-        </button>
-        <div id="exportDropdownMenu" role="menu"
-          class="hidden absolute right-0 mt-2 w-44 bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-700 rounded-xl shadow-xl z-20 overflow-hidden">
-          <button role="menuitem" onclick="exportResults('csv')"
-            class="w-full flex items-center gap-2 px-4 py-3 text-xs font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-orange-50 dark:hover:bg-zinc-800 hover:text-primary transition-colors">
-            <span class="material-symbols-outlined text-sm">description</span>
-            Download CSV
-          </button>
-          <button role="menuitem" onclick="exportResults('json')"
-            class="w-full flex items-center gap-2 px-4 py-3 text-xs font-semibold text-zinc-700 dark:text-zinc-200 hover:bg-orange-50 dark:hover:bg-zinc-800 hover:text-primary transition-colors">
-            <span class="material-symbols-outlined text-sm">data_object</span>
-            Download JSON
-          </button>
-        </div>
-      </div>
-      <select id="categoryFilter" aria-label="Filter by category" class="bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600">
-
+  
   <!-- ═══════════════════ MOBILE FILTER DROPDOWNS ═══════════════════ -->
   <div class="mb-4 md:hidden fade-up" style="animation-delay:.3s">
     <!-- Row 1: Filters + Languages side by side -->
@@ -1571,8 +1541,7 @@ kbd:hover{
 
   <!-- ═══════════════════ ALL 4 FILTER DROPDOWNS + CLEAR ═══════════════════ -->
   <div class="flex flex-wrap items-center justify-between gap-3 mb-8">
-    <p class="font-label text-xs uppercase tracking-widest text-zinc-500">Showing <strong id="orgCount"
-        data-org-count>184</strong> of <span data-org-total>184</span> organizations</p>
+    <p class="font-label text-xs uppercase tracking-widest text-zinc-500">Showing <strong id="orgCount" data-org-count>184</strong> of <span data-org-total>184</span> organizations</p>
     <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
       <!-- Export Dropdown -->
       <div class="relative" id="exportDropdownWrapper">
@@ -1597,8 +1566,8 @@ kbd:hover{
           </button>
         </div>
       </div>
-      <select id="categoryFilter" aria-label="Filter by category"
-        class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
+      <select id="categoryFilter" aria-label="Filter by category" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
+
         <option value="all">Categories: All</option>
         <option value="web">Web</option>
         <option value="programming">Programming</option>
