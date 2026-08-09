@@ -3359,12 +3359,27 @@
   },
   "Open Genome Informatics": {
     "org": "Open Genome Informatics",
-    "ideasUrl": "https://github.com/monarch-initiative/monarch-app/wiki/Google-Summer-of-Code",
-    "channels": [],
-    "mentors": [],
-    "mailingLists": [],
+    "ideasUrl": "https://gmod.org/wiki/GSOC_Project_Ideas_2026",
+    "channels": [
+      {
+        "type":"Google Groups",
+        "url":"https://groups.google.com/g/genome-informatics",
+        "label":"Open Genome Informatics Google Group"
+      }
+    ],
+    "mentors": [
+      {"name":"Adam Wright","github":"adamjohnwright","githubUrl":"https://github.com/adamjohnwright"},
+      {"name":"Shraddha Pai","github":"shraddhapai","githubUrl":"https://github.com/shraddhapai"}
+    ],
+    "mailingLists": [
+      {
+        "type": "Email",
+        "url": "mailto:help@gmod.org",
+        "label": "help@gmod.org"
+      }
+    ],
     "tip": "",
-    "status": "no-contact-found",
+    "status": "ok",
     "lastFetched": "2026-05-09T16:09:12.548Z"
   },
   "Open HealthCare Network": {
