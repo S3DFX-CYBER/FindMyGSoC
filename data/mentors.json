@@ -3142,12 +3142,22 @@
   },
   "MLLAM": {
     "org": "MLLAM",
-    "ideasUrl": "https://github.com/mllam/mllam-data-prep/wiki/GSoC-2026",
-    "channels": [],
-    "mentors": [],
+    "ideasUrl": "https://github.com/mllam/neural-lam/wiki/GSoC-ideas",
+    "channels": [
+      {
+        "type":"Slack",
+        "url":"https://kutt.to/mllam",
+        "label":"MLLAM Slack"
+      }
+    ],
+    "mentors": [
+      {"name": "Leif Denby", "github": "leifdenby", "githubUrl": "https://github.com/leifdenby"},
+      {"name":"Hauke Schulz","github":"observingClouds", "githubUrl": "https://github.com/observingClouds"},
+      {"name":"Joel Oskarsson","github":"joeloskarsson", "githubUrl": "https://github.com/joeloskarsson"}
+    ],
     "mailingLists": [],
     "tip": "",
-    "status": "no-contact-found",
+    "status": "ok",
     "lastFetched": "2026-05-09T16:09:12.548Z"
   },
   "MoFA Org": {
