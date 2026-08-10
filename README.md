@@ -22,6 +22,7 @@ No sign-up. No install. No build step. Just open and explore.
 - [What is this?](#-what-is-this)
 - [Features](#-features)
 - [Flowchart](#-flowchart)
+- [Tech Stack](#️-tech-stack)
 - [Project Structure](#-project-structure)
 - [URL Validation](#-url-validation)
 - [Deploy Your Own](#-deploy-your-own)
