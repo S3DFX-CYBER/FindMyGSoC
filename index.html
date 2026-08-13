@@ -200,6 +200,36 @@ kbd:hover{
         font-size:11px;
     }
 }
+    /* Mobile filter/language dropdown styles */
+    .mobile-filter-option.bg-orange-600,
+    .mobile-filter-option.bg-orange-600:hover {
+      background: #c2410c !important;
+      color: #fff !important;
+    }
+    .mobile-lang-pill.active {
+      border-color: #9d4300 !important;
+      color: #9d4300 !important;
+      background: #fff7ed !important;
+    }
+    .dark #mobileFilterPanel,
+    .dark #mobileLangPanel {
+      background: #27272a !important;
+      border-color: #3f3f46 !important;
+    }
+    .dark .mobile-filter-option:hover {
+      background: #3f3f46 !important;
+    }
+    .dark .mobile-lang-pill {
+      background: #3f3f46 !important;
+      border-color: #52525b !important;
+      color: #d4d4d8 !important;
+    }
+    .dark .mobile-lang-pill.active {
+      border-color: #f97316 !important;
+      color: #f97316 !important;
+      background: #431407 !important;
+    }
+
     /* Screen reader only - for accessibility */
     .sr-only {
       position: absolute;
@@ -269,7 +299,7 @@ kbd:hover{
     }
     .close-btn:hover { background: #e8e8e8; color: #1a1c1c; }
     
-    .modal-header { padding: 3rem 3rem 1.5rem; flex-shrink: 0; }
+    .modal-header { padding: 2rem 2rem; flex-shrink: 0; }
     .category-tag {
       background: rgba(157, 67, 0, 0.1);
       color: #9d4300;
@@ -282,28 +312,29 @@ kbd:hover{
       margin-bottom: 1rem;
     }
     .modal-header h2 { font-size: 2.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 0.5rem; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .modal-header p { color: #584237; font-size: 1rem; line-height: 1.5; }
+    .modal-header p { color: #584237; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.5rem;}
 
     .modal-body {padding: 0 3rem 3rem; overflow-y: auto; flex: 1; min-height: 0; }
-    .section-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #aaa; margin-bottom: 1rem; margin-top: 2rem; border-bottom: 1px solid #f3f3f3; padding-bottom: 0.5rem; }
+    .section-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #555; margin-bottom: 0.5rem; margin-top: 2rem; border-bottom: 1px solid #f3f3f3; padding-bottom: 0.5rem; }
     
     .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; }
-    .metric-card { background: #f9f9f9; padding: 1.2rem; border-radius: 1.2rem; border: 1px solid #eee; text-align: center; }
+    .metric-card { background: #faf5f0; padding: 0.5rem 1.5rem 0.5rem 1.5rem; border-radius: 1.2rem; border: 1px solid #cb692c; text-align: center; }
     .metric-value { font-size: 1.25rem; font-weight: 800; color: #1a1c1c; margin-bottom: 0.2rem; }
-    .metric-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: #888; }
+    .metric-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: #555; }
 
-    .github-stats-container { background: #1a1a1a; border-radius: 1.5rem; padding: 1.5rem; color: #fff; display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; position: relative; overflow: hidden; justify-content: space-between; }
+    .github-stats-container { background: #1a1a1a; border-radius: 1.5rem; padding: 1rem; color: #fff; display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; position: relative; overflow: hidden; justify-content: space-between; }
     .gh-fetch { background: #333; color: #aaa; border: none; padding: 0.3rem 0.8rem; border-radius: 99px; font-size: 0.65rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-left: auto; align-self: flex-start; flex-shrink: 0; }
     .gh-fetch:hover { background: #444; color: #fff; }
     .gh-stat-item { font-family: 'Fira Code', monospace; font-size: 0.75rem; color: #4ade80; display: flex; align-items: center; gap: 0.5rem; }
 
-    .tech-tags, .fit-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tech-tags, .fit-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.2rem; }
     .tech-tag { background: #f3f4f6; color: #4b5563; font-size: 0.7rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid #e5e7eb; }
     .fit-tag { background: #eff6ff; color: #2563eb; font-size: 0.7rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 0.5rem; border: 1px solid #dbeafe; }
     .mentor-link-chip { display:inline-flex; align-items:center; gap:.45rem; background:#fff7ed; color:#9d4300; border:1px solid #fed7aa; border-radius:999px; padding:.45rem .75rem; font-size:.75rem; font-weight:700; }
     .mentor-handle-chip { display:inline-flex; align-items:center; gap:.35rem; background:#f3f4f6; color:#374151; border:1px solid #e5e7eb; border-radius:999px; padding:.4rem .7rem; font-size:.75rem; font-weight:600; }
-    .mentor-card { background:#ffffff; border:1px solid #e5e7eb; border-radius:1rem; padding:1.25rem; box-shadow:0 1px 2px rgba(15,23,42,.04); }
-    .mentor-empty { background:#ffffff; border:1px solid #e5e7eb; border-radius:1rem; padding:2rem; text-align:center; }
+    .mentor-card { background:#ffffff; border:1px solid #e5e7eb; border-radius:1rem; padding:1.25rem; box-shadow:0 1px 2px rgba(15,23,42,.04); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .mentor-card:hover , .mentor-empty:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); transform: translateY(-4px); border-color: #d1d5db; }
+    .mentor-empty { background:#ffffff; border:1px solid #e5e7eb; border-radius:1rem; padding:2rem; text-align:center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
     .timeline-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .timeline-grid span { font-size: 0.75rem; font-weight: 500; color: #666; background: #fff; border: 1px solid #eee; padding: 0.3rem 0.7rem; border-radius: 0.5rem; }
@@ -313,8 +344,9 @@ kbd:hover{
     .timeline-grid a.timeline-year-link.current-year { background: #fffbeb; color: #92400e; border-color: #fbbf24; font-weight: 700; }
     .timeline-grid a.timeline-year-link.current-year:hover { border-color: #92400e; background: #fef3c7; color: #78350f; }
 
-    .modal-footer { padding: 2rem 3rem 3rem; background: #f9f9f9; display: flex; gap: 1rem; border-top: 1px solid #eee; flex-shrink: 0; }
-    .modal-cta { flex: 1; padding: 1rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.2s; }
+    .modal-footer { padding: 1.5rem 2rem; background: #f9f9f9; display: flex; gap: 1rem; border-top: 1px solid #eee; flex-shrink: 1; }
+    .modal-footer-secondary { display: flex; gap: 1rem; margin-left: auto; }
+    .modal-cta { flex: 1; padding: 0.75rem; border-radius: 1rem; font-size: 0.65rem; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: 0.05em; transition: all 0.2s; }
     .modal-ideas-link { background: #9d4300; color: white; }
     .modal-ideas-link:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(157, 67, 0, 0.3); }
     .modal-repo-link { background: white; color: #1a1c1c; border: 1px solid #ddd; }
@@ -561,7 +593,8 @@ kbd:hover{
     .dark .fit-tag { background: #1e293b; color: #93c5fd; border-color: #334155; }
     .dark .mentor-link-chip { background: rgba(124,45,18,0.72); color: #fff7ed; border-color: rgba(251,146,60,0.45); }
     .dark .mentor-handle-chip { background: #27272a; color: #d4d4d8; border-color: #3f3f46; }
-    .dark .mentor-card, .dark .mentor-empty { background:#18181b; border-color:#3f3f46; }
+    .dark .mentor-card, .dark .mentor-empty { background:#18181b; border-color:#3f3f46; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .dark .mentor-card:hover, .dark .mentor-empty:hover { box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5); transform: translateY(-4px); border-color: #52525b; background: #27272a; }
 
     :root {
       --section-fab-right: 24px;
@@ -575,9 +608,13 @@ kbd:hover{
     @media (max-width: 640px) {
       .modal-header { padding: 1rem 1.5rem 0.5rem; flex-shrink: 0; }
       .modal-header h2 { font-size: 1.6rem; }
+      .metric-card { padding: 0.5rem 1rem; margin-top: 0.5rem;}
+      .metric-value { font-size: 1rem; }
+      .metric-label { font-size: 0.6rem; }
       .modal-body { padding: 0 1.5rem 2rem; min-height: 0; }
-      .modal-footer { padding: 0.75rem 1.5rem; flex-direction: column; flex-shrink: 0; }
-      .modal-cta { width: 100%; padding: 0.6rem 1rem; font-size: 0.85rem; }
+      .modal-footer { padding: 1rem; gap: 1rem; flex-direction: column; flex-shrink: 0; }
+      .modal-footer-secondary { display: flex; gap: 1rem; width: 100%; }
+      .modal-footer-secondary .modal-cta { flex-direction:column; flex: 1 1 0; min-width:0; width: auto; padding: 0.3rem 0.4rem; font-size: 0.65rem; min-height: 30px; }
       .proposal-header { padding: 0.6rem 1rem; gap: 0.4rem; position: relative; }
       .proposal-header-title { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
       .proposal-header-title h2 { font-size: 0.95rem; }
@@ -912,6 +949,13 @@ kbd:hover{
         stroke-dasharray: none;
         stroke-dashoffset: 0;
       }
+      .section-scroll-btn {
+        transition: none !important;
+      }
+      .section-scroll-btn:hover,
+      .section-scroll-btn:active {
+        transform: none !important;
+      }
     }
 
     /* Smooth fading for search bar active animation on focus */
@@ -945,9 +989,18 @@ kbd:hover{
   align-items: center;
   justify-content: center;
   box-shadow: 0 8px 24px rgba(157, 67, 0, 0.35);
-  transition: all 0.25s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
-.section-scroll-btn:hover { transform: translateY(-2px); }
+.section-scroll-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(157, 67, 0, 0.45);
+}
+.section-scroll-btn:active {
+  transform: translateY(1px) scale(0.92);
+  box-shadow: 0 4px 12px rgba(157, 67, 0, 0.2);
+  filter: brightness(0.95);
+}
     #nextSectionBtn { bottom: calc(var(--section-fab-bottom) + env(safe-area-inset-bottom)); }
     #prevSectionBtn {
       bottom: calc(var(--section-fab-bottom) + var(--section-fab-size) + var(--section-fab-gap) + env(safe-area-inset-bottom));
@@ -961,11 +1014,68 @@ kbd:hover{
 .dark .section-scroll-btn:hover {
   box-shadow: 0 12px 32px rgba(194, 65, 12, 0.45);
 }
+.dark .section-scroll-btn:active {
+  transform: translateY(1px) scale(0.92);
+  box-shadow: 0 4px 12px rgba(194, 65, 12, 0.2);
+  filter: brightness(0.95);
+}
+
+/* Dark mode - Section scroll indicator */
+.dark .section-scroll-indicator {
+  background: rgba(24, 24, 27, 0.88);
+  border-color: rgba(249, 115, 22, 0.25);
+  color: #fb923c;
+}
+.dark .section-scroll-indicator-dot {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
+}
+.dark .section-scroll-indicator-value {
+  color: #e4e4e7;
+}
 
 .section-scroll-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+/* Custom ripple effect inside scroll buttons */
+.section-scroll-btn .click-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple-animation 0.5s cubic-bezier(0.1, 0.8, 0.3, 1);
+  background-color: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Icon animations inside scroll buttons on click */
+@keyframes bounce-down {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(4px); }
+  70% { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
+@keyframes bounce-up {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(-4px); }
+  70% { transform: translateY(2px); }
+  100% { transform: translateY(0); }
+}
+
+.section-scroll-btn.bounce-down-active .material-symbols-outlined {
+  animation: bounce-down 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.section-scroll-btn.bounce-up-active .material-symbols-outlined {
+  animation: bounce-up 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .section-scroll-indicator {
@@ -1053,6 +1163,16 @@ kbd:hover{
         border-radius: 999px;
       }
     }
+@media (pointer: coarse) {
+  .filter-chip.bg-orange-600:hover {
+    background-color: #ea580c !important;
+    color: #1a0a00 !important;
+  }
+  .filter-chip.bg-surface-container-highest:hover {
+    background-color: revert !important;
+    color: revert !important;
+  }
+}
 
 </style>
   <link rel="manifest" href="manifest.json" />
@@ -1081,25 +1201,33 @@ kbd:hover{
 <!-- ═══════════════════ NAVBAR ═══════════════════ -->
 <header class="fixed top-0 w-full z-50 bg-white/80 glass shadow-sm">
   <div class="flex items-center justify-between px-4 sm:px-6 py-3 max-w-7xl mx-auto w-full">
-    <div class="flex items-center gap-3 sm:gap-4 md:gap-8">
+    <div class="flex items-center gap-1.5 sm:gap-4 xl:gap-8">
       <!-- Hamburger menu button (mobile only) -->
-      <button id="menuBtn" onclick="toggleMenu()" class="inline-flex md:hidden shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-lg transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <button id="menuBtn" onclick="toggleMenu()" class="inline-flex lg:hidden shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-lg transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
         <span class="material-symbols-outlined text-zinc-600">menu</span>
       </button>
-      
+
+      <!-- Home button (links back to landing page) -->
+      <a href="/" 
+         class="inline-flex shrink-0 items-center gap-1 px-1.5 sm:px-2 py-2 hover:bg-zinc-100/50 rounded-lg transition-colors text-zinc-600 hover:text-zinc-900"
+         aria-label="Go to home page" title="Home">
+        <span class="material-symbols-outlined text-lg">home</span>
+        <span class="hidden xs:inline text-sm font-medium whitespace-nowrap">Home</span>
+      </a>
+
       <a href="#timeline" class="flex items-center gap-2" id="logoLink">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center flex-shrink-0">
           <span class="text-white font-bold text-sm">G</span>
         </div>
-      <span class="text-base sm:text-lg font-extrabold tracking-tight text-zinc-900 font-headline whitespace-nowrap">
-        <span class="hidden sm:inline">GSoC 2026 </span>
-        <span class="text-primary italic">Org Finder</span>
-      </span>
+        <span class="text-base sm:text-lg font-extrabold tracking-tight text-zinc-900 font-headline whitespace-nowrap">
+          <span class="hidden sm:inline">GSoC 2026 </span>
+          <span class="text-primary italic">Org Finder</span>
+        </span>
       </a>
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+      <nav class="hidden lg:flex items-center gap-4 xl:gap-6 text-sm font-medium">
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#timeline" data-section="timeline">Timeline</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#orgs" data-section="orgs">Organizations</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#ai-recommender" data-section="ai-recommender">AI Recommender</a>
+        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors whitespace-nowrap" href="#ai-recommender" data-section="ai-recommender">AI Recommender</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#watchlist" data-section="watchlist">Watchlist</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#issues" data-section="issues">Issues</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#mentors" data-section="mentors">Mentors</a>
@@ -1141,13 +1269,14 @@ kbd:hover{
       </button>
     
       <a href="https://github.com/S3DFX-CYBER/GSoC-Org-Finder-" target="_blank" rel="noopener noreferrer"
-        class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors">
-    
+        class="hidden sm:flex items-center gap-2 px-3 xl:px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors whitespace-nowrap">
+
         <span class="material-symbols-outlined text-sm">
           star
         </span>
-    
-        Star & Contribute
+
+        <span class="lg:hidden xl:inline">Star & Contribute</span>
+        <span class="hidden lg:inline xl:hidden">Star</span>
       </a>
     
     </div>
@@ -1155,7 +1284,7 @@ kbd:hover{
 </header>
 
 <!-- Mobile Menu Overlay -->
-<div id="mobileMenu" class="fixed inset-0 z-50 hidden md:hidden" style="z-index:60;" role="dialog" aria-modal="true" aria-label="Navigation menu">
+<div id="mobileMenu" class="fixed inset-0 z-50 hidden lg:hidden" style="z-index:60;" role="dialog" aria-modal="true" aria-label="Navigation menu">
   <!-- Backdrop -->
   <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleMenu()" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMenu()" tabindex="0" role="button" aria-label="Close menu"></div>
   
@@ -1224,7 +1353,7 @@ kbd:hover{
         Find Your<br/><span class="text-primary italic">Perfect GSoC Org</span>
       </h1>
       <p class="text-base sm:text-lg text-zinc-600 max-w-xl mb-8 sm:mb-10 leading-relaxed">
-        Browse all <strong>184</strong> organizations. Filter by language, domain, competition, and live GitHub activity. Land your summer internship.
+        Browse all <strong data-org-count>184</strong> organizations. Filter by language, domain, competition, and live GitHub activity. Land your summer internship.
       </p>
       <!-- Search Bar -->
       <div class="relative max-w-xl mb-6 sm:mb-8 search-bar-container">
@@ -1233,33 +1362,34 @@ kbd:hover{
           <svg class="timeline-border-svg" fill="none">
             <rect class="timeline-border-rect" rx="16" ry="16" pathLength="100" />
           </svg>
-          <!-- Inner Input Layer -->
-          <div class="relative z-10 bg-white dark:bg-[#18181b] rounded-[calc(1rem-1.5px)] w-full search-border-inner flex items-center transition-all duration-300">
+          <div class="relative z-10 bg-white dark:bg-[#18181b] rounded-[calc(1rem-1.5px)] w-full search-border-inner flex items-center gap-2 transition-all duration-300">
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
-            <input id="hero-search" type="text" placeholder="Search organization names..." aria-label="Search GSoC 2026 organizations" class="w-full bg-transparent border-0 rounded-2xl py-3 sm:py-4 pl-12 pr-4 text-sm font-medium focus:ring-0 focus:outline-none transition-all text-zinc-900 dark:text-zinc-100" />
+            <input id="hero-search" type="text" placeholder="Search organization names..." aria-label="Search GSoC 2026 organizations" class="flex-1 bg-transparent border-0 rounded-2xl py-3 sm:py-4 pl-12 pr-4 text-sm font-medium focus:ring-0 focus:outline-none transition-all text-zinc-900 dark:text-zinc-100" />
+            <button id="hero-search-submit" type="button" class="mr-2 inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-primary/30">
+              Search
+            </button>
           </div>
         </div>
       </div>
       <!-- Surprise Button -->
       <div class="mb-8 sm:mb-10">
-        <button id="surpriseBtn" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-primary-container text-white rounded-full text-sm font-bold hover:shadow-lg hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2" aria-label="🎲 Surprise Me! - Open a random organization">
-          <span class="material-symbols-outlined text-sm">casino</span>
-          🎲 Surprise Me!
-        </button>
+       <button id="surpriseBtn" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-primary-container text-white rounded-full text-sm font-bold hover:shadow-lg hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2" aria-label="🎲 Surprise Me! - Open a random organization">
+  🎲 Surprise Me!
+</button>
       </div>
       <!-- Stat Badges -->
       <div class="flex flex-wrap gap-3 sm:gap-4">
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm">
+        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
           <span class="material-symbols-outlined text-primary text-lg">groups</span>
-          <div><p class="text-[10px] sm:text-xs text-zinc-500">Total Orgs</p><p class="font-bold text-sm">184</p></div>
+          <div><p class="text-xs sm:text-sm text-zinc-500">Total Orgs</p><p class="font-bold text-lg" data-org-count>184</p></div>
         </div>
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm">
+        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
           <span class="material-symbols-outlined text-secondary text-lg">code</span>
-          <div><p class="text-[10px] sm:text-xs text-zinc-500">Languages</p><p class="font-bold text-sm">30+</p></div>
+          <div><p class="text-xs sm:text-sm text-zinc-500">Languages</p><p class="font-bold text-lg">30+</p></div>
         </div>
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm">
+        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
           <span class="material-symbols-outlined text-primary-container text-lg">category</span>
-          <div><p class="text-[10px] sm:text-xs text-zinc-500">Domains</p><p class="font-bold text-sm">15+</p></div>
+          <div><p class="text-xs sm:text-sm text-zinc-500">Domains</p><p class="font-bold text-lg">15+</p></div>
         </div>
       </div>
     </div>
@@ -1297,8 +1427,8 @@ kbd:hover{
     <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Organizations</h2>
     <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Browse and filter GSoC 2026 organizations by tech stack, difficulty level, and interests to discover projects that match your skills and goals.</p>
   </div>
-  <!-- ═══════════════════ FILTER CHIPS ═══════════════════ -->
-  <div class="mb-6 fade-up" style="animation-delay:.3s">
+  <!-- ═══════════════════ FILTER CHIPS (desktop only) ═══════════════════ -->
+  <div class="mb-6 fade-up hidden md:block" style="animation-delay:.3s">
     <div class="flex flex-wrap gap-2 mb-4">
       <button id="chip-veteran" data-tooltip="Organizations that participated in GSoC for many years" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">military_tech</span> Veterans Only</button>
       <button id="chip-newcomer" data-tooltip="Good for first-time contributors and beginners" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">fiber_new</span> Newcomers</button>
@@ -1329,16 +1459,91 @@ kbd:hover{
         <input id="matchAllLanguagesToggle" type="checkbox" class="rounded border-zinc-300 text-primary focus:ring-primary" aria-describedby="languageLogicHint"/>
         <span class="text-xs text-zinc-600 font-medium">Match all selected languages </span>
       </label>
-      <span id="languageLogicHint" 
-        class="text-xs text-primary font-medium italic">
-      </span>
+      <span id="languageLogicHint" class="text-xs text-primary font-medium italic"></span>
     </div>
   </div>
 
-  <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
-    <p class="font-label text-xs uppercase tracking-widest text-zinc-500">Showing <strong id="orgCount">184</strong> of 184 organizations</p>
-    <div class="flex flex-wrap items-center gap-4">
-      <select id="categoryFilter" aria-label="Filter by category" class="bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600">
+  <!-- ═══════════════════ MOBILE FILTER DROPDOWNS ═══════════════════ -->
+  <div class="mb-4 md:hidden fade-up" style="animation-delay:.3s">
+    <!-- Row 1: Filters + Languages side by side -->
+    <div class="flex gap-2 mb-3">
+    <!-- Mobile: Filters dropdown (replaces chips) -->
+    <div class="relative flex-1" id="mobileFilterDropdownWrap">
+      <button id="mobileFilterBtn" onclick="toggleMobileFilterDropdown()" class="w-full flex items-center justify-between px-3 py-2.5 bg-surface-container-highest rounded-xl text-xs font-bold text-on-surface border border-transparent hover:border-primary transition-colors">
+        <span class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-primary">tune</span>
+          <span id="mobileFilterLabel">Filters</span>
+        </span>
+        <span class="material-symbols-outlined text-sm transition-transform" id="mobileFilterChevron">expand_more</span>
+      </button>
+      <div id="mobileFilterPanel" class="hidden absolute left-0 top-full mt-1 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-zinc-100 dark:border-zinc-700 z-30 p-2 flex flex-col gap-1" style="min-width:180px">
+        <button id="mob-chip-veteran" data-mobile-chip="chip-veteran" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm">military_tech</span> Veterans Only
+        </button>
+        <button id="mob-chip-newcomer" data-mobile-chip="chip-newcomer" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm">fiber_new</span> Newcomers
+        </button>
+        <button id="mob-chip-hot" data-mobile-chip="chip-hot" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm">local_fire_department</span> High Competition
+        </button>
+        <button id="mob-chip-chill" data-mobile-chip="chip-chill" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm">sentiment_satisfied</span> Low Competition
+        </button>
+        <button id="mob-chip-active" data-mobile-chip="chip-active" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm">bolt</span> Actively Maintained
+        </button>
+        <button id="mob-chip-bookmarked" data-mobile-chip="chip-bookmarked" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
+          <span class="material-symbols-outlined text-sm icon-fill" style="color:#f59e0b">star</span> Bookmarked
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile: Languages dropdown (replaces language pills) -->
+    <div class="relative flex-1" id="mobileLangDropdownWrap">
+      <button id="mobileLangBtn" onclick="toggleMobileLangDropdown()" class="w-full flex items-center justify-between px-3 py-2.5 bg-surface-container-highest rounded-xl text-xs font-bold text-on-surface border border-transparent hover:border-primary transition-colors">
+        <span class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-primary">code</span>
+          <span id="mobileLangLabel">Languages</span>
+        </span>
+        <span class="material-symbols-outlined text-sm transition-transform" id="mobileLangChevron">expand_more</span>
+      </button>
+      <div id="mobileLangPanel" class="hidden absolute right-0 top-full mt-1 bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-zinc-100 dark:border-zinc-700 z-30 p-2" style="min-width:240px">
+        <div class="flex flex-wrap gap-1.5 p-1">
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Python" onclick="toggleMobileLangPill(this)">Python</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="JavaScript" onclick="toggleMobileLangPill(this)">JavaScript</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="TypeScript" onclick="toggleMobileLangPill(this)">TypeScript</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="C/C++" onclick="toggleMobileLangPill(this)">C/C++</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Java" onclick="toggleMobileLangPill(this)">Java</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Rust" onclick="toggleMobileLangPill(this)">Rust</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Go" onclick="toggleMobileLangPill(this)">Go</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Ruby" onclick="toggleMobileLangPill(this)">Ruby</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Haskell" onclick="toggleMobileLangPill(this)">Haskell</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Scala" onclick="toggleMobileLangPill(this)">Scala</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="ML/AI" onclick="toggleMobileLangPill(this)">ML/AI</button>
+          <button class="mobile-lang-pill px-3 py-1.5 rounded-full bg-surface-container-high border border-zinc-200 text-xs font-medium hover:border-primary hover:text-primary transition-colors" data-lang="Robotics" onclick="toggleMobileLangPill(this)">Robotics</button>
+        </div>
+        <div class="mt-2 px-1 flex items-center gap-2 border-t border-zinc-100 dark:border-zinc-700 pt-2">
+          <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+            <input id="matchAllLanguagesToggleMobile" type="checkbox" class="rounded border-zinc-300 text-primary focus:ring-primary"/>
+            <span class="text-xs text-zinc-600 font-medium">Match all</span>
+          </label>
+          <span id="languageLogicHintMobile" class="text-xs text-primary font-medium italic"></span>
+        </div>
+      </div>
+    </div>
+    </div><!-- end row 1 -->
+
+    <!-- Mobile selected langs strip -->
+    <div id="selectedLangsStripMobile" class="flex flex-wrap items-center gap-2 min-h-[28px]">
+      <span class="empty-state"></span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ ALL 4 FILTER DROPDOWNS + CLEAR ═══════════════════ -->
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-8">
+    <p class="font-label text-xs uppercase tracking-widest text-zinc-500">Showing <strong id="orgCount" data-org-count>184</strong> of <span data-org-total>184</span> organizations</p>
+    <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+      <select id="categoryFilter" aria-label="Filter by category" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
         <option value="all">Categories: All</option>
         <option value="web">Web</option>
         <option value="programming">Programming</option>
@@ -1350,13 +1555,13 @@ kbd:hover{
         <option value="media">Media</option>
         <option value="other">Other</option>
       </select>
-      <select id="complexityFilter" aria-label="Filter by complexity" class="bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600">
+      <select id="complexityFilter" aria-label="Filter by complexity" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
         <option value="all">Complexity: All</option>
         <option value="beginner">Beginner</option>
         <option value="intermediate">Intermediate</option>
         <option value="advanced">Advanced</option>
       </select>
-      <select id="sortSelect" aria-label="Sort organizations" class="bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600">
+      <select id="sortSelect" aria-label="Sort organizations" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
         <option value="alpha">Sort: A-Z</option>
         <option value="years-desc">Years (High-Low)</option>
         <option value="years-asc">Years (Low-High)</option>
@@ -1364,9 +1569,9 @@ kbd:hover{
         <option value="stars">GitHub Stars</option>
         <option value="gfi">Good First Issues</option>
       </select>
-      <button id="clearFiltersBtn" onclick="clearAllFilters()" class="px-4 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors flex items-center gap-1" title="Clear all search and filters">
+      <button id="clearFiltersBtn" onclick="clearAllFilters()" class="px-3 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-xs font-bold hover:bg-red-100 transition-colors flex items-center gap-1" title="Clear all search and filters">
         <span class="material-symbols-outlined text-sm">filter_alt_off</span>
-        Clear Filters
+        <span class="hidden sm:inline">Clear Filters</span>
       </button>
     </div>
   </div>
@@ -1374,13 +1579,13 @@ kbd:hover{
   <!-- Hidden search input for JavaScript compatibility -->
   <input type="hidden" id="searchInput" />
   
-  <div class="org-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="orgGrid">
+  <div class="org-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 scrollable-directory org-directory" id="orgGrid">
     <!-- Organizations will be rendered here dynamically -->
     <div class="col-span-full py-20 text-center animate-pulse">
       <p class="text-zinc-400 font-headline italic">Loading organization directory...</p>
     </div>
   </div>
-  <div id="orgPagination" class="mt-12 flex flex-wrap items-center justify-center gap-2" aria-label="Organizations pagination"></div>
+  <div id="orgPagination" class="mt-12 flex flex-nowrap items-center justify-center gap-1 overflow-x-auto no-scrollbar" aria-label="Organizations pagination"></div>
   <!-- Empty State -->
   <div id="emptyState" class="hidden py-20 text-center animate-fade-up">
     <div class="text-6xl mb-4">🔍</div>
@@ -1480,6 +1685,28 @@ kbd:hover{
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div class="lg:col-span-2 space-y-6">
+
+        <div class="bg-white/50 dark:bg-zinc-800/30 border-2 border-dashed border-zinc-200 dark:border-zinc-700 hover:border-solid hover:bg-white dark:hover:bg-zinc-800/80 transition-all rounded-2xl p-2 sm:p-5 flex flex-col max-h-[420px]">
+          
+          <div class="flex items-center justify-between flex-wrap gap-3 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-zinc-200/60 dark:border-zinc-700/60 flex-shrink-0 px-2 sm:px-0 pt-2 sm:pt-0">
+            <div class="flex items-center gap-1 sm:gap-2">
+              <span class="material-symbols-outlined text-zinc-400 dark:text-zinc-500 text-lg sm:text-2xl">bookmark_border</span>
+              <h3 class="font-bold text-zinc-700 dark:text-zinc-200 text-sm sm:text-base">Your Watchlist</h3>
+            </div>
+            <div>
+              <button
+                onclick="openOrgPicker('watchlist')"
+                class="inline-flex items-center gap-1 px-3 sm:px-4 py-1.5 bg-primary !text-white rounded-lg text-xs font-bold hover:bg-orange-600 transition-colors shadow-sm whitespace-nowrap"
+                aria-label="Add Organization">
+                <span class="material-symbols-outlined text-sm">add</span> Add Organization
+              </button>
+            </div>
+          </div>
+          
+          <div class="space-y-3 sm:space-y-4 overflow-y-auto pr-1 sm:pr-2 custom-scrollbar flex-1 px-1 sm:px-0" id="watchlistContainer">
+            </div>
+        </div>
+
         <div id="recentlyViewedSection" class="space-y-4">
           <div class="flex items-center justify-between gap-3">
             <div class="flex items-center gap-3 flex-wrap">
@@ -1488,13 +1715,9 @@ kbd:hover{
             </div>
             <button id="clearRecentlyViewedBtn" class="text-xs font-bold uppercase tracking-wider text-zinc-500 hover:text-red-500 transition-colors" aria-label="Clear All recently viewed organizations">Clear All</button>
           </div>
-          <div id="recentlyViewedContainer" class="space-y-3">
+          <div id="recentlyViewedContainer" class="space-y-3 max-h-[210px] overflow-y-auto pr-2 pb-2 custom-scrollbar">
             <!-- Recently viewed items will be rendered here -->
           </div>
-        </div>
-
-        <div class="space-y-4" id="watchlistContainer">
-          <!-- Watchlist items will be rendered here -->
         </div>
       </div>
       <!-- Sidebar -->
@@ -1567,9 +1790,9 @@ kbd:hover{
         <p class="text-xs text-green-600" id="issuesBannerSubtitle">Updated every 6 hours via GitHub Actions — no API rate limits for visitors.</p>
       </div>
     </div>
-    <div class="ml-auto text-right">
+    <div class="sm:ml-auto flex flex-col items-start sm:items-end gap-1">
       <span id="issuesLastUpdated" class="text-xs font-mono text-green-600">Last updated: pending refresh</span>
-      <span id="issuesStaleNote" class="hidden ml-2 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">⏸ GSoC selection complete. Data won't update frequently.</span>
+      <span id="issuesStaleNote" class="hidden text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">⏸ GSoC selection complete. Data won't update frequently.</span>
     </div>
   </div>
   <!-- Issue Cards -->
@@ -1662,7 +1885,7 @@ kbd:hover{
       </div>
     </div>
 
-    <div id="mentorGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 scrollable-directory mentor-directory" id="mentorGrid">
       <div class="col-span-full bg-white rounded-2xl border border-zinc-100 p-8 text-center">
         <p class="text-sm text-zinc-500">Loading mentor contact data...</p>
       </div>
@@ -1674,9 +1897,9 @@ kbd:hover{
       </button>
     </div>
   </div>
-  <div id="mentorPagination" class="mt-10 flex flex-wrap items-center justify-center gap-2" aria-label="Mentor pagination"></div>
+  <div id="mentorPagination" class="mt-10 flex flex-nowrap items-center justify-center gap-1 overflow-x-auto no-scrollbar" aria-label="Mentor pagination"></div>
 </section>
- 
+
 <!-- ═══════════════════ CONTRIBUTOR GUIDE ═══════════════════ -->
 <section id="guide" class="py-20 px-6 max-w-7xl mx-auto">
   <div class="mb-12">
@@ -1765,7 +1988,7 @@ kbd:hover{
       <div class="bg-white border border-zinc-100 p-8 rounded-3xl group hover:bg-orange-500/10 shadow-lg transition-all">
         <div class="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-6 font-bold text-2xl text-orange-400 group-hover:scale-110 transition-transform">1</div>
         <h3 class="text-xl font-bold mb-3">Explore Organizations</h3>
-        <p class="text-zinc-600 text-sm leading-relaxed">Browse 185+ open source organizations. Filter by language, domain, and competition level to find your match.</p>
+        <p class="text-zinc-600 text-sm leading-relaxed">Browse all <strong data-org-count>184</strong> open source organizations. Filter by language, domain, and competition level to find your match.</p>
       </div>
       <div class="bg-white border border-zinc-100 p-8 rounded-3xl group hover:bg-blue-500/10 shadow-lg transition-all">
         <div class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 font-bold text-2xl text-blue-400 group-hover:scale-110 transition-transform">2</div>
@@ -1832,7 +2055,7 @@ kbd:hover{
       <h3 class="font-bold mb-2">Report Issues</h3>
       <p class="text-sm text-zinc-600">Found a bug or have a feature request? Open an issue.</p>
     </a>
-    <a href="https://discord.gg/mgWV3xSV7" target="_blank" rel="noopener noreferrer" class="bg-white border border-zinc-200 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all text-center group">
+    <a href="https://discord.gg/jYrbHKtn8t" target="_blank" rel="noopener noreferrer" class="bg-white border border-zinc-200 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all text-center group">
       <div class="w-12 h-12 rounded-xl bg-zinc-100 flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-100 transition-colors">
         <span class="material-symbols-outlined text-zinc-600 group-hover:text-primary">forum</span>
       </div>
@@ -1893,12 +2116,14 @@ kbd:hover{
       <button type="button" id="mDraftBtn" class="modal-cta modal-proposal-link flex items-center justify-center gap-2">
         <span class="material-symbols-outlined text-lg">edit_document</span> Open Proposal Builder
       </button>
-      <a href="#" target="_blank" rel="noopener noreferrer" id="mIdeasBtn" class="modal-cta modal-ideas-link flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined text-lg">lightbulb</span> Project Ideas
-      </a>
-      <a href="#" target="_blank" rel="noopener noreferrer" id="mRepoBtn" class="modal-cta modal-repo-link flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined text-lg">code</span> Repository
-      </a>
+      <div class="modal-footer-secondary">
+        <a href="#" target="_blank" rel="noopener noreferrer" id="mIdeasBtn" class="modal-cta modal-ideas-link flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-lg">lightbulb</span> Project Ideas
+        </a>
+        <a href="#" target="_blank" rel="noopener noreferrer" id="mRepoBtn" class="modal-cta modal-repo-link flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-lg">code</span> Repository
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -1914,6 +2139,7 @@ kbd:hover{
             Enable autosave
             <p id="pwPrivacyNote">Drafts are stored only on this device when autosave is enabled.</p>
           </label>
+          <div id="pwProposalStats" class="proposal-stats" aria-live="polite"></div>
       </div>
       <div class="proposal-toolbar">
         <button type="button" id="pwClearBtn" class="proposal-btn proposal-btn-danger" aria-label="Clear proposal draft">
@@ -2041,6 +2267,37 @@ kbd:hover{
 <script src="agent/scripts/orgs.js"></script>
 <script>
   // ══════════════════════════════════════════════
+  // SAFE ORG DATA GUARD
+  // ══════════════════════════════════════════════
+  if(typeof ORGS === 'undefined' || !Array.isArray(ORGS)){
+    globalThis.ORGS = [];
+  }
+
+  // ══════════════════════════════════════════════
+  // ORG COUNT INITIALIZATION
+  // ══════════════════════════════════════════════
+  function initializeOrgCounts(){
+    const orgCount = ORGS.length > 0 ? ORGS.length : 184;
+    
+    // Update all org count display references
+    document.querySelectorAll('[data-org-count]').forEach(el => {
+      el.textContent = orgCount;
+    });
+    
+    // Update org total summary references
+    document.querySelectorAll('[data-org-total]').forEach(el => {
+      el.textContent = orgCount;
+    });
+  }
+  
+  // Initialize org counts when DOM is ready
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initializeOrgCounts);
+  } else {
+    initializeOrgCounts();
+  }
+
+  // ══════════════════════════════════════════════
   // THEME
   // ══════════════════════════════════════════════
   (function(){
@@ -2049,7 +2306,7 @@ kbd:hover{
     updateThemeIcon();
   })();
 
-  window.toggleTheme = function(){
+  globalThis.toggleTheme = function(){
     const isDark = document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     updateThemeIcon();
@@ -2070,7 +2327,7 @@ kbd:hover{
   // ══════════════════════════════════════════════
   // MOBILE MENU
   // ══════════════════════════════════════════════
-  const desktopNavMediaQuery = window.matchMedia('(min-width: 768px)');
+  const desktopNavMediaQuery = globalThis.matchMedia('(min-width: 1024px)');
 
   function openMobileMenu(){
     const menu = document.getElementById('mobileMenu');
@@ -2373,7 +2630,7 @@ kbd:hover{
     container.innerHTML = badges + clearAll;
   }
 
-  window.unselectLanguage = function(lang) {
+  globalThis.unselectLanguage = function(lang) {
     selectedLanguages.delete(lang);
     const pillBtn = document.querySelector(`.pill[data-lang="${lang}"]`);
     if (pillBtn) {
@@ -2384,7 +2641,7 @@ kbd:hover{
     applyFilters();
   }
 
-  window.clearAllLanguages = function() {
+  globalThis.clearAllLanguages = function() {
     selectedLanguages.clear();
     document.querySelectorAll('.pill.active').forEach(p => {
       p.classList.remove('active');
@@ -2397,7 +2654,7 @@ kbd:hover{
   // NOTE: toggleLanguageMode removed — the matchAllLanguagesToggle checkbox
   // uses a direct event listener (line ~1538) and does not use onclick=.
 
-  window.togglePill = function(el) {
+  globalThis.togglePill = function(el) {
     const langDisplay = el.dataset.lang || '';
     const langKey = langDisplay.trim().toLowerCase();
     if (!langKey) return;
@@ -2413,6 +2670,141 @@ kbd:hover{
     }
     applyFilters();
   };
+
+  // ── Mobile Filter & Language Dropdown Logic ──────────────────────────────
+  globalThis.toggleMobileFilterDropdown = function() {
+    const panel = document.getElementById('mobileFilterPanel');
+    const chevron = document.getElementById('mobileFilterChevron');
+    if (!panel) return;
+    const isOpen = !panel.classList.contains('hidden');
+    panel.classList.toggle('hidden', isOpen);
+    if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+    // close lang panel if open
+    document.getElementById('mobileLangPanel')?.classList.add('hidden');
+    const lc = document.getElementById('mobileLangChevron');
+    if (lc) lc.style.transform = '';
+  };
+
+  globalThis.toggleMobileLangDropdown = function() {
+    const panel = document.getElementById('mobileLangPanel');
+    const chevron = document.getElementById('mobileLangChevron');
+    if (!panel) return;
+    const isOpen = !panel.classList.contains('hidden');
+    panel.classList.toggle('hidden', isOpen);
+    if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+    // close filter panel if open
+    document.getElementById('mobileFilterPanel')?.classList.add('hidden');
+    const fc = document.getElementById('mobileFilterChevron');
+    if (fc) fc.style.transform = '';
+  };
+
+  // Close mobile dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    const filterWrap = document.getElementById('mobileFilterDropdownWrap');
+    const langWrap = document.getElementById('mobileLangDropdownWrap');
+    if (filterWrap && !filterWrap.contains(e.target)) {
+      document.getElementById('mobileFilterPanel')?.classList.add('hidden');
+      const fc = document.getElementById('mobileFilterChevron');
+      if (fc) fc.style.transform = '';
+    }
+    if (langWrap && !langWrap.contains(e.target)) {
+      document.getElementById('mobileLangPanel')?.classList.add('hidden');
+      const lc = document.getElementById('mobileLangChevron');
+      if (lc) lc.style.transform = '';
+    }
+  });
+
+  // Mobile chip toggle — mirrors the real filter-chip
+  globalThis.toggleMobileChip = function(mobileBtn) {
+    const targetId = mobileBtn.dataset.mobileChip;
+    const realChip = document.getElementById(targetId);
+    // Toggle the real chip (triggers existing filter logic)
+    if (realChip) realChip.click();
+    // Update mobile button visual state
+    const isActive = realChip ? realChip.classList.contains('bg-orange-600') : false;
+    mobileBtn.classList.toggle('bg-orange-600', isActive);
+    mobileBtn.classList.toggle('text-white', isActive);
+    // Update label on the trigger button
+    syncMobileFilterLabel();
+  };
+
+  function syncMobileFilterLabel() {
+    const activeChips = document.querySelectorAll('.filter-chip.bg-orange-600');
+    const label = document.getElementById('mobileFilterLabel');
+    if (!label) return;
+    if (activeChips.length === 0) {
+      label.textContent = 'Filters';
+    } else {
+      label.textContent = `Filters (${activeChips.length})`;
+    }
+    // Also sync mobile button states
+    document.querySelectorAll('.mobile-filter-option').forEach(btn => {
+      const targetId = btn.dataset.mobileChip;
+      const realChip = document.getElementById(targetId);
+      const isActive = realChip?.classList.contains('bg-orange-600') || false;
+      btn.classList.toggle('bg-orange-600', isActive);
+      btn.classList.toggle('text-white', isActive);
+    });
+  }
+
+  // Mobile language pill toggle — reuses existing selectedLanguages set + applyFilters
+  globalThis.toggleMobileLangPill = function(btn) {
+    const lang = btn.dataset.lang;
+    if (!lang) return;
+    const isActive = btn.classList.toggle('active');
+    btn.style.borderColor = isActive ? '#9d4300' : '';
+    btn.style.color = isActive ? '#9d4300' : '';
+    btn.style.background = isActive ? '#fff7ed' : '';
+    if (isActive) selectedLanguages.add(lang);
+    else selectedLanguages.delete(lang);
+    // Also sync the desktop pill
+    const desktopPill = document.querySelector(`.pill[data-lang="${lang}"]`);
+    if (desktopPill) {
+      desktopPill.classList.toggle('active', isActive);
+      desktopPill.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    }
+    renderSelectedLanguages();
+    syncMobileLangLabel();
+    applyFilters();
+  };
+
+  function syncMobileLangLabel() {
+    const label = document.getElementById('mobileLangLabel');
+    if (!label) return;
+    label.textContent = selectedLanguages.size > 0 ? `Languages (${selectedLanguages.size})` : 'Languages';
+  }
+
+  // Keep mobile strip in sync with renderSelectedLanguages
+  const _origRender = renderSelectedLanguages;
+  renderSelectedLanguages = function() {
+    _origRender();
+    // Sync mobile strip
+    const mobileStrip = document.getElementById('selectedLangsStripMobile');
+    if (mobileStrip) {
+      const mainStrip = document.getElementById('selectedLangsStrip');
+      mobileStrip.innerHTML = mainStrip ? mainStrip.innerHTML : '';
+    }
+    syncMobileLangLabel();
+    syncMobileFilterLabel();
+    // Sync mobile lang pill visuals
+    document.querySelectorAll('.mobile-lang-pill').forEach(btn => {
+      const lang = btn.dataset.lang;
+      const isActive = selectedLanguages.has(lang);
+      btn.style.borderColor = isActive ? '#9d4300' : '';
+      btn.style.color = isActive ? '#9d4300' : '';
+      btn.style.background = isActive ? '#fff7ed' : '';
+      btn.classList.toggle('active', isActive);
+    });
+  };
+
+  // Sync mobile toggle with real matchAllLanguagesToggle
+  document.getElementById('matchAllLanguagesToggleMobile')?.addEventListener('change', function(e) {
+    const realToggle = document.getElementById('matchAllLanguagesToggle');
+    if (realToggle) {
+      realToggle.checked = e.target.checked;
+      realToggle.dispatchEvent(new Event('change'));
+    }
+  });
 
   function createDefaultMentorEntry(org) {
     return {
@@ -2525,11 +2917,6 @@ kbd:hover{
       return;
     }
 
-    const fallbackIdeasLink = (function(){
-      const u = sanitizeHrefUrl(org.ideas);
-      return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span>💡</span><span>Visit ideas page</span></a>` : '';
-    })();
-
     const sections = [];
     if (entry.status === 'ok' && (entry.channels || []).length > 0) {
       sections.push(`
@@ -2574,8 +2961,7 @@ kbd:hover{
       }
       container.innerHTML = `
         <div class="rounded-2xl border border-dashed border-zinc-200 p-5">
-          <p class="text-sm text-zinc-600 mb-3">${message}</p>
-          <div class="flex flex-wrap gap-2">${fallbackIdeasLink || '<span class="text-xs text-zinc-400">No ideas page listed.</span>'}</div>
+          <p class="text-sm text-zinc-600">${message}</p>
         </div>
       `;
       return;
@@ -2584,7 +2970,6 @@ kbd:hover{
     container.innerHTML = `
       <div class="space-y-4">
         ${sections.join('')}
-        ${fallbackIdeasLink ? `<div class="flex flex-wrap gap-2">${fallbackIdeasLink}</div>` : ''}
       </div>
     `;
   }
@@ -2594,6 +2979,18 @@ kbd:hover{
       org,
       entry: getMentorEntry(org.name)
     }));
+  }
+  function scrollDirectoryToTop(gridId) {
+    const grid = document.getElementById(gridId);
+    if (grid) {
+      grid.scrollTop = 0;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const header = document.querySelector('nav') || document.querySelector('header');
+      const headerHeight = header ? header.getBoundingClientRect().height : 80;
+      const SCROLL_OFFSET = 16;
+      const gridTop = grid.getBoundingClientRect().top + window.scrollY - headerHeight - SCROLL_OFFSET;
+      window.scrollTo({ top: gridTop, behavior: prefersReduced ? 'auto' : 'smooth' });
+    }
   }
 
   function renderMentorFinder(reset = true) {
@@ -2756,9 +3153,8 @@ kbd:hover{
     renderPaginationControls('mentorPagination', filteredRecords.length, mentorCurrentPage, (page) => {
       mentorCurrentPage = page;
       renderMentorFinder(false);
-      document.getElementById('mentors')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollDirectoryToTop('mentorGrid');
     });
-
     attachOrgCardListeners(grid);
   }
 
@@ -2873,8 +3269,15 @@ kbd:hover{
 
       container.innerHTML = MILESTONES.map((m, i) => {
         const isActive = i === activeIdx;
+        const isFuture = i >= activeIdx;
         const isLast = i === MILESTONES.length - 1;
-        const connector = !isLast ? `<div class="w-0.5 h-10 bg-zinc-200"></div>` : '';
+        const connectorClass = isFuture
+  ? "bg-orange-400/70"
+  : "bg-zinc-200";
+
+const connector = !isLast
+  ? `<div class="w-[2px] h-10 ${connectorClass}"></div>`
+  : '';
         let dateStr;
         try {
           dateStr = m.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
@@ -2896,9 +3299,15 @@ kbd:hover{
               <p class="text-sm sm:text-base font-extrabold text-zinc-900 leading-tight">${escapeHtml(m.label)}</p>
               <p class="text-xs text-green-600 mt-1">✓ Completed</p></div>
             </div>`;
+          } else if (isFuture) {
+            return `<div class="flex gap-3 sm:gap-4">
+              <div class="flex flex-col items-center"><div class="w-3 h-3 rounded-full bg-zinc-400"></div>${connector}</div>
+              <div><p class="text-[10px] font-bold text-zinc-400">${escapeHtml(dateStr)}</p>
+              <p class="text-sm font-bold text-zinc-900 dark:text-zinc-100">${escapeHtml(m.label)}</p></div>
+            </div>`;
           } else {
             return `<div class="flex gap-3 sm:gap-4 opacity-40">
-              <div class="flex flex-col items-center"><div class="w-2 h-2 rounded-full bg-zinc-300"></div>${connector}</div>
+              <div class="flex flex-col items-center"><div class="w-2.5 h-2.5 rounded-full bg-white/80"></div>${connector}</div>
               <div><p class="text-[10px] font-bold text-zinc-400">${escapeHtml(dateStr)}</p>
               <p class="text-sm font-bold text-zinc-500">${escapeHtml(m.label)}</p></div>
             </div>`;
@@ -2955,7 +3364,7 @@ kbd:hover{
   }
 
   // Organizational Logo Fallbacks
-  window.handleImgError = function(img, orgName) {
+  globalThis.handleImgError = function(img, orgName) {
     if (!img.dataset.triedClearbit) {
       img.dataset.triedClearbit = 'true';
       const domain = orgName.toLowerCase().replace(/[^a-z0-9]/g, '') + '.org';
@@ -2980,71 +3389,46 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
   if (!container) return;
 
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-
-  if (totalPages <= 1) {
-    container.innerHTML = '';
-    container.style.display = 'none';
-    return;
-  }
+  if (totalPages <= 1) { container.innerHTML = ''; container.style.display = 'none'; return; }
 
   container.style.display = 'flex';
 
-  const baseClass = 'px-4 py-2 rounded-full border text-xs font-bold transition-all';
-  const normalClass = 'bg-white text-zinc-600 border-zinc-200 hover:border-primary hover:text-primary';
-  const activeClass = 'bg-primary text-white border-primary';
-  const disabledClass = 'opacity-50 cursor-not-allowed';
+  const base = 'inline-flex items-center justify-center min-w-[32px] h-8 px-2 rounded-full border text-xs font-bold transition-all select-none';
+  const normal = 'bg-white text-zinc-600 border-zinc-200 hover:border-primary hover:text-primary cursor-pointer';
+  const active = 'bg-primary text-white border-primary cursor-default';
+  const dis = 'bg-white text-zinc-300 border-zinc-100 cursor-not-allowed pointer-events-none';
+  const ellipsisCls = 'inline-flex items-center justify-center min-w-[24px] h-8 text-xs text-zinc-400 border-none bg-transparent cursor-default select-none';
 
-  const pageButtons = Array.from({ length: totalPages }, (_, index) => {
-    const page = index + 1;
-    return `
-      <button
-        type="button"
-        class="${baseClass} ${page === currentPage ? activeClass : normalClass}"
-        data-page="${page}"
-        aria-label="Go to page ${page}"
-        ${page === currentPage ? 'aria-current="page"' : ''}
-      >
-        ${page}
-      </button>
-    `;
-  }).join('');
+  const navBtn = (label, page, isDisabled, ariaLabel) =>
+    `<button type="button" class="${base} ${isDisabled ? dis : normal} whitespace-nowrap px-3" data-page="${page}" ${isDisabled ? 'disabled' : ''} aria-label="${ariaLabel}">${label}</button>`;
+  const pageBtn = (page) =>
+    `<button type="button" class="${base} ${page === currentPage ? active : normal}" data-page="${page}" aria-label="Go to page ${page}" ${page === currentPage ? 'aria-current="page"' : ''}>${page}</button>`;
+  const dot = `<span class="${ellipsisCls}">…</span>`;
 
-  container.innerHTML = `
-    <button
-      type="button"
-      class="${baseClass} ${normalClass} ${currentPage === 1 ? disabledClass : ''}"
-      data-page="${currentPage - 1}"
-      ${currentPage === 1 ? 'disabled' : ''}
-    >
-      Previous
-    </button>
+  const WING = 2;
+  const pages = [];
+  const addPage = (p) => { if (!pages.includes(p) && p >= 1 && p <= totalPages) pages.push(p); };
+  addPage(1); addPage(totalPages);
+  for (let i = currentPage - WING; i <= currentPage + WING; i++) addPage(i);
+  pages.sort((a, b) => a - b);
 
-    ${pageButtons}
+  let pageHTML = '';
+  for (let i = 0; i < pages.length; i++) {
+    if (i > 0 && pages[i] - pages[i - 1] > 1) pageHTML += dot;
+    pageHTML += pageBtn(pages[i]);
+  }
 
-    <button
-      type="button"
-      class="${baseClass} ${normalClass} ${currentPage === totalPages ? disabledClass : ''}"
-      data-page="${currentPage + 1}"
-      ${currentPage === totalPages ? 'disabled' : ''}
-    >
-      Next
-    </button>
-  `;
+  container.innerHTML =
+    navBtn('«', 1, currentPage === 1, 'First page') +
+    navBtn('‹', currentPage - 1, currentPage === 1, 'Previous page') +
+    pageHTML +
+    navBtn('›', currentPage + 1, currentPage === totalPages, 'Next page') +
+    navBtn('»', totalPages, currentPage === totalPages, 'Last page');
 
   container.querySelectorAll('[data-page]').forEach(button => {
     button.addEventListener('click', () => {
       const page = Number(button.dataset.page);
-
-      if (
-        button.disabled ||
-        Number.isNaN(page) ||
-        page < 1 ||
-        page > totalPages ||
-        page === currentPage
-      ) {
-        return;
-      }
-
+      if (button.disabled || Number.isNaN(page) || page < 1 || page > totalPages || page === currentPage) return;
       onPageChange(page);
     });
   });
@@ -3080,17 +3464,19 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       const isBookmarked = bookmarkedSet.has(org.name);
       const isComparing = compareList.includes(org.name);
       const card = document.createElement('article');
-      card.className = 'group bg-white rounded-2xl p-6 border border-zinc-100 transition-all hover:shadow-xl hover:border-primary/20 animate-fade-up';
+      card.className = 'group bg-white rounded-2xl p-6 border border-zinc-100 transition-all hover:shadow-xl hover:border-primary/20 animate-fade-up cursor-pointer';
       card.dataset.org = org.name;
-      
+      //add event listener to open org modal, when clicking anywhere
+      card.addEventListener('click', () => {
+          openModal(org.name);
+      });
       const githubOwner = githubOwnerFromValue(org.github);
       const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
       
       card.innerHTML = `
         <div class="flex justify-between items-start mb-4">
-          <div class="w-14 h-14 rounded-xl bg-surface-container-low flex items-center justify-center p-2 overflow-hidden">
-            <img src="${escapeHtml(logoUrl)}" data-org-name="${escapeHtml(org.name)}" alt="${escapeHtml(org.name + ' logo')}" class="w-full h-full object-contain rounded-lg" />
-            <div class="logo-placeholder hidden w-full h-full items-center justify-center text-primary font-bold text-xl bg-primary/5"></div>
+          <div class="w-14 h-14 flex-shrink-0 rounded-xl bg-surface-container-low flex items-center justify-center p-2 overflow-hidden">
+            <img src="${escapeHtml(logoUrl)}" data-org-name="${escapeHtml(org.name)}" alt="${escapeHtml(org.name + ' logo')}" class="w-full h-full object-contain rounded-lg" width="56" height="56" />            <div class="logo-placeholder hidden w-full h-full items-center justify-center text-primary font-bold text-xl bg-primary/5"></div>
           </div>
           <div class="flex items-center gap-2">
             <span class="bg-primary/10 text-primary text-[10px] font-label uppercase tracking-widest px-2 py-1 rounded-full font-bold">${escapeHtml(String(org.years))}y Veteran</span>
@@ -3130,7 +3516,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     renderPaginationControls('orgPagination', filteredOrgs.length, orgCurrentPage, (page) => {
       orgCurrentPage = page;
       renderOrgs(false);
-      document.getElementById('orgs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollDirectoryToTop('orgGrid');
     });
   }
 
@@ -3167,8 +3553,26 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
         e.stopPropagation();
         openModal(btn.dataset.openOrg);
       });
-btn.__orgListenerAttached = true;
+      btn.__orgListenerAttached = true;
     });
+  }
+
+  function showToast(msg) {
+    let t = document.getElementById('compareToast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'compareToast';
+      t.setAttribute('role', 'status');
+      t.setAttribute('aria-live', 'polite');
+      t.setAttribute('aria-atomic', 'true');
+      t.className = 'compare-toast';
+      t.style.opacity = '0';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    clearTimeout(t._hideTimeout);
+    requestAnimationFrame(() => requestAnimationFrame(() => { t.style.opacity = '1'; }));
+    t._hideTimeout = setTimeout(() => { t.style.opacity = '0'; }, 2200);
   }
 
   function toggleCompare(e, name) {
@@ -3178,14 +3582,13 @@ btn.__orgListenerAttached = true;
       compareList.splice(idx, 1);
     } else {
       if (compareList.length >= 3) {
-        alert("You can only compare up to 3 organizations at a time.");
+        showToast("You can only compare up to 3 organizations at a time.");
         return;
       }
       compareList.push(name);
     }
     renderOrgs(true);
     renderCompare();
-
     document.dispatchEvent(new CustomEvent('compareListChanged'));
   }
 
@@ -3216,10 +3619,8 @@ btn.__orgListenerAttached = true;
     // Add empty slots
     for (let i = compareList.length; i < 3; i++) {
       const empty = document.createElement('div');
-      empty.className = 'bg-white rounded-xl p-4 border border-zinc-100 border-dashed border-zinc-300 flex flex-col items-center justify-center opacity-50';
-      empty.onclick = () =>{
-        document.getElementById('orgs') ?.scrollIntoView({behavior: 'smooth'});
-      };
+      empty.className = 'bg-white rounded-xl p-4 border border-zinc-100 border-dashed border-zinc-300 flex flex-col items-center justify-center opacity-50 cursor-pointer hover:opacity-80 hover:border-orange-400 transition-all';
+      empty.onclick = () => openOrgPicker(i);
       empty.innerHTML = `
         <div class="w-10 h-10 rounded-lg bg-zinc-100 flex items-center justify-center mb-3"><span class="material-symbols-outlined text-zinc-400">add</span></div>
         <p class="font-bold text-sm text-zinc-400">Add org</p>
@@ -3299,12 +3700,84 @@ btn.__orgListenerAttached = true;
     document.body.style.overflow = 'auto';
   }
 
+  let orgPickerTargetSlot = null;
+  let orgPickerMode = 'compare'; // Tracks if we are adding to 'compare' or 'watchlist'
+
+  function openOrgPicker(modeOrSlot) {
+    if (modeOrSlot === 'watchlist') {
+      orgPickerMode = 'watchlist';
+      orgPickerTargetSlot = null;
+    } else {
+      orgPickerMode = 'compare';
+      orgPickerTargetSlot = modeOrSlot;
+    }
+    
+    document.getElementById('orgPickerSearch').value = '';
+    filterOrgPicker('');
+    const modal = document.getElementById('orgPickerModal');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('orgPickerSearch').focus(), 50);
+  }
+
+  function closeOrgPicker() {
+    document.getElementById('orgPickerModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    orgPickerTargetSlot = null;
+    orgPickerMode = 'compare';
+  }
+
+  function filterOrgPicker(query) {
+    const list = document.getElementById('orgPickerList');
+    const q = query.toLowerCase();
+    
+    // Filter out orgs that are already in the target list
+    const filtered = ORGS.filter(o => {
+      const matchSearch = o.name.toLowerCase().includes(q);
+      const notInList = orgPickerMode === 'watchlist' 
+        ? !bookmarkedSet.has(o.name) 
+        : !compareList.includes(o.name);
+      return matchSearch && notInList;
+    });
+
+    if (filtered.length === 0) {
+      list.innerHTML = `<p style="text-align:center;color:#a1a1aa;font-size:14px;padding:24px 0;">No organizations found</p>`;
+      return;
+    }
+
+    list.innerHTML = '';
+    filtered.forEach(org => {
+      const item = document.createElement('div');
+      item.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid #e4e4e7;border-radius:8px;cursor:pointer;transition:background 0.15s;';
+      item.onmouseenter = () => item.style.background = '#fef3e2';
+      item.onmouseleave = () => item.style.background = '';
+      item.innerHTML = `
+        <div>
+          <p style="font-weight:700;font-size:14px;color:#1a1c1c;">${escapeHtml(org.name)}</p>
+          <p style="font-size:11px;color:#8c7164;margin-top:2px;">${escapeHtml(org.cat)} · ${escapeHtml(String(org.years))}y · ${escapeHtml(org.competition)}</p>
+        </div>
+        <button style="background:#9d4300;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;">Add</button>
+      `;
+      item.querySelector('button').onclick = () => {
+        if (orgPickerMode === 'watchlist') {
+          syncBookmark(org.name, true); // Adds directly to Watchlist
+        } else {
+          compareList[orgPickerTargetSlot] = org.name;
+          compareList = compareList.filter(Boolean);
+          renderCompare();
+        }
+        closeOrgPicker();
+      };
+      list.appendChild(item);
+    });
+  }
+
   // ══════════════════════════════════════════════
   // ANALYTICS PANEL
   // ══════════════════════════════════════════════
   let prevFocusBeforeAnalytics = null;
 
-  window.openAnalytics = function() {
+  globalThis.openAnalytics = function() {
     // Save current focus
     prevFocusBeforeAnalytics = document.activeElement;
 
@@ -3324,7 +3797,7 @@ btn.__orgListenerAttached = true;
     }, 100);
   };
 
-  window.closeAn = function() {
+  globalThis.closeAn = function() {
     document.getElementById('anBg')?.classList.remove('open');
     document.body.style.overflow = 'auto';
 
@@ -3335,7 +3808,7 @@ btn.__orgListenerAttached = true;
     prevFocusBeforeAnalytics = null;
   };
 
-  window.closeAnEvent = function(e) {
+  globalThis.closeAnEvent = function(e) {
     if (e.target.id === 'anBg') {
       closeAn();
     }
@@ -3406,6 +3879,8 @@ btn.__orgListenerAttached = true;
       closeOrgModal();
     } else if (document.getElementById('anBg')?.classList.contains('open')) {
       closeAn();
+    } else if (document.getElementById('orgPickerModal')?.style.display === 'flex') {
+      closeOrgPicker();
     }
   });
   
@@ -3513,18 +3988,10 @@ btn.__orgListenerAttached = true;
     // ── Empty state ───────────────────────────────────────────────────────────
     if (bookmarks.length === 0) {
       container.innerHTML = `
-        <div class="py-16 text-center border-2 border-dashed border-zinc-200 rounded-2xl">
+        <div class="h-full flex flex-col items-center justify-center text-center pb-8">
           <span class="material-symbols-outlined text-4xl text-zinc-300 mb-4 block">bookmark_border</span>
           <p class="font-bold text-zinc-500 mb-1">Your Watchlist is Empty</p>
-          <p class="text-sm text-zinc-400 mb-6">Click the ★ on any organization card to start tracking it here.</p>
-          <button
-            id="browseOrgsBtn"
-            onclick="document.getElementById('orgs').scrollIntoView({ behavior: 'smooth' })"
-            class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full text-sm font-bold hover:bg-orange-600 hover:scale-105 transition-all duration-200 shadow-md shadow-primary/20 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2"
-            aria-label="Browse Organizations - scroll to the organization directory">
-            <span class="material-symbols-outlined text-sm">travel_explore</span>
-            Browse Organizations
-          </button>
+          <p class="text-sm text-zinc-400">Click the ★ on any organization card to start tracking it here.</p>
         </div>`;
       return;
     }
@@ -3542,8 +4009,11 @@ btn.__orgListenerAttached = true;
         .join('');
 
       const item = document.createElement('div');
-      item.className = 'bg-white rounded-2xl p-5 border border-zinc-100 flex gap-4 items-start hover:shadow-lg hover:border-primary/20 transition-all animate-fade-up';
+      item.className = 'bg-white rounded-2xl p-3 sm:p-5 border border-zinc-100 flex gap-3 sm:gap-4 items-start hover:shadow-lg hover:border-primary/20 transition-all animate-fade-up cursor-pointer';
       item.dataset.watchlistOrg = org.name;
+      item.addEventListener('click', () => {
+          openModal(org.name);
+      });
 
       item.innerHTML = `
         <!-- Logo -->
@@ -3567,11 +4037,11 @@ btn.__orgListenerAttached = true;
           </div>
           <p class="text-sm text-zinc-500 mb-3 line-clamp-1">${escapeHtml(org.desc || '')}</p>
           <div class="flex flex-wrap gap-1.5 mb-3">${topTags}</div>
-          <div class="flex items-center justify-between pt-3 border-t border-zinc-100">
+          <div class="flex items-center justify-between flex-wrap gap-y-2 pt-3 border-t border-zinc-100 dark:border-zinc-800/60">
             <div class="flex items-center gap-3 text-xs text-zinc-400">
               <span class="flex items-center gap-1">
                 <span class="material-symbols-outlined text-xs">calendar_today</span>
-                ${escapeHtml(String(org.years))}y in GSoC
+                ${escapeHtml(String(org.years))}y
               </span>
               <span class="flex items-center gap-1">
                 <span class="material-symbols-outlined text-xs">bar_chart</span>
@@ -3579,7 +4049,7 @@ btn.__orgListenerAttached = true;
               </span>
             </div>
             <button data-bookmark-org="${escapeHtml(org.name)}"
-                    class="bookmark-btn text-[10px] font-bold uppercase tracking-widest text-red-400 hover:text-red-600 flex items-center gap-1 transition-colors">
+                    class="bookmark-btn text-[10px] font-bold uppercase tracking-widest text-red-400 hover:text-red-600 flex items-center gap-1 transition-colors ml-auto">
               <span class="material-symbols-outlined text-xs">bookmark_remove</span>
               Remove
             </button>
@@ -3786,7 +4256,55 @@ btn.__orgListenerAttached = true;
       });
     });
   }
+  function setModalLinkState(button, url) {
+    if (!button) return;
+    if (url) {
+      button.href = url;
+      button.removeAttribute('aria-disabled');
+      button.removeAttribute('tabindex');
+      button.classList.remove('opacity-50', 'pointer-events-none');
+    } else {
+      button.removeAttribute('href');
+      button.setAttribute('aria-disabled', 'true');
+      button.setAttribute('tabindex', '-1');
+      button.classList.add('opacity-50', 'pointer-events-none');
+    }
+  }
+  function renderModalHeader(org){
+    const isBookmarked = bookmarkedSet.has(org.name);
+    const isComparing = compareList.includes(org.name);
+    const ideasLinkHTML = (function(){
+      const u = sanitizeHrefUrl(org.ideas);
+      return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span>💡</span><span>Visit ideas page</span></a>` : '';
+    })();
 
+    return `
+      <span class="category-tag">${escapeHtml(String(org.cat).toUpperCase())}</span>
+        <div class="flex items-start justify-between pr-10 gap-4">
+          <div>
+            <h2>${escapeHtml(org.name)}</h2>
+            <p class="text-zinc-500">GSoC Partner for ${escapeHtml(String(org.years))} Years</p>
+            ${ideasLinkHTML}
+          </div>
+          <div class="flex flex-col items-end gap-2">
+            <button id="modalCompareBtn" data-compare-org="${escapeHtml(org.name)}" class="text-[10px] font-bold uppercase tracking-widest ${isComparing ? 'text-primary' : 'text-orange-400'} hover:text-primary flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Add to compare'}
+            </button>
+            <button
+              id="modalBookmarkBtn"
+              class="bookmark-btn ${isBookmarked ? 'active' : 'text-orange-300'} flex-shrink-0"
+              data-bookmark-org="${escapeHtml(org.name)}"
+              aria-label="${isBookmarked ? 'Remove bookmark' : 'Add to Watchlist'}"
+              title="${isBookmarked ? 'Remove bookmark' : 'Add to Watchlist'}"
+            >
+              <span class="material-symbols-outlined text-2xl ${isBookmarked ? 'icon-fill' : ''}">
+                star
+              </span>
+            </button>
+          </div>
+        </div>
+      `;
+  }
   function openModal(name) {
     const org = ORGS.find(o => o.name === name);
     if (!org) return;
@@ -3796,40 +4314,35 @@ btn.__orgListenerAttached = true;
     if (typeof BadgeSystem !== 'undefined') {
       BadgeSystem.trackOrgView();
     }
-    const isBookmarked = bookmarkedSet.has(org.name);
 
-    document.getElementById('mHeader').innerHTML = `
-      <span class="category-tag">${escapeHtml(String(org.cat).toUpperCase())}</span>
-      <div class="flex items-start justify-between pr-10">
-        <div>
-          <h2>${escapeHtml(org.name)}</h2>
-          <p class="text-zinc-500">GSoC Partner for ${escapeHtml(String(org.years))} Years</p>
-        </div>
-        <button
-          id="modalBookmarkBtn"
-          class="bookmark-btn ${isBookmarked ? 'active' : 'text-zinc-300'} flex-shrink-0 mt-1"
-          data-bookmark-org="${escapeHtml(org.name)}"
-          aria-label="${isBookmarked ? 'Remove bookmark' : 'Add to Watchlist'}"
-          title="${isBookmarked ? 'Remove bookmark' : 'Add to Watchlist'}"
-        >
-          <span class="material-symbols-outlined text-2xl ${isBookmarked ? 'icon-fill' : ''}">
-            star
-          </span>
-        </button>
-      </div>
-    `;
+    const mHeader = document.getElementById('mHeader');
+    if (mHeader) {
+        mHeader.innerHTML = renderModalHeader(org);
+    }
+
     const modalBookmarkBtn = document.getElementById('modalBookmarkBtn');
     if (modalBookmarkBtn) {
       modalBookmarkBtn.addEventListener('click', (e) => {
         toggleBookmark(e, org.name);
         const nowBookmarked = bookmarkedSet.has(org.name);
         modalBookmarkBtn.classList.toggle('active', nowBookmarked);
-        modalBookmarkBtn.classList.toggle('text-zinc-300', !nowBookmarked);
+        modalBookmarkBtn.classList.toggle('text-orange-300', !nowBookmarked);
         const icon = modalBookmarkBtn.querySelector('.material-symbols-outlined');
         if (icon) icon.classList.toggle('icon-fill', nowBookmarked);
         const label = nowBookmarked ? 'Remove bookmark' : 'Add to Watchlist';
         modalBookmarkBtn.setAttribute('aria-label', label);
         modalBookmarkBtn.setAttribute('title', label);
+      });
+    }
+
+    const modalCompareBtn = document.getElementById('modalCompareBtn');
+    if (modalCompareBtn) {
+      modalCompareBtn.addEventListener('click', (e) => {
+        toggleCompare(e, modalCompareBtn.dataset.compareOrg);
+        const nowComparing = compareList.includes(org.name);
+        modalCompareBtn.classList.toggle('text-primary', nowComparing);
+        modalCompareBtn.classList.toggle('text-orange-400', !nowComparing);
+        modalCompareBtn.innerHTML = `<span class="material-symbols-outlined text-sm">${nowComparing ? 'check_circle' : 'compare_arrows'}</span> ${nowComparing ? 'Comparing' : 'Add to compare'}`;
       });
     }
 
@@ -3862,18 +4375,11 @@ btn.__orgListenerAttached = true;
       }
     }
     document.getElementById('mTimeline').innerHTML = timelineHtml;
-
     // Sanitize and set idea/repo links
     const ideasUrl = sanitizeHrefUrl(org.ideas);
     const repoUrl = sanitizeHrefUrl(githubUrlFromValue(org.github));
-    const ideasBtn = document.getElementById('mIdeasBtn');
-    const repoBtn = document.getElementById('mRepoBtn');
-    if (ideasBtn) {
-      if (ideasUrl) ideasBtn.href = ideasUrl; else ideasBtn.removeAttribute('href');
-    }
-    if (repoBtn) {
-      if (repoUrl) repoBtn.href = repoUrl; else repoBtn.removeAttribute('href');
-    }
+    setModalLinkState(document.getElementById('mIdeasBtn'), ideasUrl);
+    setModalLinkState(document.getElementById('mRepoBtn'), repoUrl);
 
 // Copy link button
 const oldCopy = document.getElementById('mIdeasCopyBtn');
@@ -3995,7 +4501,7 @@ if(org.ideas){
     return a.name.localeCompare(b.name);
   }
 
-  window.clearAllFilters = function() {
+  globalThis.clearAllFilters = function() {
     document.getElementById('searchInput').value = '';
     document.getElementById('categoryFilter').value = 'all';
     document.getElementById('complexityFilter').value = 'all';
@@ -4034,15 +4540,34 @@ if(org.ideas){
     filteredOrgs = [...ORGS];
     renderOrgs(true);
     applyFilters(); // to reset URL params
+
+    // Reset mobile dropdowns
+    document.getElementById('mobileFilterLabel') && (document.getElementById('mobileFilterLabel').textContent = 'Filters');
+    document.getElementById('mobileLangLabel') && (document.getElementById('mobileLangLabel').textContent = 'Languages');
+    document.querySelectorAll('.mobile-filter-option').forEach(btn => {
+      btn.classList.remove('bg-orange-600', 'text-white');
+    });
+    document.querySelectorAll('.mobile-lang-pill').forEach(btn => {
+      btn.classList.remove('active');
+      btn.style.borderColor = '';
+      btn.style.color = '';
+      btn.style.background = '';
+    });
+    const mobToggle = document.getElementById('matchAllLanguagesToggleMobile');
+    if (mobToggle) mobToggle.checked = false;
   };
 
-  document.getElementById('searchInput').addEventListener('input', () => {
-    // Track search badge when user types a search query
-    const query = document.getElementById('searchInput').value.trim();
-    if (typeof BadgeSystem !== 'undefined' && query.length > 0) {
+  // Shared search function to handle filter application, with optional badge tracking
+  function performSearch(queryText, shouldTrack = false) {
+    const query = queryText.trim();
+    if (shouldTrack && typeof BadgeSystem !== 'undefined' && query.length > 0) {
       BadgeSystem.trackSearch();
     }
     applyFilters();
+  }
+
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    performSearch(e.target.value, false);
   });
   document.getElementById('categoryFilter').addEventListener('change', () => {
     // Track filter badge when user changes category
@@ -4083,17 +4608,25 @@ if(org.ideas){
   const heroSearch = document.getElementById('hero-search');
   if (heroSearch) {
     heroSearch.value = document.getElementById('searchInput')?.value || new URLSearchParams(location.search).get('q') || '';
+    const heroSearchSubmit = () => {
+      document.getElementById('searchInput').value = heroSearch.value;
+      performSearch(heroSearch.value, true);
+      document.getElementById('orgs')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
     heroSearch.addEventListener('input', (e) => {
       document.getElementById('searchInput').value = e.target.value;
-      document.getElementById('orgs').scrollIntoView({ behavior: 'smooth' });
-      
-      // Track search badge when user types in hero search
-      const query = e.target.value.trim();
-      if (typeof BadgeSystem !== 'undefined' && query.length > 0) {
-        BadgeSystem.trackSearch();
-      }
-      applyFilters();
+      performSearch(e.target.value, false);
     });
+
+    heroSearch.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        heroSearchSubmit();
+      }
+    });
+
+    document.getElementById('hero-search-submit')?.addEventListener('click', heroSearchSubmit);
   }
 
   // Quick-filter chips — mutually exclusive with each other, but additive with
@@ -4207,7 +4740,7 @@ if(org.ideas){
         const card = document.createElement('div');
         card.className = 'bg-white rounded-xl p-5 border border-zinc-100 hover:shadow-lg transition-all group cursor-pointer';
         const safeUrl = sanitizeHrefUrl(issue.url);
-        if (safeUrl) card.onclick = () => window.open(safeUrl, '_blank');
+        if (safeUrl) card.onclick = () => globalThis.open(safeUrl, '_blank');
         const safeRepo = escapeHtml(issue.repo || '');
         const safeTitle = escapeHtml(issue.title || '');
         const labelsHtml = (issue.labels || []).slice(0,2).map(l => `<span class="text-[10px] px-2 py-0.5 bg-green-100 text-green-700 rounded font-bold">${escapeHtml(l)}</span>`).join('');
@@ -4389,6 +4922,16 @@ if(org.ideas){
     return GSOC_TEMPLATE.replaceAll('[Organization Name]', orgName);
   }
 
+  function updateProposalStats() {
+    const editor = document.getElementById('pwEditor');
+    const stats = document.getElementById('pwProposalStats');
+    if (!editor || !stats) return;
+    const text = editor.value;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const chars = text.length;
+    stats.textContent = `${words} words · ${chars} chars`;
+  }
+
   function renderPreview() {
     const editor = document.getElementById('pwEditor');
     const preview = document.getElementById('pwPreview');
@@ -4417,6 +4960,7 @@ if(org.ideas){
       editor.value = saved;
     }
     renderPreview();
+    updateProposalStats();
 
     proposalFocusReturn = document.getElementById('mDraftBtn');
     if (orgModal) orgModal.setAttribute('aria-hidden', 'true');
@@ -4459,6 +5003,7 @@ if(org.ideas){
     const editor = document.getElementById('pwEditor');
     if (editor) {
       editor.value = getTemplateForOrg(currentProposalOrg);
+      updateProposalStats();
       renderPreview();
     }
   }
@@ -4519,6 +5064,8 @@ if(org.ideas){
 
   document.getElementById('pwEditor')?.addEventListener('input', (e) => {
     renderPreview();
+    updateProposalStats();
+   
     if (!currentProposalOrg || !isAutosaveEnabled()) return;
     clearTimeout(proposalAutosaveTimer);
     proposalAutosaveTimer = setTimeout(() => {
@@ -4637,13 +5184,42 @@ if(org.ideas){
   globalThis.toggleCompare = toggleCompare;
   globalThis.toggleBookmark = toggleBookmark;
   globalThis.openModal = openModal;
+
+  // Safe HTML utilities for recommendation-ui.js
+  
+  class SafeHTMLString extends String {}
+  SafeHTMLString.prototype.__isSafeHTML = true;
+ 
+  function safeHTML(strings, ...values) {
+    let result = '';
+    for (let i = 0; i < strings.length; i++) {
+      result += strings[i];
+      if (i < values.length) {
+        const val = values[i];
+        let rendered;
+        if (val && val.__isSafeHTML) {
+          rendered = val.toString();
+        } else if (Array.isArray(val)) {
+          rendered = val.map(x => (x && x.__isSafeHTML) ? x.toString() : escapeHtml(x)).join('');
+        } else {
+          rendered = escapeHtml(val == null ? '' : String(val));
+        }
+        result += rendered;
+      }
+    }
+    return new SafeHTMLString(result);
+  }
+
+  function rawHTML(v) { return new SafeHTMLString(v || ''); }
+  globalThis.safeHTML = safeHTML;
+  globalThis.rawHTML = rawHTML;
 </script>
 
 <!-- Vercel Speed Insights -->
 <script type="module" src="agent/scripts/speed-insights.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
+    globalThis.addEventListener('load', () => {
       navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
     });
   }
@@ -4846,7 +5422,7 @@ if (helpModalOpen || orgModalOpen || proposalModalOpen) {
     if(e.key.toLowerCase()==='h'){
         e.preventDefault();
 
-        window.scrollTo({
+        globalThis.scrollTo({
             top:0,
             behavior:'smooth'
         });
@@ -4855,12 +5431,12 @@ if (helpModalOpen || orgModalOpen || proposalModalOpen) {
     // Reset filters
 if(e.key.toLowerCase()==='r'){
     e.preventDefault();
-    window.clearAllFilters();
+    globalThis.clearAllFilters();
     return;
 }
 });
 
-  window.closeHelpModal = closeHelpModal;
+  globalThis.closeHelpModal = closeHelpModal;
 
 });
 </script>
@@ -4946,11 +5522,9 @@ if(e.key.toLowerCase()==='r'){
     if (!hoverCapable) {
       element.addEventListener('click', (event) => {
         event.stopPropagation();
-        if (tooltip.classList.contains('show') && tooltip.textContent === element.dataset.tooltip) {
-          hideTooltip();
-        } else {
-          showTooltip(element);
-        }
+        clearTimeout(globalThis._globalTooltipTimer);
+        showTooltip(element);
+        globalThis._globalTooltipTimer = setTimeout(() => hideTooltip(), 3000);
       });
     }
   });
@@ -4982,6 +5556,8 @@ if(e.key.toLowerCase()==='r'){
     .map(id => document.getElementById(id))
     .filter(Boolean);
   const mainHeader = document.querySelector("header.fixed.top-0");
+  const nextBtn = document.getElementById("nextSectionBtn");
+  const prevBtn = document.getElementById("prevSectionBtn");
 
   let currentSection = 0;
   const sectionIndicatorValue = document.getElementById("sectionScrollIndicatorValue");
@@ -5032,6 +5608,13 @@ if(e.key.toLowerCase()==='r'){
       }
     });
 
+    if (prevBtn) {
+      prevBtn.disabled = (currentSection === 0);
+    }
+    if (nextBtn) {
+      nextBtn.disabled = (currentSection === sections.length - 1);
+    }
+
     updateSectionIndicator();
   }
 
@@ -5046,40 +5629,50 @@ if(e.key.toLowerCase()==='r'){
 
   const logoLink = document.getElementById("logoLink");
 
+  let isNavClicking = false;
+  let navScrollEndTimer = null;
+
+  function triggerSmoothScroll(index) {
+    const targetSection = sections[index];
+    if (!targetSection) return;
+
+    isNavClicking = true;
+    currentSection = index;
+    updateNavState();
+    scrollToSectionIndex(index);
+
+    // Reset scroll-end timer in case scroll event doesn't fire (already at target)
+    clearTimeout(navScrollEndTimer);
+    navScrollEndTimer = setTimeout(() => {
+      isNavClicking = false;
+      updateCurrentSection();
+    }, 150);
+  }
+
   if (logoLink) {
     logoLink.addEventListener("click", (event) => {
       event.preventDefault();
-      setCurrentSectionById("timeline");
-      scrollToSectionIndex(currentSection);
+      triggerSmoothScroll(0); // timeline is at index 0
     });
   }
-
-  let isNavClicking = false;
-  let navClickTimer = null;
 
   document.querySelectorAll(".desktop-nav-link").forEach(link => {
     link.addEventListener("click", (e) => {
       e.preventDefault(); // stop browser anchor scroll
-      isNavClicking = true;
-      clearTimeout(navClickTimer);
-      setCurrentSectionById(link.dataset.section);
-      scrollToSectionIndex(currentSection);
-      navClickTimer = setTimeout(() => {
-        isNavClicking = false;
-      }, 1500);
+      const nextSectionIndex = sections.findIndex(section => section.id === link.dataset.section);
+      if (nextSectionIndex !== -1) {
+        triggerSmoothScroll(nextSectionIndex);
+      }
     });
   });
 
   document.querySelectorAll(".mobile-menu-link").forEach(link => {
     link.addEventListener("click", (e) => {
       e.preventDefault(); // stop browser anchor scroll
-      isNavClicking = true;
-      clearTimeout(navClickTimer);
-      setCurrentSectionById(link.dataset.section);
-      scrollToSectionIndex(currentSection);
-      navClickTimer = setTimeout(() => {
-        isNavClicking = false;
-      }, 1500);
+      const nextSectionIndex = sections.findIndex(section => section.id === link.dataset.section);
+      if (nextSectionIndex !== -1) {
+        triggerSmoothScroll(nextSectionIndex);
+      }
 
       if (typeof globalThis.toggleMenu === "function") {
         globalThis.toggleMenu();
@@ -5088,66 +5681,137 @@ if(e.key.toLowerCase()==='r'){
   });
 
   function updateCurrentSection() {
-      if (isNavClicking) return;
-      const offset = getSectionDetectionOffset() + 10;
-      let found = 0;
-      let closestDistance = Infinity;
-      sections.forEach((section, index) => {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= offset) {
-          const distance = offset - rect.top;
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            found = index;
-          }
-        }
-      });
-      currentSection = found;
+    if (isNavClicking) return;
+
+    // Check if scrolled to bottom of the page
+    if (globalThis.innerHeight + globalThis.scrollY >= document.documentElement.scrollHeight - 50) {
+      currentSection = sections.length - 1;
       updateNavState();
+      return;
     }
 
-    const visibleSections = new Set();
+    const viewportTop = getSectionDetectionOffset();
+    const viewportBottom = globalThis.innerHeight;
+    
+    let maxVisibleHeight = 0;
+    let found = 0;
 
-    const observer = new IntersectionObserver((entries) => {
-       if (isNavClicking) return;
-        entries.forEach(entry => {
-          const index = sections.indexOf(entry.target);
-          if (index === -1) return;
-          if (entry.isIntersecting) {
-            visibleSections.add(index);
-          } else {
-            visibleSections.delete(index);
-          }
-        });
-        if (visibleSections.size === 0) {
-          return;
-        }
-        currentSection = Math.min(...visibleSections);
-        updateNavState();
-    }, {
-      rootMargin: `-${(mainHeader?.clientHeight || 0) + 10}px 0px -60% 0px`,
-      threshold: 0
+    sections.forEach((section, index) => {
+      const rect = section.getBoundingClientRect();
+      const visibleTop = Math.max(rect.top, viewportTop);
+      const visibleBottom = Math.min(rect.bottom, viewportBottom);
+      
+      const visibleHeight = visibleBottom - visibleTop;
+      if (visibleHeight > maxVisibleHeight) {
+        maxVisibleHeight = visibleHeight;
+        found = index;
+      }
     });
 
-    sections.forEach(section => observer.observe(section));
-    window.addEventListener("resize", updateCurrentSection);
-    updateCurrentSection();
+    currentSection = found;
+    updateNavState();
+  }
 
-  document.getElementById("nextSectionBtn")?.addEventListener("click", () => {
+  // Scroll listener debounced with requestAnimationFrame
+  let rafPending = false;
+  globalThis.addEventListener("scroll", () => {
+    if (isNavClicking) {
+      // During smooth scroll, debounce the scroll-end timer to release lock
+      clearTimeout(navScrollEndTimer);
+      navScrollEndTimer = setTimeout(() => {
+        isNavClicking = false;
+        updateCurrentSection();
+      }, 100);
+      return;
+    }
+
+    if (!rafPending) {
+      globalThis.requestAnimationFrame(() => {
+        updateCurrentSection();
+        rafPending = false;
+      });
+      rafPending = true;
+    }
+  }, { passive: true });
+
+  globalThis.addEventListener("resize", updateCurrentSection);
+  updateCurrentSection();
+
+  function addClickFeedback(btn, direction) {
+    if (!btn) return;
+    btn.addEventListener("click", (e) => {
+      const prefersReducedMotion = globalThis.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // Icon bounce animation
+      const animClass = direction === "up" ? "bounce-up-active" : "bounce-down-active";
+      if (!prefersReducedMotion) {
+        btn.classList.add(animClass);
+      }
+
+      // Create ripple effect
+      if (!prefersReducedMotion) {
+        const ripple = document.createElement("span");
+        ripple.classList.add("click-ripple");
+        const rect = btn.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = `${size}px`;
+
+        const isKeyboardClick = e.detail === 0;
+        const x = (!isKeyboardClick && e.clientX !== undefined && e.clientX !== null) ? (e.clientX - rect.left - size / 2) : (rect.width / 2 - size / 2);
+        const y = (!isKeyboardClick && e.clientY !== undefined && e.clientY !== null) ? (e.clientY - rect.top - size / 2) : (rect.height / 2 - size / 2);
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+
+        btn.appendChild(ripple);
+
+        ripple.addEventListener("animationend", () => {
+          ripple.remove();
+        });
+
+        btn.addEventListener("animationend", (event) => {
+          if (event.animationName === "bounce-up" || event.animationName === "bounce-down") {
+            btn.classList.remove(animClass);
+          }
+        }, { once: true });
+      }
+    });
+  }
+
+  addClickFeedback(nextBtn, "down");
+  addClickFeedback(prevBtn, "up");
+
+  nextBtn?.addEventListener("click", () => {
     if (currentSection < sections.length - 1) {
-      scrollToSectionIndex(currentSection + 1);
+      triggerSmoothScroll(currentSection + 1);
     }
   });
 
-  document.getElementById("prevSectionBtn")?.addEventListener("click", () => {
+  prevBtn?.addEventListener("click", () => {
     if (currentSection > 0) {
-      scrollToSectionIndex(currentSection - 1);
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      triggerSmoothScroll(currentSection - 1);
     }
   });
 })();
 </script>
-
+<!-- ORG PICKER MODAL -->
+<dialog id="orgPickerModal" aria-modal="true" aria-labelledby="orgPickerTitle" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;padding:16px;width:100%;height:100%;margin:0;">
+  <div style="background:#fff;border-radius:16px;width:100%;max-width:500px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 12px;">
+      <h2 id="orgPickerTitle" style="font-size:18px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;">Choose an Organization</h2>
+      <button onclick="closeOrgPicker()" aria-label="Close" style="background:none;border:none;cursor:pointer;font-size:20px;color:#71717a;">✕</button>
+    </div>
+    <div style="padding:0 24px 12px;">
+      <input id="orgPickerSearch" type="text" placeholder="Search organizations..."
+        oninput="filterOrgPicker(this.value)"
+        style="width:100%;padding:10px 14px;border:1px solid #e4e4e7;border-radius:8px;font-size:14px;outline:none;font-family:'Space Grotesk',sans-serif;box-sizing:border-box;">
+    </div>
+    <div id="orgPickerList" style="overflow-y:auto;flex:1;padding:0 24px 24px;display:flex;flex-direction:column;gap:6px;"></div>
+  </div>
+</dialog>
+<script>
+  document.getElementById('orgPickerModal').addEventListener('click', function(e) {
+    if (e.target === this) closeOrgPicker();
+  });
+</script>
 </body>
 </html>

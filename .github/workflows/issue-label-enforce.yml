@@ -11,7 +11,7 @@ permissions:
   issues: write
 
 concurrency:
-  group: issue-label-${{ github.event.issue.number }}
+  group: issue-label-${{ github.workflow }}-${{ github.event.issue.number }}
   cancel-in-progress: true
 
 jobs:
@@ -31,6 +31,7 @@ jobs:
 
           script: |
             const issue = context.payload.issue;
+            if (!issue) return;
 
             const owner = context.repo.owner;
             const repo = context.repo.repo;

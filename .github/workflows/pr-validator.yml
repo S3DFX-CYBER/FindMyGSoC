@@ -123,10 +123,18 @@ jobs:
               );
             }
 
+            // ── Dual-label guard ────────────────────────────────────────────
+            // If the PR body mentions BOTH programs, apply GSSoC priority and
+            // discard the NSoC signal. A conflict comment is posted to inform
+            // the contributor. Single-label PRs are unaffected by this block.
+            const isDualLabel = mentionsGSSOC && mentionsNSOC;
+            const effectiveGSSOC = mentionsGSSOC;                    // GSSoC always wins
+            const effectiveNSOC  = mentionsNSOC && !mentionsGSSOC;   // NSoC only when GSSoC absent
+            // ────────────────────────────────────────────────────────────────
+
             // ------------------------------------------------
             // LABEL MANAGEMENT
             // ------------------------------------------------
-
             try {
 
               for (const label of ['nsoc26', 'gssoc26']) {
@@ -143,8 +151,8 @@ jobs:
                 } catch (e) {}
               }
 
-              if (mentionsNSOC) {
-
+              // Apply only the effective (post-resolution) program label
+              if (effectiveNSOC) {
                 await github.rest.issues.addLabels({
                   owner,
                   repo,
@@ -153,8 +161,7 @@ jobs:
                 });
               }
 
-              if (mentionsGSSOC) {
-
+              if (effectiveGSSOC) {
                 await github.rest.issues.addLabels({
                   owner,
                   repo,
@@ -163,6 +170,44 @@ jobs:
                 });
               }
 
+              // Notify contributor when a dual-label conflict was auto-resolved
+              if (isDualLabel) {
+                // Fetch existing comments to prevent duplicate spam on subsequent workflow triggers
+                const comments = await github.rest.issues.listComments({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  per_page: 100
+                });
+
+                const marker = '<!-- dual-label-conflict-notice -->';
+                const hasNotice = comments.data.some(c => c.body && c.body.includes(marker));
+
+                if (!hasNotice) {
+                  const dualLabelComment =
+                    `${marker}\n` +
+                    `## ⚠️ Dual Program Label Detected\n\n` +
+                    `Hi @${username},\n\n` +
+                    `Your PR description mentions **both GSSOC and NSOC**.\n\n` +
+                    `| Detected Labels | Resolution |\n` +
+                    `|----------------|------------|\n` +
+                    `| \`gssoc\`, \`nsoc\` | **GSSoC priority applied** — classified as a GSSoC PR |\n\n` +
+                    `> ℹ️ Only one program label may be active at a time. ` +
+                    `GSSoC takes priority when both are present.\n\n` +
+                    `If this is incorrect, please:\n` +
+                    `1. Remove the unintended program keyword from your PR description\n` +
+                    `2. Push a new commit or re-open the PR to re-trigger classification\n\n` +
+                    `📖 See our [Contributing Guide](https://github.com/${owner}/${repo}/blob/main/CONTRIBUTING.md) for labeling details.`;
+
+                  await github.rest.issues.createComment({
+                    owner, repo, issue_number: prNumber, body: dualLabelComment
+                  });
+                  core.info(`PR #${prNumber}: Posted dual-label conflict comment.`);
+                } else {
+                  core.info(`PR #${prNumber}: Dual-label conflict comment already exists. Skipping duplicate.`);
+                }
+                core.warning(`Dual-label conflict on PR #${prNumber} — resolved to GSSoC priority`);
+              }
             } catch (e) {
 
               core.warning(`Label operation failed: ${e.message}`);

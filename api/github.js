@@ -228,15 +228,20 @@ export default async function handler(req) {
     let lastCommit = '—';
     let activityDays = 9999;
     if (commitsRes.ok) {
-      const commits = await commitsRes.json();
-      if (commits[0]?.commit?.author?.date) {
-        const d = new Date(commits[0].commit.author.date);
-        activityDays = Math.floor((Date.now() - d) / 86400000);
-        if (activityDays === 0) lastCommit = 'Today';
-        else if (activityDays === 1) lastCommit = '1d ago';
-        else if (activityDays < 30) lastCommit = `${activityDays}d ago`;
-        else if (activityDays < 365) lastCommit = `${Math.floor(activityDays / 30)}mo ago`;
-        else lastCommit = `${Math.floor(activityDays / 365)}y ago`;
+      try {
+        const commits = await commitsRes.json();
+        if (commits[0]?.commit?.author?.date) {
+          const d = new Date(commits[0].commit.author.date);
+          activityDays = Math.floor((Date.now() - d) / 86400000);
+          if (activityDays === 0) lastCommit = 'Today';
+          else if (activityDays === 1) lastCommit = '1d ago';
+          else if (activityDays < 30) lastCommit = `${activityDays}d ago`;
+          else if (activityDays < 365) lastCommit = `${Math.floor(activityDays / 30)}mo ago`;
+          else lastCommit = `${Math.floor(activityDays / 365)}y ago`;
+        }
+      } catch {
+        // Non-JSON body (CDN error page, Cloudflare interstitial, empty response).
+        // Fall through with safe defaults: lastCommit = '—', activityDays = 9999.
       }
     }
 

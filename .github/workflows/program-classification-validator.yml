@@ -22,21 +22,13 @@ jobs:
   validate-program:
     name: Validate PR Program Classification
 
-    if: |
-      github.event.pull_request.draft == false &&
-      github.actor != 'github-actions[bot]'
+    if: github.event.pull_request.draft == false
 
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e #v6.4.0
-        with:
-          node-version: "24"
-
+      # No checkout/setup-node needed for actions/github-script-only workflow
       - name: Validate classification
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
         env:
@@ -45,8 +37,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
           script: |
-            const fs = require('fs');
-            const path = require('path');
+            // Prevent bot recursion — skip execution if triggered by the github-actions bot
+            if (context.actor === 'github-actions[bot]') {
+              core.info('Skipping workflow run for github-actions[bot]');
+              return;
+            }
 
             const owner = context.repo.owner;
             const repo = context.repo.repo;
@@ -64,10 +59,17 @@ jobs:
             const MARKER =
               '<!-- program-classification -->';
 
-            const VALID_LABELS = [
+            const ACTUAL_PROGRAMS = [
               'gssoc26',
-              'nsoc26',
-              'general-contribution'
+              'nsoc26'
+            ];
+
+            const FALLBACK_PROGRAM =
+              'general-oss';
+
+            const VALID_LABELS = [
+              ...ACTUAL_PROGRAMS,
+              FALLBACK_PROGRAM
             ];
 
             const MISSING_LABEL =
@@ -81,70 +83,95 @@ jobs:
             // ----------------------------------------
 
             function detectProgram() {
-              const detected = new Set();
+              const actualPrograms = new Set();
+              let hasGeneralContribution = false;
 
               // ------------------------------------
-              // Metadata
+              // Metadata - new template format
               // ------------------------------------
 
               if (
+                body.includes('- [x] gssoc26') ||
                 body.includes('program: gssoc') ||
                 body.includes('- [x] gssoc')
               ) {
-                detected.add('gssoc');
+                actualPrograms.add('gssoc');
               }
 
               if (
+                body.includes('- [x] nsoc26') ||
                 body.includes('program: nsoc') ||
                 body.includes('- [x] nsoc')
               ) {
-                detected.add('nsoc');
+                actualPrograms.add('nsoc');
               }
 
               if (
-                body.includes('program: general') ||
-                body.includes('- [x] general contribution')
+                body.includes('- [x] general contribution') ||
+                body.includes('program: general')
               ) {
-                detected.add('general');
+                hasGeneralContribution = true;
               }
 
               // ------------------------------------
-              // Labels
+              // Labels - ACTUAL PROGRAMS
               // ------------------------------------
 
               if (labels.includes('gssoc26')) {
-                detected.add('gssoc');
+                actualPrograms.add('gssoc');
               }
 
               if (labels.includes('nsoc26')) {
-                detected.add('nsoc');
-              }
-
-              if (
-                labels.includes('general-contribution')
-              ) {
-                detected.add('general');
+                actualPrograms.add('nsoc');
               }
 
               // ------------------------------------
-              // Branch hints
+              // Labels - FALLBACK PROGRAM
+              // ------------------------------------
+
+              if (
+                labels.includes('general-oss')
+              ) {
+                hasGeneralContribution = true;
+              }
+
+              // ------------------------------------
+              // Branch hints - ACTUAL PROGRAMS
               // ------------------------------------
 
               if (branch.includes('gssoc')) {
-                detected.add('gssoc');
+                actualPrograms.add('gssoc');
               }
 
               if (branch.includes('nsoc')) {
-                detected.add('nsoc');
+                actualPrograms.add('nsoc');
               }
 
-              return [...detected];
+              return {
+                actual: [...actualPrograms],
+                fallback: hasGeneralContribution
+              };
             }
 
-            const detectedPrograms =
-              detectProgram();
+            const detected = detectProgram();
+            const detectedActualPrograms = detected.actual;
+            const hasGeneralContribution = detected.fallback;
+
+            // ── Dual-label guard ────────────────────────────────────────────
+            // If both GSSoC and NSoC signals/labels are detected, apply the
+            // priority rule (GSSoC takes priority) and discard the NSoC signal
+            // so exactly one program classification is validated and applied.
+            if (detectedPrograms.includes('gssoc') && detectedPrograms.includes('nsoc')) {
+              const nsocIndex = detectedPrograms.indexOf('nsoc');
+              if (nsocIndex > -1) {
+                detectedPrograms.splice(nsocIndex, 1);
+              }
+              core.warning('Dual-label program classification detected (gssoc + nsoc) — resolved to GSSoC priority');
+            }
+            // ────────────────────────────────────────────────────────────────
 
             // ----------------------------------------
+
             // LABEL HELPERS
             // ----------------------------------------
 
@@ -243,7 +270,7 @@ jobs:
             // MISSING PROGRAM
             // ----------------------------------------
 
-            if (detectedPrograms.length === 0) {
+            if (detectedActualPrograms.length === 0) {
 
               await clearProgramLabels();
 
@@ -287,10 +314,10 @@ jobs:
             }
 
             // ----------------------------------------
-            // MULTIPLE PROGRAMS
+            // MULTIPLE ACTUAL PROGRAMS
             // ----------------------------------------
 
-            if (detectedPrograms.length > 1) {
+            if (detectedActualPrograms.length > 1) {
 
               await clearProgramLabels();
 
@@ -313,7 +340,7 @@ jobs:
 
             Detected:
 
-            ${detectedPrograms
+            ${detectedActualPrograms
               .map(p => `- ${p}`)
               .join('\n')}
 
@@ -332,17 +359,59 @@ jobs:
             }
 
             // ----------------------------------------
-            // VALID PROGRAM
+            // ACTUAL PROGRAM + FALLBACK CONFLICT
+            // ----------------------------------------
+
+            if (
+              detectedActualPrograms.length === 1 &&
+              hasGeneralContribution
+            ) {
+
+              await clearProgramLabels();
+
+              await addLabels([
+                INVALID_LABEL
+              ]);
+
+              const comment =
+                `${MARKER}
+
+            ## ⚠️ Conflicting Classification
+
+            Your PR has selected BOTH a specific program (GSSoC26/NSoC26) AND "General Contribution".
+
+            Please select ONLY ONE:
+
+            - GSSOC26
+            - NSoC26
+            - General Contribution
+
+            After editing your PR body, validation will automatically re-run.
+
+            > Stage-2 review routing is temporarily paused until this is fixed.
+            `;
+
+              await upsertComment(comment);
+
+              core.setFailed(
+                'Multiple program classifications detected'
+              );
+
+              return;
+            }
+
+            // ----------------------------------------
+            // VALID SINGLE ACTUAL PROGRAM
             // ----------------------------------------
 
             const program =
-              detectedPrograms[0];
+              detectedActualPrograms[0];
 
             await clearValidationLabels();
             await clearProgramLabels();
 
             let finalLabel =
-              'general-contribution';
+              'general-oss';
 
             if (program === 'gssoc') {
               finalLabel = 'gssoc26';

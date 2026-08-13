@@ -48,15 +48,26 @@ jobs:
               (pr.labels || [])
                 .map(l => l.name.toLowerCase());
 
-            const isGssoc =
+            let isGssoc =
               existingLabels.includes('gssoc26') ||
               branch.includes('gssoc') ||
               body.includes('gssoc');
 
-            const isNsoc =
+            let isNsoc =
               existingLabels.includes('nsoc26') ||
               branch.includes('nsoc') ||
               body.includes('nsoc');
+
+            // ── Dual-label guard ────────────────────────────────────────────
+            // When both program signals are present, apply GSSoC priority and
+            // suppress NSoC so exactly one routing label is added downstream.
+            // Single-label PRs are entirely unaffected by this block.
+            const isDualLabel = isGssoc && isNsoc;
+            if (isDualLabel) {
+              isNsoc = false; // GSSoC wins — discard NSoC signal
+              core.warning(`Dual-label conflict on PR #${number} — resolved to GSSoC priority`);
+            }
+            // ────────────────────────────────────────────────────────────────
 
             // --------------------------------------------------
             // IDEMPOTENCY
@@ -91,7 +102,16 @@ jobs:
 
             let programNote = '';
 
-            if (isGssoc) {
+            if (isDualLabel) {
+              // Dual-label conflict was detected — inform the contributor
+              programNote =
+                `> 🟢 **GSSOC PR detected** — your PR will be routed through the GSSOC mentor review pipeline.\n` +
+                `>\n` +
+                `> ⚠️ **Dual-label notice:** Both GSSOC and NSOC signals were detected in your PR. ` +
+                `GSSoC takes priority and your PR has been classified as a **GSSoC PR** only. ` +
+                `If this is incorrect, please remove the unintended program keyword from your PR description and push a new commit.`;
+
+            } else if (isGssoc) {
 
               programNote =
                 `> 🟢 **GSSOC PR detected** — your PR will be routed through the GSSOC mentor review pipeline.`;
@@ -198,11 +218,12 @@ jobs:
 
             const labelsToAdd = [];
 
+            // isGssoc / isNsoc have already been normalised by the dual-label
+            // guard above, so at most one of these branches will execute.
             if (isGssoc) {
               labelsToAdd.push('gssoc-review');
-            }
-
-            if (isNsoc) {
+            } else if (isNsoc) {
+              // else-if guarantees mutual exclusivity even without the guard
               labelsToAdd.push('nsoc-review');
             }
 

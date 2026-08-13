@@ -73,6 +73,9 @@ jobs:
           mkdir -p data
           echo "{\"updatedAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"}" > data/last-updated.json
 
+      - name: Validate generated JSON data
+        run: npm run validate:data
+
       - name: Update UI statistics
         run: |
           ORG_COUNT=$(node -e "const d=require('./data/issues.json'); const s=new Set(d.issues.map(i=>i.org)); console.log(s.size)")

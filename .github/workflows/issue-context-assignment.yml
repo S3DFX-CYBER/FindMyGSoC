@@ -34,36 +34,14 @@ jobs:
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
         with:
           script: |
-            const body =
-              (
-                context.payload.comment?.body ||
-                ''
-              ).trim();
+            const body = (context.payload.comment?.body || '').trim();
 
-            const assignMatch =
-              /^\/assign$/i.test(body);
+            const assignMatch  = /^\/assign$/i.test(body);
+            const approveMatch = body.match(/^\/approve-assignment\s+@?([\w-]+)/i);
 
-            const approveMatch =
-              body.match(
-                /^\/approve-assignment\s+@?([\w-]+)/i
-              );
-
-            core.setOutput(
-              'is_assign',
-              String(assignMatch)
-            );
-
-            core.setOutput(
-              'is_approve',
-              String(!!approveMatch)
-            );
-
-            core.setOutput(
-              'target_user',
-              approveMatch
-                ? approveMatch[1].toLowerCase()
-                : ''
-            );
+            core.setOutput('is_assign',  String(assignMatch));
+            core.setOutput('is_approve', String(!!approveMatch));
+            core.setOutput('target_user', approveMatch ? approveMatch[1].toLowerCase() : '');
 
       # ─────────────────────────────────────────────
       # ACTIVE MENTOR CONTEXT REVIEW
@@ -80,7 +58,6 @@ jobs:
           RANDOM_ROTATION: "true"
         run: |
           RESULT=$(node .github/scripts/select-issue-mentors.js)
-
           echo "result=$RESULT" >> "$GITHUB_OUTPUT"
 
       - name: Post mentor review request
@@ -92,47 +69,38 @@ jobs:
           SELECTED_MENTORS_JSON: ${{ steps.mentor_select.outputs.result }}
         with:
           script: |
-            const { owner, repo } =
-              context.repo;
+            const { owner, repo } = context.repo;
+            const issue_number    = context.issue.number;
 
-            const issue_number =
-              context.issue.number;
-
-            let selected = [];
-
-            try {
-
-              selected =
-                JSON.parse(
-                  process.env.SELECTED_MENTORS_JSON || '{}'
-                ).selected || [];
-
-            } catch {
-
-              selected = [];
-
+            function findBotComment(comments, marker) {
+              return comments.find(
+                c =>
+                  c.user?.login === 'github-actions[bot]' &&
+                  c.body?.includes(marker)
+              );
             }
 
-            const marker =
-              '<!-- mentor-context-review -->';
+            let selected = [];
+            try {
+              selected = JSON.parse(process.env.SELECTED_MENTORS_JSON || '{}').selected || [];
+            } catch {
+              selected = [];
+            }
 
-            const mentionList =
-              selected.length
-                ? selected
-                    .map(m => `@${m}`)
-                    .join(' • ')
-                : '_No active mentors available._';
+            const MENTOR_CONTEXT_MARKER = '<!-- mentor-context-review -->';
 
-            const avatars =
-              selected
-                .map(
-                  mentor =>
-                    `<a href="https://github.com/${mentor}"><img src="https://github.com/${mentor}.png" width="52px" alt="${mentor}" /></a>`
-                )
-                .join('\n');
+            const mentionList = selected.length
+              ? selected.map(m => `@${m}`).join(' • ')
+              : '_No active mentors available._';
+
+            const avatars = selected
+              .map(mentor =>
+                `<a href="https://github.com/${mentor}"><img src="https://github.com/${mentor}.png" width="52px" alt="${mentor}" /></a>`
+              )
+              .join('\n');
 
             const body = [
-              marker,
+              MENTOR_CONTEXT_MARKER,
               '',
               '# 👀 Active Mentor Review Requested',
               '',
@@ -158,42 +126,27 @@ jobs:
               '_Mentor rotation updates automatically across issues._'
             ].join('\n');
 
-            const comments =
-              await github.paginate(
-                github.rest.issues.listComments,
-                {
-                  owner,
-                  repo,
-                  issue_number,
-                  per_page: 100
-                }
-              );
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
+            );
 
-            const existing =
-              comments.find(
-                c =>
-                  c.body &&
-                  c.body.includes(marker)
-              );
+            const existing = findBotComment(comments, MENTOR_CONTEXT_MARKER);
 
             if (existing) {
-
               await github.rest.issues.updateComment({
                 owner,
                 repo,
                 comment_id: existing.id,
                 body
               });
-
             } else {
-
               await github.rest.issues.createComment({
                 owner,
                 repo,
                 issue_number,
                 body
               });
-
             }
 
       # ─────────────────────────────────────────────
@@ -206,65 +159,52 @@ jobs:
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
         with:
           script: |
-            const { owner, repo } =
-              context.repo;
+            const { owner, repo } = context.repo;
+            const issue_number    = context.payload.issue.number;
+            const claimant        = context.payload.comment.user.login;
 
-            const issue_number =
-              context.payload.issue.number;
+            const issue = (
+              await github.rest.issues.get({ owner, repo, issue_number })
+            ).data;
 
-            const claimant =
-              context.payload.comment.user.login;
-
-            const issue =
-              (
-                await github.rest.issues.get({
-                  owner,
-                  repo,
-                  issue_number
-                })
-              ).data;
-
-            if (
-              issue.state !== 'open' ||
-              issue.locked
-            ) {
-
-              core.setOutput(
-                'eligible',
-                'false'
-              );
-
+            if (issue.state !== 'open' || issue.locked) {
+              core.setOutput('eligible', 'false');
               return;
-
             }
 
-            if (
-              (issue.assignees || []).length > 0
-            ) {
-
-              core.setOutput(
-                'eligible',
-                'false'
-              );
-
+            if ((issue.assignees || []).length > 0) {
+              core.setOutput('eligible', 'false');
               return;
-
             }
 
-            core.setOutput(
-              'eligible',
-              'true'
+            const PENDING_MARKER = '<!-- pending-assignment -->';
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
             );
 
-            core.setOutput(
-              'claimant',
-              claimant
+            const pendingComment = comments.find(
+              c =>
+                c.user?.login === 'github-actions[bot]' &&
+                c.body?.includes(PENDING_MARKER) &&
+                !c.body?.includes('✅ Issue Assigned')
             );
 
-            core.setOutput(
-              'issue_number',
-              String(issue_number)
-            );
+            if (pendingComment) {
+              core.setOutput('eligible', 'false');
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body: `⚠️ @${claimant} - an assignment request is already pending mentor approval for this issue. Please wait for the current request to be resolved.`
+              });
+              return;
+            }
+
+            core.setOutput('eligible',     'true');
+            core.setOutput('claimant',     claimant);
+            core.setOutput('issue_number', String(issue_number));
 
       - name: Select rotating mentors
         id: assign_mentors
@@ -277,7 +217,6 @@ jobs:
           RANDOM_ROTATION: "true"
         run: |
           RESULT=$(node .github/scripts/select-issue-mentors.js)
-
           echo "result=$RESULT" >> "$GITHUB_OUTPUT"
 
       - name: Post assignment request
@@ -290,48 +229,59 @@ jobs:
           SELECTED_MENTORS_JSON: ${{ steps.assign_mentors.outputs.result }}
         with:
           script: |
-            const { owner, repo } =
-              context.repo;
+            const { owner, repo } = context.repo;
+            const issue_number    = context.issue.number;
+            const claimant        = process.env.CLAIMANT;
 
-            const issue_number =
-              context.issue.number;
-
-            const claimant =
-              process.env.CLAIMANT;
-
-            let selected = [];
-
-            try {
-
-              selected =
-                JSON.parse(
-                  process.env.SELECTED_MENTORS_JSON || '{}'
-                ).selected || [];
-
-            } catch {
-
-              selected = [];
-
+            function findBotComment(comments, marker) {
+              return comments.find(
+                c =>
+                  c.user?.login === 'github-actions[bot]' &&
+                  c.body?.includes(marker)
+              );
             }
 
-            const marker =
-              '<!-- assignment-status -->';
+            let selected = [];
+            try {
+              selected = JSON.parse(process.env.SELECTED_MENTORS_JSON || '{}').selected || [];
+            } catch {
+              selected = [];
+            }
 
-            const mentions =
-              selected
-                .map(m => `@${m}`)
-                .join(' • ');
+            if (selected.length === 0) {
+              try {
+                const collabs = await github.paginate(
+                  github.rest.repos.listCollaborators,
+                  { owner, repo, permission: 'admin', per_page: 100 }
+                );
+                selected = collabs
+                  .map(c => c.login)
+                  .filter(l => l !== 'github-actions[bot]')
+                  .slice(0, 2);
+              } catch (err) {
+                core.warning(
+                  `Admin fallback failed — could not list collaborators: ${err.message || err}. No mentors will be tagged.`
+                );
+                selected = [];
+              }
+            }
 
-            const avatars =
-              selected
-                .map(
-                  mentor =>
+            const PENDING_MARKER = '<!-- pending-assignment -->';
+
+            const mentions = selected.length
+              ? selected.map(m => `@${m}`).join(' • ')
+              : '_No active mentors available._';
+
+            const avatars = selected.length
+              ? selected
+                  .map(mentor =>
                     `<a href="https://github.com/${mentor}"><img src="https://github.com/${mentor}.png" width="52px" alt="${mentor}" /></a>`
-                )
-                .join('\n');
+                  )
+                  .join('\n')
+              : '';
 
             const body = [
-              marker,
+              PENDING_MARKER,
               '',
               '# ⏳ Assignment Pending Mentor Approval',
               '',
@@ -349,46 +299,30 @@ jobs:
               `/approve-assignment @${claimant}`,
               '```',
               '',
-              '> Mentors rotate dynamically across issues.',
-              '> If no response occurs within 24h, PA escalation may happen.'
+              '> Mentors rotate dynamically across issues.'
             ].join('\n');
 
-            const comments =
-              await github.paginate(
-                github.rest.issues.listComments,
-                {
-                  owner,
-                  repo,
-                  issue_number,
-                  per_page: 100
-                }
-              );
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
+            );
 
-            const existing =
-              comments.find(
-                c =>
-                  c.body &&
-                  c.body.includes(marker)
-              );
+            const existing = findBotComment(comments, PENDING_MARKER);
 
             if (existing) {
-
               await github.rest.issues.updateComment({
                 owner,
                 repo,
                 comment_id: existing.id,
                 body
               });
-
             } else {
-
               await github.rest.issues.createComment({
                 owner,
                 repo,
                 issue_number,
                 body
               });
-
             }
 
       # ─────────────────────────────────────────────
@@ -402,87 +336,108 @@ jobs:
           TARGET_USER: ${{ steps.cmd.outputs.target_user }}
         with:
           script: |
-            const { owner, repo } =
-              context.repo;
+            const { owner, repo } = context.repo;
+            const issue_number    = context.issue.number;
+            const approver        = context.payload.comment.user.login;
+            const claimant        = process.env.TARGET_USER;
 
-            const issue_number =
-              context.issue.number;
-
-            const approver =
-              context.payload.comment.user.login;
-
-            const claimant =
-              process.env.TARGET_USER;
-
-            const comments =
-              await github.paginate(
-                github.rest.issues.listComments,
-                {
-                  owner,
-                  repo,
-                  issue_number,
-                  per_page: 100
-                }
-              );
-
-            const assignmentComment =
-              comments.find(
+            function findBotComment(comments, marker) {
+              return comments.find(
                 c =>
-                  c.body &&
-                  c.body.includes(
-                    '<!-- assignment-status -->'
-                  )
+                  c.user?.login === 'github-actions[bot]' &&
+                  c.body?.includes(marker)
               );
-
-            if (!assignmentComment) {
-
-              core.info(
-                'No assignment request found.'
-              );
-
-              return;
-
             }
 
-            const body =
-              assignmentComment.body || '';
+            const PENDING_MARKER = '<!-- pending-assignment -->';
 
-            const mentorMentioned =
-              body.includes(`@${approver}`);
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
+            );
 
-            if (!mentorMentioned) {
+            const assignmentComment = findBotComment(comments, PENDING_MARKER);
 
+            if (!assignmentComment) {
+              core.info('No assignment request found.');
+              return;
+            }
+
+            const pendingBody = assignmentComment.body || '';
+
+            const requestedByMatch = pendingBody.match(/Requested by @([\w-]+)/i);
+            const originalClaimant = requestedByMatch ? requestedByMatch[1].toLowerCase() : null;
+
+            if (!originalClaimant) {
+              core.warning('Could not determine original claimant from pending comment.');
+              return;
+            }
+
+            if (claimant !== originalClaimant) {
               await github.rest.issues.createComment({
                 owner,
                 repo,
                 issue_number,
-                body:
-                  `⛔ @${approver} is not one of the selected mentors for this issue.`
+                body: `⛔ @${approver} — the username \`@${claimant}\` does not match the original requester \`@${originalClaimant}\` for this issue. Please use \`/approve-assignment @${originalClaimant}\`.`
               });
-
               return;
-
             }
 
-            const issue =
-              (
-                await github.rest.issues.get({
-                  owner,
-                  repo,
-                  issue_number
-                })
-              ).data;
+            const noMentorsAvailable = pendingBody.includes('_No active mentors available._');
+            const isMentorMentioned  = pendingBody.includes(`@${approver}`);
 
-            if (
-              (issue.assignees || []).length > 0
-            ) {
-
-              core.info(
-                'Issue already assigned.'
-              );
-
+            if (!isMentorMentioned && !noMentorsAvailable) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body: `⛔ @${approver} is not one of the selected mentors for this issue.`
+              });
               return;
+            }
 
+            let permissionLevel = 'none';
+            try {
+              const { data: permData } = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner,
+                repo,
+                username: approver
+              });
+              permissionLevel = permData.permission;
+            } catch (err) {
+              core.warning(`Permission check failed for @${approver}: ${err.message || err}`);
+              permissionLevel = 'none';
+            }
+
+            const allowedRoles = ['admin', 'maintain', 'write'];
+            if (!allowedRoles.includes(permissionLevel)) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body: `⛔ @${approver} does not have sufficient repository permissions to approve assignments (requires write, maintain, or admin).`
+              });
+              return;
+            }
+
+            const issue = (
+              await github.rest.issues.get({ owner, repo, issue_number })
+            ).data;
+
+            if (issue.state !== 'open') {
+              core.info('Issue is no longer open — skipping assignment.');
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body: `⚠️ @${approver} — this issue is no longer open, so the assignment cannot be processed.`
+              });
+              return;
+            }
+
+            if ((issue.assignees || []).length > 0) {
+              core.info('Issue already assigned.');
+              return;
             }
 
             await github.rest.issues.addAssignees({
@@ -493,7 +448,7 @@ jobs:
             });
 
             const updatedBody = [
-              '<!-- assignment-status -->',
+              '<!-- pending-assignment -->',
               '',
               '# ✅ Issue Assigned',
               '',

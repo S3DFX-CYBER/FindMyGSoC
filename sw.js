@@ -1,7 +1,8 @@
-const CACHE_NAME = 'gsoc-finder-v4';
+const CACHE_NAME = 'gsoc-finder-v5';
 const CRITICAL_ASSETS = [
   './',
   'index.html',
+  'landing.html',
   'manifest.json',
   'src/styles.css',
   'src/js/org.js',
@@ -102,7 +103,10 @@ globalThis.addEventListener('fetch', (event) => {
           return networkResponse;
         }).catch(() => {
           if (event.request.mode === 'navigate') {
-            return caches.match('index.html');
+            // Try to serve the exact requested page from cache first
+            // (e.g. landing.html is precached and should be served offline).
+            // Only fall back to index.html if the specific page isn't cached.
+            return caches.match(event.request).then((res) => res || caches.match('index.html'));
           }
           return caches.match(event.request);
         });

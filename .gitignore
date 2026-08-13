@@ -6,3 +6,5 @@ node_modules/
 
 # Editor settings
 .vscode/
+.DS_Store
+*.code-workspace
