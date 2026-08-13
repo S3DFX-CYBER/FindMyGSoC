@@ -1201,25 +1201,33 @@ kbd:hover{
 <!-- ═══════════════════ NAVBAR ═══════════════════ -->
 <header class="fixed top-0 w-full z-50 bg-white/80 glass shadow-sm">
   <div class="flex items-center justify-between px-4 sm:px-6 py-3 max-w-7xl mx-auto w-full">
-    <div class="flex items-center gap-3 sm:gap-4 xl:gap-8">
+    <div class="flex items-center gap-1.5 sm:gap-4 xl:gap-8">
       <!-- Hamburger menu button (mobile only) -->
       <button id="menuBtn" onclick="toggleMenu()" class="inline-flex lg:hidden shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-lg transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
         <span class="material-symbols-outlined text-zinc-600">menu</span>
       </button>
-      
+
+      <!-- Home button (links back to landing page) -->
+      <a href="/" 
+         class="inline-flex shrink-0 items-center gap-1 px-1.5 sm:px-2 py-2 hover:bg-zinc-100/50 rounded-lg transition-colors text-zinc-600 hover:text-zinc-900"
+         aria-label="Go to home page" title="Home">
+        <span class="material-symbols-outlined text-lg">home</span>
+        <span class="hidden xs:inline text-sm font-medium whitespace-nowrap">Home</span>
+      </a>
+
       <a href="#timeline" class="flex items-center gap-2" id="logoLink">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center flex-shrink-0">
           <span class="text-white font-bold text-sm">G</span>
         </div>
-      <span class="text-base sm:text-lg font-extrabold tracking-tight text-zinc-900 font-headline whitespace-nowrap">
-        <span class="hidden sm:inline">GSoC 2026 </span>
-        <span class="text-primary italic">Org Finder</span>
-      </span>
+        <span class="text-base sm:text-lg font-extrabold tracking-tight text-zinc-900 font-headline whitespace-nowrap">
+          <span class="hidden sm:inline">GSoC 2026 </span>
+          <span class="text-primary italic">Org Finder</span>
+        </span>
       </a>
       <nav class="hidden lg:flex items-center gap-4 xl:gap-6 text-sm font-medium">
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#timeline" data-section="timeline">Timeline</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#orgs" data-section="orgs">Organizations</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#ai-recommender" data-section="ai-recommender">AI Recommender</a>
+        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors whitespace-nowrap" href="#ai-recommender" data-section="ai-recommender">AI Recommender</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#watchlist" data-section="watchlist">Watchlist</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#issues" data-section="issues">Issues</a>
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#mentors" data-section="mentors">Mentors</a>
@@ -1371,17 +1379,17 @@ kbd:hover{
       </div>
       <!-- Stat Badges -->
       <div class="flex flex-wrap gap-3 sm:gap-4">
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm">
+        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
           <span class="material-symbols-outlined text-primary text-lg">groups</span>
-          <div><p class="text-[10px] sm:text-xs text-zinc-500">Total Orgs</p><p class="font-bold text-sm" data-org-count>184</p></div>
+          <div><p class="text-xs sm:text-sm text-zinc-500">Total Orgs</p><p class="font-bold text-lg" data-org-count>184</p></div>
         </div>
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm">
+        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
           <span class="material-symbols-outlined text-secondary text-lg">code</span>
-          <div><p class="text-[10px] sm:text-xs text-zinc-500">Languages</p><p class="font-bold text-sm">30+</p></div>
+          <div><p class="text-xs sm:text-sm text-zinc-500">Languages</p><p class="font-bold text-lg">30+</p></div>
         </div>
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm">
+        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
           <span class="material-symbols-outlined text-primary-container text-lg">category</span>
-          <div><p class="text-[10px] sm:text-xs text-zinc-500">Domains</p><p class="font-bold text-sm">15+</p></div>
+          <div><p class="text-xs sm:text-sm text-zinc-500">Domains</p><p class="font-bold text-lg">15+</p></div>
         </div>
       </div>
     </div>
@@ -1571,7 +1579,7 @@ kbd:hover{
   <!-- Hidden search input for JavaScript compatibility -->
   <input type="hidden" id="searchInput" />
   
-  <div class="org-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="orgGrid">
+  <div class="org-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 scrollable-directory org-directory" id="orgGrid">
     <!-- Organizations will be rendered here dynamically -->
     <div class="col-span-full py-20 text-center animate-pulse">
       <p class="text-zinc-400 font-headline italic">Loading organization directory...</p>
@@ -1877,7 +1885,7 @@ kbd:hover{
       </div>
     </div>
 
-    <div id="mentorGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 scrollable-directory mentor-directory" id="mentorGrid">
       <div class="col-span-full bg-white rounded-2xl border border-zinc-100 p-8 text-center">
         <p class="text-sm text-zinc-500">Loading mentor contact data...</p>
       </div>
@@ -1891,7 +1899,7 @@ kbd:hover{
   </div>
   <div id="mentorPagination" class="mt-10 flex flex-nowrap items-center justify-center gap-1 overflow-x-auto no-scrollbar" aria-label="Mentor pagination"></div>
 </section>
- 
+
 <!-- ═══════════════════ CONTRIBUTOR GUIDE ═══════════════════ -->
 <section id="guide" class="py-20 px-6 max-w-7xl mx-auto">
   <div class="mb-12">
@@ -2047,7 +2055,7 @@ kbd:hover{
       <h3 class="font-bold mb-2">Report Issues</h3>
       <p class="text-sm text-zinc-600">Found a bug or have a feature request? Open an issue.</p>
     </a>
-    <a href="https://discord.gg/mgWV3xSV7" target="_blank" rel="noopener noreferrer" class="bg-white border border-zinc-200 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all text-center group">
+    <a href="https://discord.gg/jYrbHKtn8t" target="_blank" rel="noopener noreferrer" class="bg-white border border-zinc-200 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all text-center group">
       <div class="w-12 h-12 rounded-xl bg-zinc-100 flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-100 transition-colors">
         <span class="material-symbols-outlined text-zinc-600 group-hover:text-primary">forum</span>
       </div>
@@ -2972,6 +2980,18 @@ kbd:hover{
       entry: getMentorEntry(org.name)
     }));
   }
+  function scrollDirectoryToTop(gridId) {
+    const grid = document.getElementById(gridId);
+    if (grid) {
+      grid.scrollTop = 0;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const header = document.querySelector('nav') || document.querySelector('header');
+      const headerHeight = header ? header.getBoundingClientRect().height : 80;
+      const SCROLL_OFFSET = 16;
+      const gridTop = grid.getBoundingClientRect().top + window.scrollY - headerHeight - SCROLL_OFFSET;
+      window.scrollTo({ top: gridTop, behavior: prefersReduced ? 'auto' : 'smooth' });
+    }
+  }
 
   function renderMentorFinder(reset = true) {
     const grid = document.getElementById('mentorGrid');
@@ -3133,9 +3153,8 @@ kbd:hover{
     renderPaginationControls('mentorPagination', filteredRecords.length, mentorCurrentPage, (page) => {
       mentorCurrentPage = page;
       renderMentorFinder(false);
-      document.getElementById('mentors')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollDirectoryToTop('mentorGrid');
     });
-
     attachOrgCardListeners(grid);
   }
 
@@ -3445,9 +3464,12 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       const isBookmarked = bookmarkedSet.has(org.name);
       const isComparing = compareList.includes(org.name);
       const card = document.createElement('article');
-      card.className = 'group bg-white rounded-2xl p-6 border border-zinc-100 transition-all hover:shadow-xl hover:border-primary/20 animate-fade-up';
+      card.className = 'group bg-white rounded-2xl p-6 border border-zinc-100 transition-all hover:shadow-xl hover:border-primary/20 animate-fade-up cursor-pointer';
       card.dataset.org = org.name;
-      
+      //add event listener to open org modal, when clicking anywhere
+      card.addEventListener('click', () => {
+          openModal(org.name);
+      });
       const githubOwner = githubOwnerFromValue(org.github);
       const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
       
@@ -3494,7 +3516,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     renderPaginationControls('orgPagination', filteredOrgs.length, orgCurrentPage, (page) => {
       orgCurrentPage = page;
       renderOrgs(false);
-      document.getElementById('orgs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollDirectoryToTop('orgGrid');
     });
   }
 
@@ -3531,7 +3553,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
         e.stopPropagation();
         openModal(btn.dataset.openOrg);
       });
-btn.__orgListenerAttached = true;
+      btn.__orgListenerAttached = true;
     });
   }
 
@@ -3987,8 +4009,11 @@ btn.__orgListenerAttached = true;
         .join('');
 
       const item = document.createElement('div');
-      item.className = 'bg-white rounded-2xl p-3 sm:p-5 border border-zinc-100 flex gap-3 sm:gap-4 items-start hover:shadow-lg hover:border-primary/20 transition-all animate-fade-up';
+      item.className = 'bg-white rounded-2xl p-3 sm:p-5 border border-zinc-100 flex gap-3 sm:gap-4 items-start hover:shadow-lg hover:border-primary/20 transition-all animate-fade-up cursor-pointer';
       item.dataset.watchlistOrg = org.name;
+      item.addEventListener('click', () => {
+          openModal(org.name);
+      });
 
       item.innerHTML = `
         <!-- Logo -->

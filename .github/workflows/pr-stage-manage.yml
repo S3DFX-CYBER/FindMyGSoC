@@ -527,27 +527,45 @@ jobs:
                 return;
               }
 
-              await github.rest.issues.updateComment({
-                owner,
-                repo,
-                comment_id: existing.id,
-                body
-              });
+              try {
 
-              core.info(
-                'Updated pipeline comment'
-              );
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: existing.id,
+                  body
+                });
+
+                core.info(
+                  'Updated pipeline comment'
+                );
+
+              } catch (e) {
+
+                core.warning(
+                  `Failed updating pipeline comment: ${e.message}`
+                );
+              }
 
             } else {
 
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: Number(prNumber),
-                body
-              });
+              try {
 
-              core.info(
-                'Created pipeline comment'
-              );
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: Number(prNumber),
+                  body
+                });
+
+                core.info(
+                  'Created pipeline comment'
+                );
+
+              } catch (e) {
+
+                core.warning(
+                  `Failed creating pipeline comment: ${e.message}`
+                );
+              }
             }

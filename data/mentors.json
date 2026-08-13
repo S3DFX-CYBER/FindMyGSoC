@@ -4761,14 +4761,51 @@
     "lastFetched": "2026-05-09T16:09:12.548Z"
   },
   "TARDIS RT Collaboration": {
-    "org": "TARDIS RT Collaboration",
-    "ideasUrl": "https://github.com/tardis-sn/tardis/wiki/GSOC",
-    "channels": [],
-    "mentors": [],
-    "mailingLists": [],
-    "tip": "",
-    "status": "no-contact-found",
-    "lastFetched": "2026-05-09T16:09:12.548Z"
+  "org": "TARDIS RT Collaboration",
+  "ideasUrl": "https://tardis-sn.github.io/summer_of_code/ideas/",
+  "channels": [
+    {
+      "type": "Gitter",
+      "url": "https://app.gitter.im/#/room/#tardis-sn_tardis:gitter.im",
+      "label": "TARDIS Gitter"
+    }
+  ],
+  "mentors": [
+    {
+      "name": "Andrew Fullard",
+      "github": "",
+      "githubUrl": ""
+    },
+    {
+      "name": "Atharva Arya",
+      "github": "",
+      "githubUrl": ""
+    },
+    {
+      "name": "Josh Shields",
+      "github": "",
+      "githubUrl": ""
+    },
+    {
+      "name": "Connor McClellan",
+      "github": "",
+      "githubUrl": ""
+    },
+    {
+      "name": "Jaladh Singhal",
+      "github": "",
+      "githubUrl": ""
+    },
+    {
+      "name": "Jared Goldberg",
+      "github": "",
+      "githubUrl": ""
+    }
+  ],
+  "mailingLists": [],
+  "tip": "",
+  "status": "ok",
+  "lastFetched": "2026-06-30T16:45:00.000Z"
   },
   "The FreeBSD Project": {
     "org": "The FreeBSD Project",
@@ -4784,17 +4821,38 @@
     "org": "The Honeynet Project",
     "ideasUrl": "https://www.honeynet.org/gsoc/gsoc-2026/",
     "channels": [
-      {
-        "type": "Discord",
-        "url": "https://discord.gg/68B8Ru5fSU",
-        "label": "The Honeynet Project Discord"
-      }
-    ],
-    "mentors": [],
-    "mailingLists": [],
+  {
+    "type": "Discord",
+    "url": "https://discord.gg/68B8Ru5fSU",
+    "label": "The Honeynet Project Discord"
+  }
+  ],
+  "mentors": [
+    {
+      "name": "Manolis Vasilomanolakis",
+      "github": "",
+      "githubUrl": ""
+    },
+    {
+      "name": "Krzysztof Zając",
+      "github": "",
+      "githubUrl": ""
+    },
+    {
+      "name": "Tim Leonhard",
+      "github": "",
+      "githubUrl": ""
+    },
+    {
+      "name": "Matteo Lodi",
+      "github": "",
+      "githubUrl": ""
+    }
+  ],
+  "mailingLists": [],
     "tip": "Introduce yourself in the public channel before asking project-specific questions.",
     "status": "ok",
-    "lastFetched": "2026-05-09T16:09:12.548Z"
+    "lastFetched": "2026-06-30T16:45:00.000Z"
   },
   "The JPF team": {
     "org": "The JPF team",
@@ -5547,14 +5605,57 @@
     "lastFetched": "2026-05-09T16:09:12.548Z"
   },
   "Uramaki LAB": {
-    "org": "Uramaki LAB",
-    "ideasUrl": "https://summerofcode.withgoogle.com/programs/2026/organizations/uramaki-lab",
-    "channels": [],
-    "mentors": [],
-    "mailingLists": [],
-    "tip": "",
-    "status": "no-contact-found",
-    "lastFetched": "2026-05-09T16:09:12.548Z"
+  "org": "Uramaki LAB",
+  "ideasUrl": "https://ruxailab.github.io/gsoc/",
+  "channels": [
+    {
+        "type": "GitHub",
+        "url": "https://github.com/ruxailab/RUXAILAB/issues",
+        "label": "GitHub Issues"
+    },
+    {
+        "type": "Discord",
+        "url": "https://discord.com/invite/6P4C6xuqtC",
+        "label": "RUXAILAB Discord"
+    }
+  ],
+
+  "mentors": [
+    {
+      "name": "Marc Gonzalez Capdevila",
+      "github": "marcgc21",
+      "githubUrl": "https://github.com/marcgc21"
+    },
+    {
+      "name": "Karine Pistili Rodrigues",
+      "github": "KarinePistili",
+      "githubUrl": "https://github.com/KarinePistili"
+    },
+    {
+      "name": "Leticia Carvalho Ramos",
+      "github": "",
+      "githubUrl": ""
+    },
+    {
+      "name": "Basma Hatem",
+      "github": "",
+      "githubUrl": ""
+    },
+    {
+      "name": "Sitam Meur",
+      "github": "",
+      "githubUrl": ""
+    },
+    {
+      "name": "Eric Monné Mesalles",
+      "github": "xemyst",
+      "githubUrl": "https://github.com/xemyst"
+    }
+  ],
+  "mailingLists": [],
+  "tip": "",
+  "status": "ok",
+  "lastFetched": "2026-06-30T16:45:00.000Z"
   },
   "VideoLAN": {
     "org": "VideoLAN",
