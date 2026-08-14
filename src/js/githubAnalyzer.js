@@ -35,8 +35,59 @@ function setLocalCache(cache) {
   }
 }
 
+function waitFor(ms, signal) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      signal?.removeEventListener('abort', onAbort);
+      resolve();
+    }, ms);
+
+    function onAbort() {
+      clearTimeout(timer);
+      reject(new DOMException('The operation was aborted.', 'AbortError'));
+    }
+
+    if (signal) {
+      if (signal.aborted) {
+        onAbort();
+        return;
+      }
+      signal.addEventListener('abort', onAbort, { once: true });
+    }
+  });
+}
+
+async function fetchWithAsyncQueue(url, signal, options = {}) {
+  const { pollIntervalMs = 700, maxAttempts = 30 } = options;
+  const first = await fetch(url, { signal });
+  if (first.status !== 202) return first;
+
+  let queued;
+  try {
+    queued = await first.json();
+  } catch {
+    return first;
+  }
+
+  const jobId = queued?.job;
+  if (!jobId) return first;
+  const pollUrl = queued.poll || `${USER_API_ENDPOINT}?job=${encodeURIComponent(jobId)}`;
+
+  for (let i = 0; i < maxAttempts; i++) {
+    await waitFor(pollIntervalMs, signal);
+    const polled = await fetch(pollUrl, { signal });
+    if (polled.status === 202) continue;
+    return polled;
+  }
+
+  return first;
+}
+
 async function fetchUserProfileFromAPI(normalizedUsername, signal) {
-  const response = await fetch(`${USER_API_ENDPOINT}?user=${encodeURIComponent(normalizedUsername)}`, { signal });
+  const response = await fetchWithAsyncQueue(
+    `${USER_API_ENDPOINT}?user=${encodeURIComponent(normalizedUsername)}&async=1`,
+    signal
+  );
   let data;
   try {
     data = await response.json();

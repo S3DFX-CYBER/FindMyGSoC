@@ -485,8 +485,10 @@ The Edge Function proxies GitHub API calls so your token never hits the client.
 | `GET /api/github?repo=owner/repo` | Repo stats: stars, forks, issues, last commit, activity, GFI count |
 | `GET /api/github?repo=owner/repo&gfi=1` | Good First Issue count only (faster, cached separately) |
 | `GET /api/github?repo=owner/repo&gfi=1&issues=1` | Full list of up to 30 open Good First Issues |
+| `GET /api/github?...&async=1` | Queue request for background processing and return `202 Accepted` with a `job` id and `poll` URL |
+| `GET /api/github?job=<job-id>` | Poll background job status (`202` while queued/processing, final response when done) |
 
-All responses are cached in-memory for **1 hour** on the Edge runtime.
+Async mode routes GitHub fetches through a throttled in-memory worker queue so UI requests return immediately instead of blocking on GitHub latency. Results are cached in-memory for **1 hour** on the Edge runtime.
 # 🚀 Official Open Source Program Project
 
 <div align="center">

@@ -491,11 +491,37 @@ async function checkAPI() {
   }
 }
 
+async function fetchGitHubWithQueue(url, options = {}) {
+  const { pollIntervalMs = 700, maxAttempts = 30 } = options;
+  const initial = await fetch(url);
+  if (initial.status !== 202) return initial;
+
+  let payload = null;
+  try {
+    payload = await initial.json();
+  } catch {
+    return initial;
+  }
+
+  const jobId = payload?.job;
+  if (!jobId) return initial;
+  const pollUrl = payload.poll || `${API}?job=${encodeURIComponent(jobId)}`;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+    const pollRes = await fetch(pollUrl);
+    if (pollRes.status === 202) continue;
+    return pollRes;
+  }
+
+  return initial;
+}
+
 async function fetchGH(repo) {
   if (!repo) return null;
   if (ghCache[repo] && Date.now() - ghCache[repo].ts < 3600000) return ghCache[repo];
   try {
-    const r = await fetch(`${API}?repo=${encodeURIComponent(repo)}`);
+    const r = await fetchGitHubWithQueue(`${API}?repo=${encodeURIComponent(repo)}&async=1`);
     if (!r.ok) return null;
     const d = await r.json();
     if (d.error) return null;
@@ -512,7 +538,7 @@ async function fetchGFI(repo) {
   const hit = ghCache[cacheKey];
   if (hit && Date.now() - hit.ts < 3600000 && hit.count !== null && hit.count !== undefined) return hit.count;
   try {
-    const r = await fetch(`${API}?repo=${encodeURIComponent(repo)}&gfi=1`);
+    const r = await fetchGitHubWithQueue(`${API}?repo=${encodeURIComponent(repo)}&gfi=1&async=1`);
     if (!r.ok) return null;
     const d = await r.json();
     if (d.gfi === null || d.gfi === undefined) return null;
@@ -1945,7 +1971,7 @@ globalThis.fetchAllIssues = async function () {
     const batch = orgsWithGithub.slice(i, i + BATCH);
     await Promise.all(batch.map(async o => {
       try {
-        const r = await fetch(`${API}?repo=${encodeURIComponent(o.github)}&gfi=1&issues=1`);
+        const r = await fetchGitHubWithQueue(`${API}?repo=${encodeURIComponent(o.github)}&gfi=1&issues=1&async=1`);
         if (!r.ok) return;
         const data = await r.json();
         if (data.items?.length) {
