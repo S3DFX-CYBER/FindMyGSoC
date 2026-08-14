@@ -36,8 +36,10 @@
 <body>
   <h1>404 — Page Not Found</h1>
 
-  <p>
-    Redirecting you back to the home page in 3 seconds…
+  <p aria-live="polite" aria-atomic="true">
+    Redirecting you back to the home page in
+    <span id="count">3</span>
+    seconds…
   </p>
 
   <a href="/">Go Home Now →</a>
@@ -49,9 +51,19 @@
   </noscript>
 
   <script>
-  setTimeout(() => {
-    globalThis.location.replace("/");
-  }, 3000);
-</script>
+    let timeLeft = 3;
+
+    const countElement = document.getElementById("count");
+
+    const timer = setInterval(() => {
+      timeLeft--;
+      countElement.textContent = timeLeft;
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        location.replace("/");
+      }
+    }, 1000);
+  </script>
 </body>
 </html>

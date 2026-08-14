@@ -69,30 +69,51 @@ The project is built using:
 - No hydration complexity
 - Maintainable repository structure
 
+> [!IMPORTANT]
+> **JavaScript Logic Duplication Warning**
+> This repository runs a static frontend. To enable Node.js unit testing without running a headless browser, we maintain a copy of the application logic in both the inline scripts inside [index.html](./index.html) (production runtime) and [app.js](./src/js/app.js) (test environment).
+> 
+> If you are modifying the core frontend behavior (filters, sorting, search, modals, bookmarks, etc.), you **MUST** apply your changes to **both** files in sync. Run `npm test` locally to ensure they are properly aligned.
+
 ---
 
 ## Local Development
 
-**Install Vercel CLI**
-
-```bash
-npm install -g vercel
-```
-
-**Clone Repository**
+**1. Clone the Repository**
 
 ```bash
 git clone https://github.com/S3DFX-CYBER/GSoC-Org-Finder-.git
 cd GSoC-Org-Finder-
 ```
 
-**Start Local Development**
+**2. Start a Local Server**
+
+You can run the static site locally using any of the following methods:
+
+*   **Option A: Vercel CLI (Simulates edge routing)**
+    ```bash
+    npm install -g vercel
+    vercel dev
+    ```
+*   **Option B: Python HTTP Server (Zero setup)**
+    ```bash
+    python3 -m http.server 8000
+    ```
+*   **Option C: Node.js static server (npx)**
+    ```bash
+    npx serve .
+    ```
+*   **Option D: VS Code Live Server Extension**
+    Right-click [index.html](./index.html) and select **Open with Live Server**.
+
+**3. Run Unit Tests locally**
+
+To ensure your code changes pass CI validations, run the test suite locally:
 
 ```bash
-vercel dev
+npm install
+npm test
 ```
-
-This simulates the Vercel Edge runtime locally.
 
 ---
 
@@ -456,6 +477,31 @@ Before submitting:
 For UI changes:
 
 - [ ] Screenshots attached
+
+---
+
+## PR Validation & Review Gates
+
+When you open a Pull Request, automated bots immediately perform Stage 1 checks. Make sure:
+1.  **Linked Issue:** The description contains `Closes #N` where `N` is your assigned issue. PRs without a linked issue may be closed automatically.
+2.  **Conventional Title:** The PR title starts with a conventional commit prefix (e.g. `feat: ...`, `fix: ...`, `style: ...`).
+3.  **DCO Sign-off:** All commits in your PR are signed off (`git commit -s`).
+
+### 🔑 Fixing DCO (Sign-off) Failures
+
+If the DCO check flags your PR, you can sign off your existing commits using the terminal:
+
+**To sign off your last commit:**
+```bash
+git commit --amend --no-edit -s
+git push --force-with-lease origin <your-branch-name>
+```
+
+**To sign off multiple commits:**
+```bash
+git rebase -i HEAD~N -x "git commit --amend --no-edit -s"
+git push --force-with-lease origin <your-branch-name>
+```
 
 ---
 

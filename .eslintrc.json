@@ -30,6 +30,25 @@
     "overrides": [
         {
             "files": [
+                "src/js/*.js"
+            ],
+            "env": {
+                "browser": true
+            },
+            "globals": {
+                "module": "readonly"
+            }
+        },
+        {
+            "files": [
+                "tests/**/*.test.js"
+            ],
+            "env": {
+                "node": true
+            }
+        },
+        {
+            "files": [
                 "api/*.js"
             ],
             "parserOptions": {

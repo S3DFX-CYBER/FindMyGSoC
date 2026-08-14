@@ -1,141 +1,141 @@
 name: PR Merge Conflict Reminder
 
 on:
-schedule:
-- cron: '0 */6 * * *'
-workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 permissions:
-pull-requests: write
-issues: write
+  pull-requests: write
+  issues: write
 
 jobs:
-check-conflicts:
-runs-on: ubuntu-latest
+  check-conflicts:
+    runs-on: ubuntu-latest
 
-steps:
-  - name: Scan open PRs
-    uses: actions/github-script@v8
-    with:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
-      script: |
-        const owner = context.repo.owner;
-        const repo = context.repo.repo;
+    steps:
+      - name: Scan open PRs
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
 
-        const MARKER = '<!-- merge-conflict-reminder -->';
-        const LABEL = 'merge-conflicts';
+            const MARKER = '<!-- merge-conflict-reminder -->';
+            const LABEL = 'merge-conflicts';
 
-        const prs = await github.paginate(
-          github.rest.pulls.list,
-          {
-            owner,
-            repo,
-            state: 'open',
-            per_page: 100
-          }
-        );
-
-        for (const pr of prs) {
-
-          const prData = (
-            await github.rest.pulls.get({
-              owner,
-              repo,
-              pull_number: pr.number
-            })
-          ).data;
-
-          const hasConflicts =
-            prData.mergeable_state === 'dirty';
-
-          const comments = await github.paginate(
-            github.rest.issues.listComments,
-            {
-              owner,
-              repo,
-              issue_number: pr.number,
-              per_page: 100
-            }
-          );
-
-          const existingComment = comments.find(
-            c =>
-              c.user.type === 'Bot' &&
-              c.body &&
-              c.body.includes(MARKER)
-          );
-
-          const labels = (
-            prData.labels || []
-          ).map(l => l.name);
-
-          if (hasConflicts) {
-
-            const body = [
-              MARKER,
-              '',
-              '## ⚠️ Merge Conflicts Detected',
-              '',
-              `@${pr.user.login} this PR currently has merge conflicts and cannot be merged.`,
-              '',
-              'Please sync your branch with the latest changes from the target branch and resolve the conflicts.',
-              '',
-              '### Example',
-              '```bash',
-              'git fetch origin',
-              'git checkout <your-branch>',
-              'git pull origin main',
-              '# resolve conflicts',
-              'git add .',
-              'git commit',
-              'git push',
-              '```'
-            ].join('\n');
-
-            if (!existingComment) {
-              await github.rest.issues.createComment({
+            const prs = await github.paginate(
+              github.rest.pulls.list,
+              {
                 owner,
                 repo,
-                issue_number: pr.number,
-                body
-              });
+                state: 'open',
+                per_page: 100
+              }
+            );
+
+            for (const pr of prs) {
+
+              const prData = (
+                await github.rest.pulls.get({
+                  owner,
+                  repo,
+                  pull_number: pr.number
+                })
+              ).data;
+
+              const hasConflicts =
+                prData.mergeable_state === 'dirty';
+
+              const comments = await github.paginate(
+                github.rest.issues.listComments,
+                {
+                  owner,
+                  repo,
+                  issue_number: pr.number,
+                  per_page: 100
+                }
+              );
+
+              const existingComment = comments.find(
+                c =>
+                  c.user.type === 'Bot' &&
+                  c.body &&
+                  c.body.includes(MARKER)
+              );
+
+              const labels = (
+                prData.labels || []
+              ).map(l => l.name);
+
+              if (hasConflicts) {
+
+                const body = [
+                  MARKER,
+                  '',
+                  '## ⚠️ Merge Conflicts Detected',
+                  '',
+                  `@${pr.user.login} this PR currently has merge conflicts and cannot be merged.`,
+                  '',
+                  'Please sync your branch with the latest changes from the target branch and resolve the conflicts.',
+                  '',
+                  '### Example',
+                  '```bash',
+                  'git fetch origin',
+                  'git checkout <your-branch>',
+                  'git pull origin main',
+                  '# resolve conflicts',
+                  'git add .',
+                  'git commit',
+                  'git push',
+                  '```'
+                ].join('\n');
+
+                if (!existingComment) {
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: pr.number,
+                    body
+                  });
+                }
+
+                if (!labels.includes(LABEL)) {
+                  await github.rest.issues.addLabels({
+                    owner,
+                    repo,
+                    issue_number: pr.number,
+                    labels: [LABEL]
+                  });
+                }
+
+                continue;
+              }
+
+              if (labels.includes(LABEL)) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: pr.number,
+                    name: LABEL
+                  });
+                } catch {}
+              }
+
+              if (existingComment) {
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: existingComment.id,
+                  body: [
+                    MARKER,
+                    '',
+                    '## ✅ Merge Conflicts Resolved',
+                    '',
+                    `Thanks @${pr.user.login}, this PR is mergeable again.`
+                  ].join('\n')
+                });
+              }
             }
-
-            if (!labels.includes(LABEL)) {
-              await github.rest.issues.addLabels({
-                owner,
-                repo,
-                issue_number: pr.number,
-                labels: [LABEL]
-              });
-            }
-
-            continue;
-          }
-
-          if (labels.includes(LABEL)) {
-            try {
-              await github.rest.issues.removeLabel({
-                owner,
-                repo,
-                issue_number: pr.number,
-                name: LABEL
-              });
-            } catch {}
-          }
-
-          if (existingComment) {
-            await github.rest.issues.updateComment({
-              owner,
-              repo,
-              comment_id: existingComment.id,
-              body: [
-                MARKER,
-                '',
-                '## ✅ Merge Conflicts Resolved',
-                '',
-                `Thanks @${pr.user.login}, this PR is mergeable again.`
-              ].join('\n')
-            });
-          }
-        }

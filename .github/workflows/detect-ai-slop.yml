@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout PR
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
         with:
           ref: refs/pull/${{ github.event.pull_request.number }}/merge
 
@@ -37,7 +37,7 @@ jobs:
       # -------------------------------------------------------
 
       - name: Run Anti-Slop Detection
-        uses: peakoss/anti-slop@v0.2.1
+        uses: peakoss/anti-slop@57858eead489d08b255fab2af45a506c2ca6eab2 #v0.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -105,7 +105,7 @@ jobs:
       # -------------------------------------------------------
 
       - name: Detect suspicious vibecoded patterns
-        uses: actions/github-script@v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |

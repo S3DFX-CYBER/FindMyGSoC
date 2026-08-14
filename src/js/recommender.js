@@ -3,17 +3,22 @@
 /* global ORGS */
 
 /**
- * Retrieves the top 6 recommended organizations based on skills and profile.
+ * Retrieves recommended organizations based on skills and profile.
  * 
  * @param {Array<string>} resumeSkills - Unique set of extracted resume skills
  * @param {Object|null} githubProfile - Optional GitHub profile metrics
- * @returns {Array<Object>} - Top 6 recommended organizations sorted by score
+ * @param {number} [count=6] - Maximum number of organizations to return.
+ *   Pass Infinity to return all scored orgs. Negative numbers, NaN, null and non numeric values fall back to the default of 6.
+ * @returns {Array<Object>} - Recommended organizations sorted by score
  */
-function getRecommendations(resumeSkills = [], githubProfile = null) {
+function getRecommendations(resumeSkills = [], githubProfile = null, count = 6) {
   if (typeof ORGS === 'undefined' || !Array.isArray(ORGS)) {
     console.error("ORGS is not defined.");
     return [];
   }
+  
+  const parsed = Number(count);
+  const safeCount = ( !Number.isNaN(parsed) && parsed > 0) ? Math.floor(parsed) : 6;
 
   const normalize = globalThis.normalizeSkill || (s => s);
   const userLanguages = new Set();
@@ -35,7 +40,7 @@ function getRecommendations(resumeSkills = [], githubProfile = null) {
   );
   
   scoredOrgs.sort((a, b) => b.rawScore - a.rawScore);
-  return scoredOrgs.slice(0, 6);
+  return scoredOrgs.slice(0, safeCount);
 }
 
 function calculateLanguageScore(userLanguages, orgTags, orgCat, matchedSkills, matchReasons) {
@@ -163,7 +168,6 @@ function calculateScoreForOrg(org, index, userLanguages, userTopics, githubProfi
   }
 
   return {
-    orgIndex: index,
     org: org,
     score: cappedScore, 
     rawScore: finalRawScore,
@@ -173,3 +177,7 @@ function calculateScoreForOrg(org, index, userLanguages, userTopics, githubProfi
 }
 
 globalThis.getRecommendations = getRecommendations;
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { getRecommendations };
+}

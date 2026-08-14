@@ -7,21 +7,35 @@
   <meta name="description" content="Privacy Policy for FindMyGSoC." />
   <link rel="canonical" href="https://findmygsoc.vercel.app/privacy.html" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" integrity="sha384-NPToXI2n6gWUtTP7kSreAjbTuFo/Ud8X117P3IzZKfYqse84nsxKYkLO4Q4Jwmiz" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" integrity="sha384-9gQ8upeWZQ9/fPKaAGJuDpTMaZdwDhECBPX+H6i9vVTa3EllQ1skSXUr6bXADJRW" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/styles.css" />
+
   <script>
-    // Tailwind Configuration
+    (function(){
+      try {
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      } catch(e) {}
+    })();
+  </script>
+  <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            primary: { DEFAULT: '#f97316', container: '#ffedd5' },
-            surface: { DEFAULT: '#ffffff', 'container-low': '#f4f4f5' }
+            "primary": "#9d4300",
+            "primary-container": "#f97316",
+            "surface": "#f9f9f9",
+            "surface-container-low": "#f3f3f3",
+            "on-surface": "#1a1c1c",
+            "secondary": "#006c47",
           },
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            headline: ['"Space Grotesk"', 'sans-serif'],
+            headline: ['"Plus Jakarta Sans"', 'sans-serif'],
             mono: ['"Fira Code"', 'monospace']
           }
         }
@@ -29,28 +43,63 @@
     }
   </script>
 </head>
-<body class="bg-surface text-zinc-900 antialiased selection:bg-orange-200 selection:text-orange-900 transition-colors duration-300">
+<body class="privacy-page bg-white text-zinc-900 antialiased selection:bg-orange-200 selection:text-orange-900 transition-colors duration-300">
 
-<header class="fixed top-0 w-full z-50 transition-all duration-300 border-b border-zinc-200 bg-white/80 backdrop-blur-md">
-  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-zinc-200">
+  <div class="flex items-center justify-between px-4 sm:px-6 py-3 max-w-7xl mx-auto w-full">
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center shadow-lg shadow-orange-500/20">
-        <span class="text-white font-extrabold text-xl">G</span>
-      </div>
-      <a href="index.html" class="font-extrabold text-xl tracking-tight font-headline">FindMy<span class="text-primary">GSoC</span></a>
-    </div>
-    <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
-      <a href="index.html#orgs" class="text-sm font-bold text-zinc-600 hover:text-zinc-900 transition-colors">Organizations</a>
-      <a href="index.html#guide" class="text-sm font-bold text-zinc-600 hover:text-zinc-900 transition-colors">Guide</a>
-      <a href="index.html#issues" class="text-sm font-bold text-zinc-600 hover:text-zinc-900 transition-colors">Issues</a>
-    </nav>
-    <div class="flex items-center gap-4">
-      <a href="https://github.com/S3DFX-CYBER/GSoC-Org-Finder-" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors">
-        <span class="material-symbols-outlined text-sm">star</span> Star & Contribute
+      <!-- Mobile menu button -->
+      <button id="mobileMenuBtn" class="inline-flex lg:hidden items-center justify-center p-2 hover:bg-zinc-100/50 rounded-lg transition-colors" aria-label="Open menu" aria-expanded="false">
+        <span class="material-symbols-outlined text-zinc-600">menu</span>
+      </button>
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center flex-shrink-0">
+          <span class="text-white font-bold text-sm font-headline">G</span>
+        </div>
+        <span class="text-base sm:text-lg font-extrabold tracking-tight text-zinc-900 font-headline whitespace-nowrap">
+          <span class="hidden sm:inline">GSoC 2026 </span><span class="text-primary font-headline italic">Org Finder</span>
+        </span>
       </a>
     </div>
+    <nav class="hidden lg:flex items-center gap-6 text-sm font-medium" aria-label="Main navigation">
+      <a href="index.html#orgs" class="text-zinc-600 hover:text-zinc-900 transition-colors">Organizations</a>
+      <a href="index.html#guide" class="text-zinc-600 hover:text-zinc-900 transition-colors">Guide</a>
+      <a href="index.html#issues" class="text-zinc-600 hover:text-zinc-900 transition-colors">Issues</a>
+    </nav>
+    <a href="https://github.com/S3DFX-CYBER/GSoC-Org-Finder-" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors">
+      <span class="material-symbols-outlined text-sm">star</span> Star & Contribute
+    </a>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-zinc-200 bg-white">
+    <nav class="flex flex-col px-4 py-3 gap-1" aria-label="Mobile navigation">
+      <a href="index.html#orgs" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-700 hover:bg-zinc-100 text-sm font-medium transition-colors">
+        <span class="material-symbols-outlined text-base">business</span> Organizations
+      </a>
+      <a href="index.html#guide" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-700 hover:bg-zinc-100 text-sm font-medium transition-colors">
+        <span class="material-symbols-outlined text-base">menu_book</span> Guide
+      </a>
+      <a href="index.html#issues" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-700 hover:bg-zinc-100 text-sm font-medium transition-colors">
+        <span class="material-symbols-outlined text-base">bug_report</span> Issues
+      </a>
+      <a href="https://github.com/S3DFX-CYBER/GSoC-Org-Finder-" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 mt-2 px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors w-fit">
+        <span class="material-symbols-outlined text-sm">star</span> Star & Contribute
+      </a>
+    </nav>
   </div>
 </header>
+
+<script>
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  mobileMenuBtn?.addEventListener('click', () => {
+    const isOpen = !mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden');
+    mobileMenuBtn.setAttribute('aria-expanded', String(!isOpen));
+    mobileMenuBtn.querySelector('.material-symbols-outlined').textContent = isOpen ? 'menu' : 'close';
+  });
+</script>
 
 <main class="pt-32 pb-20 px-6 max-w-4xl mx-auto">
   <h1 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mb-8">Privacy Policy</h1>
@@ -74,23 +123,10 @@
   </div>
 </main>
 
-<footer class="w-full border-t border-zinc-200 bg-zinc-100">
-  <div class="flex flex-col md:flex-row justify-between items-center px-8 py-12 gap-6 max-w-7xl mx-auto">
-    <div class="flex flex-col gap-2">
-      <div class="flex items-center gap-2">
-        <div class="w-6 h-6 rounded bg-gradient-to-br from-primary to-primary-container flex items-center justify-center"><span class="text-white font-bold text-[10px]">G</span></div>
-        <span class="text-lg font-bold text-zinc-900">FindMyGSoC</span>
-      </div>
-      <p class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">© 2026 S3DFX-CYBER · Built for the Open Source Community</p>
-    </div>
-    <nav class="flex flex-wrap gap-6" aria-label="Footer navigation">
-      <a class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-orange-500 transition-all" href="https://summerofcode.withgoogle.com/programs/2026/organizations" target="_blank" rel="noopener noreferrer">GSoC 2026</a>
-      <a class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-orange-500 transition-all" href="https://github.com/S3DFX-CYBER/GSoC-Org-Finder-" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-orange-500 transition-all" href="privacy.html">Privacy</a>
-      <a class="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-orange-500 transition-all" href="index.html#contact">Contact</a>
-    </nav>
-  </div>
-</footer>
+<!-- Footer Placeholder -->
+<div id="footer-placeholder"></div>
+<script src="agent/scripts/orgs.js"></script>
+<script src="src/js/footer.js"></script>
 
 </body>
 </html>

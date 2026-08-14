@@ -1,0 +1,60 @@
+/* global tailwind */
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      screens: {
+        'xs': '480px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      },
+      colors: {
+        "surface-container-highest": "#e2e2e2",
+        "background": "#f9f9f9",
+        "surface-container": "#eeeeee",
+        "primary-container": "#f97316",
+        "surface": "#f9f9f9",
+        "surface-variant": "#e2e2e2",
+        "on-background": "#1a1c1c",
+        "on-primary": "#ffffff",
+        "on-surface": "#1a1c1c",
+        "error": "#ba1a1a",
+        "primary": "#9d4300",
+        "on-surface-variant": "#584237",
+        "outline": "#8c7164",
+        "surface-container-lowest": "#ffffff",
+        "secondary": "#006c47",
+        "secondary-container": "#8af5be",
+        "on-secondary-container": "#00714b",
+        "on-secondary": "#ffffff",
+        "surface-container-low": "#f3f3f3",
+        "surface-container-high": "#e8e8e8",
+        "surface-dim": "#dadada",
+        "primary-fixed": "#ffdbca",
+        "primary-fixed-dim": "#ffb690",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+        "on-secondary-fixed": "#002113",
+        "secondary-fixed-dim": "#71dba6",
+        "tertiary": "#5f5e5e",
+        "on-primary-container": "#582200",
+        "surface-tint": "#9d4300",
+      },
+      fontFamily: {
+        "headline": ["Plus Jakarta Sans"],
+        "body": ["Plus Jakarta Sans"],
+        "label": ["Space Grotesk"],
+        "mono": ["Fira Code"]
+      },
+      borderRadius: {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+    },
+  },
+};

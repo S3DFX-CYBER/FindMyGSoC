@@ -133,6 +133,12 @@ Avoid:
 - Overengineering
 - Large unrelated refactors
 
+> [!IMPORTANT]
+> **JavaScript Logic Duplication Warning**
+> This repository runs a static frontend. To enable Node.js unit testing without running a headless browser, we maintain a copy of the application logic in both the inline scripts inside [index.html](../index.html) (production runtime) and [app.js](../src/js/app.js) (test environment).
+> 
+> If you are modifying the core frontend behavior (filters, sorting, search, modals, bookmarks, etc.), you **MUST** apply your changes to **both** files in sync. Run `npm test` locally to ensure they are properly aligned.
+
 ---
 
 ## PR Submission Process
@@ -348,6 +354,31 @@ Before submitting:
 - [ ] Screenshots attached (if UI changes)
 - [ ] Commit messages follow conventional commits
 - [ ] DCO sign-off included
+
+---
+
+## PR Validation & Review Gates
+
+When you open a Pull Request, automated bots immediately perform Stage 1 checks. Make sure:
+1.  **Linked Issue:** The description contains `Closes #N` where `N` is your assigned issue. PRs without a linked issue may be closed automatically.
+2.  **Conventional Title:** The PR title starts with a conventional commit prefix (e.g. `feat: ...`, `fix: ...`, `style: ...`).
+3.  **DCO Sign-off:** All commits in your PR must be signed off (`git commit -s`).
+
+### 🔑 Fixing DCO (Sign-off) Failures
+
+If the DCO check flags your PR, you can sign off your existing commits using the terminal:
+
+**To sign off your last commit:**
+```bash
+git commit --amend --no-edit -s
+git push --force-with-lease origin <your-branch-name>
+```
+
+**To sign off multiple commits:**
+```bash
+git rebase -i HEAD~N -x "git commit --amend --no-edit -s"
+git push --force-with-lease origin <your-branch-name>
+```
 
 ---
 

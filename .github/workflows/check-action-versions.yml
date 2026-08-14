@@ -1,0 +1,161 @@
+name: Check Action Version Bumps
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 9 * * 1" # Every Monday 9AM UTC
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Check and update action versions
+        id: update
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          CHANGES=false
+          SUMMARY="Checking and updating the actions versions"
+
+          # Find all workflow files
+          WORKFLOW_FILES=$(find .github/workflows -name "*.yml" -o -name "*.yaml" 2>/dev/null)
+
+          if [ -z "$WORKFLOW_FILES" ]; then
+            echo "No workflow files found"
+            exit 0
+          fi
+
+          # Actions to check: "owner/repo"
+          ACTIONS=(
+            "actions/checkout"
+            "actions/setup-node"
+            "actions/github-script"
+            "peter-evans/create-pull-request"
+            "peakoss/anti-slop"
+            "actions/setup-python"
+          )
+
+          for ACTION in "${ACTIONS[@]}"; do
+            # Get latest release tag from GitHub API
+            LATEST=$(gh api \
+              -H "Accept: application/vnd.github+json" \
+              "/repos/${ACTION}/releases/latest" \
+              --jq '.tag_name' 2>/dev/null || echo "")
+
+            if [ -z "$LATEST" ]; then
+              echo "Could not fetch latest version for ${ACTION}, skipping"
+              continue
+            fi
+
+            echo "Latest version for ${ACTION}: ${LATEST}"
+
+            # Search all workflow files for this action and update if needed
+            for FILE in $WORKFLOW_FILES; do
+              # Match lines using this action with any version tag or SHA
+              if grep -qE "uses: ${ACTION}@" "$FILE"; then
+
+                # FIX 1: Extract the tag from the inline comment (#vX.X.X)
+                # Handles both bare tags (@v1.0.0) and SHA-pinned lines (@SHA #v1.0.0)
+                CURRENT=$(grep -E "uses: ${ACTION}@" "$FILE" | head -1 | sed 's/.*#//' | tr -d ' ')
+
+                # Fallback: if no comment found, extract version after @
+                if [ -z "$CURRENT" ] || echo "$CURRENT" | grep -qE "^[0-9a-f]{40}$"; then
+                  CURRENT=$(grep -E "uses: ${ACTION}@" "$FILE" | head -1 | sed 's/.*@//' | sed 's/ .*//' | tr -d ' ')
+                fi
+
+                if [ "$CURRENT" != "$LATEST" ]; then
+                  echo "Updating ${ACTION} from ${CURRENT} to ${LATEST} in ${FILE}"
+
+                  # FIX 2: Resolve annotated tags to the actual commit SHA
+                  # Step 1: Get the object the tag points to
+                  TAG_INFO=$(gh api "/repos/${ACTION}/git/ref/tags/${LATEST}" --jq '.object | {sha: .sha, type: .type}' 2>/dev/null || echo "")
+
+                  if [ -z "$TAG_INFO" ]; then
+                    echo "Could not resolve SHA for ${ACTION}@${LATEST}, skipping"
+                    continue
+                  fi
+
+                  OBJ_TYPE=$(echo "$TAG_INFO" | jq -r '.type')
+                  SHA=$(echo "$TAG_INFO" | jq -r '.sha')
+
+                  # Step 2: If it's an annotated tag object, dereference to get the commit SHA
+                  if [ "$OBJ_TYPE" = "tag" ]; then
+                    SHA=$(gh api "/repos/${ACTION}/git/tags/${SHA}" --jq '.object.sha' 2>/dev/null || echo "")
+                    if [ -z "$SHA" ]; then
+                      echo "Could not dereference annotated tag for ${ACTION}@${LATEST}, skipping"
+                      continue
+                    fi
+                  fi
+
+                  echo "Resolved ${LATEST} -> commit SHA: ${SHA}"
+
+                  # Writes both commit SHA + tag as comment
+                  sed -i "s|uses: ${ACTION}@.*|uses: ${ACTION}@${SHA} #${LATEST}|g" "$FILE"
+
+                  CHANGES=true
+                  SUMMARY="${SUMMARY}\n- \`${ACTION}\`: \`${CURRENT}\` → \`${LATEST}\` (\`${SHA:0:7}\`) in \`${FILE}\`"
+                else
+                  echo "${ACTION} already at ${LATEST} in ${FILE}"
+                fi
+              fi
+            done
+          done
+
+          # Pass changes flag to next steps
+          echo "changes=${CHANGES}" >> "$GITHUB_OUTPUT"
+
+          # Write summary to a file (multiline safe)
+          echo -e "$SUMMARY" > /tmp/changes_summary.txt
+
+      - name: Read changes summary
+        id: summary
+        run: |
+          CONTENT=$(cat /tmp/changes_summary.txt)
+          echo "text<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$CONTENT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request
+        if: steps.update.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 #v8.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: bump GitHub Actions to latest versions"
+          title: "chore: bump GitHub Actions to latest versions"
+          body: |
+            ## Automated Action Version Bumps
+
+            This PR was auto-generated by the `check-action-versions` workflow.
+
+            ### Changes
+            ${{ steps.summary.outputs.text }}
+
+            ### Why
+            Keeps all workflow actions up to date and Node.js 24 compatible
+            ahead of the GitHub deprecation deadline (June 16, 2026).
+
+            ### Verification
+            - Versions fetched directly from GitHub Releases API
+            - All actions pinned to immutable commit SHAs (not mutable tags)
+            - Annotated tags are dereferenced to their actual commit SHA
+          branch: chore/bump-action-versions
+          delete-branch: true
+          labels: |
+            dependencies
+            github-actions
+
+      - name: No updates needed
+        if: steps.update.outputs.changes == 'false'
+        run: echo "All actions are already on latest versions. No PR needed."

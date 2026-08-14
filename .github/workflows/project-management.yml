@@ -14,7 +14,7 @@ on:
       - reopened
 
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: "0 */12 * * *"
 
 permissions:
   pull-requests: write
@@ -26,7 +26,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
   # =========================================================
   # AUTO LABEL PRs BY FILE PATHS
   # =========================================================
@@ -37,7 +36,7 @@ jobs:
 
     steps:
       - name: Auto-label PR by changed paths
-        uses: actions/github-script@v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
 
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -160,7 +159,7 @@ jobs:
 
     steps:
       - name: Auto-triage issues
-        uses: actions/github-script@v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
 
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -283,7 +282,7 @@ jobs:
 
     steps:
       - name: Remind stale mentor reviews
-        uses: actions/github-script@v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
 
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

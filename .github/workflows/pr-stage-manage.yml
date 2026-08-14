@@ -17,7 +17,6 @@ permissions:
   pull-requests: write
   issues: write
   contents: read
-  metadata: write
 
 concurrency:
   group: pr-stage-manager-${{ github.event.pull_request.number || github.event.review.pull_request.number }}
@@ -27,18 +26,20 @@ jobs:
   stage-manager:
     runs-on: ubuntu-latest
 
-    # Prevent bot recursion
-    if: |
-      github.actor != 'github-actions[bot]'
-
     steps:
       - name: Evaluate PR Pipeline
-        uses: actions/github-script@v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
 
         with:
           # Use built-in token instead of PAT
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            // Prevent bot recursion — skip execution if triggered by the github-actions bot
+            if (context.actor === 'github-actions[bot]') {
+              core.info('Skipping workflow run for github-actions[bot]');
+              return;
+            }
+
             const owner = context.repo.owner;
             const repo = context.repo.repo;
 
@@ -90,11 +91,31 @@ jobs:
             // PROGRAM DETECTION
             // --------------------------------------------------
 
-            const isGSSOC =
+            let isGSSOC =
               labels.includes('gssoc26');
 
-            const isNSOC =
+            let isNSOC =
               labels.includes('nsoc26');
+
+            // ── Dual-label guard ────────────────────────────────────────────
+            // If a PR somehow carries both gssoc26 and nsoc26 labels (e.g. from
+            // a conflicting PR body), normalise to GSSoC-only here so that ALL
+            // downstream stage logic (stage2Passed, typeBadge, comment text)
+            // uses a single, consistent program classification.
+            // Single-label PRs are entirely unaffected by this block.
+            const isDualLabel = isGSSOC && isNSOC;
+            if (isDualLabel) {
+              isNSOC = false; // GSSoC takes priority — discard NSoC classification
+              core.warning(`PR #${prNumber}: dual-label detected (gssoc26 + nsoc26) — resolved to GSSoC priority`);
+              
+              // Remove the conflicting label from GitHub to prevent downstream workflows from reading stale state
+              try {
+                await removeLabel('nsoc26');
+              } catch (e) {
+                core.warning(`Failed to remove 'nsoc26' label from GitHub: ${e.message}`);
+              }
+            }
+            // ────────────────────────────────────────────────────────────────
 
             // --------------------------------------------------
             // STAGE 1
@@ -392,9 +413,13 @@ jobs:
             // BADGE
             // --------------------------------------------------
 
+            // When a dual-label conflict was auto-resolved, append a notice to
+            // the badge so maintainers can see that the priority rule was applied.
             const typeBadge =
               isGSSOC
-                ? '> 🟢 **GSSOC PR**'
+                ? isDualLabel
+                  ? '> 🟢 **GSSOC PR** _(dual-label conflict auto-resolved — GSSoC priority applied)_'
+                  : '> 🟢 **GSSOC PR**'
                 : isNSOC
                   ? '> 🔵 **NSOC PR**'
                   : '> ⚪ **Standard PR**';
@@ -502,27 +527,45 @@ jobs:
                 return;
               }
 
-              await github.rest.issues.updateComment({
-                owner,
-                repo,
-                comment_id: existing.id,
-                body
-              });
+              try {
 
-              core.info(
-                'Updated pipeline comment'
-              );
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: existing.id,
+                  body
+                });
+
+                core.info(
+                  'Updated pipeline comment'
+                );
+
+              } catch (e) {
+
+                core.warning(
+                  `Failed updating pipeline comment: ${e.message}`
+                );
+              }
 
             } else {
 
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: Number(prNumber),
-                body
-              });
+              try {
 
-              core.info(
-                'Created pipeline comment'
-              );
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: Number(prNumber),
+                  body
+                });
+
+                core.info(
+                  'Created pipeline comment'
+                );
+
+              } catch (e) {
+
+                core.warning(
+                  `Failed creating pipeline comment: ${e.message}`
+                );
+              }
             }
