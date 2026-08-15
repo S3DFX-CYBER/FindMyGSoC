@@ -54,13 +54,13 @@ open index.html   # macOS
 > 💡 No Node.js, no npm, no build tools needed. This is a pure HTML/CSS/JS project.
 
 **Helpful links for new contributors:**
+**Helpful links for new contributors:**
 
 | Guide | Link |
 |-------|------|
 | GSSoC'26 Contributors | [GSSoC Contributor Guide](docs/GSSOC_CONTRIBUTOR_GUIDE.md) |
 | NSoC'26 Contributors | [NSoC Guide](docs/NSOC_GUIDE.md) |
 | General Contributors | [General Contributor Guide](docs/GENERAL_CONTRIBUTOR_GUIDE.md) |
-
 ## ✨ What is this?
 
 GSoC 2026 Org Finder is a fast, modern, and beginner-friendly platform for exploring Google Summer of Code organizations based on tech stack, domains, interests, and contribution goals.
