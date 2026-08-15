@@ -4,23 +4,23 @@
 
 | Rank | Mentor | Reviews | Score |
 |------|--------|---------|-------|
-| 🥇 | @KumarNirupam1 | 32 | 137 |
+| 🥇 | @KumarNirupam1 | 41 | 183 |
 | 🥈 | @TarunyaProgrammer | 23 | 92 |
 | 🥉 | @nitinog10 | 16 | 69 |
 | 4 | @Anushreebasics | 20 | 52 |
-| 5 | @deepak0x | 9 | 38 |
+| 5 | @deepak0x | 11 | 44 |
 | 6 | @4f4d | 7 | 37 |
-| 7 | @itsdakshjain | 6 | 19 |
-| 8 | @knoxiboy | 6 | 19 |
-| 9 | @saurabh24thakur | 3 | 17 |
-| 10 | @Balaji91221 | 8 | 16 |
-| 11 | @Maxd646 | 4 | 12 |
-| 12 | @12fahed | 3 | 11 |
-| 13 | @Mrigakshi-Rathore | 5 | 10 |
-| 14 | @CoderOggy78 | 4 | 9 |
-| 15 | @MUKUL-PRASAD-SIGH | 4 | 9 |
-| 16 | @nihalawasthi | 3 | 7 |
-| 17 | @AnirudhPhophalia | 3 | 6 |
+| 7 | @AnirudhPhophalia | 10 | 20 |
+| 8 | @itsdakshjain | 6 | 19 |
+| 9 | @knoxiboy | 6 | 19 |
+| 10 | @saurabh24thakur | 3 | 17 |
+| 11 | @Balaji91221 | 8 | 16 |
+| 12 | @Maxd646 | 4 | 12 |
+| 13 | @12fahed | 3 | 11 |
+| 14 | @Mrigakshi-Rathore | 5 | 10 |
+| 15 | @CoderOggy78 | 4 | 9 |
+| 16 | @MUKUL-PRASAD-SIGH | 4 | 9 |
+| 17 | @nihalawasthi | 3 | 7 |
 | 18 | @BandhiyaHardik | 3 | 6 |
 | 19 | @sabeenaviklar | 2 | 6 |
 | 20 | @stealthwhizz | 2 | 6 |
@@ -63,4 +63,4 @@
 | 57 | @uddalak2005 | 0 | 0 |
 | 58 | @vanshaggarwal07 | 0 | 0 |
 
-Last updated: Tue, 30 Jun 2026 06:52:58 GMT
+Last updated: Fri, 14 Aug 2026 03:01:22 GMT

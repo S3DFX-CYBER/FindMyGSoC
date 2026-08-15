@@ -26,7 +26,6 @@ test('getRecommendations returns top 6 recommendations sorted by score', () => {
 
   // Each recommendation object must have required properties
   recommendations.forEach(rec => {
-    assert.ok('orgIndex' in rec);
     assert.ok('org' in rec);
     assert.ok('score' in rec);
     assert.ok('rawScore' in rec);

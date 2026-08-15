@@ -4,25 +4,25 @@
   "outputDirectory": ".",
   "buildCommand": "",
   "devCommand": "npx serve . -l $PORT",
-  "rewrites": [
-    { "source": "/", "destination": "/landing.html" },
-    { "source": "/app", "destination": "/index.html" },
-    { "source": "/app/:path*", "destination": "/index.html" },
-    { "source": "/api/github", "destination": "/api/github.js" }
-  ],
-  "headers": [
+  "routes": [
+    { "src": "/app/(.*)", "dest": "/index.html" },
+    { "src": "/app", "dest": "/index.html" },
     {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Cache-Control", "value": "s-maxage=3600" }
-      ]
+      "src": "/api/(.*)",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "s-maxage=3600"
+      },
+      "continue": true
     },
     {
-      "source": "/data/(.*)\\.json",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
-      ]
-    }
+      "src": "/data/(.*)\\.json",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      },
+      "continue": true
+    },
+    { "src": "/api/github", "dest": "/api/github.js" },
+    { "src": "/", "dest": "/landing.html" }
   ]
 }
