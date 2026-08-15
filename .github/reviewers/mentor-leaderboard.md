@@ -5,7 +5,7 @@
 | Rank | Mentor | Reviews | Score |
 |------|--------|---------|-------|
 | 🥇 | @KumarNirupam1 | 41 | 183 |
-| 🥈 | @TarunyaProgrammer | 23 | 92 |
+| 🥈 | @TarunyaProgrammer | 24 | 98 |
 | 🥉 | @nitinog10 | 16 | 69 |
 | 4 | @Anushreebasics | 20 | 52 |
 | 5 | @deepak0x | 11 | 44 |
@@ -63,4 +63,4 @@
 | 57 | @uddalak2005 | 0 | 0 |
 | 58 | @vanshaggarwal07 | 0 | 0 |
 
-Last updated: Fri, 14 Aug 2026 03:01:22 GMT
+Last updated: Sat, 15 Aug 2026 16:11:01 GMT
