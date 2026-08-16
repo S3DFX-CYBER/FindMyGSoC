@@ -3760,13 +3760,61 @@
   },
   "openSUSE Project": {
     "org": "openSUSE Project",
-    "ideasUrl": "https://en.opensuse.org/openSUSE:GSOC",
-    "channels": [],
-    "mentors": [],
-    "mailingLists": [],
-    "tip": "",
-    "status": "fetch-failed",
-    "lastFetched": "2026-05-09T16:09:12.548Z"
+    "ideasUrl": "https://github.com/openSUSE/mentoring/issues",
+    "channels": [ {
+      "type": "Matrix",
+      "url": "https://chat.opensuse.org",
+      "label": "openSUSE Matrix Chat"
+    }, {
+      "type": "Discord",
+      "url": "https://discord.com/invite/opensuse",
+      "label": "openSUSE Discord"
+    }, {
+      "type": "Mailing list",
+      "url": "https://lists.opensuse.org/archives/list/project@lists.opensuse.org/",
+      "label": "openSUSE Project Mailing List"
+    }, {
+      "type": "Mailing list",
+      "url": "https://lists.opensuse.org/archives/list/factory@lists.opensuse.org/",
+      "label": "openSUSE Factory Mailing List"
+    }],
+    "mentors": [ {
+      "name": "Cédric Bosdonnat",
+      "github": "cbosdo",
+      "githubUrl": "https://github.com/cbosdo"
+    }, {
+      "name": "Óscar Barrios",
+      "github": "srbarrios",
+      "githubUrl": "https://github.com/srbarrios"
+    }, {
+      "name": "Jordi Massaguer Pla",
+      "github": "jordimassaguerpla",
+      "githubUrl": "https://github.com/jordimassaguerpla"
+    }, {
+      "name": "Ondřej Holeček",
+      "github": "aaannz",
+      "githubUrl": "https://github.com/aaannz"
+    }, {
+      "name": "Abid Mehmood",
+      "github": "admd",
+      "githubUrl": "https://github.com/admd"
+    }, {
+      "name": "Marvin Friedrich",
+      "github": "MarvinFriedrich",
+      "githubUrl": "https://github.com/MarvinFriedrich"
+    }],
+    "mailingLists": [ {
+      "type": "Mailing list",
+      "url": "https://lists.opensuse.org/archives/list/project@lists.opensuse.org/",
+      "label": "openSUSE Project Mailing List"
+    }, {
+      "type": "Mailing list",
+      "url": "https://lists.opensuse.org/archives/list/factory@lists.opensuse.org/",
+      "label": "openSUSE Factory Mailing List"
+    }],
+    "tip": "openSUSE mentors post GSoC project ideas as issues in the openSUSE/mentoring repo (labeled GSoC). Comment on the issue to reach the mentor directly. GSoC admin: Dan Demaio (ddemaio).",
+    "status": "ok",
+    "lastFetched": "2026-08-16T12:47:08.000Z"
   },
   "OpenVINO Toolkit": {
     "org": "OpenVINO Toolkit",
