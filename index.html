@@ -36,9 +36,60 @@
         "name": "S3DFX-CYBER"
       }
     }
+  
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
   </script>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js" integrity="sha384-odPBjvtXVM/5hOYIr3A1dB+flh0c3wAT3bSesIOqEGmyUA4JoKf/YTWy0XKOYAY7" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js" integrity="sha384-odPBjvtXVM/5hOYIr3A1dB+flh0c3wAT3bSesIOqEGmyUA4JoKf/YTWy0XKOYAY7" crossorigin="anonymous">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
   <script>
     if (typeof marked === 'undefined') {
       const s = document.createElement('script');
@@ -47,8 +98,42 @@
       s.crossOrigin = "anonymous";
       document.head.appendChild(s);
     }
+  
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.0/dist/purify.min.js" integrity="sha384-lExbHoPFNjOW+xMze1tJWzpODN3bi/yx3zhbwRoZWaIYxjl89HxJcI2BxPTNa9M7" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.0/dist/purify.min.js" integrity="sha384-lExbHoPFNjOW+xMze1tJWzpODN3bi/yx3zhbwRoZWaIYxjl89HxJcI2BxPTNa9M7" crossorigin="anonymous">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
   <script>
     if (typeof DOMPurify === 'undefined') {
       const s = document.createElement('script');
@@ -57,8 +142,42 @@
       s.crossOrigin = "anonymous";
       document.head.appendChild(s);
     }
+  
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.14.0/dist/html2pdf.bundle.min.js" integrity="sha384-EaWTV/aVUkLz3tfwg3+5ycX7Q/d9ET9ruOKUgUuFIRUCfzHO1eo2J62a844iWPmY" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.14.0/dist/html2pdf.bundle.min.js" integrity="sha384-EaWTV/aVUkLz3tfwg3+5ycX7Q/d9ET9ruOKUgUuFIRUCfzHO1eo2J62a844iWPmY" crossorigin="anonymous">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
   <script>
     if (typeof html2pdf === 'undefined') {
       const s = document.createElement('script');
@@ -67,6 +186,23 @@
       s.crossOrigin = "anonymous";
       document.head.appendChild(s);
     }
+  
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -83,6 +219,23 @@
         console.warn('Theme restoration failed:', e);
       }
     })();
+  
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
   </script>
   <script>
     tailwind.config = {
@@ -122,6 +275,23 @@
         },
       },
     }
+  
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
   </script>
   <style>
     .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle}
@@ -1789,7 +1959,24 @@ kbd:hover{
               const fallback = document.getElementById('deadlines-empty-fallback');
               if (fallback) fallback.style.display = activeCount === 0 ? 'block' : 'none';
             })();
-          </script>
+          
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
         </div>
         <div class="bg-gradient-to-br from-primary to-primary-container text-white rounded-2xl p-6 relative overflow-hidden">
           <div class="absolute top-0 right-0 p-4 opacity-20"><span class="material-symbols-outlined text-5xl">auto_awesome</span></div>
@@ -2095,7 +2282,24 @@ kbd:hover{
 
 <!-- Footer Placeholder -->
 <div id="footer-placeholder"></div>
-<script src="src/js/footer.js"></script>
+<script src="src/js/footer.js">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
 
 
 <!-- ═══════════════════ MODAL ═══════════════════ -->
@@ -2292,7 +2496,24 @@ kbd:hover{
 </div>
 
 <!-- ═══════════════════ JS ═══════════════════ -->
-<script src="agent/scripts/orgs.js"></script>
+<script src="agent/scripts/orgs.js">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
 <script>
   // ══════════════════════════════════════════════
   // SAFE ORG DATA GUARD
@@ -5245,17 +5466,68 @@ if(org.ideas){
   function rawHTML(v) { return new SafeHTMLString(v || ''); }
   globalThis.safeHTML = safeHTML;
   globalThis.rawHTML = rawHTML;
-</script>
+
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
 
 <!-- Vercel Speed Insights -->
-<script type="module" src="agent/scripts/speed-insights.js"></script>
+<script type="module" src="agent/scripts/speed-insights.js">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
 <script>
   if ('serviceWorker' in navigator) {
     globalThis.addEventListener('load', () => {
       navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
     });
   }
-</script>
+
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
 
 <div class="modal-bg" id="helpModal">
   <div class="modal">
@@ -5471,12 +5743,114 @@ if(e.key.toLowerCase()==='r'){
   globalThis.closeHelpModal = closeHelpModal;
 
 });
-</script>
-<script src="src/js/badges-mvp.js"></script>
-<script src="src/js/githubAnalyzer.js"></script>
-<script src="src/js/skillExtractor.js"></script>
-<script src="src/js/recommender.js"></script>
-<script src="src/js/recommendation-ui.js"></script>
+
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
+<script src="src/js/badges-mvp.js">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
+<script src="src/js/githubAnalyzer.js">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
+<script src="src/js/skillExtractor.js">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
+<script src="src/js/recommender.js">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
+<script src="src/js/recommendation-ui.js">
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
 <div id="tooltip" class="tooltip"></div>
 <script>
 (function(){
@@ -5570,7 +5944,24 @@ if(e.key.toLowerCase()==='r'){
   globalThis.addEventListener('scroll', handleScrollResize, { passive: true });
   globalThis.addEventListener('resize', handleScrollResize, { passive: true });
 })();
-</script>
+
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
 <script>
 (function () {
   const sectionIds = ["timeline","orgs","ai-recommender","watchlist","issues","mentors","guide","contact"];
@@ -5824,7 +6215,24 @@ if(e.key.toLowerCase()==='r'){
     }
   });
 })();
-</script>
+
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
 <!-- ORG PICKER MODAL -->
 <dialog id="orgPickerModal" aria-modal="true" aria-labelledby="orgPickerTitle" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;padding:16px;width:100%;height:100%;margin:0;">
   <div style="background:#fff;border-radius:16px;width:100%;max-width:500px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;">
@@ -5844,6 +6252,23 @@ if(e.key.toLowerCase()==='r'){
   document.getElementById('orgPickerModal').addEventListener('click', function(e) {
     if (e.target === this) closeOrgPicker();
   });
-</script>
+
+    // Save and restore scroll position
+    const SCROLL_KEY = 'gsoc_finder_scroll_pos';
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem(SCROLL_KEY, JSON.stringify({
+        x: window.scrollX, y: window.scrollY, url: window.location.href
+      }));
+    });
+    (function restoreScroll() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY));
+        if (saved && saved.url === window.location.href) {
+          requestAnimationFrame(() => window.scrollTo(saved.x, saved.y));
+        }
+      } catch(e) {}
+    })();
+
+  </script>
 </body>
 </html>
