@@ -29,6 +29,38 @@ Discover organizations based on **tech stack, domains, competition level, GitHub
 </div>
 
 ---
+
+## 🌱 Beginner Quick Start
+
+New to open source? Here's how to get started in 3 steps:
+
+**1. Fork & Clone**
+```bash
+git clone https://github.com/your-username/GSoC-Org-Finder-.git
+cd GSoC-Org-Finder-
+```
+
+**2. Open the project**
+```bash
+# No build step needed! Just open:
+open index.html   # macOS
+# OR double-click index.html on Windows
+```
+
+**3. Make your change & open a PR**
+- Edit files, save, refresh `index.html` in your browser to see changes
+- Follow the [GSSoC Contributor Guide](docs/GSSOC_CONTRIBUTOR_GUIDE.md) for PR rules
+
+> 💡 No Node.js, no npm, no build tools needed. This is a pure HTML/CSS/JS project.
+
+**Helpful links for new contributors:**
+**Helpful links for new contributors:**
+
+| Guide | Link |
+|-------|------|
+| GSSoC'26 Contributors | [GSSoC Contributor Guide](docs/GSSOC_CONTRIBUTOR_GUIDE.md) |
+| NSoC'26 Contributors | [NSoC Guide](docs/NSOC_GUIDE.md) |
+| General Contributors | [General Contributor Guide](docs/GENERAL_CONTRIBUTOR_GUIDE.md) |
 ## ✨ What is this?
 
 GSoC 2026 Org Finder is a fast, modern, and beginner-friendly platform for exploring Google Summer of Code organizations based on tech stack, domains, interests, and contribution goals.
@@ -64,6 +96,9 @@ Built with a responsive and lightweight architecture, the platform delivers a se
 | [👥 GSSoC Mentors](#-gssoc-mentors) | Mentors supporting the project |
 | [📅 Key Dates](#-gsoc-2026-key-dates) | Important GSoC 2026 timeline |
 | [💡 Tips for Users](#-tips-for-users) | Helpful usage tips and shortcuts |
+| [🔌 API Reference](#-api-reference-apigithubjs) | GitHub API proxy endpoints |
+| [🌱 Beginner Quick Start](#-beginner-quick-start) | New contributor onboarding |
+| [🔒 Hardened Architecture](#-hardened-frontend-architecture) | Security and resilience details |
 | [📄 License](#-license) | Project license information |
 
 </div>

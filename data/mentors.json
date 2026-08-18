@@ -1412,7 +1412,28 @@
         "label": "Sharable join link to join"
       }
     ],
-    "mentors": [],
+    "mentors": [
+      {
+        "name": "Shaheem Azmal MMD",
+        "github": "ShaheemAzmalMMD",
+        "githubUrl": "https://github.com/ShaheemAzmalMMD"
+      },
+      {
+        "name": "Kaushlendra Pratap",
+        "github": "KaushlendraPratap",
+        "githubUrl": "https://github.com/KaushlendraPratap"
+      },
+      {
+        "name": "Sushant",
+        "github": "its-sushant",
+        "githubUrl": "https://github.com/its-sushant"
+      },
+      {
+        "name": "Abhishek",
+        "github": "hastagAB",
+        "githubUrl": "https://github.com/hastagAB"
+      }
+    ],
     "mailingLists": [
       {
         "type": "Mailing list",
@@ -1427,7 +1448,7 @@
     ],
     "tip": "Join and say hi in the GSoC channel before DMing mentors.",
     "status": "ok",
-    "lastFetched": "2026-05-09T16:09:12.548Z"
+    "lastFetched": "2026-05-29T14:15:00.000Z"
   },
   "Fortran-lang": {
     "org": "Fortran-lang",
@@ -2129,12 +2150,43 @@
   "International Catrobat Association": {
     "org": "International Catrobat Association",
     "ideasUrl": "https://github.com/Catrobat/Catroid/wiki/Google-Summer-of-Code-2026",
-    "channels": [],
-    "mentors": [],
-    "mailingLists": [],
-    "tip": "",
-    "status": "no-contact-found",
-    "lastFetched": "2026-05-09T16:09:12.548Z"
+
+    "channels": [
+        {
+            "type": "google-groups",
+            "url": "https://groups.google.com/g/catrobat"
+        }
+    ],
+
+    "mentors": [
+        {
+            "name": "Wolfgang Slany",
+            "role": "Founder",
+            "github": "wslany",
+            "githubUrl": "https://github.com/wslany",
+            "linkedin": "https://www.linkedin.com/in/wolfgangslany/"
+        }
+    ],
+
+    "contacts": [
+        {
+            "type": "email",
+            "value": "contact@catrobat.org",
+            "source": "https://github.com/Catrobat"
+        }
+    ],
+
+    "mailingLists": [
+        {
+            "type": "google-groups",
+            "url": "https://groups.google.com/g/catrobat"
+        }
+    ],
+
+    "tip": "Public contact email, founder information, and official LinkedIn page discovered from GitHub, LinkedIn, and organization website.",
+
+    "status": "ok",
+    "lastFetched": "2026-05-25T19:19:47Z"
   },
   "Internet Archive": {
     "org": "Internet Archive",
@@ -3142,12 +3194,22 @@
   },
   "MLLAM": {
     "org": "MLLAM",
-    "ideasUrl": "https://github.com/mllam/mllam-data-prep/wiki/GSoC-2026",
-    "channels": [],
-    "mentors": [],
+    "ideasUrl": "https://github.com/mllam/neural-lam/wiki/GSoC-ideas",
+    "channels": [
+      {
+        "type":"Slack",
+        "url":"https://kutt.to/mllam",
+        "label":"MLLAM Slack"
+      }
+    ],
+    "mentors": [
+      {"name": "Leif Denby", "github": "leifdenby", "githubUrl": "https://github.com/leifdenby"},
+      {"name":"Hauke Schulz","github":"observingClouds", "githubUrl": "https://github.com/observingClouds"},
+      {"name":"Joel Oskarsson","github":"joeloskarsson", "githubUrl": "https://github.com/joeloskarsson"}
+    ],
     "mailingLists": [],
     "tip": "",
-    "status": "no-contact-found",
+    "status": "ok",
     "lastFetched": "2026-05-09T16:09:12.548Z"
   },
   "MoFA Org": {
@@ -3359,22 +3421,60 @@
   },
   "Open Genome Informatics": {
     "org": "Open Genome Informatics",
-    "ideasUrl": "https://github.com/monarch-initiative/monarch-app/wiki/Google-Summer-of-Code",
-    "channels": [],
-    "mentors": [],
-    "mailingLists": [],
+    "ideasUrl": "https://gmod.org/wiki/GSOC_Project_Ideas_2026",
+    "channels": [
+      {
+        "type":"Google Groups",
+        "url":"https://groups.google.com/g/genome-informatics",
+        "label":"Open Genome Informatics Google Group"
+      }
+    ],
+    "mentors": [
+      {"name":"Adam Wright","github":"adamjohnwright","githubUrl":"https://github.com/adamjohnwright"},
+      {"name":"Shraddha Pai","github":"shraddhapai","githubUrl":"https://github.com/shraddhapai"}
+    ],
+    "mailingLists": [
+      {
+        "type": "Email",
+        "url": "mailto:help@gmod.org",
+        "label": "help@gmod.org"
+      }
+    ],
     "tip": "",
-    "status": "no-contact-found",
+    "status": "ok",
     "lastFetched": "2026-05-09T16:09:12.548Z"
   },
   "Open HealthCare Network": {
     "org": "Open HealthCare Network",
     "ideasUrl": "https://summerofcode.withgoogle.com/programs/2026/organizations/open-healthcare-network",
-    "channels": [],
-    "mentors": [],
-    "mailingLists": [],
+    "channels": [
+      {
+       "type": "Slack",
+       "url": "https://slack.ohc.network",
+       "label": "Open HealthCare Network Slack"
+      }
+    ],
+    "mentors": [
+      {
+       "name": "Mohammed Nihal",
+       "github": "nihal467",
+       "githubUrl": "https://github.com/nihal467"
+     },
+     {
+      "name": "Amjith Titus",
+      "github": "amjithtitus09",
+      "githubUrl": "https://github.com/amjithtitus09"
+     }
+    ],
+    "mailingLists": [
+      {
+       "type": "Email",
+       "url": "mailto:info@ohc.network",
+       "label": "info@ohc.network"
+     }
+    ],
     "tip": "",
-    "status": "no-contact-found",
+    "status": "ok",
     "lastFetched": "2026-05-09T16:09:12.548Z"
   },
   "Open Robotics": {

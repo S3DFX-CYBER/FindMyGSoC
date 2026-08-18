@@ -1163,6 +1163,34 @@ kbd:hover{
         border-radius: 999px;
       }
     }
+
+    @media (max-width: 768px) {
+      .premium-footer {
+        padding-bottom: calc(
+          var(--section-fab-bottom)
+          + (var(--section-fab-size) + var(--section-fab-gap)) * 2
+          + env(safe-area-inset-bottom)
+          + 16px
+        );
+      }
+
+      .footer-social-row {
+        max-width: calc(
+          100%
+          - var(--section-fab-right)
+          - var(--section-fab-size)
+          - env(safe-area-inset-right)
+          - 8px
+        );
+      }
+    }
+
+    @media (min-width: 769px) {
+      .premium-footer {
+        padding-bottom: 1.5rem;
+      }
+    } 
+
 @media (pointer: coarse) {
   .filter-chip.bg-orange-600:hover {
     background-color: #ea580c !important;
@@ -3218,13 +3246,13 @@ kbd:hover{
     // Soften banner background to neutral
     if (issuesBanner) {
       issuesBanner.classList.remove('bg-green-50', 'border-green-200');
-      issuesBanner.classList.add('bg-zinc-50', 'border-zinc-200');
+      issuesBanner.classList.add("bg-zinc-50","dark:bg-zinc-800","border-zinc-200","dark:border-zinc-700");
       const title = document.getElementById('issuesBannerTitle');
-      if (title) { title.classList.remove('text-green-800'); title.classList.add('text-zinc-800'); }
+      if (title) { title.classList.remove('text-green-800'); title.classList.add("text-zinc-800", "dark:text-zinc-100"); }
       const subtitle = document.getElementById('issuesBannerSubtitle');
-      if (subtitle) { subtitle.classList.remove('text-green-600'); subtitle.classList.add('text-zinc-500'); }
+      if (subtitle) { subtitle.classList.remove('text-green-600'); subtitle.classList.add("text-zinc-500", "dark:text-zinc-400"); }
       const lastUpdated = document.getElementById('issuesLastUpdated');
-      if (lastUpdated) { lastUpdated.classList.remove('text-green-600'); lastUpdated.classList.add('text-zinc-500'); }
+      if (lastUpdated) { lastUpdated.classList.remove('text-green-600'); lastUpdated.classList.add("text-zinc-500", "dark:text-zinc-400"); }
     }
 
     // --- Mentor Finder banner ---
@@ -4390,6 +4418,10 @@ if(org.ideas){
   copyBtn.innerHTML = '<span class="material-symbols-outlined text-lg">content_copy</span> Copy Link';
   copyBtn.className = 'modal-cta modal-repo-link flex items-center justify-center gap-2';
   copyBtn.onclick = function(){
+    if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
+      console.error('Failed to copy link: Clipboard API unavailable');
+      return;
+    }
     navigator.clipboard.writeText(org.ideas).then(()=>{
       copyBtn.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span> Copied!';
       copyBtn.style.background = '#dcfce7';
@@ -4399,7 +4431,7 @@ if(org.ideas){
         copyBtn.style.background = '';
         copyBtn.style.color = '';
       }, 2000);
-    });
+    }).catch(err => console.error('Failed to copy link:', err));
   };
   document.getElementById('mIdeasBtn').after(copyBtn);
 }

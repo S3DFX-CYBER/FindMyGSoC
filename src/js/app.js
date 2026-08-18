@@ -2471,7 +2471,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('mentorChannelFilter')?.addEventListener('change', renderMentorFinder);
   document.getElementById('matchAllLanguagesToggle')?.addEventListener('change', (e) => {
     matchAllLanguages = e.target.checked;
-    globalThis.matchAllLanguages = matchAllLanguages;
+    globalThis.matchAllLanguages = e.target.checked;
     applyFilters();
   });
 

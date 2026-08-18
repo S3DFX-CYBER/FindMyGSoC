@@ -73,6 +73,13 @@ const COMPARISON_DATA = [
   { feature: 'No login or signup needed',  fmg: 'primary',   gsoc: 'secondary', god: 'secondary', gh: 'secondary' },
 ];
 
+/** Competitors data (for mobile viewport 1-on-1 tabbed comparision)**/
+const COMPETITORS = [
+  { key: 'gsoc', label: 'GSoC Portal', href: null },
+  { key: 'god', label: 'gsocorganizations.dev', href: 'https://www.gsocorganizations.dev/' },
+  { key: 'gh', label: 'GitHub / Manual', href: null },
+];
+
 // ── FAQ Data ──────────────────────────────────────────────────────────────────
 
 /** Single source of truth — eliminates duplicated accordion blocks in markup */
@@ -152,6 +159,115 @@ function renderComparisonRows() {
   }
 
   tbody.appendChild(fragment);
+}
+
+function renderMobileComparisonRows(competitorKey) {
+  const tbody = document.getElementById('comparisonRowsMobile');
+  if (!tbody) { return; }
+
+  tbody.textContent = '';
+  const fragment = document.createDocumentFragment();
+
+  for (const row of COMPARISON_DATA) {
+    const tr = document.createElement('tr');
+
+    const featureTd = document.createElement('td');
+    featureTd.className = 'py-3.5 pr-3 text-zinc-700 dark:text-zinc-300 font-medium';
+    featureTd.textContent = row.feature;
+    tr.appendChild(featureTd);
+
+    tr.appendChild(createComparisonCell(row.fmg));
+    tr.appendChild(createComparisonCell(row[competitorKey]));
+
+    fragment.appendChild(tr);
+  }
+
+  tbody.appendChild(fragment);
+}
+
+function updateMobileCompetitorHeader(competitor) {
+  const labelEl = document.getElementById('mobileCompetitorLabel');
+  if (!labelEl) { return; }
+
+  labelEl.textContent = '';
+
+  if (competitor.href) {
+    const link = document.createElement('a');
+    link.href = competitor.href;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'hover:text-primary transition-colors underline decoration-dotted';
+    link.textContent = competitor.label;
+    labelEl.appendChild(link);
+  } else {
+    labelEl.textContent = competitor.label;
+  }
+}
+
+const TAB_ACTIVE_CLASSES = [
+  'bg-white', 'dark:bg-zinc-900', 'text-zinc-900', 'dark:text-zinc-50',
+  'border-primary', 'shadow-sm',
+];
+const TAB_INACTIVE_CLASSES = ['border-transparent', 'text-zinc-500', 'dark:text-zinc-400'];
+
+function setActiveCompetitorTab(key) {
+  document.querySelectorAll('.compare-tab-btn').forEach((btn) => {
+    const isActive = btn.dataset.competitor === key;
+    btn.setAttribute('aria-selected', String(isActive));
+    btn.setAttribute('tabindex', isActive ? '0' : '-1');
+    btn.classList.remove(...TAB_ACTIVE_CLASSES, ...TAB_INACTIVE_CLASSES);
+    btn.classList.add('border', ...(isActive ? TAB_ACTIVE_CLASSES : TAB_INACTIVE_CLASSES));
+
+    if (isActive) {
+      const panel = document.getElementById('comparisonTabpanel');
+      if (panel) { panel.setAttribute('aria-labelledby', btn.id); }
+    }
+  });
+}
+
+function initComparisonTabs() {
+  const container = document.getElementById('competitorTabs');
+  if (!container) { return; }
+
+  const tabs = Array.from(container.querySelectorAll('.compare-tab-btn'));
+
+  const activate = (key) => {
+    const competitor = COMPETITORS.find((c) => c.key === key);
+    if (!competitor) { return; }
+    renderMobileComparisonRows(key);
+    updateMobileCompetitorHeader(competitor);
+    setActiveCompetitorTab(key);
+  };
+
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.compare-tab-btn');
+    if (!btn) { return; }
+    activate(btn.dataset.competitor);
+  });
+
+  container.addEventListener('keydown', (e) => {
+    const currentIndex = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+
+    let targetIndex = null;
+    if (e.key === 'ArrowRight') {
+      targetIndex = (currentIndex + 1) % tabs.length;
+    } else if (e.key === 'ArrowLeft') {
+      targetIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    } else if (e.key === 'Home') {
+      targetIndex = 0;
+    } else if (e.key === 'End') {
+      targetIndex = tabs.length - 1;
+    } else {
+      return;
+    }
+
+    e.preventDefault();
+    const targetTab = tabs[targetIndex];
+    targetTab.focus();
+    activate(targetTab.dataset.competitor);
+  });
+
+  activate(COMPETITORS[0].key);
 }
 
 /**
@@ -386,6 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Render data-driven sections
   renderComparisonRows();
+  initComparisonTabs();
   renderFaqList();
 
   // FAQ accordion — event delegation on the dynamically rendered list

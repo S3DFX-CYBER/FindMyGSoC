@@ -706,8 +706,7 @@
         </p>
       </div>
 
-      <!-- Comparison Table -->
-      <div class="max-w-4xl mx-auto mb-16 overflow-x-auto">
+      <div class="hidden md:block max-w-4xl mx-auto mb-16 overflow-x-auto">
         <table class="w-full text-sm border-collapse">
           <thead>
             <tr>
@@ -735,6 +734,44 @@
           </tbody>
         </table>
       </div>
+      
+      <!-- mobile only 1-on-1 tabbed comparison -->
+      <div class="md:hidden max-w-md mx-auto mb-16">
+        <div id="comparisonTabpanel" role="tabpanel" aria-labelledby="tab-gsoc" tabindex="0">
+          <table class="w-full text-sm border-collapse table-fixed">
+            <thead>
+              <tr>
+                <th class="text-left pb-4 pr-3 text-zinc-400 dark:text-zinc-500 font-semibold text-xs uppercase tracking-widest w-1/2">
+                  Feature
+                </th>
+                <th class="pb-4 px-2 text-center w-1/4">
+                  <div class="inline-flex flex-col items-center gap-1">
+                    <span class="text-sm font-extrabold text-primary font-headline">FindMyGSoC</span>
+                    <span class="text-[9px] uppercase tracking-widest text-orange-400 font-bold bg-orange-50 dark:bg-orange-950/30 px-2 py-0.5 rounded-full">This tool</span>
+                  </div>
+                </th>
+                <th class="pb-4 px-2 text-center text-zinc-400 dark:text-zinc-500 font-semibold text-xs w-1/4">
+                  <span id="mobileCompetitorLabel">GSoC Portal</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="comparisonRowsMobile" class="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+            </tbody>
+          </table>
+        </div>
+
+        <div id="competitorTabs" role="tablist" aria-label="Choose a competitor to compare against" class="mt-5 flex flex-wrap justify-center gap-1 p-1 rounded-full bg-zinc-100 dark:bg-zinc-800/60 border border-zinc-200/70 dark:border-zinc-700/60">
+          <button type="button" role="tab" id="tab-gsoc" aria-selected="true" aria-controls="comparisonTabpanel" tabindex="0" data-competitor="gsoc" class="compare-tab-btn px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 border border-primary shadow-sm">
+          GSoC Portal
+          </button>
+          <button type="button" role="tab" id="tab-god" aria-selected="false" aria-controls="comparisonTabpanel" tabindex="-1" data-competitor="god" class="compare-tab-btn px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border border-transparent text-zinc-500 dark:text-zinc-400">
+          gsocorganizations.dev
+          </button>
+          <button type="button" role="tab" id="tab-gh" aria-selected="false" aria-controls="comparisonTabpanel" tabindex="-1" data-competitor="gh" class="compare-tab-btn px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border border-transparent text-zinc-500 dark:text-zinc-400">
+          GitHub / Manual
+          </button>
+        </div>
+      </div> 
 
       <!-- Advantage highlight cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
