@@ -49,6 +49,22 @@ const CATEGORY_META = {
   other: { className: 'bg-zinc-100 text-zinc-600', label: 'Other' },
 };
 
+// ══════════════════════════════════════════════
+// UTILITY FUNCTIONS
+// ══════════════════════════════════════════════
+/**
+ * Returns a debounced version of fn that delays invoking it until after
+ * `delay` ms have elapsed since the last call. Prevents excessive filter
+ * re-renders on every keystroke in search inputs.
+ */
+function debounce(fn, delay) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
 const LANGUAGE_ALIASES = {
   'python': ['python'],
   'javascript': ['javascript', 'js'],
@@ -2463,11 +2479,13 @@ document.addEventListener('DOMContentLoaded', () => {
   renderGoodFirstIssues();
 
   // Wire up filter event listeners
-  document.getElementById('searchInput')?.addEventListener('input', applyFilters);
+  const debouncedApplyFilters = debounce(applyFilters, 300);
+  document.getElementById('searchInput')?.addEventListener('input', debouncedApplyFilters);
   document.getElementById('categoryFilter')?.addEventListener('change', applyFilters);
   document.getElementById('complexityFilter')?.addEventListener('change', applyFilters);
   document.getElementById('sortSelect')?.addEventListener('change', applyFilters);
-  document.getElementById('mentorSearchInput')?.addEventListener('input', renderMentorFinder);
+  const debouncedRenderMentorFinder = debounce(renderMentorFinder, 300);
+  document.getElementById('mentorSearchInput')?.addEventListener('input', debouncedRenderMentorFinder);
   document.getElementById('mentorChannelFilter')?.addEventListener('change', renderMentorFinder);
   document.getElementById('matchAllLanguagesToggle')?.addEventListener('change', (e) => {
     matchAllLanguages = e.target.checked;
@@ -2518,7 +2536,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.value = e.target.value;
         const orgsSec = document.getElementById('orgs');
         if (orgsSec) orgsSec.scrollIntoView({ behavior: 'smooth' });
-        applyFilters();
+        debouncedApplyFilters();
       }
     });
   }
