@@ -35,17 +35,90 @@ function setLocalCache(cache) {
   }
 }
 
+/**
+ * Directly queries the public GitHub REST API from the client browser.
+ * Used as a fallback when the edge proxy is unavailable or unauthenticated.
+ * Subject to GitHub's unauthenticated rate limit (60 req/hr per IP).
+ *
+ * @param {string} normalizedUsername - Lowercase GitHub username
+ * @returns {Promise<Object>} - Profile data in the same shape as the edge proxy response
+ */
+async function fetchUserProfileDirect(normalizedUsername) {
+  const response = await fetch(
+    // Fetch up to 100 most recently updated repos (GitHub API max per_page).
+    // Note: Users with >100 repos will have incomplete profile data.
+    `https://api.github.com/users/${encodeURIComponent(normalizedUsername)}/repos?per_page=100&sort=updated`,
+    {
+      headers: {
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'User-Agent': 'gsoc-org-finder',
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`GitHub ${response.status}`);
+  }
+
+  const repos = await response.json();
+
+  if (!Array.isArray(repos)) {
+    throw new Error('GitHub API returned invalid response format');
+  }
+
+  let totalStars = 0;
+  const languageCounts = {};
+  const topicCounts = {};
+  let activeDays = 9999;
+
+  repos.forEach(r => {
+    if (r.fork) return;
+    totalStars += r.stargazers_count || 0;
+    if (r.language) {
+      languageCounts[r.language] = (languageCounts[r.language] || 0) + 1;
+    }
+    if (Array.isArray(r.topics)) {
+      r.topics.forEach(t => { topicCounts[t] = (topicCounts[t] || 0) + 1; });
+    }
+    if (r.pushed_at) {
+      const days = Math.floor((Date.now() - new Date(r.pushed_at)) / 86400000);
+      if (days < activeDays) activeDays = days;
+    }
+  });
+
+  const languages = Object.entries(languageCounts).sort((a, b) => b[1] - a[1]).map(x => x[0]);
+  const topics = Object.entries(topicCounts).sort((a, b) => b[1] - a[1]).map(x => x[0]);
+
+  let activity = 'low';
+  if (activeDays < 30) activity = 'high';
+  else if (activeDays < 90) activity = 'medium';
+
+  return { languages, topics, stars: totalStars, activity };
+}
+
 async function fetchUserProfileFromAPI(normalizedUsername, signal) {
-  const response = await fetch(`${USER_API_ENDPOINT}?user=${encodeURIComponent(normalizedUsername)}`, { signal });
+  let response;
   let data;
+
   try {
-    data = await response.json();
-  } catch {
-    // Handle case where response is not valid JSON
+    response = await fetch(`${USER_API_ENDPOINT}?user=${encodeURIComponent(normalizedUsername)}`, { signal });
+    try {
+      data = await response.json();
+    } catch {
+      // Response body is not valid JSON
+    }
+  } catch (err) {
+    if (err.name === 'AbortError') throw err;
+    // Edge proxy is unreachable (network error, no GITHUB_TOKEN configured, etc.)
+    // Fall back to the public GitHub API directly from the browser.
+    return await fetchUserProfileDirect(normalizedUsername);
   }
 
   if (!response.ok) {
-    throw new Error(data?.error || `Failed to fetch user data: ${response.status}`);
+    // Edge proxy returned an error status. Fall back to the public GitHub API
+    // so the recommender remains usable in local forks and unauthenticated deploys.
+    return await fetchUserProfileDirect(normalizedUsername);
   }
 
   if (!data) {
@@ -131,7 +204,3 @@ async function analyzeGitHubUser(username, options = {}) {
 
 // Export for global usage
 globalThis.analyzeGitHubUser = analyzeGitHubUser;
-
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { analyzeGitHubUser };
-}

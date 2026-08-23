@@ -35,6 +35,17 @@ globalThis.matchAllLanguages = matchAllLanguages;
 globalThis.compareList = compareList;
 globalThis.bookmarkedSet = bookmarkedSet;
 
+// ══════════════════════════════════════════════
+// DEBOUNCE UTILITY FOR SEARCH OPTIMIZATION
+// ══════════════════════════════════════════════
+function debounce(fn, delay) {
+  let timeoutId;
+  return function debounced(...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
+}
+
 const CATEGORY_META = {
   science: { className: 'bg-blue-100 text-blue-700', label: 'Science' },
   programming: { className: 'bg-violet-100 text-violet-700', label: 'Programming' },
@@ -2463,11 +2474,14 @@ document.addEventListener('DOMContentLoaded', () => {
   renderGoodFirstIssues();
 
   // Wire up filter event listeners
-  document.getElementById('searchInput')?.addEventListener('input', applyFilters);
+  const debouncedApplyFilters = debounce(applyFilters, 250);
+  const debouncedRenderMentorFinder = debounce(renderMentorFinder, 250);
+
+  document.getElementById('searchInput')?.addEventListener('input', debouncedApplyFilters);
   document.getElementById('categoryFilter')?.addEventListener('change', applyFilters);
   document.getElementById('complexityFilter')?.addEventListener('change', applyFilters);
   document.getElementById('sortSelect')?.addEventListener('change', applyFilters);
-  document.getElementById('mentorSearchInput')?.addEventListener('input', renderMentorFinder);
+  document.getElementById('mentorSearchInput')?.addEventListener('input', debouncedRenderMentorFinder);
   document.getElementById('mentorChannelFilter')?.addEventListener('change', renderMentorFinder);
   document.getElementById('matchAllLanguagesToggle')?.addEventListener('change', (e) => {
     matchAllLanguages = e.target.checked;
@@ -2518,7 +2532,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.value = e.target.value;
         const orgsSec = document.getElementById('orgs');
         if (orgsSec) orgsSec.scrollIntoView({ behavior: 'smooth' });
-        applyFilters();
+        debouncedApplyFilters();
       }
     });
   }
