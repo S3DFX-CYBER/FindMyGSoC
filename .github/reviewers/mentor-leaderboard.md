@@ -1,66 +1,74 @@
-# 🏆 Mentor Review Leaderboard
+# 🏆 Mentor Leaderboard
 
-> Tracks mentor review activity and review quality across all merged pull requests.
+> Dynamic mentor activity ranking based on approvals, merged reviews, quality scoring, assignment participation, and activity recency.
 
-| Rank | Mentor | Reviews | Score |
-|------|--------|---------|-------|
-| 🥇 | @KumarNirupam1 | 41 | 183 |
-| 🥈 | @TarunyaProgrammer | 24 | 98 |
-| 🥉 | @nitinog10 | 16 | 69 |
-| 4 | @Anushreebasics | 20 | 52 |
-| 5 | @deepak0x | 11 | 44 |
-| 6 | @4f4d | 7 | 37 |
-| 7 | @AnirudhPhophalia | 10 | 20 |
-| 8 | @itsdakshjain | 6 | 19 |
-| 9 | @knoxiboy | 6 | 19 |
-| 10 | @saurabh24thakur | 3 | 17 |
-| 11 | @Balaji91221 | 8 | 16 |
-| 12 | @Maxd646 | 4 | 12 |
-| 13 | @12fahed | 3 | 11 |
-| 14 | @Mrigakshi-Rathore | 5 | 10 |
-| 15 | @CoderOggy78 | 4 | 9 |
-| 16 | @MUKUL-PRASAD-SIGH | 4 | 9 |
-| 17 | @nihalawasthi | 3 | 7 |
-| 18 | @BandhiyaHardik | 3 | 6 |
-| 19 | @sabeenaviklar | 2 | 6 |
-| 20 | @stealthwhizz | 2 | 6 |
-| 21 | @lourduradjou | 2 | 5 |
-| 22 | @SparshM8 | 2 | 4 |
-| 23 | @AnirbansarkarS | 1 | 2 |
-| 24 | @Ayush-Patel-56 | 1 | 2 |
-| 25 | @piyushdotcomm | 1 | 2 |
-| 26 | @Sagar-Datkhile | 1 | 2 |
-| 27 | @aanjalii01 | 0 | 0 |
-| 28 | @adithyan-css | 0 | 0 |
-| 29 | @AditthyaSS | 0 | 0 |
-| 30 | @anubhavxdev | 0 | 0 |
-| 31 | @aryanbhutani26 | 0 | 0 |
-| 32 | @ayu-yishu13 | 0 | 0 |
-| 33 | @Ayushh-Sharmaa | 0 | 0 |
-| 34 | @coder-zs-cse | 0 | 0 |
-| 35 | @deepaksinghh12 | 0 | 0 |
-| 36 | @DevROHIT11 | 0 | 0 |
-| 37 | @Haile-12 | 0 | 0 |
-| 38 | @JoeCelaster | 0 | 0 |
-| 39 | @kallal79 | 0 | 0 |
-| 40 | @KaranGupta2005 | 0 | 0 |
-| 41 | @lovestaco | 0 | 0 |
-| 42 | @magic-peach | 0 | 0 |
-| 43 | @MAYANKSHARMA01010 | 0 | 0 |
-| 44 | @Mohit-368 | 0 | 0 |
-| 45 | @morningstarxcdcode | 0 | 0 |
-| 46 | @oasis-parzival | 0 | 0 |
-| 47 | @Precise-Goals | 0 | 0 |
-| 48 | @preetbiswas12 | 0 | 0 |
-| 49 | @rounakkraaj-1744 | 0 | 0 |
-| 50 | @Satya900 | 0 | 0 |
-| 51 | @Shravanthi20 | 0 | 0 |
-| 52 | @sparshagarwal0411 | 0 | 0 |
-| 53 | @subratamondalnsec | 0 | 0 |
-| 54 | @Suvanwita | 0 | 0 |
-| 55 | @SyedImtiyaz-1 | 0 | 0 |
-| 56 | @thakurutkarsh22 | 0 | 0 |
-| 57 | @uddalak2005 | 0 | 0 |
-| 58 | @vanshaggarwal07 | 0 | 0 |
+Generated: 2026-08-23T12:11:47.288Z
 
-Last updated: Sat, 15 Aug 2026 16:23:23 GMT
+| Rank | Mentor | Score | Approvals | Merged Reviews | Quality | Activity |
+|---:|---|---:|---:|---:|---:|---|
+| 🥇 | @12fahed | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| 🥈 | @4f4d | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| 🥉 | @aanjalii01 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #4 | @adithyan-css | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #5 | @aditthyass | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #6 | @anirbansarkars | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #7 | @anirudhphophalia | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #8 | @anubhavxdev | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #9 | @anushreebasics | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #10 | @aryanbhutani26 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #11 | @arzoo0511 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #12 | @ayu-yishu13 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #13 | @ayush-patel-56 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #14 | @ayushh-sharmaa | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #15 | @balaji91221 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #16 | @bandhiyahardik | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #17 | @coder-zs-cse | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #18 | @coderoggy78 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #19 | @deepak0x | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #20 | @deepaksinghh12 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #21 | @devrohit11 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #22 | @haile-12 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #23 | @harxhe | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #24 | @itsdakshjain | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #25 | @joecelaster | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #26 | @kallal79 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #27 | @karangupta2005 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #28 | @knoxiboy | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #29 | @kota-jagadeesh | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #30 | @kpj2006 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #31 | @kumarnirupam1 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #32 | @lourduradjou | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #33 | @lovestaco | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #34 | @magic-peach | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #35 | @manan-chawla | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #36 | @maxd646 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #37 | @mayanksharma01010 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #38 | @mohit-368 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #39 | @morningstarxcdcode | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #40 | @mrigakshi-rathore | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #41 | @mukul-prasad-sigh | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #42 | @neilblaze | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #43 | @nihalawasthi | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #44 | @nirvik34 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #45 | @nitinog10 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #46 | @oasis-parzival | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #47 | @piyushdotcomm | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #48 | @precise-goals | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #49 | @preetbiswas12 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #50 | @rounakkraaj-1744 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #51 | @sabeenaviklar | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #52 | @sagar-datkhile | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #53 | @satya900 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #54 | @saurabh24thakur | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #55 | @shravanthi20 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #56 | @sparshagarwal0411 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #57 | @sparshm8 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #58 | @stealthwhizz | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #59 | @subratamondalnsec | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #60 | @suvanwita | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #61 | @syedimtiyaz-1 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #62 | @tarunyaprogrammer | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #63 | @thakurutkarsh22 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #64 | @uddalak2005 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #65 | @ultrabot05 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
+| #66 | @vanshaggarwal07 | 0.00 | 0 | 0 | 0.00 | 🔴 Inactive |
