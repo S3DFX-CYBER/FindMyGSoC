@@ -645,6 +645,7 @@ These mentors help guide and review contributions for the GSSoC program:
 <a href="https://github.com/Ayushia5"><img src="https://github.com/Ayushia5.png" width="50px" alt="Ayushia5" /></a>
 <a href="https://github.com/Bushra-gh"><img src="https://github.com/Bushra-gh.png" width="50px" alt="Bushra-gh" /></a>
 <a href="https://github.com/Chizaram-Igolo"><img src="https://github.com/Chizaram-Igolo.png" width="50px" alt="Chizaram-Igolo" /></a>
+<a href="https://github.com/Codewith-Yogita"><img src="https://github.com/Codewith-Yogita.png" width="50px" alt="Codewith-Yogita" /></a>
 <a href="https://github.com/D4rk-Pho3nix"><img src="https://github.com/D4rk-Pho3nix.png" width="50px" alt="D4rk-Pho3nix" /></a>
 <a href="https://github.com/DAYHARIKA"><img src="https://github.com/DAYHARIKA.png" width="50px" alt="DAYHARIKA" /></a>
 <a href="https://github.com/Deepakvarna02"><img src="https://github.com/Deepakvarna02.png" width="50px" alt="Deepakvarna02" /></a>
@@ -678,9 +679,11 @@ These mentors help guide and review contributions for the GSSoC program:
 <a href="https://github.com/Pranav-IIITM"><img src="https://github.com/Pranav-IIITM.png" width="50px" alt="Pranav-IIITM" /></a>
 <a href="https://github.com/PrincePundir123"><img src="https://github.com/PrincePundir123.png" width="50px" alt="PrincePundir123" /></a>
 <a href="https://github.com/PriyaanshPandey"><img src="https://github.com/PriyaanshPandey.png" width="50px" alt="PriyaanshPandey" /></a>
+<a href="https://github.com/Purohit-Yogeshraj"><img src="https://github.com/Purohit-Yogeshraj.png" width="50px" alt="Purohit-Yogeshraj" /></a>
 <a href="https://github.com/Rachit-Kakkad1"><img src="https://github.com/Rachit-Kakkad1.png" width="50px" alt="Rachit-Kakkad1" /></a>
 <a href="https://github.com/S3DFX-CYBER"><img src="https://github.com/S3DFX-CYBER.png" width="50px" alt="S3DFX-CYBER" /></a>
 <a href="https://github.com/SHUBHAM2775"><img src="https://github.com/SHUBHAM2775.png" width="50px" alt="SHUBHAM2775" /></a>
+<a href="https://github.com/Sarvesh-Sarz"><img src="https://github.com/Sarvesh-Sarz.png" width="50px" alt="Sarvesh-Sarz" /></a>
 <a href="https://github.com/Sha-lini3"><img src="https://github.com/Sha-lini3.png" width="50px" alt="Sha-lini3" /></a>
 <a href="https://github.com/ShailiBoddula"><img src="https://github.com/ShailiBoddula.png" width="50px" alt="ShailiBoddula" /></a>
 <a href="https://github.com/Shan7Usmani"><img src="https://github.com/Shan7Usmani.png" width="50px" alt="Shan7Usmani" /></a>
@@ -710,6 +713,7 @@ These mentors help guide and review contributions for the GSSoC program:
 <a href="https://github.com/arpit2006"><img src="https://github.com/arpit2006.png" width="50px" alt="arpit2006" /></a>
 <a href="https://github.com/arushiranjan"><img src="https://github.com/arushiranjan.png" width="50px" alt="arushiranjan" /></a>
 <a href="https://github.com/ash1shkumar"><img src="https://github.com/ash1shkumar.png" width="50px" alt="ash1shkumar" /></a>
+<a href="https://github.com/basantnema31"><img src="https://github.com/basantnema31.png" width="50px" alt="basantnema31" /></a>
 <a href="https://github.com/bhaktiyadav08"><img src="https://github.com/bhaktiyadav08.png" width="50px" alt="bhaktiyadav08" /></a>
 <a href="https://github.com/bhavyanjain3004"><img src="https://github.com/bhavyanjain3004.png" width="50px" alt="bhavyanjain3004" /></a>
 <a href="https://github.com/bipinchaudhary28899"><img src="https://github.com/bipinchaudhary28899.png" width="50px" alt="bipinchaudhary28899" /></a>
@@ -721,9 +725,12 @@ These mentors help guide and review contributions for the GSSoC program:
 <a href="https://github.com/diksha78dev"><img src="https://github.com/diksha78dev.png" width="50px" alt="diksha78dev" /></a>
 <a href="https://github.com/dishamaurya081-create"><img src="https://github.com/dishamaurya081-create.png" width="50px" alt="dishamaurya081-create" /></a>
 <a href="https://github.com/garimatiwari1912-alt"><img src="https://github.com/garimatiwari1912-alt.png" width="50px" alt="garimatiwari1912-alt" /></a>
+<a href="https://github.com/gauriii10"><img src="https://github.com/gauriii10.png" width="50px" alt="gauriii10" /></a>
 <a href="https://github.com/gloooomed"><img src="https://github.com/gloooomed.png" width="50px" alt="gloooomed" /></a>
 <a href="https://github.com/imayuss"><img src="https://github.com/imayuss.png" width="50px" alt="imayuss" /></a>
+<a href="https://github.com/janhaviborade05"><img src="https://github.com/janhaviborade05.png" width="50px" alt="janhaviborade05" /></a>
 <a href="https://github.com/jatinrwt01"><img src="https://github.com/jatinrwt01.png" width="50px" alt="jatinrwt01" /></a>
+<a href="https://github.com/kabirumarkhan-stack"><img src="https://github.com/kabirumarkhan-stack.png" width="50px" alt="kabirumarkhan-stack" /></a>
 <a href="https://github.com/kejriwalkaushal04"><img src="https://github.com/kejriwalkaushal04.png" width="50px" alt="kejriwalkaushal04" /></a>
 <a href="https://github.com/kiranShamsHere"><img src="https://github.com/kiranShamsHere.png" width="50px" alt="kiranShamsHere" /></a>
 <a href="https://github.com/maanyadanayak"><img src="https://github.com/maanyadanayak.png" width="50px" alt="maanyadanayak" /></a>
