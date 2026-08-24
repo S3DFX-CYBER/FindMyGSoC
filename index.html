@@ -1228,6 +1228,9 @@ kbd:hover{
 
 <!-- ═══════════════════ NAVBAR ═══════════════════ -->
 <header class="fixed top-0 w-full z-50 bg-white/80 glass shadow-sm">
+  <div id="scrollProgressBar"
+      class="absolute bottom-0 left-0 z-[9999] h-1 w-0 bg-orange-500 transition-[width] duration-100 ease-out motion-reduce:transition-none">
+    </div>
   <div class="flex items-center justify-between px-4 sm:px-6 py-3 max-w-7xl mx-auto w-full">
     <div class="flex items-center gap-1.5 sm:gap-4 xl:gap-8">
       <!-- Hamburger menu button (mobile only) -->
@@ -5845,5 +5848,9 @@ if(e.key.toLowerCase()==='r'){
     if (e.target === this) closeOrgPicker();
   });
 </script>
+
+  <!-- ═══════════════════ Scroll ProgressBar ═══════════════════ -->
+  <script src="src/js/scroll-progress.js"></script>
+
 </body>
 </html>
