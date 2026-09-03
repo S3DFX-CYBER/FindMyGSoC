@@ -1,1 +1,10 @@
-{}
+{
+  "52North/SOS": { "commits_30d": 12, "issues_open": 45, "issues_closed": 120, "pr_response_time": 5, "maintainers": 4, "gfi_count": 8 },
+  "nexB/scancode-toolkit": { "commits_30d": 45, "issues_open": 30, "issues_closed": 150, "pr_response_time": 2, "maintainers": 6, "gfi_count": 12 },
+  "accordproject/concerto": { "commits_30d": 8, "issues_open": 20, "issues_closed": 40, "pr_response_time": 10, "maintainers": 2, "gfi_count": 3 },
+  "AFLplusplus/AFLplusplus": { "commits_30d": 85, "issues_open": 15, "issues_closed": 200, "pr_response_time": 1, "maintainers": 8, "gfi_count": 5 },
+  "apache/spark": { "commits_30d": 150, "issues_open": 400, "issues_closed": 3500, "pr_response_time": 3, "maintainers": 45, "gfi_count": 20 },
+  "django/django": { "commits_30d": 110, "issues_open": 180, "issues_closed": 900, "pr_response_time": 2, "maintainers": 12, "gfi_count": 15 },
+  "facebook/react": { "commits_30d": 95, "issues_open": 450, "issues_closed": 2200, "pr_response_time": 4, "maintainers": 25, "gfi_count": 10 },
+  "rust-lang/rust": { "commits_30d": 300, "issues_open": 2000, "issues_closed": 15000, "pr_response_time": 1, "maintainers": 100, "gfi_count": 50 }
+}

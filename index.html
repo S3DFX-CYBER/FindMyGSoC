@@ -1568,8 +1568,23 @@ kbd:hover{
   </div>
 
   <!-- ═══════════════════ ALL 4 FILTER DROPDOWNS + CLEAR ═══════════════════ -->
-  <div class="flex flex-wrap items-center justify-between gap-3 mb-8">
-    <p class="font-label text-xs uppercase tracking-widest text-zinc-500">Showing <strong id="orgCount" data-org-count>184</strong> of <span data-org-total>184</span> organizations</p>
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+    <p class="font-label text-xs uppercase tracking-widest text-zinc-500 flex items-center gap-2">
+      <span>Showing <strong id="orgCount" data-org-count>184</strong> of <span data-org-total>184</span> organizations</span>
+      <span class="group relative flex items-center">
+        <span class="material-symbols-outlined text-[16px] text-zinc-400 hover:text-primary cursor-help transition-colors">info</span>
+        <span class="absolute bottom-full left-0 mb-2 w-64 p-3 bg-zinc-900 text-white text-[10px] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl normal-case tracking-normal font-sans">
+          <strong class="block mb-1 border-b border-white/20 pb-1">Activity Score Calculation</strong>
+          <span class="block space-y-1 mt-1 opacity-90">
+            • <strong>Commits:</strong> Recent 30-day activity (30 pts)<br>
+            • <strong>Issues:</strong> Resolve rate (Closed/Total) (20 pts)<br>
+            • <strong>PR Response:</strong> Speed of PR interaction (20 pts)<br>
+            • <strong>Maintainers:</strong> Count of active maintainers (15 pts)<br>
+            • <strong>Beginners:</strong> Good First Issue volume (15 pts)
+          </span>
+        </span>
+      </span>
+    </p>
     <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
       <select id="categoryFilter" aria-label="Filter by category" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
         <option value="all">Categories: All</option>
@@ -1591,6 +1606,7 @@ kbd:hover{
       </select>
       <select id="sortSelect" aria-label="Sort organizations" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
         <option value="alpha">Sort: A-Z</option>
+        <option value="activity">Activity Score</option>
         <option value="years-desc">Years (High-Low)</option>
         <option value="years-asc">Years (Low-High)</option>
         <option value="comp-low">Competition (Chill First)</option>
