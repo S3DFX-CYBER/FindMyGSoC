@@ -1,9 +1,9 @@
 {
   "version": 2,
   "framework": null,
-  "outputDirectory": ".",
+  "outputDirectory": "public",
   "buildCommand": "",
-  "devCommand": "npx serve . -l $PORT",
+  "devCommand": "npx serve public -l $PORT",
   "routes": [
     { "src": "/app/(.*)", "dest": "/index.html" },
     { "src": "/app", "dest": "/index.html" },
