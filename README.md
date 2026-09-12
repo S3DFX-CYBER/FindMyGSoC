@@ -17,10 +17,10 @@ Discover organizations based on **tech stack, domains, competition level, GitHub
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/stars/S3DFX-CYBER/GSoC-Org-Finder-?style=flat-square" alt = "GitHub Stars"/>
-  <img src="https://img.shields.io/github/forks/S3DFX-CYBER/GSoC-Org-Finder-?style=flat-square" alt = "GitHub Forks"/>
-  <img src="https://img.shields.io/github/issues/S3DFX-CYBER/GSoC-Org-Finder-?style=flat-square" alt = "GitHub Issues"/>
-  <img src="https://img.shields.io/github/license/S3DFX-CYBER/GSoC-Org-Finder-?style=flat-square" alt = "GitHub License"/>
+  <img src="https://img.shields.io/github/stars/S3DFX-CYBER/FindMyGSoC?style=flat-square" alt = "GitHub Stars"/>
+  <img src="https://img.shields.io/github/forks/S3DFX-CYBER/FindMyGSoC?style=flat-square" alt = "GitHub Forks"/>
+  <img src="https://img.shields.io/github/issues/S3DFX-CYBER/FindMyGSoC?style=flat-square" alt = "GitHub Issues"/>
+  <img src="https://img.shields.io/github/license/S3DFX-CYBER/FindMyGSoC?style=flat-square" alt = "GitHub License"/>
 
 </p>
 
@@ -36,8 +36,8 @@ New to open source? Here's how to get started in 3 steps:
 
 **1. Fork & Clone**
 ```bash
-git clone https://github.com/your-username/GSoC-Org-Finder-.git
-cd GSoC-Org-Finder-
+git clone https://github.com/your-username/FindMyGSoC.git
+cd FindMyGSoC
 ```
 
 **2. Open the project**
@@ -773,11 +773,11 @@ These mentors help guide and review contributions for the GSSoC program:
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=S3DFX-CYBER%2FGSoC-Org-Finder-&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=S3DFX-CYBER%2FFindMyGSoC&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=S3DFX-CYBER/GSoC-Org-Finder-&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=S3DFX-CYBER/GSoC-Org-Finder-&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=S3DFX-CYBER/GSoC-Org-Finder-&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=S3DFX-CYBER/FindMyGSoC&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=S3DFX-CYBER/FindMyGSoC&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=S3DFX-CYBER/FindMyGSoC&type=date&legend=top-left" />
  </picture>
 </a>
 
