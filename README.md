@@ -384,33 +384,79 @@ npm test
 
 ## 🚀 Deploy Your Own
 
-### 1. Fork & Clone
+### 1. Prerequisites
+
+Before getting started, install:
+
+- Git: https://git-scm.com/downloads
+- Node.js (LTS): https://nodejs.org/
+- Vercel CLI (optional, for local development):
+  ```bash
+  npm install -g vercel
+  ```
+
+### 2. Fork & Clone
+
 ```bash
 git clone https://github.com/your-username/gsoc-2026-org-finder.git
 cd gsoc-2026-org-finder
 ```
 
-### 2. Add GitHub Token (for live stats + Good First Issues)
-In your Vercel dashboard → Project Settings → Environment Variables:
-```
-GITHUB_TOKEN = ghp_your_token_here
-```
-Generate a token at [github.com/settings/tokens](https://github.com/settings/tokens) — only `public_repo` scope needed.
+### 3. Add GitHub Token (for live stats + Good First Issues)
 
-### 3. Deploy
+In your Vercel dashboard → **Project Settings** → **Environment Variables**:
+
+```text
+GITHUB_TOKEN=ghp_your_token_here
+```
+
+Generate a token at:
+https://github.com/settings/tokens
+
+No specific scope is required for read-only access to public repositories. You can generate a token with no scopes selected, or use a fine-grained read-only token.
+
+### 4. Deploy
+
 ```bash
 vercel --prod
 ```
-Or connect the repo to Vercel and it deploys automatically on every push.
 
-### 4. Run Locally
+Or connect the repository to Vercel for automatic deployments.
+
+### 5. Run Locally
+
+#### Windows
+
+1. Open **Command Prompt** or **PowerShell**.
+2. If you haven't installed the Vercel CLI, run:
+
 ```bash
-open index.html   # macOS — works without API (GitHub stats won't load)
+npm install -g vercel
 ```
-For full functionality locally, run `vercel dev` to start the Edge Function.
 
----
+3. Start the local development server:
 
+```bash
+vercel dev
+```
+
+4. Open your browser and visit:
+
+```text
+http://localhost:3000
+```
+
+#### macOS
+
+```bash
+open index.html
+```
+
+For full functionality, run:
+
+```bash
+vercel dev
+```
 ## 🐛 Troubleshooting
 
 **GitHub stats not loading?**
