@@ -985,6 +985,7 @@ function renderCompareModal() {
   }
 
   const rows = [
+    ['Activity Score', org => org._activityScore ? `${String(org._activityScore)}/100` : '—'],
     ['Category', org => getCategoryMeta(org.cat).label],
     ['GSoC Years', org => org.years],
     ['First Year', org => org.firstYear],
@@ -1105,13 +1106,56 @@ function applyFilters() {
   }
 }
 
+let ORG_STATS = {};
+
+function calculateActivityScore(stats) {
+  if (!stats) return 0;
+  const commitScore = Math.min(30, stats.commits_30d || 0);
+  const totalIssues = (stats.issues_open || 0) + (stats.issues_closed || 0);
+  const resolveRateScore = totalIssues > 0 ? (stats.issues_closed / totalIssues) * 20 : 0;
+  
+  const prTime = (stats.pr_response_time !== undefined && stats.pr_response_time !== null) ? stats.pr_response_time : 14;
+  const prResponseScore = Math.max(0, 20 * (1 - Math.min(1, prTime / 14)));
+  
+  const maintainerScore = Math.min(15, (stats.maintainers || 0) * 5);
+  const gfiScore = Math.min(15, (stats.gfi_count || 0) * 1.5);
+  return Math.round(commitScore + resolveRateScore + prResponseScore + maintainerScore + gfiScore);
+}
+
+function getActivityBadge(score) {
+  if (score >= 70) return { label: 'Highly Active', class: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' };
+  if (score >= 30) return { label: 'Moderately Active', class: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' };
+  return { label: 'Low Activity', class: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400' };
+}
+
 function applySecondarySort(a, b, sortType) {
   if (sortType === 'years-desc') return b.years - a.years;
   if (sortType === 'years-asc') return a.years - b.years;
   if (sortType === 'comp-low') return ['chill', 'moderate', 'hot'].indexOf(a.competition) - ['chill', 'moderate', 'hot'].indexOf(b.competition);
   if (sortType === 'stars') return (b._gh?.stars || 0) - (a._gh?.stars || 0);
   if (sortType === 'gfi') return (b._gh?.gfi || 0) - (a._gh?.gfi || 0);
+  if (sortType === 'activity') return (b._activityScore || 0) - (a._activityScore || 0);
   return a.name.localeCompare(b.name);
+}
+
+async function loadOrgStats() {
+  try {
+    const res = await fetch('/data/org-stats.json?v=' + Date.now());
+    if (res.ok) {
+      ORG_STATS = await res.json();
+      ORGS.forEach(o => {
+        if (o.github && ORG_STATS[o.github]) {
+          o._stats = ORG_STATS[o.github];
+          o._activityScore = calculateActivityScore(o._stats);
+        } else {
+          o._activityScore = null;
+        }
+      });
+      applyFilters();
+    }
+  } catch (err) {
+    console.warn('Failed to load org stats:', err);
+  }
 }
 
 function renderOrgs(reset = true) {
@@ -1160,17 +1204,30 @@ function renderOrgs(reset = true) {
     const catLabel = getCategoryMeta(org.cat).label.toUpperCase();
     const isBookmarkedStr = isBookmarked ? 'true' : 'false';
 
+    const actBadge = getActivityBadge(org._activityScore || 0);
+    const activityBadgeHtml = org._activityScore !== null ? safeHTML`
+      <div class="flex items-center gap-1 px-2 py-0.5 rounded-full ${actBadge.class} text-[9px] font-bold uppercase tracking-wider" title="Activity Score: ${String(org._activityScore)}/100. Based on commits, issues, and PR response time.">
+        <span class="material-symbols-outlined text-[12px]">bolt</span>
+        ${actBadge.label}
+      </div>
+    ` : '';
+
     card.innerHTML = safeHTML`
       <div class="flex justify-between items-start mb-4">
         <div class="w-14 h-14 rounded-xl bg-surface-container-low dark:bg-zinc-800 flex items-center justify-center p-2 overflow-hidden border border-zinc-100 dark:border-zinc-700">
           ${logoHtml}
         </div>
-        <div class="flex items-center gap-2">
-          <span class="bg-primary/10 text-primary text-[10px] font-label uppercase tracking-widest px-2 py-1 rounded-full font-bold">${String(org.years)}y Veteran</span>
-          <span class="complexity-badge ${org.codebase}">${org.codebase}</span>
-          <button class="bookmark-btn ${isBookmarked ? 'active text-orange-500' : 'text-zinc-300'}" data-bookmark-org="${org.name}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}" aria-pressed="${isBookmarkedStr}" aria-label="${isBookmarked ? 'Remove bookmark from ' : 'Add bookmark to '}${org.name}">
-            <span class="material-symbols-outlined text-lg ${isBookmarked ? 'icon-fill' : ''}">star</span>
-          </button>
+        <div class="flex flex-col items-end gap-2">
+          <div class="flex items-center gap-2">
+            ${activityBadgeHtml}
+            <span class="bg-primary/10 text-primary text-[10px] font-label uppercase tracking-widest px-2 py-1 rounded-full font-bold">${String(org.years)}y Veteran</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="complexity-badge ${org.codebase}">${org.codebase}</span>
+            <button class="bookmark-btn ${isBookmarked ? 'active text-orange-500' : 'text-zinc-300'}" data-bookmark-org="${org.name}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}" aria-pressed="${isBookmarkedStr}" aria-label="${isBookmarked ? 'Remove bookmark from ' : 'Add bookmark to '}${org.name}">
+              <span class="material-symbols-outlined text-lg ${isBookmarked ? 'icon-fill' : ''}">star</span>
+            </button>
+          </div>
         </div>
       </div>
       <h3 class="font-headline text-lg font-bold text-on-surface mb-1 group-hover:text-primary transition-colors dark:text-zinc-100">${org.name}</h3>
@@ -2459,6 +2516,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTrending();
   updateAIInsights();
   checkAPI();
+  loadOrgStats();
   loadMentorData();
   renderGoodFirstIssues();
 
@@ -2622,6 +2680,8 @@ if (typeof module !== 'undefined' && module.exports) {
     githubUrlFromValue,
     orgMatchesLanguages,
     applySecondarySort,
+    calculateActivityScore,
+    getActivityBadge,
     openModal,
     renderModalHeader,
     closeModal,
