@@ -82,8 +82,8 @@ The project is built using:
 **1. Clone the Repository**
 
 ```bash
-git clone https://github.com/S3DFX-CYBER/GSoC-Org-Finder-.git
-cd GSoC-Org-Finder-
+git clone https://github.com/S3DFX-CYBER/FindMyGSoC.git
+cd FindMyGSoC
 ```
 
 **2. Start a Local Server**
@@ -120,7 +120,7 @@ npm test
 ## Repository Structure
 
 ```
-GSoC-Org-Finder-
+FindMyGSoC
 ├── .github/
 │   ├── workflows/
 │   ├── reviewers/
@@ -614,8 +614,8 @@ Verify:
 
 If you need help:
 
-- Open a [GitHub Issue](https://github.com/S3DFX-CYBER/GSoC-Org-Finder-/issues)
-- Use [GitHub Discussions](https://github.com/S3DFX-CYBER/GSoC-Org-Finder-/discussions)
+- Open a [GitHub Issue](https://github.com/S3DFX-CYBER/FindMyGSoC/issues)
+- Use [GitHub Discussions](https://github.com/S3DFX-CYBER/FindMyGSoC/discussions)
 - Ask in the community server
 
 ---
