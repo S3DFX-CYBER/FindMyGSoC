@@ -1766,29 +1766,60 @@ kbd:hover{
           </div>
           <p id="deadlines-empty-fallback" class="text-xs text-zinc-400 italic hidden mt-4">No upcoming deadlines.</p>
           <script>
-            (function runtimeDeadlineFilter() {
-              const now = new Date();
-              const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-              const container = document.getElementById('dynamic-deadlines-container');
-              if (!container) return;
-              const nodes = container.querySelectorAll('.deadline-node');
-              let activeCount = 0;
-              nodes.forEach(node => {
-                const dateStr = node.dataset.date;
-                if (!dateStr) return;
-                const [year, month, day] = dateStr.split('-').map(Number);
-                if (isNaN(year) || isNaN(month) || isNaN(day)) return;
-                const nodeUTC = Date.UTC(year, month - 1, day);
-                if (nodeUTC < todayUTC) {
-                  node.style.display = 'none';
-                } else {
-                  node.style.display = 'block';
-                  activeCount++;
-                }
-              });
-              const fallback = document.getElementById('deadlines-empty-fallback');
-              if (fallback) fallback.style.display = activeCount === 0 ? 'block' : 'none';
-            })();
+           (function runtimeDeadlineFilter() {
+  const now = new Date();
+  const todayUTC = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate()
+  );
+
+  const container = document.getElementById("dynamic-deadlines-container");
+  if (!container) return;
+
+  const nodes = container.querySelectorAll(".deadline-node");
+
+  let activeCount = 0;
+  let expiredCount = 0;
+
+  nodes.forEach((node) => {
+    const dateStr = node.dataset.date;
+    if (!dateStr) return;
+
+    const [year, month, day] = dateStr.split("-").map(Number);
+    if (isNaN(year) || isNaN(month) || isNaN(day)) return;
+
+    const nodeUTC = Date.UTC(year, month - 1, day);
+
+    if (nodeUTC < todayUTC) {
+      expiredCount++;
+
+      node.style.display = "block";
+      node.style.opacity = "0.5";
+
+      const dateEl = node.querySelector("p");
+
+      if (dateEl && !dateEl.querySelector(".deadline-expired-badge")) {
+        const badge = document.createElement("span");
+        badge.className =
+          "deadline-expired-badge inline-block text-[9px] font-bold uppercase tracking-wider bg-red-100 text-red-500 px-1.5 py-0.5 rounded ml-2 align-middle";
+        badge.textContent = "Expired";
+        dateEl.appendChild(badge);
+      }
+    } else {
+      node.style.display = "block";
+      node.style.opacity = "1";
+      activeCount++;
+    }
+  });
+
+  const fallback = document.getElementById("deadlines-empty-fallback");
+
+  if (fallback) {
+    fallback.style.display =
+      activeCount === 0 && expiredCount === 0 ? "block" : "none";
+  }
+})();
           </script>
         </div>
         <div class="bg-gradient-to-br from-primary to-primary-container text-white rounded-2xl p-6 relative overflow-hidden">
