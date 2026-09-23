@@ -12,8 +12,45 @@ function safeCacheSet(key, value) {
   CACHE.set(key, value);
 }
 
-function isRateLimitResponse(res) {
-  return res.status === 403 || res.status === 429;
+async function isRateLimitResponse(res) {
+  if (res.status === 429) return true;
+  if (res.status !== 403) return false;
+
+  // GitHub sets x-ratelimit-remaining: 0 when the primary rate limit is exhausted.
+  if (res.headers.get('x-ratelimit-remaining') === '0') return true;
+
+  // Secondary/abuse-detection limits don't always set that header, but GitHub
+  // includes a retry-after header and/or the phrase "rate limit" in the body.
+  if (res.headers.get('retry-after')) return true;
+
+  try {
+    const body = await res.clone().json();
+    if (body?.message && /rate limit/i.test(body.message)) return true;
+  } catch {
+    // Non-JSON body — fall through to "not a rate limit" (e.g. a real permission error)
+  }
+
+  return false;
+}
+
+// Serializes all GitHub Search API calls through this edge instance so concurrent
+// users/batches can't collectively blow past GitHub's 30 req/min Search limit.
+// Note: this protects a single edge instance; it does not coordinate across
+// multiple regions/cold starts — see PR discussion for the follow-up needed there.
+let searchQueueTail = Promise.resolve();
+let lastSearchCallAt = 0;
+const MIN_SEARCH_INTERVAL_MS = 2100; // ~28.5 req/min, under GitHub's 30/min limit
+
+function throttledSearchFetch(url, options) {
+  const run = async () => {
+    const wait = Math.max(0, MIN_SEARCH_INTERVAL_MS - (Date.now() - lastSearchCallAt));
+    if (wait > 0) await new Promise(r => setTimeout(r, wait));
+    lastSearchCallAt = Date.now();
+    return fetchWithFallback(url, options);
+  };
+  const result = searchQueueTail.then(run, run);
+  searchQueueTail = result.then(() => undefined, () => undefined);
+  return result;
 }
 
 export default async function handler(req) {
@@ -161,12 +198,12 @@ export default async function handler(req) {
     }
     try {
       const q = encodeURIComponent(`repo:${repo} label:"good first issue" state:open`);
-      const res = await fetchWithFallback(
+      const res = await throttledSearchFetch(
         `https://api.github.com/search/issues?q=${q}&per_page=30&sort=created&order=desc`,
         { headers: ghHeaders }
       );
       if (!res.ok) {
-        const rateLimited = isRateLimitResponse(res);
+        const rateLimited = await isRateLimitResponse(res);
         const retryAfterHeader = res.headers.get('retry-after');
         return new Response(JSON.stringify({
           total: 0,
@@ -202,12 +239,12 @@ export default async function handler(req) {
     }
     try {
       const q = encodeURIComponent(`repo:${repo} label:"good first issue" state:open`);
-      const res = await fetchWithFallback(
+      const res = await throttledSearchFetch(
         `https://api.github.com/search/issues?q=${q}&per_page=1`,
         { headers: ghHeaders }
       );
       if (!res.ok) {
-        const rateLimited = isRateLimitResponse(res);
+        const rateLimited = await isRateLimitResponse(res);
         const retryAfterHeader = res.headers.get('retry-after');
         return new Response(JSON.stringify({
           gfi: null,
