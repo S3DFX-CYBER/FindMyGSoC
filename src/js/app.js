@@ -1934,7 +1934,8 @@ globalThis.fetchAllIssues = async function () {
   const total = orgsWithGithub.length;
   let done = 0;
   let found = 0;
-  let permanentlyFailed = 0;
+  let permanentlyRateLimited = 0;
+  let permanentlyOtherFailed = 0;
 
   document.getElementById('issuesContainer').innerHTML = `
     <div class="fetch-progress">
@@ -1960,7 +1961,18 @@ globalThis.fetchAllIssues = async function () {
       entry.attempts++;
       try {
         const r = await fetch(`${API}?repo=${encodeURIComponent(o.github)}&gfi=1&issues=1`);
-        if (!r.ok) return;
+        if (!r.ok) {
+          // Proxy/server error (5xx, etc). Not a GitHub rate limit — retry a
+          // few times like a network failure, then count it as failed rather
+          // than silently dropping it from the queue (which would let the
+          // progress bar reach 100% while an org's issues never loaded).
+          if (entry.attempts < MAX_ATTEMPTS) {
+            queue.push(entry);
+          } else {
+            permanentlyOtherFailed++;
+          }
+          return;
+        }
         const data = await r.json();
 
         if (data.rateLimited) {
@@ -1969,7 +1981,7 @@ globalThis.fetchAllIssues = async function () {
           if (entry.attempts < MAX_ATTEMPTS) {
             queue.push(entry); // requeue for another pass instead of dropping it
           } else {
-            permanentlyFailed++;
+            permanentlyRateLimited++;
           }
           return;
         }
@@ -2001,11 +2013,13 @@ globalThis.fetchAllIssues = async function () {
         }
         done++;
       } catch (err) {
+        // Network error or unparseable response — not a GitHub rate limit,
+        // so it's tracked and reported separately from `permanentlyRateLimited`.
         console.warn('Failed fetching GFI issues for org:', o.github, err);
         if (entry.attempts < MAX_ATTEMPTS) {
           queue.push(entry);
         } else {
-          permanentlyFailed++;
+          permanentlyOtherFailed++;
         }
       }
     }));
@@ -2028,8 +2042,15 @@ globalThis.fetchAllIssues = async function () {
     }
   }
 
-  if (permanentlyFailed > 0) {
-    issuesPartialWarning = `Couldn't fetch issues for ${permanentlyFailed} organization(s) after repeated GitHub rate limits. Showing partial results — try "Refresh" later for the rest.`;
+  if (permanentlyRateLimited > 0 || permanentlyOtherFailed > 0) {
+    const parts = [];
+    if (permanentlyRateLimited > 0) {
+      parts.push(`${permanentlyRateLimited} org(s) after repeated GitHub rate limits`);
+    }
+    if (permanentlyOtherFailed > 0) {
+      parts.push(`${permanentlyOtherFailed} org(s) due to a network or server error`);
+    }
+    issuesPartialWarning = `Couldn't fetch issues for ${parts.join(' and ')}. Showing partial results — try "Refresh" later for the rest.`;
   }
 
   allIssues.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
