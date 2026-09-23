@@ -57,3 +57,7 @@ test('extractSkills handles Go programming language context rules', () => {
   assert.strictEqual(extractSkills('I go to the store.').includes('go'), false);
   assert.strictEqual(extractSkills('Let us go back to our work.').includes('go'), false);
 });
+
+test('extractSkills normalizes "vue" to "vue.js" (regression for #2079)', () => {
+  assert.deepStrictEqual(extractSkills('Vue.js developer').includes('vue.js'), true);
+});
