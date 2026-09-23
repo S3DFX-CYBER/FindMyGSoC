@@ -12,6 +12,10 @@ function safeCacheSet(key, value) {
   CACHE.set(key, value);
 }
 
+function isRateLimitResponse(res) {
+  return res.status === 403 || res.status === 429;
+}
+
 export default async function handler(req) {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -162,7 +166,15 @@ export default async function handler(req) {
         { headers: ghHeaders }
       );
       if (!res.ok) {
-        return new Response(JSON.stringify({ total: 0, items: [], error: `GitHub ${res.status}` }), { status: 200, headers });
+        const rateLimited = isRateLimitResponse(res);
+        const retryAfterHeader = res.headers.get('retry-after');
+        return new Response(JSON.stringify({
+          total: 0,
+          items: [],
+          error: `GitHub ${res.status}`,
+          rateLimited,
+          retryAfter: retryAfterHeader ? Number(retryAfterHeader) : (rateLimited ? 60 : null),
+        }), { status: 200, headers });
       }
       const data = await res.json();
       const total = data.total_count ?? 0;
@@ -195,7 +207,14 @@ export default async function handler(req) {
         { headers: ghHeaders }
       );
       if (!res.ok) {
-        return new Response(JSON.stringify({ gfi: null, error: `GitHub ${res.status}` }), { status: 200, headers });
+        const rateLimited = isRateLimitResponse(res);
+        const retryAfterHeader = res.headers.get('retry-after');
+        return new Response(JSON.stringify({
+          gfi: null,
+          error: `GitHub ${res.status}`,
+          rateLimited,
+          retryAfter: retryAfterHeader ? Number(retryAfterHeader) : (rateLimited ? 60 : null),
+        }), { status: 200, headers });
       }
       const data = await res.json();
       const gfi = data.total_count ?? null;

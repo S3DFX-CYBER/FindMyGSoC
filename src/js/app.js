@@ -1940,14 +1940,23 @@ globalThis.fetchAllIssues = async function () {
       <div style="font-size:11px;color:var(--green);margin-top:8px;font-weight:600" id="fpFound">0 issues found so far</div>
     </div>`;
 
-  const BATCH = 5;
+  const BATCH = 3;
+  let rateLimitHit = false;
   for (let i = 0; i < orgsWithGithub.length; i += BATCH) {
     const batch = orgsWithGithub.slice(i, i + BATCH);
+    let batchRateLimited = false;
+    let batchRetryAfter = 60;
+
     await Promise.all(batch.map(async o => {
       try {
         const r = await fetch(`${API}?repo=${encodeURIComponent(o.github)}&gfi=1&issues=1`);
         if (!r.ok) return;
         const data = await r.json();
+        if (data.rateLimited) {
+          batchRateLimited = true;
+          batchRetryAfter = Math.max(batchRetryAfter, data.retryAfter || 60);
+          return;
+        }
         if (data.items?.length) {
           const owner = githubOwnerFromValue(o.github);
           const logo = owner ? `https://github.com/${owner}.png?size=64` : '';
@@ -1975,19 +1984,31 @@ globalThis.fetchAllIssues = async function () {
         }
       } catch (err) {
         console.warn('Failed fetching GFI issues for org:', o.github, err);
+      } finally {
+        done++;
       }
-      done++;
     }));
 
     const pct = Math.round(done / orgsWithGithub.length * 100);
     const fpStatus = document.getElementById('fpStatus');
     const fpBar = document.getElementById('fpBar');
     const fpFound = document.getElementById('fpFound');
-    if (fpStatus) fpStatus.textContent = `Checking ${done} / ${orgsWithGithub.length} orgs`;
     if (fpBar) fpBar.style.width = pct + '%';
     if (fpFound) fpFound.textContent = `${found} issues found so far`;
     txt.textContent = `${done}/${orgsWithGithub.length}…`;
-    await new Promise(r => setTimeout(r, 60));
+
+    if (batchRateLimited) {
+      rateLimitHit = true;
+      if (fpStatus) fpStatus.textContent = `GitHub API rate limit reached — pausing ${batchRetryAfter}s before continuing…`;
+      await new Promise(r => setTimeout(r, batchRetryAfter * 1000));
+    } else {
+      if (fpStatus) fpStatus.textContent = `Checking ${done} / ${orgsWithGithub.length} orgs`;
+      await new Promise(r => setTimeout(r, 300));
+    }
+  }
+
+  if (rateLimitHit) {
+    console.warn('Issue fetching hit GitHub Search API rate limits during this run; some orgs may have incomplete data.');
   }
 
   allIssues.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
