@@ -12,6 +12,85 @@ function safeCacheSet(key, value) {
   CACHE.set(key, value);
 }
 
+async function isRateLimitResponse(res) {
+  if (res.status === 429) return true;
+  if (res.status !== 403) return false;
+
+  // GitHub sets x-ratelimit-remaining: 0 when the primary rate limit is exhausted.
+  if (res.headers.get('x-ratelimit-remaining') === '0') return true;
+
+  // Secondary/abuse-detection limits don't always set that header, but GitHub
+  // includes a retry-after header and/or the phrase "rate limit" in the body.
+  if (res.headers.get('retry-after')) return true;
+
+  try {
+    const body = await res.clone().json();
+    if (body?.message && /rate limit/i.test(body.message)) return true;
+  } catch {
+    // Non-JSON body — fall through to "not a rate limit" (e.g. a real permission error)
+  }
+
+  return false;
+}
+
+// Helper to fallback to unauthenticated request if token is invalid (401).
+// A shallow clone of options.headers is used for the retry so that a shared
+// headers object is never mutated and other calls keep sending Authorization
+// normally. Module-scoped (not a closure over per-request state) so it can be
+// called from throttledSearchFetch below as well as from the request handler.
+// `doFetch` lets callers route every real network attempt — including the
+// fallback retry — through a pacing function; it defaults to plain fetch.
+async function fetchWithFallback(url, options, doFetch = fetch) {
+  let res = await doFetch(url, options);
+  if (res.status === 401 && options.headers?.Authorization) {
+    const retryOptions = {
+      ...options,
+      headers: { ...options.headers },
+    };
+    delete retryOptions.headers.Authorization;
+    res = await doFetch(url, retryOptions);
+  }
+  return res;
+}
+
+// Serializes all GitHub Search API calls through this edge instance so concurrent
+// users/batches can't collectively blow past GitHub's 30 req/min Search limit.
+// Note: this protects a single edge instance; it does not coordinate across
+// multiple regions/cold starts — see PR discussion for the follow-up needed there.
+let searchQueueTail = Promise.resolve();
+let lastSearchCallAt = 0;
+const MIN_SEARCH_INTERVAL_MS = 2100; // ~28.5 req/min, under GitHub's 30/min limit
+
+// Paces a single real network call. Used as the `doFetch` for every attempt
+// fetchWithFallback makes (including its 401 retry), so an invalid token
+// can't double the effective request rate by skipping the wait on retry.
+async function pacedFetch(url, options) {
+  const wait = Math.max(0, MIN_SEARCH_INTERVAL_MS - (Date.now() - lastSearchCallAt));
+  if (wait > 0) await new Promise(r => setTimeout(r, wait));
+  lastSearchCallAt = Date.now();
+  return fetch(url, options);
+}
+
+function throttledSearchFetch(url, options) {
+  const run = () => fetchWithFallback(url, options, pacedFetch);
+  const result = searchQueueTail.then(run, run);
+  searchQueueTail = result.then(() => undefined, () => undefined);
+  return result;
+}
+
+// Shared shape for the "GitHub Search API call didn't succeed" JSON body used
+// by both the ?gfi=1 and ?gfi=1&issues=1 modes below (previously duplicated).
+async function searchErrorBody(res, extraFields) {
+  const rateLimited = await isRateLimitResponse(res);
+  const retryAfterHeader = res.headers.get('retry-after');
+  return {
+    ...extraFields,
+    error: `GitHub ${res.status}`,
+    rateLimited,
+    retryAfter: retryAfterHeader ? Number(retryAfterHeader) : (rateLimited ? 60 : null),
+  };
+}
+
 export default async function handler(req) {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -52,23 +131,6 @@ export default async function handler(req) {
   if (token) {
     ghHeaders.Authorization = `Bearer ${token}`;
   }
-
-  // Helper to fallback to unauthenticated request if token is invalid (401).
-  // A shallow clone of options.headers is used for the retry so that the
-  // shared ghHeaders object is never mutated and all other calls in this
-  // invocation continue to send the Authorization header normally.
-  const fetchWithFallback = async (url, options) => {
-    let res = await fetch(url, options);
-    if (res.status === 401 && options.headers?.Authorization) {
-      const retryOptions = {
-        ...options,
-        headers: { ...options.headers },
-      };
-      delete retryOptions.headers.Authorization;
-      res = await fetch(url, retryOptions);
-    }
-    return res;
-  };
 
   // MODE: ?user=username → return user profile analysis for AI recommender
   if (user) {
@@ -157,12 +219,13 @@ export default async function handler(req) {
     }
     try {
       const q = encodeURIComponent(`repo:${repo} label:"good first issue" state:open`);
-      const res = await fetchWithFallback(
+      const res = await throttledSearchFetch(
         `https://api.github.com/search/issues?q=${q}&per_page=30&sort=created&order=desc`,
         { headers: ghHeaders }
       );
       if (!res.ok) {
-        return new Response(JSON.stringify({ total: 0, items: [], error: `GitHub ${res.status}` }), { status: 200, headers });
+        const body = await searchErrorBody(res, { total: 0, items: [] });
+        return new Response(JSON.stringify(body), { status: 200, headers });
       }
       const data = await res.json();
       const total = data.total_count ?? 0;
@@ -190,12 +253,13 @@ export default async function handler(req) {
     }
     try {
       const q = encodeURIComponent(`repo:${repo} label:"good first issue" state:open`);
-      const res = await fetchWithFallback(
+      const res = await throttledSearchFetch(
         `https://api.github.com/search/issues?q=${q}&per_page=1`,
         { headers: ghHeaders }
       );
       if (!res.ok) {
-        return new Response(JSON.stringify({ gfi: null, error: `GitHub ${res.status}` }), { status: 200, headers });
+        const body = await searchErrorBody(res, { gfi: null });
+        return new Response(JSON.stringify(body), { status: 200, headers });
       }
       const data = await res.json();
       const gfi = data.total_count ?? null;

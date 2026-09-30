@@ -1909,6 +1909,7 @@ let filteredIssues = [];
 let shownIssues = 0;
 const ISSUES_PAGE_SIZE = 40;
 let issuesFetching = false;
+let issuesPartialWarning = null;
 
 globalThis.openIssuesPage = function () {
   openModalElement('issuesPage');
@@ -1928,26 +1929,63 @@ globalThis.fetchAllIssues = async function () {
   btn.disabled = true; spin.style.display = 'inline-block';
 
   allIssues = [];
+  issuesPartialWarning = null;
   const orgsWithGithub = ORGS.filter(o => o.github);
+  const total = orgsWithGithub.length;
   let done = 0;
   let found = 0;
+  let permanentlyRateLimited = 0;
+  let permanentlyOtherFailed = 0;
 
   document.getElementById('issuesContainer').innerHTML = `
     <div class="fetch-progress">
       <div style="font-size:14px;font-weight:600;color:var(--ink)">Fetching Good First Issues…</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px" id="fpStatus">Checking 0 / ${orgsWithGithub.length} orgs</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px" id="fpStatus">Checking 0 / ${total} orgs</div>
       <div class="fp-bar-wrap"><div class="fp-bar" id="fpBar" style="width:0%"></div></div>
       <div style="font-size:11px;color:var(--green);margin-top:8px;font-weight:600" id="fpFound">0 issues found so far</div>
     </div>`;
 
-  const BATCH = 5;
-  for (let i = 0; i < orgsWithGithub.length; i += BATCH) {
-    const batch = orgsWithGithub.slice(i, i + BATCH);
-    await Promise.all(batch.map(async o => {
+  const BATCH = 3;
+  const MAX_ATTEMPTS = 3;
+  let queue = orgsWithGithub.map(o => ({ org: o, attempts: 0 }));
+
+  while (queue.length) {
+    const batch = queue.slice(0, BATCH);
+    queue = queue.slice(BATCH);
+
+    let batchRateLimited = false;
+    let batchRetryAfter = 60;
+
+    await Promise.all(batch.map(async entry => {
+      const o = entry.org;
+      entry.attempts++;
       try {
         const r = await fetch(`${API}?repo=${encodeURIComponent(o.github)}&gfi=1&issues=1`);
-        if (!r.ok) return;
+        if (!r.ok) {
+          // Proxy/server error (5xx, etc). Not a GitHub rate limit — retry a
+          // few times like a network failure, then count it as failed rather
+          // than silently dropping it from the queue (which would let the
+          // progress bar reach 100% while an org's issues never loaded).
+          if (entry.attempts < MAX_ATTEMPTS) {
+            queue.push(entry);
+          } else {
+            permanentlyOtherFailed++;
+          }
+          return;
+        }
         const data = await r.json();
+
+        if (data.rateLimited) {
+          batchRateLimited = true;
+          batchRetryAfter = Math.max(batchRetryAfter, data.retryAfter || 60);
+          if (entry.attempts < MAX_ATTEMPTS) {
+            queue.push(entry); // requeue for another pass instead of dropping it
+          } else {
+            permanentlyRateLimited++;
+          }
+          return;
+        }
+
         if (data.items?.length) {
           const owner = githubOwnerFromValue(o.github);
           const logo = owner ? `https://github.com/${owner}.png?size=64` : '';
@@ -1973,21 +2011,46 @@ globalThis.fetchAllIssues = async function () {
           if (!o._gh) o._gh = {};
           o._gh.gfi = gfiCount;
         }
+        done++;
       } catch (err) {
+        // Network error or unparseable response — not a GitHub rate limit,
+        // so it's tracked and reported separately from `permanentlyRateLimited`.
         console.warn('Failed fetching GFI issues for org:', o.github, err);
+        if (entry.attempts < MAX_ATTEMPTS) {
+          queue.push(entry);
+        } else {
+          permanentlyOtherFailed++;
+        }
       }
-      done++;
     }));
 
-    const pct = Math.round(done / orgsWithGithub.length * 100);
+    const settled = total - queue.length;
+    const pct = Math.round(settled / total * 100);
     const fpStatus = document.getElementById('fpStatus');
     const fpBar = document.getElementById('fpBar');
     const fpFound = document.getElementById('fpFound');
-    if (fpStatus) fpStatus.textContent = `Checking ${done} / ${orgsWithGithub.length} orgs`;
     if (fpBar) fpBar.style.width = pct + '%';
     if (fpFound) fpFound.textContent = `${found} issues found so far`;
-    txt.textContent = `${done}/${orgsWithGithub.length}…`;
-    await new Promise(r => setTimeout(r, 60));
+    txt.textContent = `${settled}/${total}…`;
+
+    if (batchRateLimited) {
+      if (fpStatus) fpStatus.textContent = `GitHub API rate limit reached — pausing ${batchRetryAfter}s before retrying ${queue.length} remaining org(s)…`;
+      await new Promise(r => setTimeout(r, batchRetryAfter * 1000));
+    } else {
+      if (fpStatus) fpStatus.textContent = `Checking ${settled} / ${total} orgs`;
+      await new Promise(r => setTimeout(r, 300));
+    }
+  }
+
+  if (permanentlyRateLimited > 0 || permanentlyOtherFailed > 0) {
+    const parts = [];
+    if (permanentlyRateLimited > 0) {
+      parts.push(`${permanentlyRateLimited} org(s) after repeated GitHub rate limits`);
+    }
+    if (permanentlyOtherFailed > 0) {
+      parts.push(`${permanentlyOtherFailed} org(s) due to a network or server error`);
+    }
+    issuesPartialWarning = `Couldn't fetch issues for ${parts.join(' and ')}. Showing partial results — try "Refresh" later for the rest.`;
   }
 
   allIssues.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
@@ -2068,18 +2131,22 @@ function renderIssues() {
   const loadMore = document.getElementById('loadMoreWrap');
   if (!container || !statsDiv || !loadMore) return;
 
+  const warningHtml = issuesPartialWarning
+    ? safeHTML`<div class="issue-partial-warning" style="background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-size:12px;font-weight:600;padding:8px 12px;border-radius:8px;margin-bottom:12px">⚠️ ${issuesPartialWarning}</div>`.toString()
+    : '';
+
   if (!allIssues.length) {
-    container.innerHTML = `<div class="issue-empty"><div class="ei">🟢</div><h3>Ready to find your first issue?</h3><p>Click "Load Issues" to fetch Good First Issues from all GSoC orgs.</p></div>`;
+    container.innerHTML = `${warningHtml}<div class="issue-empty"><div class="ei">🟢</div><h3>Ready to find your first issue?</h3><p>Click "Load Issues" to fetch Good First Issues from all GSoC orgs.</p></div>`;
     statsDiv.style.display = 'none'; loadMore.style.display = 'none'; return;
   }
 
   if (!filteredIssues.length) {
-    container.innerHTML = `<div class="issue-empty"><div class="ei">🔍</div><h3>No issues match your filters</h3><p>Try adjusting the search or category.</p></div>`;
+    container.innerHTML = `${warningHtml}<div class="issue-empty"><div class="ei">🔍</div><h3>No issues match your filters</h3><p>Try adjusting the search or category.</p></div>`;
     statsDiv.style.display = 'flex'; loadMore.style.display = 'none';
   } else {
     shownIssues = Math.min(shownIssues + ISSUES_PAGE_SIZE, filteredIssues.length);
     const visible = filteredIssues.slice(0, shownIssues);
-    container.innerHTML = `<div class="issues-grid grid grid-cols-1 md:grid-cols-2 gap-4">${visible.map(renderIssueCard).join('')}</div>`;
+    container.innerHTML = `${warningHtml}<div class="issues-grid grid grid-cols-1 md:grid-cols-2 gap-4">${visible.map(renderIssueCard).join('')}</div>`;
     loadMore.style.display = shownIssues < filteredIssues.length ? 'flex' : 'none';
   }
 
