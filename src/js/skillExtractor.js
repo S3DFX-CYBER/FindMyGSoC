@@ -66,6 +66,7 @@ function normalizeSkill(skill) {
     'meteor.js': 'meteor.js',
     'angular': 'angularjs',
     'angularjs': 'angularjs',
+    'vue': 'vue.js',
     
     'go': 'go',
     'golang': 'go',
