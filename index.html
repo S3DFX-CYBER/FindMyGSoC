@@ -298,7 +298,7 @@ kbd:hover{
     transition: all 0.2s;
     }
     .close-btn:hover { background: #e8e8e8; color: #1a1c1c; }
-    
+
     .modal-header { padding: 2rem 2rem; flex-shrink: 0; }
     .category-tag {
       background: rgba(157, 67, 0, 0.1);
@@ -316,7 +316,7 @@ kbd:hover{
 
     .modal-body {padding: 0 3rem 3rem; overflow-y: auto; flex: 1; min-height: 0; }
     .section-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #555; margin-bottom: 0.5rem; margin-top: 2rem; border-bottom: 1px solid #f3f3f3; padding-bottom: 0.5rem; }
-    
+
     .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; }
     .metric-card { background: #faf5f0; padding: 0.5rem 1.5rem 0.5rem 1.5rem; border-radius: 1.2rem; border: 1px solid #cb692c; text-align: center; }
     .metric-value { font-size: 1.25rem; font-weight: 800; color: #1a1c1c; margin-bottom: 0.2rem; }
@@ -486,7 +486,7 @@ kbd:hover{
     /* Base mobile-first styles */
     body { width: 100%; overflow-x: hidden; }
     html { width: 100%; scroll-behavior: smooth; }
-    
+
     /* Scroll offset for fixed header */
     #timeline, #orgs, #guide, #watchlist, #issues, #mentors, #ai-recommender, #contact {
       scroll-margin-top: 80px;
@@ -558,14 +558,14 @@ kbd:hover{
     .dark .filter-chip:not(.bg-orange-600):hover { background: #fb923c !important; color: #ffffff !important; border-color: #fb923c !important; }
 
     /* Dark mode - Language tag pills */
-    .dark section .flex.flex-wrap.gap-2 > button:not(.filter-chip) { 
-      background: #27272a !important; 
-      color: #d4d4d8 !important; 
-      border-color: #3f3f46 !important; 
+    .dark section .flex.flex-wrap.gap-2 > button:not(.filter-chip) {
+      background: #27272a !important;
+      color: #d4d4d8 !important;
+      border-color: #3f3f46 !important;
     }
-    .dark section .flex.flex-wrap.gap-2 > button:not(.filter-chip):hover { 
-      border-color: #f97316 !important; 
-      color: #f97316 !important; 
+    .dark section .flex.flex-wrap.gap-2 > button:not(.filter-chip):hover {
+      border-color: #f97316 !important;
+      color: #f97316 !important;
     }
     /* Higher-specificity rule beats .dark section .flex.flex-wrap.gap-2 > button:not(.filter-chip) (0,5,2) */
     .dark .pill.active,
@@ -574,7 +574,7 @@ kbd:hover{
       border-color: #fb923c !important;
       color: #fb923c !important;
     }
-    
+
     /* Dark mode - Issue card badges */
     .dark .bg-green-100 { background: #14532d !important; }
     .dark .bg-zinc-100 { background: #27272a !important; }
@@ -582,12 +582,12 @@ kbd:hover{
     .dark .text-green-800 { color: #86efac !important; }
     .dark .text-green-600 { color: #4ade80 !important; }
     .dark .text-zinc-600 { color: #a1a1aa !important; }
-    
+
     /* Dark mode - Card hover effects */
     .dark .group:hover { background: #1f1f23 !important; border-color: rgba(249, 115, 22, 0.3) !important; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4) !important; }
     .dark .group:hover .text-on-surface { color: #f97316 !important; }
     .dark .group-hover\:text-primary:hover, .dark .group:hover .group-hover\:text-primary { color: #f97316 !important; }
-    
+
     /* Dark mode - Tech tags */
     .dark .tech-tag { background: #27272a; color: #d4d4d8; border-color: #3f3f46; }
     .dark .fit-tag { background: #1e293b; color: #93c5fd; border-color: #334155; }
@@ -625,7 +625,7 @@ kbd:hover{
       #pwCloseBtn span + * { display: none; }
 
     }
-    
+
     /* Dark mode - Modal */
     .dark .modal { background: #18181b; }
     .dark .modal-header h2 { color: #f4f4f5; }
@@ -644,15 +644,143 @@ kbd:hover{
     .dark #compareModalBody .text-zinc-500 { color: #a1a1aa !important; }
     .dark #compareModalBody .text-zinc-400 { color: #d4d4d8 !important; }
 
-    /* Dark mode - Guide section cards */
-    .dark #guide article { background: #18181b !important; border-color: #3f3f46 !important; }
-    .dark #guide article h3 { color: #f4f4f5 !important; }
-    .dark #guide article p, .dark #guide article li { color: #a1a1aa !important; }
-    .dark #guide details { border-color: #3f3f46 !important; }
-    .dark #guide details summary { color: #f4f4f5 !important; }
-    .dark #guide a.block { border-color: #3f3f46 !important; }
-    .dark #guide a.block:hover { background: rgba(249, 115, 22, 0.1) !important; }
-    .dark #guide .font-mono { background: #27272a !important; color: #d4d4d8 !important; }
+    /* ── GSoC Roadmap Block Styles ─────────────────────────────────────── */
+    .roadmap-block {
+      border: 1.5px solid #e4e4e7;
+      border-radius: 24px;
+      background: #ffffff;
+      overflow: hidden;
+      transition: box-shadow 0.28s ease, border-color 0.28s ease, transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+
+    }
+    .roadmap-block:hover {
+      border-color: #f97316;
+      box-shadow: 0 8px 32px -4px rgba(249,115,22,0.15), 0 2px 8px -2px rgba(249,115,22,0.08);
+      transform: translateY(-2px);
+    }
+    .roadmap-block.is-open {
+      border-color: #f97316;
+      box-shadow: 0 12px 40px -6px rgba(249,115,22,0.18), 0 4px 12px -4px rgba(249,115,22,0.10);
+      transform: none;
+    }
+    .roadmap-block-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 24px 28px;
+      width: 100%;
+      user-select: none;
+      background: none;
+      border: none;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+
+    }
+    .roadmap-illus {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+    }
+    .roadmap-block-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.48s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
+      opacity: 0;
+    }
+    .roadmap-block.is-open .roadmap-block-body {
+      max-height: 1400px;
+      opacity: 1;
+    }
+    .roadmap-block-inner {
+      padding: 0 28px 28px;
+      border-top: 1px solid #f4f4f5;
+    }
+    .roadmap-chevron {
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+      flex-shrink: 0;
+      color: #a1a1aa;
+    }
+    .roadmap-block.is-open .roadmap-chevron {
+      transform: rotate(180deg);
+      color: #f97316;
+    }
+    .roadmap-step-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f4f4f5;
+    }
+    .roadmap-step-row:last-of-type { border-bottom: none; }
+    .roadmap-step-num {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(249,115,22,0.12);
+      color: #f97316;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .roadmap-faq-item {
+      border-top: 1px solid #f4f4f5;
+    }
+    .roadmap-faq-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 10px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      gap: 8px;
+    }
+    .roadmap-faq-chevron {
+      flex-shrink: 0;
+      font-size: 18px;
+      color: #a1a1aa;
+      transition: transform 0.25s ease;
+    }
+    .roadmap-faq-item.faq-open .roadmap-faq-chevron {
+      transform: rotate(180deg);
+      color: #f97316;
+    }
+    .roadmap-faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.25s ease;
+      opacity: 0;
+    }
+    .roadmap-faq-item.faq-open .roadmap-faq-answer {
+      max-height: 200px;
+      opacity: 1;
+    }
+    /* Dark mode - Roadmap */
+    .dark .roadmap-block { background: #18181b; border-color: #3f3f46; }
+    .dark .roadmap-block:hover { border-color: rgba(249,115,22,0.5); box-shadow: 0 8px 32px -4px rgba(249,115,22,0.12); }
+    .dark .roadmap-block.is-open { border-color: rgba(249,115,22,0.6); }
+    .dark .roadmap-block-inner { border-top-color: #27272a; }
+    .dark .roadmap-step-row { border-bottom-color: #27272a; }
+    .dark .roadmap-step-row p { color: #a1a1aa !important; }
+    .dark .roadmap-step-row strong { color: #f4f4f5 !important; }
+    .dark .roadmap-faq-item { border-top-color: #27272a; }
+    .dark .roadmap-faq-trigger .text-zinc-800 { color: #f4f4f5 !important; }
+    .dark .roadmap-faq-answer p { color: #a1a1aa !important; }
+    .dark .bg-orange-50\/60 { background: rgba(249,115,22,0.07) !important; border-color: rgba(249,115,22,0.15) !important; }
+    .dark .bg-blue-50\/60 { background: rgba(59,130,246,0.07) !important; border-color: rgba(59,130,246,0.15) !important; }
+    .dark .bg-green-50\/60 { background: rgba(34,197,94,0.07) !important; border-color: rgba(34,197,94,0.15) !important; }
+    .dark .bg-purple-50\/60 { background: rgba(168,85,247,0.07) !important; border-color: rgba(168,85,247,0.15) !important; }
+    .dark .bg-yellow-50\/60 { background: rgba(234,179,8,0.07) !important; border-color: rgba(234,179,8,0.15) !important; }
+    .dark .bg-zinc-100 { background: #27272a !important; }
+    .dark code.bg-zinc-100 { background: #27272a !important; color: #d4d4d8 !important; }
 
     /* Dark mode - Mobile menu */
     .dark #mobileMenu #menuPanel { background: #18181b !important; border-right: 1px solid #3f3f46; }
@@ -899,7 +1027,7 @@ kbd:hover{
       color: #fb923c;
       background: #1c0f05;
     }
-    
+
     /* SVG Flowing Border Trace animation for Timeline Card & Search Bar */
     .timeline-border-svg {
       position: absolute;
@@ -972,7 +1100,7 @@ kbd:hover{
     .dark .search-bar-container:focus-within .search-border-outer {
       background: #fb923c;
     }
-  
+
 /* Section-wise Scroll Buttons */
     .section-scroll-btn {
   position: fixed;
@@ -1189,7 +1317,7 @@ kbd:hover{
       .premium-footer {
         padding-bottom: 1.5rem;
       }
-    } 
+    }
 
 @media (pointer: coarse) {
   .filter-chip.bg-orange-600:hover {
@@ -1236,7 +1364,7 @@ kbd:hover{
       </button>
 
       <!-- Home button (links back to landing page) -->
-      <a href="/" 
+      <a href="/"
          class="inline-flex shrink-0 items-center gap-1 px-1.5 sm:px-2 py-2 hover:bg-zinc-100/50 rounded-lg transition-colors text-zinc-600 hover:text-zinc-900"
          aria-label="Go to home page" title="Home">
         <span class="material-symbols-outlined text-lg">home</span>
@@ -1262,40 +1390,40 @@ kbd:hover{
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#guide" data-section="guide">Guide</a>
       </nav>
     </div>
-    
+
     <!-- Right side: Toggle visible on all screens, GitHub button hidden on mobile -->
     <div class="flex items-center gap-2 sm:gap-3">
-    
+
       <button id="themeToggleBtn" onclick="toggleTheme()"
         class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
         aria-label="Switch to dark theme" aria-pressed="false" title="Switch to dark theme">
-    
+
         <span class="material-symbols-outlined text-zinc-600">
           dark_mode
         </span>
       </button>
-    
+
       <!-- ANALYTICS BUTTON -->
       <button id="analyticsBtn" onclick="openAnalytics()"
         class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
         title="View Analytics & Badges"
         aria-label="View Analytics and Badges">
-    
+
         <span class="material-symbols-outlined text-zinc-600">
           analytics
         </span>
       </button>
-    
+
       <!-- HELP BUTTON -->
       <button id="helpBtn"
         class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
         title="Keyboard shortcuts (?)">
-    
+
         <span class="material-symbols-outlined text-zinc-600">
           help
         </span>
       </button>
-    
+
       <a href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank" rel="noopener noreferrer"
         class="hidden sm:flex items-center gap-2 px-3 xl:px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors whitespace-nowrap">
 
@@ -1306,7 +1434,7 @@ kbd:hover{
         <span class="lg:hidden xl:inline">Star & Contribute</span>
         <span class="hidden lg:inline xl:hidden">Star</span>
       </a>
-    
+
     </div>
   </div>
 </header>
@@ -1315,7 +1443,7 @@ kbd:hover{
 <div id="mobileMenu" class="fixed inset-0 z-50 hidden lg:hidden" style="z-index:60;" role="dialog" aria-modal="true" aria-label="Navigation menu">
   <!-- Backdrop -->
   <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleMenu()" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMenu()" tabindex="0" role="button" aria-label="Close menu"></div>
-  
+
   <!-- Menu Panel -->
   <nav class="absolute top-0 left-0 bottom-0 w-72 bg-white shadow-2xl transform transition-transform duration-300 ease-out -translate-x-full" id="menuPanel" aria-label="Main navigation">
     <div class="flex items-center justify-between p-6 border-b border-zinc-100">
@@ -1329,7 +1457,7 @@ kbd:hover{
         <span class="material-symbols-outlined text-zinc-600">close</span>
       </button>
     </div>
-    
+
     <div class="p-4 space-y-1">
       <a href="#timeline" class="mobile-menu-link flex items-center gap-3 px-4 py-3 rounded-lg text-zinc-700 hover:bg-zinc-100 font-medium text-sm transition-colors" data-section="timeline">
         <span class="material-symbols-outlined text-lg">schedule</span>
@@ -1360,7 +1488,7 @@ kbd:hover{
         Guide
       </a>
     </div>
-    
+
     <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-zinc-100">
       <a href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-zinc-900 text-white text-sm font-bold hover:bg-zinc-700 transition-colors">
         <span class="material-symbols-outlined text-base">star</span> Star & Contribute
@@ -1371,7 +1499,7 @@ kbd:hover{
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
 <section class="pt-20 sm:pt-28 pb-12 sm:pb-20 px-4 sm:px-6 max-w-7xl mx-auto fade-up">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-stretch"> 
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-stretch">
     <div class="lg:col-span-7">
       <div class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-orange-50 border border-orange-100 text-primary mb-6 sm:mb-8">
         <span class="material-symbols-outlined text-sm icon-fill" style="color:#f97316">verified</span>
@@ -1603,10 +1731,10 @@ kbd:hover{
       </button>
     </div>
   </div>
-  
+
   <!-- Hidden search input for JavaScript compatibility -->
   <input type="hidden" id="searchInput" />
-  
+
   <div class="org-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 scrollable-directory org-directory" id="orgGrid">
     <!-- Organizations will be rendered here dynamically -->
     <div class="col-span-full py-20 text-center animate-pulse">
@@ -1676,7 +1804,7 @@ kbd:hover{
         <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
         <p class="text-zinc-600 dark:text-zinc-400 font-bold animate-pulse">Analyzing profile & calculating matches...</p>
       </div>
-      
+
       <!-- Error State -->
       <div id="aiErrorState" aria-live="assertive" class="hidden bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-6 text-center block">
         <span class="material-symbols-outlined text-red-500 text-4xl mb-2">error</span>
@@ -1715,7 +1843,7 @@ kbd:hover{
       <div class="lg:col-span-2 space-y-6">
 
         <div class="bg-white/50 dark:bg-zinc-800/30 border-2 border-dashed border-zinc-200 dark:border-zinc-700 hover:border-solid hover:bg-white dark:hover:bg-zinc-800/80 transition-all rounded-2xl p-2 sm:p-5 flex flex-col max-h-[420px]">
-          
+
           <div class="flex items-center justify-between flex-wrap gap-3 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-zinc-200/60 dark:border-zinc-700/60 flex-shrink-0 px-2 sm:px-0 pt-2 sm:pt-0">
             <div class="flex items-center gap-1 sm:gap-2">
               <span class="material-symbols-outlined text-zinc-400 dark:text-zinc-500 text-lg sm:text-2xl">bookmark_border</span>
@@ -1730,7 +1858,7 @@ kbd:hover{
               </button>
             </div>
           </div>
-          
+
           <div class="space-y-3 sm:space-y-4 overflow-y-auto pr-1 sm:pr-2 custom-scrollbar flex-1 px-1 sm:px-0" id="watchlistContainer">
             </div>
         </div>
@@ -1928,108 +2056,371 @@ kbd:hover{
   <div id="mentorPagination" class="mt-10 flex flex-nowrap items-center justify-center gap-1 overflow-x-auto no-scrollbar" aria-label="Mentor pagination"></div>
 </section>
 
-<!-- ═══════════════════ CONTRIBUTOR GUIDE ═══════════════════ -->
+<!-- ═══════════════════ NEW TO GSOC — INTERACTIVE ROADMAP ═══════════════════ -->
 <section id="guide" class="py-20 px-6 max-w-7xl mx-auto">
   <div class="mb-12">
-    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Contributor Guide</span>
-    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Start Contributing with Confidence</h2>
-    <p class="text-zinc-600 mt-4 max-w-3xl">New to open source or this project? Follow this quick path: learn the basics, set up locally, find a good first issue, and open your first PR.</p>
+    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">GSoC 101</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">New to GSoC? Start here.</h2>
+    <p class="text-zinc-600 mt-4 max-w-2xl">An interactive roadmap — from understanding the program to landing your first acceptance. Click any block to expand its guide and FAQs.</p>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-    <article class="bg-white border border-zinc-100 rounded-3xl p-8 shadow-sm">
-      <h3 class="text-xl font-bold mb-3">1) Open Source Basics</h3>
-      <p class="text-sm text-zinc-600 mb-4 leading-relaxed">Open source projects publish source code publicly so anyone can inspect, improve, and share it. Contribution usually starts with reading contribution guidelines and making small, focused changes.</p>
-      <ul class="space-y-2 text-sm text-zinc-700 list-disc pl-5">
-        <li>Understand how licensing and collaboration work.</li>
-        <li>Start with documentation or beginner-friendly issues.</li>
-        <li>Communicate early through issues and PR comments.</li>
-      </ul>
-    </article>
+  <div class="space-y-4" id="gsocRoadmap">
 
-    <article class="bg-white border border-zinc-100 rounded-3xl p-8 shadow-sm">
-      <h3 class="text-xl font-bold mb-3">2) Contribute to a GSoC Organization</h3>
-      <ol class="space-y-2 text-sm text-zinc-700 list-decimal pl-5">
-        <li>Pick 2–3 organizations that match your skills and interests.</li>
-        <li>Read their ideas page, contribution guide, and communication channels.</li>
-        <li>Set up the project locally and start with a small issue or documentation task.</li>
-        <li>Open a focused pull request and respond to mentor feedback quickly.</li>
-        <li>Document your contributions and turn them into a stronger GSoC proposal.</li>
-      </ol>
-      <p class="text-xs text-zinc-500 mt-4">Tip: quality communication and small, consistent contributions usually matter more than a single large PR.</p>
-    </article>
-
-    <article class="bg-white border border-zinc-100 rounded-3xl p-8 shadow-sm lg:col-span-2">
-      <h3 class="text-xl font-bold mb-5">3) Useful Resources</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-        <a href="https://opensource.guide/how-to-contribute/" target="_blank" rel="noopener noreferrer" class="block p-4 rounded-2xl border border-zinc-200 hover:border-primary hover:bg-orange-50/30 transition-colors">
-          <p class="font-bold mb-1">Open Source Guide</p>
-          <p class="text-zinc-600">Practical guide for first-time and returning contributors.</p>
-        </a>
-        <a href="https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project" target="_blank" rel="noopener noreferrer" class="block p-4 rounded-2xl border border-zinc-200 hover:border-primary hover:bg-orange-50/30 transition-colors">
-          <p class="font-bold mb-1">GitHub Contribution Flow</p>
-          <p class="text-zinc-600">Official docs for forking, cloning, and opening pull requests.</p>
-        </a>
-        <a href="https://developers.google.com/open-source/gsoc/resources/guide" target="_blank" rel="noopener noreferrer" class="block p-4 rounded-2xl border border-zinc-200 hover:border-primary hover:bg-orange-50/30 transition-colors">
-          <p class="font-bold mb-1">GSoC Contributor/Student Guide</p>
-          <p class="text-zinc-600">Official program timeline and best practices for applicants.</p>
-        </a>
-        <a href="https://developers.google.com/open-source/gsoc/help/student-advice" target="_blank" rel="noopener noreferrer" class="block p-4 rounded-2xl border border-zinc-200 hover:border-primary hover:bg-orange-50/30 transition-colors">
-          <p class="font-bold mb-1">Student Advice</p>
-          <p class="text-zinc-600">Official guidance for choosing orgs, communicating well, and writing proposals.</p>
-        </a>
-        <a href="https://firstcontributions.github.io/" target="_blank" rel="noopener noreferrer" class="block p-4 rounded-2xl border border-zinc-200 hover:border-primary hover:bg-orange-50/30 transition-colors">
-          <p class="font-bold mb-1">First Contributions</p>
-          <p class="text-zinc-600">Hands-on tutorial to practice your first fork, commit, and pull request.</p>
-        </a>
-      </div>
-    </article>
-
-    <article class="bg-white border border-zinc-100 rounded-3xl p-8 shadow-sm lg:col-span-2">
-      <h3 class="text-xl font-bold mb-4">4) FAQ</h3>
-      <div class="space-y-3 text-sm">
-        <details class="group border border-zinc-200 rounded-xl p-4">
-          <summary class="font-semibold cursor-pointer">Do I need prior GSoC experience to contribute?</summary>
-          <p class="text-zinc-600 mt-2">No. Start with small docs or UI fixes, then move to larger tasks as you learn the codebase.</p>
-        </details>
-        <details class="group border border-zinc-200 rounded-xl p-4">
-          <summary class="font-semibold cursor-pointer">What should my first pull request look like?</summary>
-          <p class="text-zinc-600 mt-2">Keep it focused on one change, reference the issue number, and include a short explanation of what you tested.</p>
-        </details>
-        <details class="group border border-zinc-200 rounded-xl p-4">
-          <summary class="font-semibold cursor-pointer">How do I find tasks I can start quickly?</summary>
-          <p class="text-zinc-600 mt-2">Look for issues labeled <span class="font-mono text-xs bg-zinc-100 px-1 py-0.5 rounded">good first issue</span> and comment before starting work.</p>
-        </details>
-      </div>
-    </article>
-  </div>
-</section>
-
-<!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
-<section class="bg-surface-container-low py-20 px-6">
-  <div class="max-w-7xl mx-auto">
-    <div class="text-center mb-12">
-      <h2 class="text-4xl font-extrabold font-headline tracking-tight mt-2">New to GSoC? Start here.</h2>
-      <p class="text-zinc-600 max-w-2xl mx-auto mt-4">Google Summer of Code is a global, online program focused on bringing new contributors into open source software development.</p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="bg-white border border-zinc-100 p-8 rounded-3xl group hover:bg-orange-500/10 shadow-lg transition-all">
-        <div class="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-6 font-bold text-2xl text-orange-400 group-hover:scale-110 transition-transform">1</div>
-        <h3 class="text-xl font-bold mb-3">Explore Organizations</h3>
-        <p class="text-zinc-600 text-sm leading-relaxed">Browse all <strong data-org-count>184</strong> open source organizations. Filter by language, domain, and competition level to find your match.</p>
-      </div>
-      <div class="bg-white border border-zinc-100 p-8 rounded-3xl group hover:bg-blue-500/10 shadow-lg transition-all">
-        <div class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 font-bold text-2xl text-blue-400 group-hover:scale-110 transition-transform">2</div>
-        <h3 class="text-xl font-bold mb-3">Submit a Proposal</h3>
-        <p class="text-zinc-600 text-sm leading-relaxed">Reach out to mentors and write a detailed proposal outlining how you'll contribute to your chosen project.</p>
-      </div>
-      <div class="bg-white border border-zinc-100 p-8 rounded-3xl group hover:bg-green-500/10 shadow-lg transition-all">
-        <div class="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center mb-6 font-bold text-2xl text-green-400 group-hover:scale-110 transition-transform">3</div>
-        <h3 class="text-xl font-bold mb-3">Start Coding</h3>
-        <p class="text-zinc-600 text-sm leading-relaxed">If accepted, spend your summer coding under the guidance of experienced mentors and earn a stipend of $1,500–$6,600.</p>
+    <!-- ── Block 01 ── -->
+    <div class="roadmap-block" data-block="0" >
+      <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-0">
+        <div class="roadmap-illus">
+          <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="56" height="56" rx="16" fill="rgba(249,115,22,0.10)"/>
+            <rect x="4" y="21" width="14" height="14" rx="4" fill="#f97316" opacity="0.85"/>
+            <text x="11" y="31" text-anchor="middle" font-size="6" font-weight="800" fill="white">G</text>
+            <rect x="21" y="21" width="14" height="14" rx="4" fill="#fb923c" opacity="0.7"/>
+            <text x="28" y="30" text-anchor="middle" font-size="5" font-weight="800" fill="white">Org</text>
+            <rect x="38" y="21" width="14" height="14" rx="4" fill="#fdba74" opacity="0.7"/>
+            <text x="45" y="30" text-anchor="middle" font-size="5" font-weight="800" fill="#7c2d12">You</text>
+            <line x1="18" y1="28" x2="21" y2="28" stroke="#f97316" stroke-width="1.5" stroke-dasharray="2 1"/>
+            <line x1="35" y1="28" x2="38" y2="28" stroke="#f97316" stroke-width="1.5" stroke-dasharray="2 1"/>
+            <text x="28" y="46" text-anchor="middle" font-size="4" fill="#a1a1aa">Stipend Flow</text>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-1">
+            <span class="text-xs font-bold font-label uppercase tracking-widest text-primary opacity-60">01</span>
+            <h3 class="text-lg font-extrabold text-zinc-900 font-headline">What is GSoC &amp; What's an Org?</h3>
+          </div>
+          <p class="text-sm text-zinc-500">The Google-backed ecosystem connecting contributors to open source foundations.</p>
+        </div>
+        <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
+      </button>
+      <div class="roadmap-block-body" id="roadmap-block-0" inert>
+        <div class="roadmap-block-inner pt-6">
+          <div class="mb-6">
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num">1</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Not an internship at Google.</strong> You write code for independent open source foundations — Apache, Blender, Linux, TensorFlow. Google provides the stipend and the platform.</p>
+            </div>
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num">2</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Who is it for?</strong> Beginners and intermediate developers (18+) who are new to open source. No university enrollment required since 2022.</p>
+            </div>
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num">3</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>The Mentors.</strong> Experienced community maintainers who volunteer to guide your project, review code, and evaluate your progress at midterm and final.</p>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-orange-50 border border-orange-100 p-4 mb-6 flex items-center justify-center gap-3 text-xs font-semibold text-zinc-600 flex-wrap">
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-400 inline-block"></span>Google (Funds)</span>
+            <span class="text-orange-300 font-bold">──►</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-300 inline-block"></span>Open Source Org (Mentors)</span>
+            <span class="text-orange-300 font-bold">◄──►</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-200 inline-block"></span>You (Contributor)</span>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Do I have to be an enrolled university student?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. Since 2022, GSoC is open to anyone 18+ who is a newcomer or beginner to open source software development.</p></div>
+            </div>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Does Google choose which applicants get accepted?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. The participating organizations and their mentors evaluate applications and select contributors based on proposal quality and prior contributions.</p></div>
+            </div>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can I apply if I live outside the US?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. GSoC is completely global and remote, open to contributors across 100+ eligible countries.</p></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+
+    <!-- ── Block 02 ── -->
+    <div class="roadmap-block" data-block="1" >
+      <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-1">
+        <div class="roadmap-illus">
+          <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="56" height="56" rx="16" fill="rgba(59,130,246,0.10)"/>
+            <rect x="6" y="10" width="18" height="8" rx="4" fill="#3b82f6" opacity="0.75"/>
+            <text x="15" y="16" text-anchor="middle" font-size="4.5" font-weight="700" fill="white">Python</text>
+            <rect x="27" y="10" width="23" height="8" rx="4" fill="#60a5fa" opacity="0.65"/>
+            <text x="38.5" y="16" text-anchor="middle" font-size="4.5" font-weight="700" fill="white">Moderate</text>
+            <rect x="6" y="23" width="44" height="8" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+            <circle cx="13" cy="27" r="3.5" fill="#3b82f6" opacity="0.5"/>
+            <rect x="19" y="25" width="15" height="2" rx="1" fill="#93c5fd"/>
+            <rect x="19" y="28.5" width="9" height="1.5" rx="0.75" fill="#bfdbfe"/>
+            <rect x="6" y="35" width="44" height="8" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+            <circle cx="13" cy="39" r="3.5" fill="#60a5fa" opacity="0.5"/>
+            <rect x="19" y="37" width="20" height="2" rx="1" fill="#93c5fd"/>
+            <rect x="19" y="40.5" width="12" height="1.5" rx="0.75" fill="#bfdbfe"/>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-1">
+            <span class="text-xs font-bold font-label uppercase tracking-widest text-blue-500 opacity-70">02</span>
+            <h3 class="text-lg font-extrabold text-zinc-900 font-headline">Explore &amp; Choose Your Match</h3>
+          </div>
+          <p class="text-sm text-zinc-500">Navigating 180+ orgs to find the highest-probability fit for your skills.</p>
+        </div>
+        <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
+      </button>
+      <div class="roadmap-block-body" id="roadmap-block-1" inert>
+        <div class="roadmap-block-inner pt-6">
+          <div class="mb-6">
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(59,130,246,0.12);color:#3b82f6">1</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>The Rule of 2.</strong> Don't spread across 10 orgs. Pick 1–2 and engage deeply. Google allows up to 3 proposals, but focused effort wins every time.</p>
+            </div>
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(59,130,246,0.12);color:#3b82f6">2</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Competition Check.</strong> Ultra-popular orgs get hundreds of proposals. Exploring "Moderate" or "Newcomer-friendly" orgs drastically increases your acceptance odds.</p>
+            </div>
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(59,130,246,0.12);color:#3b82f6">3</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Stack Matching.</strong> Use FindMyGSoC's language, domain, and AI Recommender filters to surface orgs that align with what you already know or can quickly ramp up on.</p>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-blue-50 border border-blue-100 p-4 mb-6 flex flex-wrap gap-2">
+            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold"><span class="material-symbols-outlined text-sm">code</span>Python / JS</span>
+            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold"><span class="material-symbols-outlined text-sm">bar_chart</span>Moderate</span>
+            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold"><span class="material-symbols-outlined text-sm">bug_report</span>Good First Issues</span>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">How many proposals am I allowed to submit?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Google allows up to 3 total proposals across all organizations. Focusing high effort on 1–2 consistently produces better results than spreading thin.</p></div>
+            </div>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if an org has been in GSoC for 15+ years?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Veteran orgs have structured mentorship but extremely high competition. Newer orgs often have fewer applicants and more personal mentor interaction.</p></div>
+            </div>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">How does the AI Recommender help?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">It matches your GitHub profile or pasted resume directly against the tech stacks and project history of all 184 orgs in our index to compute a match score.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Block 03 ── -->
+    <div class="roadmap-block" data-block="2" >
+      <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-2">
+        <div class="roadmap-illus">
+          <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="56" height="56" rx="16" fill="rgba(34,197,94,0.10)"/>
+            <rect x="3" y="23" width="11" height="10" rx="3" fill="#22c55e" opacity="0.8"/>
+            <text x="8.5" y="30" text-anchor="middle" font-size="3.8" font-weight="700" fill="white">Fork</text>
+            <line x1="14" y1="28" x2="18" y2="28" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="1.5 1"/>
+            <polygon points="18,26.5 21,28 18,29.5" fill="#22c55e"/>
+            <rect x="21" y="23" width="12" height="10" rx="3" fill="#4ade80" opacity="0.75"/>
+            <text x="27" y="30" text-anchor="middle" font-size="3.8" font-weight="700" fill="white">Issue</text>
+            <line x1="33" y1="28" x2="37" y2="28" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="1.5 1"/>
+            <polygon points="37,26.5 40,28 37,29.5" fill="#22c55e"/>
+            <rect x="40" y="23" width="13" height="10" rx="3" fill="#86efac" opacity="0.75"/>
+            <text x="46.5" y="30" text-anchor="middle" font-size="3.8" font-weight="700" fill="#14532d">PR ✓</text>
+            <circle cx="45" cy="12" r="6" fill="#22c55e"/>
+            <path d="M42.5 12l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-1">
+            <span class="text-xs font-bold font-label uppercase tracking-widest text-green-600 opacity-70">03</span>
+            <h3 class="text-lg font-extrabold text-zinc-900 font-headline">How to Contribute</h3>
+          </div>
+          <p class="text-sm text-zinc-500">From setup to your first merged pull request — with community etiquette.</p>
+        </div>
+        <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
+      </button>
+      <div class="roadmap-block-body" id="roadmap-block-2" inert>
+        <div class="roadmap-block-inner pt-6">
+          <div class="mb-6">
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(34,197,94,0.12);color:#16a34a">1</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Find the Right Task.</strong> Search for <code class="text-xs bg-zinc-100 px-1 py-0.5 rounded font-mono">good first issue</code> or documentation fixes. Always comment on the issue <em>before</em> writing code to claim it.</p>
+            </div>
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(34,197,94,0.12);color:#16a34a">2</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Public Channels First.</strong> Join the org's Discord, Zulip, Slack, or IRC. Introduce yourself briefly with your tech stack and the issue you're eyeing.</p>
+            </div>
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(34,197,94,0.12);color:#16a34a">3</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Golden Rule of PRs.</strong> Keep PRs atomic — one fix at a time. Add tests, link the issue, and avoid unsolicited "sir give me task" messages.</p>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-green-50 border border-green-100 p-4 mb-6 flex items-center justify-center gap-2 text-xs font-semibold text-zinc-600 flex-wrap">
+            <span>Fork &amp; Clone</span><span class="text-green-500 font-bold">──►</span>
+            <span>Issue Discussion</span><span class="text-green-500 font-bold">──►</span>
+            <span>Atomic PR</span><span class="text-green-500 font-bold">──►</span>
+            <span class="text-green-700">Mentor Review ✓</span>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Do I need contributions before the application opens?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. Having 1–3 merged or well-reviewed PRs demonstrates to mentors that you can run the codebase, communicate effectively, and produce working code.</p></div>
+            </div>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if mentors take days to review my PR?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Mentors are volunteers with day jobs. Wait 3–4 days before leaving a polite follow-up comment in the PR thread on the public channel.</p></div>
+            </div>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if another contributor claims the issue I wanted?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Always comment first asking to be assigned before writing code. If taken, browse alternative unassigned issues — orgs usually have many open good-first-issues.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Block 04 ── -->
+    <div class="roadmap-block" data-block="3" >
+      <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-3">
+        <div class="roadmap-illus">
+          <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="56" height="56" rx="16" fill="rgba(168,85,247,0.10)"/>
+            <circle cx="17" cy="19" r="2.5" fill="#a855f7" opacity="0.8"/>
+            <path d="M15.8 19l1 1 2-2" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="21" y="18" width="13" height="2" rx="1" fill="#e9d5ff"/>
+            <circle cx="17" cy="27" r="2.5" fill="#a855f7" opacity="0.8"/>
+            <path d="M15.8 27l1 1 2-2" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="21" y="26" width="10" height="2" rx="1" fill="#e9d5ff"/>
+            <circle cx="17" cy="35" r="2.5" fill="#d8b4fe" opacity="0.5"/>
+            <rect x="21" y="34" width="15" height="2" rx="1" fill="#f3e8ff"/>
+            <circle cx="43" cy="13" r="7" fill="#a855f7"/>
+            <text x="43" y="17" text-anchor="middle" font-size="10" fill="white">★</text>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-1">
+            <span class="text-xs font-bold font-label uppercase tracking-widest text-purple-500 opacity-70">04</span>
+            <h3 class="text-lg font-extrabold text-zinc-900 font-headline">Crafting a Winning Proposal</h3>
+          </div>
+          <p class="text-sm text-zinc-500">Structuring your project plan, deliverables, and timeline to convince mentors.</p>
+        </div>
+        <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
+      </button>
+      <div class="roadmap-block-body" id="roadmap-block-3" inert>
+        <div class="roadmap-block-inner pt-6">
+          <div class="mb-6">
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(168,85,247,0.12);color:#9333ea">1</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>4 Core Elements.</strong> Problem Scope, Technical Approach, weekly Milestone Timeline with explicit deliverables, and your Profile with relevant prior PRs in that org.</p>
+            </div>
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(168,85,247,0.12);color:#9333ea">2</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Build in Buffers.</strong> Budget 1–2 weeks for exams, unexpected bugs, and documentation. Mentors trust realistic timelines over overly ambitious ones.</p>
+            </div>
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(168,85,247,0.12);color:#9333ea">3</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Pre-submission Review.</strong> Share a draft with your mentor at least 1–2 weeks before Google's deadline to get early, constructive feedback.</p>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-purple-50 border border-purple-100 p-4 mb-6 grid grid-cols-2 gap-2 text-xs font-semibold text-zinc-600">
+            <span class="flex items-center gap-1.5"><span class="text-purple-500 material-symbols-outlined text-sm">check_circle</span>Problem Scope</span>
+            <span class="flex items-center gap-1.5"><span class="text-purple-500 material-symbols-outlined text-sm">check_circle</span>Weekly Milestones</span>
+            <span class="flex items-center gap-1.5"><span class="text-purple-500 material-symbols-outlined text-sm">check_circle</span>1-Week Buffer</span>
+            <span class="flex items-center gap-1.5"><span class="text-purple-500 material-symbols-outlined text-sm">check_circle</span>Proof of Setup</span>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Where do I draft my proposal?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Use FindMyGSoC's built-in Markdown Editor to draft, preview, and export your proposal to PDF or Markdown — all stored locally in your browser.</p></div>
+            </div>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can I propose a brand new idea not on the org's ideas list?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes, but validate it with mentors first. Org-listed ideas typically have higher mentor availability and clearer evaluation criteria.</p></div>
+            </div>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can mentors guarantee my acceptance?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. Final selections depend on the number of contributor slots Google grants to each org — mentor enthusiasm alone doesn't guarantee a slot.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Block 05 ── -->
+    <div class="roadmap-block" data-block="4">
+      <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-4">
+
+        <div class="roadmap-illus">
+          <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="56" height="56" rx="16" fill="rgba(234,179,8,0.10)"/>
+            <rect x="6" y="26" width="44" height="6" rx="3" fill="#fef9c3"/>
+            <rect x="6" y="26" width="20" height="6" rx="3" fill="#eab308" opacity="0.85"/>
+            <rect x="26" y="26" width="24" height="6" rx="3" fill="#fbbf24" opacity="0.5"/>
+            <line x1="26" y1="20" x2="26" y2="34" stroke="#ca8a04" stroke-width="1" stroke-dasharray="2 1"/>
+            <text x="26" y="18" text-anchor="middle" font-size="4.5" font-weight="700" fill="#ca8a04">45%</text>
+            <circle cx="50" cy="29" r="5" fill="#eab308"/>
+            <text x="50" y="31.5" text-anchor="middle" font-size="5.5" font-weight="800" fill="white">$</text>
+            <text x="8" y="41" font-size="4" fill="#a1a1aa">Midterm</text>
+            <text x="33" y="41" font-size="4" fill="#a1a1aa">Final Eval</text>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-1">
+            <span class="text-xs font-bold font-label uppercase tracking-widest text-yellow-600 opacity-70">05</span>
+            <h3 class="text-lg font-extrabold text-zinc-900 font-headline">Stipends, Timeline &amp; Coding Period</h3>
+          </div>
+          <p class="text-sm text-zinc-500">Payout tiers, milestone evaluations, and completing your summer project.</p>
+        </div>
+        <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
+      </button>
+      <div class="roadmap-block-body" id="roadmap-block-4" inert>
+        <div class="roadmap-block-inner pt-6">
+          <div class="mb-6">
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(234,179,8,0.15);color:#ca8a04">1</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Project Sizes.</strong> Small (~90 hrs / 8 wks), Medium (~175 hrs / 12 wks), Large (~350 hrs / 22 wks). Pick the size that honestly fits your weekly schedule.</p>
+            </div>
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(234,179,8,0.15);color:#ca8a04">2</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Stipend Range.</strong> $1,500–$6,600 USD, adjusted by Google's Purchasing Power Parity (PPP) formula for your country. Paid in two phases via Payoneer.</p>
+            </div>
+            <div class="roadmap-step-row">
+              <div class="roadmap-step-num" style="background:rgba(234,179,8,0.15);color:#ca8a04">3</div>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Evaluations.</strong> Two checkpoints — Midterm and Final. Pass both to receive your stipend. Mentors evaluate code quality, progress, and communication.</p>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-yellow-50 border border-yellow-100 p-4 mb-6 space-y-3">
+            <p class="text-xs font-semibold text-zinc-500">Stipend disbursement</p>
+            <div class="flex items-center gap-3">
+              <div class="w-16 flex-none text-xs font-bold text-yellow-700">Midterm</div>
+              <div class="flex-1 h-4 rounded-full bg-yellow-100 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full" style="width:45%"></div>
+              </div>
+              <div class="w-8 flex-none text-xs font-bold text-yellow-700 text-right">45%</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-16 flex-none text-xs font-bold text-yellow-700">Final</div>
+              <div class="flex-1 h-4 rounded-full bg-yellow-100 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-yellow-500 to-orange-400 rounded-full" style="width:55%"></div>
+              </div>
+              <div class="w-8 flex-none text-xs font-bold text-yellow-700 text-right">55%</div>
+            </div>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">When and how do I receive the stipend?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Payments are processed through Payoneer: 45% after passing the midterm, and 55% after passing the final evaluation.</p></div>
+            </div>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can I do GSoC while taking college classes?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. Many contributors manage both. Choose a Small (90h) or Medium (175h) project if your academic workload is high to avoid burnout.</p></div>
+            </div>
+            <div class="roadmap-faq-item">
+              <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What happens if I fail the midterm evaluation?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
+              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">The project stops and the remaining 55% stipend is not disbursed. You retain the experience and any prior community recognition from your work.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end #gsocRoadmap -->
 </section>
 
 <!-- ═══════════════════ COMPARE ═══════════════════ -->
@@ -2109,7 +2500,7 @@ kbd:hover{
       <div class="metrics-grid mb-8" id="mMetrics">
         <!-- Injected: Years, Competition, First Year, etc. -->
       </div>
-      
+
       <div class="github-stats-container mb-8">
         <div class="gh-stat-item"><span class="material-symbols-outlined text-sm">star</span> <span id="mStars">---</span></div>
         <div class="gh-stat-item"><span class="material-symbols-outlined text-sm">fork_right</span> <span id="mForks">---</span></div>
@@ -2178,7 +2569,7 @@ kbd:hover{
         </button>
         <button type="button" id="pwExportPDFBtn" class="proposal-btn proposal-btn-primary" aria-label="Download proposal as PDF">
           <span class="material-symbols-outlined text-sm">picture_as_pdf</span> PDF
-        </button> 
+        </button>
         <button type="button" id="pwCloseBtn" class="proposal-btn" aria-label="Close proposal builder">
           <span class="material-symbols-outlined text-sm">close</span>
         </button>
@@ -2306,18 +2697,18 @@ kbd:hover{
   // ══════════════════════════════════════════════
   function initializeOrgCounts(){
     const orgCount = ORGS.length > 0 ? ORGS.length : 184;
-    
+
     // Update all org count display references
     document.querySelectorAll('[data-org-count]').forEach(el => {
       el.textContent = orgCount;
     });
-    
+
     // Update org total summary references
     document.querySelectorAll('[data-org-total]').forEach(el => {
       el.textContent = orgCount;
     });
   }
-  
+
   // Initialize org counts when DOM is ready
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', initializeOrgCounts);
@@ -2419,7 +2810,7 @@ kbd:hover{
     desktopNavMediaQuery.addListener(syncMenuWithViewport);
   }
   syncMenuWithViewport(desktopNavMediaQuery);
-  
+
   function handleMenuEscape(e){
     if(e.key === 'Escape'){
       const menu = document.getElementById('mobileMenu');
@@ -2691,7 +3082,7 @@ kbd:hover{
     if (selectedLanguages.has(langDisplay)) selectedLanguages.delete(langDisplay);
     else selectedLanguages.add(langDisplay);
     renderSelectedLanguages();
-    
+
     // Track filter badge when user toggles language pill
     if (typeof BadgeSystem !== 'undefined') {
       BadgeSystem.trackFilter();
@@ -3026,7 +3417,7 @@ kbd:hover{
     const lastUpdatedEl = document.getElementById('mentorLastUpdated');
     const mentorPagination = document.getElementById('mentorPagination');
     if (!grid) return;
-    
+
     if (reset) {
       mentorCurrentPage = 1;
     }
@@ -3342,7 +3733,7 @@ const connector = !isLast
           }
       }).join('');
       const currentMilestone = container.querySelector('.current-milestone');
-      requestAnimationFrame(() => { 
+      requestAnimationFrame(() => {
         if (currentMilestone) {
         container.scrollTo({
           top:
@@ -3483,7 +3874,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       grid.classList.remove('hidden');
       if (emptyState) emptyState.classList.add('hidden');
     }
-    
+
     const totalOrgPages = Math.max(1, Math.ceil(filteredOrgs.length / ITEMS_PER_PAGE));
     if (orgCurrentPage > totalOrgPages) orgCurrentPage = totalOrgPages;
 
@@ -3500,7 +3891,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       });
       const githubOwner = githubOwnerFromValue(org.github);
       const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
-      
+
       card.innerHTML = `
         <div class="flex justify-between items-start mb-4">
           <div class="w-14 h-14 flex-shrink-0 rounded-xl bg-surface-container-low flex items-center justify-center p-2 overflow-hidden">
@@ -3624,12 +4015,12 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     const container = document.querySelector('#compare .grid');
     if (!container) return;
     container.innerHTML = '';
-    
+
     compareList.forEach(name => {
       const org = ORGS.find(o => o.name === name);
       const githubOwner = githubOwnerFromValue(org.github);
       const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
-      
+
       const item = document.createElement('div');
       item.className = 'bg-white rounded-xl p-4 border border-zinc-100';
       item.innerHTML = `
@@ -3739,7 +4130,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       orgPickerMode = 'compare';
       orgPickerTargetSlot = modeOrSlot;
     }
-    
+
     document.getElementById('orgPickerSearch').value = '';
     filterOrgPicker('');
     const modal = document.getElementById('orgPickerModal');
@@ -3758,12 +4149,12 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
   function filterOrgPicker(query) {
     const list = document.getElementById('orgPickerList');
     const q = query.toLowerCase();
-    
+
     // Filter out orgs that are already in the target list
     const filtered = ORGS.filter(o => {
       const matchSearch = o.name.toLowerCase().includes(q);
-      const notInList = orgPickerMode === 'watchlist' 
-        ? !bookmarkedSet.has(o.name) 
+      const notInList = orgPickerMode === 'watchlist'
+        ? !bookmarkedSet.has(o.name)
         : !compareList.includes(o.name);
       return matchSearch && notInList;
     });
@@ -3813,7 +4204,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     if (typeof BadgeSystem !== 'undefined') {
       renderBadges();
     }
-    
+
     const modal = document.getElementById('anBg');
     modal?.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -3845,20 +4236,20 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
   function renderBadges() {
     const badgesContainer = document.getElementById('badgesContainer');
     if (!badgesContainer || typeof BadgeSystem === 'undefined') return;
-    
+
     const stats = BadgeSystem.getBadgeStats();
     const unlockedCount = BadgeSystem.getUnlockedCount();
     const totalCount = BadgeSystem.getTotalBadgesCount();
-    
+
     let html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:12px">';
-    
+
     Object.keys(stats).forEach(badgeType => {
       const badge = stats[badgeType];
       const isLocked = !badge.level;
       const icon = badge.name.split(' ')[0];
       const levelName = badge.level ? badge.level.levelName : 'Locked';
       const progress = badge.progress;
-      
+
       html += `
         <div class="badge-card ${isLocked ? 'badge-locked' : ''}">
           <span class="badge-icon">${icon}</span>
@@ -3871,10 +4262,10 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
         </div>
       `;
     });
-    
+
     html += '</div>';
     badgesContainer.innerHTML = html;
-    
+
     // Update badge indicator in header
     const badgeIndicator = document.getElementById('badgeIndicator');
     if (badgeIndicator) {
@@ -3911,7 +4302,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       closeOrgPicker();
     }
   });
-  
+
 
   function applyFiltersPreservingVisibleCount() {
     const savedCount = visibleCount;
@@ -4441,7 +4832,7 @@ if(org.ideas){
     if (draftBtn) {
       draftBtn.onclick = () => ProposalBuilder.open(org.name);
     }
-     
+
     document.getElementById('orgModal').classList.add('open');
     document.body.classList.add('modal-open');
     document.documentElement.style.overflow = 'hidden';
@@ -4457,7 +4848,7 @@ if(org.ideas){
 
   function openRandomOrg() {
     const orgsToUse = filteredOrgs.length > 0 ? filteredOrgs : ORGS;
-    
+
     if (!orgsToUse.length) {
       alert('No organizations match your filters — try clearing some!');
       return;
@@ -4465,7 +4856,7 @@ if(org.ideas){
 
     const randomIdx = Math.floor(Math.random() * orgsToUse.length);
     const randomOrg = orgsToUse[randomIdx];
-    
+
     openModal(randomOrg.name);
   }
 
@@ -4540,7 +4931,7 @@ if(org.ideas){
     if (document.getElementById('sortSelect')) document.getElementById('sortSelect').value = 'alpha';
     const heroSearch = document.getElementById('hero-search');
     if (heroSearch) heroSearch.value = '';
-  
+
     if (typeof clearAllLanguages === 'function') clearAllLanguages();
     // Reset chips
     document.querySelectorAll('.filter-chip').forEach(chip => {
@@ -4819,18 +5210,18 @@ if(org.ideas){
     try {
       // Simulate real fetch delay
       await new Promise(r => setTimeout(r, 1200));
-      
+
       // Since no token, we simulate random but realistic growth
       const stars = (Math.random() * 5000 + 1000).toFixed(0);
       const forks = (stars * 0.2).toFixed(0);
       const issues = (Math.random() * 50 + 10).toFixed(0);
-      
+
       document.getElementById('mStars').textContent = `${(stars/1000).toFixed(1)}k`;
       document.getElementById('mForks').textContent = forks;
       document.getElementById('mIssues').textContent = issues;
       document.getElementById('mActivity').textContent = 'High';
       document.getElementById('mActivity').className = 'gh-stat-item text-green-400';
-      
+
       btn.textContent = 'Stats Updated!';
     } catch (e) {
       btn.textContent = 'Error';
@@ -5097,7 +5488,7 @@ if(org.ideas){
   document.getElementById('pwEditor')?.addEventListener('input', (e) => {
     renderPreview();
     updateProposalStats();
-   
+
     if (!currentProposalOrg || !isAutosaveEnabled()) return;
     clearTimeout(proposalAutosaveTimer);
     proposalAutosaveTimer = setTimeout(() => {
@@ -5218,10 +5609,10 @@ if(org.ideas){
   globalThis.openModal = openModal;
 
   // Safe HTML utilities for recommendation-ui.js
-  
+
   class SafeHTMLString extends String {}
   SafeHTMLString.prototype.__isSafeHTML = true;
- 
+
   function safeHTML(strings, ...values) {
     let result = '';
     for (let i = 0; i < strings.length; i++) {
@@ -5259,12 +5650,12 @@ if(org.ideas){
 
 <div class="modal-bg" id="helpModal">
   <div class="modal">
-    
+
     <button class="close-btn" onclick="closeHelpModal()"  aria-label="Close keyboard shortcuts modal">
       <span class="material-symbols-outlined">close</span>
     </button>
-      
-    
+
+
 
     <div class="modal-header">
       <h2>Keyboard Shortcuts</h2>
@@ -5355,7 +5746,7 @@ if(org.ideas){
 </tbody>
 </table>
 
-       
+
 
       </div>
     </div>
@@ -5416,11 +5807,11 @@ if (helpModalOpen || orgModalOpen || proposalModalOpen) {
         e.preventDefault();
         openHelpModal();
     }
-  
+
     if(e.key==='Escape'){
         e.preventDefault();
-        
-    
+
+
       if (document.getElementById('proposalModal')?.classList.contains('open')) {
         globalThis.ProposalBuilder?.close?.();
       } else {
@@ -5724,7 +6115,7 @@ if(e.key.toLowerCase()==='r'){
 
     const viewportTop = getSectionDetectionOffset();
     const viewportBottom = globalThis.innerHeight;
-    
+
     let maxVisibleHeight = 0;
     let found = 0;
 
@@ -5732,7 +6123,7 @@ if(e.key.toLowerCase()==='r'){
       const rect = section.getBoundingClientRect();
       const visibleTop = Math.max(rect.top, viewportTop);
       const visibleBottom = Math.min(rect.bottom, viewportBottom);
-      
+
       const visibleHeight = visibleBottom - visibleTop;
       if (visibleHeight > maxVisibleHeight) {
         maxVisibleHeight = visibleHeight;
@@ -5844,6 +6235,92 @@ if(e.key.toLowerCase()==='r'){
   document.getElementById('orgPickerModal').addEventListener('click', function(e) {
     if (e.target === this) closeOrgPicker();
   });
+</script>
+<script>
+// ── GSoC Roadmap Accordion ───────────────────────────────────────────────────
+(function () {
+  const roadmap = document.getElementById('gsocRoadmap');
+  if (!roadmap) return;
+
+  const blocks = Array.from(roadmap.querySelectorAll('.roadmap-block'));
+
+  function closeBlock(block) {
+    const header = block.querySelector('.roadmap-block-header');
+    const body = block.querySelector('.roadmap-block-body');
+
+    block.classList.remove('is-open');
+
+    if (header) {
+      header.setAttribute('aria-expanded', 'false');
+    }
+
+    if (body) {
+      body.setAttribute('inert', '');
+    }
+
+    // Reset FAQs when the roadmap block closes
+    block.querySelectorAll('.roadmap-faq-item').forEach((item) => {
+      item.classList.remove('faq-open');
+
+      const trigger = item.querySelector('.roadmap-faq-trigger');
+      if (trigger) {
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  function openBlock(block) {
+    blocks.forEach((b) => {
+      if (b !== block) closeBlock(b);
+    });
+
+    const header = block.querySelector('.roadmap-block-header');
+    const body = block.querySelector('.roadmap-block-body');
+
+    block.classList.add('is-open');
+
+    if (header) {
+      header.setAttribute('aria-expanded', 'true');
+    }
+
+    if (body) {
+      body.removeAttribute('inert');
+    }
+  }
+
+  function toggleBlock(block) {
+    if (block.classList.contains('is-open')) {
+      closeBlock(block);
+    } else {
+      openBlock(block);
+    }
+  }
+
+  blocks.forEach((block) => {
+    const header = block.querySelector('.roadmap-block-header');
+    if (!header) return;
+
+    header.addEventListener('click', () => {
+      toggleBlock(block);
+    });
+  });
+
+  // FAQ toggles inside each block
+  roadmap.addEventListener('click', (e) => {
+    const trigger = e.target.closest('.roadmap-faq-trigger');
+    if (!trigger) return;
+
+    e.stopPropagation();
+
+    const item = trigger.closest('.roadmap-faq-item');
+    if (!item) return;
+
+    const isOpen = item.classList.contains('faq-open');
+
+    item.classList.toggle('faq-open', !isOpen);
+    trigger.setAttribute('aria-expanded', String(!isOpen));
+  });
+})();
 </script>
 </body>
 </html>
