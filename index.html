@@ -298,7 +298,7 @@ kbd:hover{
     transition: all 0.2s;
     }
     .close-btn:hover { background: #e8e8e8; color: #1a1c1c; }
-    
+
     .modal-header { padding: 2rem 2rem; flex-shrink: 0; }
     .category-tag {
       background: rgba(157, 67, 0, 0.1);
@@ -316,7 +316,7 @@ kbd:hover{
 
     .modal-body {padding: 0 3rem 3rem; overflow-y: auto; flex: 1; min-height: 0; }
     .section-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #555; margin-bottom: 0.5rem; margin-top: 2rem; border-bottom: 1px solid #f3f3f3; padding-bottom: 0.5rem; }
-    
+
     .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; }
     .metric-card { background: #faf5f0; padding: 0.5rem 1.5rem 0.5rem 1.5rem; border-radius: 1.2rem; border: 1px solid #cb692c; text-align: center; }
     .metric-value { font-size: 1.25rem; font-weight: 800; color: #1a1c1c; margin-bottom: 0.2rem; }
@@ -486,7 +486,7 @@ kbd:hover{
     /* Base mobile-first styles */
     body { width: 100%; overflow-x: hidden; }
     html { width: 100%; scroll-behavior: smooth; }
-    
+
     /* Scroll offset for fixed header */
     #timeline, #orgs, #guide, #watchlist, #issues, #mentors, #ai-recommender, #contact {
       scroll-margin-top: 80px;
@@ -558,14 +558,14 @@ kbd:hover{
     .dark .filter-chip:not(.bg-orange-600):hover { background: #fb923c !important; color: #ffffff !important; border-color: #fb923c !important; }
 
     /* Dark mode - Language tag pills */
-    .dark section .flex.flex-wrap.gap-2 > button:not(.filter-chip) { 
-      background: #27272a !important; 
-      color: #d4d4d8 !important; 
-      border-color: #3f3f46 !important; 
+    .dark section .flex.flex-wrap.gap-2 > button:not(.filter-chip) {
+      background: #27272a !important;
+      color: #d4d4d8 !important;
+      border-color: #3f3f46 !important;
     }
-    .dark section .flex.flex-wrap.gap-2 > button:not(.filter-chip):hover { 
-      border-color: #f97316 !important; 
-      color: #f97316 !important; 
+    .dark section .flex.flex-wrap.gap-2 > button:not(.filter-chip):hover {
+      border-color: #f97316 !important;
+      color: #f97316 !important;
     }
     /* Higher-specificity rule beats .dark section .flex.flex-wrap.gap-2 > button:not(.filter-chip) (0,5,2) */
     .dark .pill.active,
@@ -574,7 +574,7 @@ kbd:hover{
       border-color: #fb923c !important;
       color: #fb923c !important;
     }
-    
+
     /* Dark mode - Issue card badges */
     .dark .bg-green-100 { background: #14532d !important; }
     .dark .bg-zinc-100 { background: #27272a !important; }
@@ -582,12 +582,12 @@ kbd:hover{
     .dark .text-green-800 { color: #86efac !important; }
     .dark .text-green-600 { color: #4ade80 !important; }
     .dark .text-zinc-600 { color: #a1a1aa !important; }
-    
+
     /* Dark mode - Card hover effects */
     .dark .group:hover { background: #1f1f23 !important; border-color: rgba(249, 115, 22, 0.3) !important; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4) !important; }
     .dark .group:hover .text-on-surface { color: #f97316 !important; }
     .dark .group-hover\:text-primary:hover, .dark .group:hover .group-hover\:text-primary { color: #f97316 !important; }
-    
+
     /* Dark mode - Tech tags */
     .dark .tech-tag { background: #27272a; color: #d4d4d8; border-color: #3f3f46; }
     .dark .fit-tag { background: #1e293b; color: #93c5fd; border-color: #334155; }
@@ -625,7 +625,7 @@ kbd:hover{
       #pwCloseBtn span + * { display: none; }
 
     }
-    
+
     /* Dark mode - Modal */
     .dark .modal { background: #18181b; }
     .dark .modal-header h2 { color: #f4f4f5; }
@@ -651,7 +651,7 @@ kbd:hover{
       background: #ffffff;
       overflow: hidden;
       transition: box-shadow 0.28s ease, border-color 0.28s ease, transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
-      cursor: pointer;
+
     }
     .roadmap-block:hover {
       border-color: #f97316;
@@ -668,7 +668,15 @@ kbd:hover{
       align-items: center;
       gap: 20px;
       padding: 24px 28px;
+      width: 100%;
       user-select: none;
+      background: none;
+      border: none;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+
     }
     .roadmap-illus {
       flex-shrink: 0;
@@ -1019,7 +1027,7 @@ kbd:hover{
       color: #fb923c;
       background: #1c0f05;
     }
-    
+
     /* SVG Flowing Border Trace animation for Timeline Card & Search Bar */
     .timeline-border-svg {
       position: absolute;
@@ -1092,7 +1100,7 @@ kbd:hover{
     .dark .search-bar-container:focus-within .search-border-outer {
       background: #fb923c;
     }
-  
+
 /* Section-wise Scroll Buttons */
     .section-scroll-btn {
   position: fixed;
@@ -1309,7 +1317,7 @@ kbd:hover{
       .premium-footer {
         padding-bottom: 1.5rem;
       }
-    } 
+    }
 
 @media (pointer: coarse) {
   .filter-chip.bg-orange-600:hover {
@@ -1356,7 +1364,7 @@ kbd:hover{
       </button>
 
       <!-- Home button (links back to landing page) -->
-      <a href="/" 
+      <a href="/"
          class="inline-flex shrink-0 items-center gap-1 px-1.5 sm:px-2 py-2 hover:bg-zinc-100/50 rounded-lg transition-colors text-zinc-600 hover:text-zinc-900"
          aria-label="Go to home page" title="Home">
         <span class="material-symbols-outlined text-lg">home</span>
@@ -1382,40 +1390,40 @@ kbd:hover{
         <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#guide" data-section="guide">Guide</a>
       </nav>
     </div>
-    
+
     <!-- Right side: Toggle visible on all screens, GitHub button hidden on mobile -->
     <div class="flex items-center gap-2 sm:gap-3">
-    
+
       <button id="themeToggleBtn" onclick="toggleTheme()"
         class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
         aria-label="Switch to dark theme" aria-pressed="false" title="Switch to dark theme">
-    
+
         <span class="material-symbols-outlined text-zinc-600">
           dark_mode
         </span>
       </button>
-    
+
       <!-- ANALYTICS BUTTON -->
       <button id="analyticsBtn" onclick="openAnalytics()"
         class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
         title="View Analytics & Badges"
         aria-label="View Analytics and Badges">
-    
+
         <span class="material-symbols-outlined text-zinc-600">
           analytics
         </span>
       </button>
-    
+
       <!-- HELP BUTTON -->
       <button id="helpBtn"
         class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
         title="Keyboard shortcuts (?)">
-    
+
         <span class="material-symbols-outlined text-zinc-600">
           help
         </span>
       </button>
-    
+
       <a href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank" rel="noopener noreferrer"
         class="hidden sm:flex items-center gap-2 px-3 xl:px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors whitespace-nowrap">
 
@@ -1426,7 +1434,7 @@ kbd:hover{
         <span class="lg:hidden xl:inline">Star & Contribute</span>
         <span class="hidden lg:inline xl:hidden">Star</span>
       </a>
-    
+
     </div>
   </div>
 </header>
@@ -1435,7 +1443,7 @@ kbd:hover{
 <div id="mobileMenu" class="fixed inset-0 z-50 hidden lg:hidden" style="z-index:60;" role="dialog" aria-modal="true" aria-label="Navigation menu">
   <!-- Backdrop -->
   <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleMenu()" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMenu()" tabindex="0" role="button" aria-label="Close menu"></div>
-  
+
   <!-- Menu Panel -->
   <nav class="absolute top-0 left-0 bottom-0 w-72 bg-white shadow-2xl transform transition-transform duration-300 ease-out -translate-x-full" id="menuPanel" aria-label="Main navigation">
     <div class="flex items-center justify-between p-6 border-b border-zinc-100">
@@ -1449,7 +1457,7 @@ kbd:hover{
         <span class="material-symbols-outlined text-zinc-600">close</span>
       </button>
     </div>
-    
+
     <div class="p-4 space-y-1">
       <a href="#timeline" class="mobile-menu-link flex items-center gap-3 px-4 py-3 rounded-lg text-zinc-700 hover:bg-zinc-100 font-medium text-sm transition-colors" data-section="timeline">
         <span class="material-symbols-outlined text-lg">schedule</span>
@@ -1480,7 +1488,7 @@ kbd:hover{
         Guide
       </a>
     </div>
-    
+
     <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-zinc-100">
       <a href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-zinc-900 text-white text-sm font-bold hover:bg-zinc-700 transition-colors">
         <span class="material-symbols-outlined text-base">star</span> Star & Contribute
@@ -1491,7 +1499,7 @@ kbd:hover{
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
 <section class="pt-20 sm:pt-28 pb-12 sm:pb-20 px-4 sm:px-6 max-w-7xl mx-auto fade-up">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-stretch"> 
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-stretch">
     <div class="lg:col-span-7">
       <div class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-orange-50 border border-orange-100 text-primary mb-6 sm:mb-8">
         <span class="material-symbols-outlined text-sm icon-fill" style="color:#f97316">verified</span>
@@ -1723,10 +1731,10 @@ kbd:hover{
       </button>
     </div>
   </div>
-  
+
   <!-- Hidden search input for JavaScript compatibility -->
   <input type="hidden" id="searchInput" />
-  
+
   <div class="org-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 scrollable-directory org-directory" id="orgGrid">
     <!-- Organizations will be rendered here dynamically -->
     <div class="col-span-full py-20 text-center animate-pulse">
@@ -1796,7 +1804,7 @@ kbd:hover{
         <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
         <p class="text-zinc-600 dark:text-zinc-400 font-bold animate-pulse">Analyzing profile & calculating matches...</p>
       </div>
-      
+
       <!-- Error State -->
       <div id="aiErrorState" aria-live="assertive" class="hidden bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-6 text-center block">
         <span class="material-symbols-outlined text-red-500 text-4xl mb-2">error</span>
@@ -1835,7 +1843,7 @@ kbd:hover{
       <div class="lg:col-span-2 space-y-6">
 
         <div class="bg-white/50 dark:bg-zinc-800/30 border-2 border-dashed border-zinc-200 dark:border-zinc-700 hover:border-solid hover:bg-white dark:hover:bg-zinc-800/80 transition-all rounded-2xl p-2 sm:p-5 flex flex-col max-h-[420px]">
-          
+
           <div class="flex items-center justify-between flex-wrap gap-3 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-zinc-200/60 dark:border-zinc-700/60 flex-shrink-0 px-2 sm:px-0 pt-2 sm:pt-0">
             <div class="flex items-center gap-1 sm:gap-2">
               <span class="material-symbols-outlined text-zinc-400 dark:text-zinc-500 text-lg sm:text-2xl">bookmark_border</span>
@@ -1850,7 +1858,7 @@ kbd:hover{
               </button>
             </div>
           </div>
-          
+
           <div class="space-y-3 sm:space-y-4 overflow-y-auto pr-1 sm:pr-2 custom-scrollbar flex-1 px-1 sm:px-0" id="watchlistContainer">
             </div>
         </div>
@@ -2059,8 +2067,8 @@ kbd:hover{
   <div class="space-y-4" id="gsocRoadmap">
 
     <!-- ── Block 01 ── -->
-    <div class="roadmap-block" data-block="0" role="button" aria-expanded="false" tabindex="0">
-      <div class="roadmap-block-header">
+    <div class="roadmap-block" data-block="0" >
+      <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-0">
         <div class="roadmap-illus">
           <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="56" height="56" rx="16" fill="rgba(249,115,22,0.10)"/>
@@ -2083,8 +2091,8 @@ kbd:hover{
           <p class="text-sm text-zinc-500">The Google-backed ecosystem connecting contributors to open source foundations.</p>
         </div>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
-      </div>
-      <div class="roadmap-block-body">
+      </button>
+      <div class="roadmap-block-body" id="roadmap-block-0" inert>
         <div class="roadmap-block-inner pt-6">
           <div class="mb-6">
             <div class="roadmap-step-row">
@@ -2127,8 +2135,8 @@ kbd:hover{
     </div>
 
     <!-- ── Block 02 ── -->
-    <div class="roadmap-block" data-block="1" role="button" aria-expanded="false" tabindex="0">
-      <div class="roadmap-block-header">
+    <div class="roadmap-block" data-block="1" >
+      <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-1">
         <div class="roadmap-illus">
           <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="56" height="56" rx="16" fill="rgba(59,130,246,0.10)"/>
@@ -2154,8 +2162,8 @@ kbd:hover{
           <p class="text-sm text-zinc-500">Navigating 180+ orgs to find the highest-probability fit for your skills.</p>
         </div>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
-      </div>
-      <div class="roadmap-block-body">
+      </button>
+      <div class="roadmap-block-body" id="roadmap-block-1" inert>
         <div class="roadmap-block-inner pt-6">
           <div class="mb-6">
             <div class="roadmap-step-row">
@@ -2196,8 +2204,8 @@ kbd:hover{
     </div>
 
     <!-- ── Block 03 ── -->
-    <div class="roadmap-block" data-block="2" role="button" aria-expanded="false" tabindex="0">
-      <div class="roadmap-block-header">
+    <div class="roadmap-block" data-block="2" >
+      <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-2">
         <div class="roadmap-illus">
           <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="56" height="56" rx="16" fill="rgba(34,197,94,0.10)"/>
@@ -2223,8 +2231,8 @@ kbd:hover{
           <p class="text-sm text-zinc-500">From setup to your first merged pull request — with community etiquette.</p>
         </div>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
-      </div>
-      <div class="roadmap-block-body">
+      </button>
+      <div class="roadmap-block-body" id="roadmap-block-2" inert>
         <div class="roadmap-block-inner pt-6">
           <div class="mb-6">
             <div class="roadmap-step-row">
@@ -2266,12 +2274,11 @@ kbd:hover{
     </div>
 
     <!-- ── Block 04 ── -->
-    <div class="roadmap-block" data-block="3" role="button" aria-expanded="false" tabindex="0">
-      <div class="roadmap-block-header">
+    <div class="roadmap-block" data-block="3" >
+      <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-3">
         <div class="roadmap-illus">
           <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="56" height="56" rx="16" fill="rgba(168,85,247,0.10)"/>
-            <rect x="11" y="8" width="28" height="36" rx="4" fill="white" stroke="#d8b4fe" stroke-width="1.5"/>
             <circle cx="17" cy="19" r="2.5" fill="#a855f7" opacity="0.8"/>
             <path d="M15.8 19l1 1 2-2" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
             <rect x="21" y="18" width="13" height="2" rx="1" fill="#e9d5ff"/>
@@ -2292,8 +2299,8 @@ kbd:hover{
           <p class="text-sm text-zinc-500">Structuring your project plan, deliverables, and timeline to convince mentors.</p>
         </div>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
-      </div>
-      <div class="roadmap-block-body">
+      </button>
+      <div class="roadmap-block-body" id="roadmap-block-3" inert>
         <div class="roadmap-block-inner pt-6">
           <div class="mb-6">
             <div class="roadmap-step-row">
@@ -2335,8 +2342,9 @@ kbd:hover{
     </div>
 
     <!-- ── Block 05 ── -->
-    <div class="roadmap-block" data-block="4" role="button" aria-expanded="false" tabindex="0">
-      <div class="roadmap-block-header">
+    <div class="roadmap-block" data-block="4">
+      <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-4">
+
         <div class="roadmap-illus">
           <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="56" height="56" rx="16" fill="rgba(234,179,8,0.10)"/>
@@ -2359,8 +2367,8 @@ kbd:hover{
           <p class="text-sm text-zinc-500">Payout tiers, milestone evaluations, and completing your summer project.</p>
         </div>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
-      </div>
-      <div class="roadmap-block-body">
+      </button>
+      <div class="roadmap-block-body" id="roadmap-block-4" inert>
         <div class="roadmap-block-inner pt-6">
           <div class="mb-6">
             <div class="roadmap-step-row">
@@ -2492,7 +2500,7 @@ kbd:hover{
       <div class="metrics-grid mb-8" id="mMetrics">
         <!-- Injected: Years, Competition, First Year, etc. -->
       </div>
-      
+
       <div class="github-stats-container mb-8">
         <div class="gh-stat-item"><span class="material-symbols-outlined text-sm">star</span> <span id="mStars">---</span></div>
         <div class="gh-stat-item"><span class="material-symbols-outlined text-sm">fork_right</span> <span id="mForks">---</span></div>
@@ -2561,7 +2569,7 @@ kbd:hover{
         </button>
         <button type="button" id="pwExportPDFBtn" class="proposal-btn proposal-btn-primary" aria-label="Download proposal as PDF">
           <span class="material-symbols-outlined text-sm">picture_as_pdf</span> PDF
-        </button> 
+        </button>
         <button type="button" id="pwCloseBtn" class="proposal-btn" aria-label="Close proposal builder">
           <span class="material-symbols-outlined text-sm">close</span>
         </button>
@@ -2689,18 +2697,18 @@ kbd:hover{
   // ══════════════════════════════════════════════
   function initializeOrgCounts(){
     const orgCount = ORGS.length > 0 ? ORGS.length : 184;
-    
+
     // Update all org count display references
     document.querySelectorAll('[data-org-count]').forEach(el => {
       el.textContent = orgCount;
     });
-    
+
     // Update org total summary references
     document.querySelectorAll('[data-org-total]').forEach(el => {
       el.textContent = orgCount;
     });
   }
-  
+
   // Initialize org counts when DOM is ready
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', initializeOrgCounts);
@@ -2802,7 +2810,7 @@ kbd:hover{
     desktopNavMediaQuery.addListener(syncMenuWithViewport);
   }
   syncMenuWithViewport(desktopNavMediaQuery);
-  
+
   function handleMenuEscape(e){
     if(e.key === 'Escape'){
       const menu = document.getElementById('mobileMenu');
@@ -3074,7 +3082,7 @@ kbd:hover{
     if (selectedLanguages.has(langDisplay)) selectedLanguages.delete(langDisplay);
     else selectedLanguages.add(langDisplay);
     renderSelectedLanguages();
-    
+
     // Track filter badge when user toggles language pill
     if (typeof BadgeSystem !== 'undefined') {
       BadgeSystem.trackFilter();
@@ -3409,7 +3417,7 @@ kbd:hover{
     const lastUpdatedEl = document.getElementById('mentorLastUpdated');
     const mentorPagination = document.getElementById('mentorPagination');
     if (!grid) return;
-    
+
     if (reset) {
       mentorCurrentPage = 1;
     }
@@ -3725,7 +3733,7 @@ const connector = !isLast
           }
       }).join('');
       const currentMilestone = container.querySelector('.current-milestone');
-      requestAnimationFrame(() => { 
+      requestAnimationFrame(() => {
         if (currentMilestone) {
         container.scrollTo({
           top:
@@ -3866,7 +3874,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       grid.classList.remove('hidden');
       if (emptyState) emptyState.classList.add('hidden');
     }
-    
+
     const totalOrgPages = Math.max(1, Math.ceil(filteredOrgs.length / ITEMS_PER_PAGE));
     if (orgCurrentPage > totalOrgPages) orgCurrentPage = totalOrgPages;
 
@@ -3883,7 +3891,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       });
       const githubOwner = githubOwnerFromValue(org.github);
       const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
-      
+
       card.innerHTML = `
         <div class="flex justify-between items-start mb-4">
           <div class="w-14 h-14 flex-shrink-0 rounded-xl bg-surface-container-low flex items-center justify-center p-2 overflow-hidden">
@@ -4007,12 +4015,12 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     const container = document.querySelector('#compare .grid');
     if (!container) return;
     container.innerHTML = '';
-    
+
     compareList.forEach(name => {
       const org = ORGS.find(o => o.name === name);
       const githubOwner = githubOwnerFromValue(org.github);
       const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
-      
+
       const item = document.createElement('div');
       item.className = 'bg-white rounded-xl p-4 border border-zinc-100';
       item.innerHTML = `
@@ -4122,7 +4130,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       orgPickerMode = 'compare';
       orgPickerTargetSlot = modeOrSlot;
     }
-    
+
     document.getElementById('orgPickerSearch').value = '';
     filterOrgPicker('');
     const modal = document.getElementById('orgPickerModal');
@@ -4141,12 +4149,12 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
   function filterOrgPicker(query) {
     const list = document.getElementById('orgPickerList');
     const q = query.toLowerCase();
-    
+
     // Filter out orgs that are already in the target list
     const filtered = ORGS.filter(o => {
       const matchSearch = o.name.toLowerCase().includes(q);
-      const notInList = orgPickerMode === 'watchlist' 
-        ? !bookmarkedSet.has(o.name) 
+      const notInList = orgPickerMode === 'watchlist'
+        ? !bookmarkedSet.has(o.name)
         : !compareList.includes(o.name);
       return matchSearch && notInList;
     });
@@ -4196,7 +4204,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     if (typeof BadgeSystem !== 'undefined') {
       renderBadges();
     }
-    
+
     const modal = document.getElementById('anBg');
     modal?.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -4228,20 +4236,20 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
   function renderBadges() {
     const badgesContainer = document.getElementById('badgesContainer');
     if (!badgesContainer || typeof BadgeSystem === 'undefined') return;
-    
+
     const stats = BadgeSystem.getBadgeStats();
     const unlockedCount = BadgeSystem.getUnlockedCount();
     const totalCount = BadgeSystem.getTotalBadgesCount();
-    
+
     let html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:12px">';
-    
+
     Object.keys(stats).forEach(badgeType => {
       const badge = stats[badgeType];
       const isLocked = !badge.level;
       const icon = badge.name.split(' ')[0];
       const levelName = badge.level ? badge.level.levelName : 'Locked';
       const progress = badge.progress;
-      
+
       html += `
         <div class="badge-card ${isLocked ? 'badge-locked' : ''}">
           <span class="badge-icon">${icon}</span>
@@ -4254,10 +4262,10 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
         </div>
       `;
     });
-    
+
     html += '</div>';
     badgesContainer.innerHTML = html;
-    
+
     // Update badge indicator in header
     const badgeIndicator = document.getElementById('badgeIndicator');
     if (badgeIndicator) {
@@ -4294,7 +4302,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       closeOrgPicker();
     }
   });
-  
+
 
   function applyFiltersPreservingVisibleCount() {
     const savedCount = visibleCount;
@@ -4824,7 +4832,7 @@ if(org.ideas){
     if (draftBtn) {
       draftBtn.onclick = () => ProposalBuilder.open(org.name);
     }
-     
+
     document.getElementById('orgModal').classList.add('open');
     document.body.classList.add('modal-open');
     document.documentElement.style.overflow = 'hidden';
@@ -4840,7 +4848,7 @@ if(org.ideas){
 
   function openRandomOrg() {
     const orgsToUse = filteredOrgs.length > 0 ? filteredOrgs : ORGS;
-    
+
     if (!orgsToUse.length) {
       alert('No organizations match your filters — try clearing some!');
       return;
@@ -4848,7 +4856,7 @@ if(org.ideas){
 
     const randomIdx = Math.floor(Math.random() * orgsToUse.length);
     const randomOrg = orgsToUse[randomIdx];
-    
+
     openModal(randomOrg.name);
   }
 
@@ -4923,7 +4931,7 @@ if(org.ideas){
     if (document.getElementById('sortSelect')) document.getElementById('sortSelect').value = 'alpha';
     const heroSearch = document.getElementById('hero-search');
     if (heroSearch) heroSearch.value = '';
-  
+
     if (typeof clearAllLanguages === 'function') clearAllLanguages();
     // Reset chips
     document.querySelectorAll('.filter-chip').forEach(chip => {
@@ -5202,18 +5210,18 @@ if(org.ideas){
     try {
       // Simulate real fetch delay
       await new Promise(r => setTimeout(r, 1200));
-      
+
       // Since no token, we simulate random but realistic growth
       const stars = (Math.random() * 5000 + 1000).toFixed(0);
       const forks = (stars * 0.2).toFixed(0);
       const issues = (Math.random() * 50 + 10).toFixed(0);
-      
+
       document.getElementById('mStars').textContent = `${(stars/1000).toFixed(1)}k`;
       document.getElementById('mForks').textContent = forks;
       document.getElementById('mIssues').textContent = issues;
       document.getElementById('mActivity').textContent = 'High';
       document.getElementById('mActivity').className = 'gh-stat-item text-green-400';
-      
+
       btn.textContent = 'Stats Updated!';
     } catch (e) {
       btn.textContent = 'Error';
@@ -5480,7 +5488,7 @@ if(org.ideas){
   document.getElementById('pwEditor')?.addEventListener('input', (e) => {
     renderPreview();
     updateProposalStats();
-   
+
     if (!currentProposalOrg || !isAutosaveEnabled()) return;
     clearTimeout(proposalAutosaveTimer);
     proposalAutosaveTimer = setTimeout(() => {
@@ -5601,10 +5609,10 @@ if(org.ideas){
   globalThis.openModal = openModal;
 
   // Safe HTML utilities for recommendation-ui.js
-  
+
   class SafeHTMLString extends String {}
   SafeHTMLString.prototype.__isSafeHTML = true;
- 
+
   function safeHTML(strings, ...values) {
     let result = '';
     for (let i = 0; i < strings.length; i++) {
@@ -5642,12 +5650,12 @@ if(org.ideas){
 
 <div class="modal-bg" id="helpModal">
   <div class="modal">
-    
+
     <button class="close-btn" onclick="closeHelpModal()"  aria-label="Close keyboard shortcuts modal">
       <span class="material-symbols-outlined">close</span>
     </button>
-      
-    
+
+
 
     <div class="modal-header">
       <h2>Keyboard Shortcuts</h2>
@@ -5738,7 +5746,7 @@ if(org.ideas){
 </tbody>
 </table>
 
-       
+
 
       </div>
     </div>
@@ -5799,11 +5807,11 @@ if (helpModalOpen || orgModalOpen || proposalModalOpen) {
         e.preventDefault();
         openHelpModal();
     }
-  
+
     if(e.key==='Escape'){
         e.preventDefault();
-        
-    
+
+
       if (document.getElementById('proposalModal')?.classList.contains('open')) {
         globalThis.ProposalBuilder?.close?.();
       } else {
@@ -6107,7 +6115,7 @@ if(e.key.toLowerCase()==='r'){
 
     const viewportTop = getSectionDetectionOffset();
     const viewportBottom = globalThis.innerHeight;
-    
+
     let maxVisibleHeight = 0;
     let found = 0;
 
@@ -6115,7 +6123,7 @@ if(e.key.toLowerCase()==='r'){
       const rect = section.getBoundingClientRect();
       const visibleTop = Math.max(rect.top, viewportTop);
       const visibleBottom = Math.min(rect.bottom, viewportBottom);
-      
+
       const visibleHeight = visibleBottom - visibleTop;
       if (visibleHeight > maxVisibleHeight) {
         maxVisibleHeight = visibleHeight;
@@ -6237,14 +6245,47 @@ if(e.key.toLowerCase()==='r'){
   const blocks = Array.from(roadmap.querySelectorAll('.roadmap-block'));
 
   function closeBlock(block) {
+    const header = block.querySelector('.roadmap-block-header');
+    const body = block.querySelector('.roadmap-block-body');
+
     block.classList.remove('is-open');
-    block.setAttribute('aria-expanded', 'false');
+
+    if (header) {
+      header.setAttribute('aria-expanded', 'false');
+    }
+
+    if (body) {
+      body.setAttribute('inert', '');
+    }
+
+    // Reset FAQs when the roadmap block closes
+    block.querySelectorAll('.roadmap-faq-item').forEach((item) => {
+      item.classList.remove('faq-open');
+
+      const trigger = item.querySelector('.roadmap-faq-trigger');
+      if (trigger) {
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
   }
 
   function openBlock(block) {
-    blocks.forEach((b) => { if (b !== block) closeBlock(b); });
+    blocks.forEach((b) => {
+      if (b !== block) closeBlock(b);
+    });
+
+    const header = block.querySelector('.roadmap-block-header');
+    const body = block.querySelector('.roadmap-block-body');
+
     block.classList.add('is-open');
-    block.setAttribute('aria-expanded', 'true');
+
+    if (header) {
+      header.setAttribute('aria-expanded', 'true');
+    }
+
+    if (body) {
+      body.removeAttribute('inert');
+    }
   }
 
   function toggleBlock(block) {
@@ -6259,28 +6300,23 @@ if(e.key.toLowerCase()==='r'){
     const header = block.querySelector('.roadmap-block-header');
     if (!header) return;
 
-    header.addEventListener('click', (e) => {
-      // Don't toggle if a FAQ trigger was clicked
-      if (e.target.closest('.roadmap-faq-trigger')) return;
+    header.addEventListener('click', () => {
       toggleBlock(block);
-    });
-
-    header.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleBlock(block);
-      }
     });
   });
 
-  // FAQ toggles inside each block (independent of block toggle)
+  // FAQ toggles inside each block
   roadmap.addEventListener('click', (e) => {
     const trigger = e.target.closest('.roadmap-faq-trigger');
     if (!trigger) return;
+
     e.stopPropagation();
+
     const item = trigger.closest('.roadmap-faq-item');
     if (!item) return;
+
     const isOpen = item.classList.contains('faq-open');
+
     item.classList.toggle('faq-open', !isOpen);
     trigger.setAttribute('aria-expanded', String(!isOpen));
   });
