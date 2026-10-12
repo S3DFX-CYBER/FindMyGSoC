@@ -5820,7 +5820,8 @@ document.addEventListener('keydown', (e) => {
 if (
     active &&
     (
-        ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(active.tagName) ||
+        ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName) ||
+        (active.tagName === 'BUTTON' && active.closest('#gsocRoadmap')) ||
         active.id === 'searchInput'
     )
 ) {
