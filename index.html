@@ -774,12 +774,20 @@ kbd:hover{
     .dark .roadmap-faq-item { border-top-color: #27272a; }
     .dark .roadmap-faq-trigger .text-zinc-800 { color: #f4f4f5 !important; }
     .dark .roadmap-faq-answer p { color: #a1a1aa !important; }
-    .dark .bg-orange-50\/60 { background: rgba(249,115,22,0.07) !important; border-color: rgba(249,115,22,0.15) !important; }
-    .dark .bg-blue-50\/60 { background: rgba(59,130,246,0.07) !important; border-color: rgba(59,130,246,0.15) !important; }
-    .dark .bg-green-50\/60 { background: rgba(34,197,94,0.07) !important; border-color: rgba(34,197,94,0.15) !important; }
-    .dark .bg-purple-50\/60 { background: rgba(168,85,247,0.07) !important; border-color: rgba(168,85,247,0.15) !important; }
-    .dark .bg-yellow-50\/60 { background: rgba(234,179,8,0.07) !important; border-color: rgba(234,179,8,0.15) !important; }
-    .dark .bg-zinc-100 { background: #27272a !important; }
+    #gsocRoadmap.dark .bg-orange-50,
+    .dark #gsocRoadmap .bg-orange-50 { background: rgba(249,115,22,0.07) !important; border-color: rgba(249,115,22,0.15) !important; }
+    #gsocRoadmap.dark .bg-blue-50,
+    .dark #gsocRoadmap .bg-blue-50 { background: rgba(59,130,246,0.07) !important; border-color: rgba(59,130,246,0.15) !important; }
+    #gsocRoadmap.dark .bg-green-50,
+    .dark #gsocRoadmap .bg-green-50 { background: rgba(34,197,94,0.07) !important; border-color: rgba(34,197,94,0.15) !important; }
+    #gsocRoadmap.dark .bg-purple-50,
+    .dark #gsocRoadmap .bg-purple-50 { background: rgba(168,85,247,0.07) !important; border-color: rgba(168,85,247,0.15) !important; }
+    #gsocRoadmap.dark .bg-yellow-50,
+    .dark #gsocRoadmap .bg-yellow-50 { background: rgba(234,179,8,0.07) !important; border-color: rgba(234,179,8,0.15) !important; }
+    .dark #gsocRoadmap .text-yellow-700 { color: #facc15 !important; }
+    .dark #gsocRoadmap .bg-yellow-100 { background: rgba(234,179,8,0.2) !important; }
+    .dark #gsocRoadmap .bg-blue-100 { background: rgba(59,130,246,0.18) !important; color: #93c5fd !important; }
+    .dark #guide a.block:hover { background: rgba(249, 115, 22, 0.1) !important; }
     .dark code.bg-zinc-100 { background: #27272a !important; color: #d4d4d8 !important; }
 
     /* Dark mode - Mobile menu */
@@ -2069,7 +2077,7 @@ kbd:hover{
     <!-- ── Block 01 ── -->
     <div class="roadmap-block" data-block="0" >
       <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-0">
-        <div class="roadmap-illus">
+        <span class="roadmap-illus" aria-hidden="true" style="display:block">
           <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="56" height="56" rx="16" fill="rgba(249,115,22,0.10)"/>
             <rect x="4" y="21" width="14" height="14" rx="4" fill="#f97316" opacity="0.85"/>
@@ -2082,14 +2090,14 @@ kbd:hover{
             <line x1="35" y1="28" x2="38" y2="28" stroke="#f97316" stroke-width="1.5" stroke-dasharray="2 1"/>
             <text x="28" y="46" text-anchor="middle" font-size="4" fill="#a1a1aa">Stipend Flow</text>
           </svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-3 mb-1">
+        </span>
+        <span class="flex-1 min-w-0" style="display:block">
+          <span class="flex items-center gap-3 mb-1" style="display:flex">
             <span class="text-xs font-bold font-label uppercase tracking-widest text-primary opacity-60">01</span>
-            <h3 class="text-lg font-extrabold text-zinc-900 font-headline">What is GSoC &amp; What's an Org?</h3>
-          </div>
-          <p class="text-sm text-zinc-500">The Google-backed ecosystem connecting contributors to open source foundations.</p>
-        </div>
+            <span class="text-lg font-extrabold text-zinc-900 font-headline" style="display:block">What is GSoC &amp; What's an Org?</span>
+          </span>
+          <span class="text-sm text-zinc-500" style="display:block">The Google-backed ecosystem connecting contributors to open source foundations.</span>
+        </span>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
       </button>
       <div class="roadmap-block-body" id="roadmap-block-0" inert>
@@ -2119,15 +2127,15 @@ kbd:hover{
             <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Do I have to be an enrolled university student?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. Since 2022, GSoC is open to anyone 18+ who is a newcomer or beginner to open source software development.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. Since 2022, GSoC is open to anyone 18+ who is a newcomer or beginner to open source software development.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Does Google choose which applicants get accepted?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. The participating organizations and their mentors evaluate applications and select contributors based on proposal quality and prior contributions.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. The participating organizations and their mentors evaluate applications and select contributors based on proposal quality and prior contributions.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can I apply if I live outside the US?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. GSoC is completely global and remote, open to contributors across 100+ eligible countries.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. GSoC is completely global and remote, open to contributors across 100+ eligible countries.</p></div>
             </div>
           </div>
         </div>
@@ -2137,7 +2145,7 @@ kbd:hover{
     <!-- ── Block 02 ── -->
     <div class="roadmap-block" data-block="1" >
       <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-1">
-        <div class="roadmap-illus">
+        <span class="roadmap-illus" aria-hidden="true" style="display:block">
           <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="56" height="56" rx="16" fill="rgba(59,130,246,0.10)"/>
             <rect x="6" y="10" width="18" height="8" rx="4" fill="#3b82f6" opacity="0.75"/>
@@ -2153,14 +2161,14 @@ kbd:hover{
             <rect x="19" y="37" width="20" height="2" rx="1" fill="#93c5fd"/>
             <rect x="19" y="40.5" width="12" height="1.5" rx="0.75" fill="#bfdbfe"/>
           </svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-3 mb-1">
+        </span>
+        <span class="flex-1 min-w-0" style="display:block">
+          <span class="flex items-center gap-3 mb-1" style="display:flex">
             <span class="text-xs font-bold font-label uppercase tracking-widest text-blue-500 opacity-70">02</span>
-            <h3 class="text-lg font-extrabold text-zinc-900 font-headline">Explore &amp; Choose Your Match</h3>
-          </div>
-          <p class="text-sm text-zinc-500">Navigating 180+ orgs to find the highest-probability fit for your skills.</p>
-        </div>
+            <span class="text-lg font-extrabold text-zinc-900 font-headline" style="display:block">Explore &amp; Choose Your Match</span>
+          </span>
+          <span class="text-sm text-zinc-500" style="display:block">Navigating 180+ orgs to find the highest-probability fit for your skills.</span>
+        </span>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
       </button>
       <div class="roadmap-block-body" id="roadmap-block-1" inert>
@@ -2188,15 +2196,15 @@ kbd:hover{
             <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">How many proposals am I allowed to submit?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Google allows up to 3 total proposals across all organizations. Focusing high effort on 1–2 consistently produces better results than spreading thin.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Google allows up to 3 total proposals across all organizations. Focusing high effort on 1–2 consistently produces better results than spreading thin.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if an org has been in GSoC for 15+ years?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Veteran orgs have structured mentorship but extremely high competition. Newer orgs often have fewer applicants and more personal mentor interaction.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Veteran orgs have structured mentorship but extremely high competition. Newer orgs often have fewer applicants and more personal mentor interaction.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">How does the AI Recommender help?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">It matches your GitHub profile or pasted resume directly against the tech stacks and project history of all 184 orgs in our index to compute a match score.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">It matches your GitHub profile or pasted resume directly against the tech stacks and project history of all 184 orgs in our index to compute a match score.</p></div>
             </div>
           </div>
         </div>
@@ -2206,7 +2214,7 @@ kbd:hover{
     <!-- ── Block 03 ── -->
     <div class="roadmap-block" data-block="2" >
       <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-2">
-        <div class="roadmap-illus">
+        <span class="roadmap-illus" aria-hidden="true" style="display:block">
           <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="56" height="56" rx="16" fill="rgba(34,197,94,0.10)"/>
             <rect x="3" y="23" width="11" height="10" rx="3" fill="#22c55e" opacity="0.8"/>
@@ -2222,14 +2230,14 @@ kbd:hover{
             <circle cx="45" cy="12" r="6" fill="#22c55e"/>
             <path d="M42.5 12l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-3 mb-1">
+        </span>
+        <span class="flex-1 min-w-0" style="display:block">
+          <span class="flex items-center gap-3 mb-1" style="display:flex">
             <span class="text-xs font-bold font-label uppercase tracking-widest text-green-600 opacity-70">03</span>
-            <h3 class="text-lg font-extrabold text-zinc-900 font-headline">How to Contribute</h3>
-          </div>
-          <p class="text-sm text-zinc-500">From setup to your first merged pull request — with community etiquette.</p>
-        </div>
+            <span class="text-lg font-extrabold text-zinc-900 font-headline" style="display:block">How to Contribute</span>
+          </span>
+          <span class="text-sm text-zinc-500" style="display:block">From setup to your first merged pull request — with community etiquette.</span>
+        </span>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
       </button>
       <div class="roadmap-block-body" id="roadmap-block-2" inert>
@@ -2258,15 +2266,15 @@ kbd:hover{
             <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Do I need contributions before the application opens?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. Having 1–3 merged or well-reviewed PRs demonstrates to mentors that you can run the codebase, communicate effectively, and produce working code.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. Having 1–3 merged or well-reviewed PRs demonstrates to mentors that you can run the codebase, communicate effectively, and produce working code.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if mentors take days to review my PR?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Mentors are volunteers with day jobs. Wait 3–4 days before leaving a polite follow-up comment in the PR thread on the public channel.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Mentors are volunteers with day jobs. Wait 3–4 days before leaving a polite follow-up comment in the PR thread on the public channel.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if another contributor claims the issue I wanted?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Always comment first asking to be assigned before writing code. If taken, browse alternative unassigned issues — orgs usually have many open good-first-issues.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Always comment first asking to be assigned before writing code. If taken, browse alternative unassigned issues — orgs usually have many open good-first-issues.</p></div>
             </div>
           </div>
         </div>
@@ -2276,7 +2284,7 @@ kbd:hover{
     <!-- ── Block 04 ── -->
     <div class="roadmap-block" data-block="3" >
       <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-3">
-        <div class="roadmap-illus">
+        <span class="roadmap-illus" aria-hidden="true" style="display:block">
           <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="56" height="56" rx="16" fill="rgba(168,85,247,0.10)"/>
             <circle cx="17" cy="19" r="2.5" fill="#a855f7" opacity="0.8"/>
@@ -2290,14 +2298,14 @@ kbd:hover{
             <circle cx="43" cy="13" r="7" fill="#a855f7"/>
             <text x="43" y="17" text-anchor="middle" font-size="10" fill="white">★</text>
           </svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-3 mb-1">
+        </span>
+        <span class="flex-1 min-w-0" style="display:block">
+          <span class="flex items-center gap-3 mb-1" style="display:flex">
             <span class="text-xs font-bold font-label uppercase tracking-widest text-purple-500 opacity-70">04</span>
-            <h3 class="text-lg font-extrabold text-zinc-900 font-headline">Crafting a Winning Proposal</h3>
-          </div>
-          <p class="text-sm text-zinc-500">Structuring your project plan, deliverables, and timeline to convince mentors.</p>
-        </div>
+            <span class="text-lg font-extrabold text-zinc-900 font-headline" style="display:block">Crafting a Winning Proposal</span>
+          </span>
+          <span class="text-sm text-zinc-500" style="display:block">Structuring your project plan, deliverables, and timeline to convince mentors.</span>
+        </span>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
       </button>
       <div class="roadmap-block-body" id="roadmap-block-3" inert>
@@ -2326,15 +2334,15 @@ kbd:hover{
             <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Where do I draft my proposal?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Use FindMyGSoC's built-in Markdown Editor to draft, preview, and export your proposal to PDF or Markdown — all stored locally in your browser.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Use FindMyGSoC's built-in Markdown Editor to draft, preview, and export your proposal to PDF or Markdown — all stored locally in your browser.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can I propose a brand new idea not on the org's ideas list?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes, but validate it with mentors first. Org-listed ideas typically have higher mentor availability and clearer evaluation criteria.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes, but validate it with mentors first. Org-listed ideas typically have higher mentor availability and clearer evaluation criteria.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can mentors guarantee my acceptance?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. Final selections depend on the number of contributor slots Google grants to each org — mentor enthusiasm alone doesn't guarantee a slot.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. Final selections depend on the number of contributor slots Google grants to each org — mentor enthusiasm alone doesn't guarantee a slot.</p></div>
             </div>
           </div>
         </div>
@@ -2344,8 +2352,7 @@ kbd:hover{
     <!-- ── Block 05 ── -->
     <div class="roadmap-block" data-block="4">
       <button class="roadmap-block-header" type="button" aria-expanded="false" aria-controls="roadmap-block-4">
-
-        <div class="roadmap-illus">
+        <span class="roadmap-illus" aria-hidden="true" style="display:block">
           <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="56" height="56" rx="16" fill="rgba(234,179,8,0.10)"/>
             <rect x="6" y="26" width="44" height="6" rx="3" fill="#fef9c3"/>
@@ -2358,14 +2365,14 @@ kbd:hover{
             <text x="8" y="41" font-size="4" fill="#a1a1aa">Midterm</text>
             <text x="33" y="41" font-size="4" fill="#a1a1aa">Final Eval</text>
           </svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-3 mb-1">
+        </span>
+        <span class="flex-1 min-w-0" style="display:block">
+          <span class="flex items-center gap-3 mb-1" style="display:flex">
             <span class="text-xs font-bold font-label uppercase tracking-widest text-yellow-600 opacity-70">05</span>
-            <h3 class="text-lg font-extrabold text-zinc-900 font-headline">Stipends, Timeline &amp; Coding Period</h3>
-          </div>
-          <p class="text-sm text-zinc-500">Payout tiers, milestone evaluations, and completing your summer project.</p>
-        </div>
+            <span class="text-lg font-extrabold text-zinc-900 font-headline" style="display:block">Stipends, Timeline &amp; Coding Period</span>
+          </span>
+          <span class="text-sm text-zinc-500" style="display:block">Payout tiers, milestone evaluations, and completing your summer project.</span>
+        </span>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
       </button>
       <div class="roadmap-block-body" id="roadmap-block-4" inert>
@@ -2405,15 +2412,15 @@ kbd:hover{
             <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">When and how do I receive the stipend?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Payments are processed through Payoneer: 45% after passing the midterm, and 55% after passing the final evaluation.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Payments are processed through Payoneer: 45% after passing the midterm, and 55% after passing the final evaluation.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can I do GSoC while taking college classes?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. Many contributors manage both. Choose a Small (90h) or Medium (175h) project if your academic workload is high to avoid burnout.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. Many contributors manage both. Choose a Small (90h) or Medium (175h) project if your academic workload is high to avoid burnout.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What happens if I fail the midterm evaluation?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer"><p class="text-xs text-zinc-500 pb-3 leading-relaxed">The project stops and the remaining 55% stipend is not disbursed. You retain the experience and any prior community recognition from your work.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">The project stops and the remaining 55% stipend is not disbursed. You retain the experience and any prior community recognition from your work.</p></div>
             </div>
           </div>
         </div>
@@ -2421,6 +2428,33 @@ kbd:hover{
     </div>
 
   </div><!-- end #gsocRoadmap -->
+
+  <!-- ── Useful Resources ── -->
+  <div class="mt-10 pt-8 border-t border-zinc-100">
+    <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-4">Useful Resources</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
+      <a href="https://opensource.guide/how-to-contribute/" target="_blank" rel="noopener noreferrer" class="block p-4 rounded-2xl border border-zinc-200 hover:border-primary hover:bg-orange-50 transition-colors">
+        <p class="font-bold mb-1 text-zinc-900">Open Source Guide</p>
+        <p class="text-zinc-500 text-xs">Practical guide for first-time and returning contributors.</p>
+      </a>
+      <a href="https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project" target="_blank" rel="noopener noreferrer" class="block p-4 rounded-2xl border border-zinc-200 hover:border-primary hover:bg-orange-50 transition-colors">
+        <p class="font-bold mb-1 text-zinc-900">GitHub Contribution Flow</p>
+        <p class="text-zinc-500 text-xs">Official docs for forking, cloning, and opening pull requests.</p>
+      </a>
+      <a href="https://developers.google.com/open-source/gsoc/resources/guide" target="_blank" rel="noopener noreferrer" class="block p-4 rounded-2xl border border-zinc-200 hover:border-primary hover:bg-orange-50 transition-colors">
+        <p class="font-bold mb-1 text-zinc-900">GSoC Contributor/Student Guide</p>
+        <p class="text-zinc-500 text-xs">Official program timeline and best practices for applicants.</p>
+      </a>
+      <a href="https://developers.google.com/open-source/gsoc/help/student-advice" target="_blank" rel="noopener noreferrer" class="block p-4 rounded-2xl border border-zinc-200 hover:border-primary hover:bg-orange-50 transition-colors">
+        <p class="font-bold mb-1 text-zinc-900">Student Advice</p>
+        <p class="text-zinc-500 text-xs">Official guidance for choosing orgs, communicating well, and writing proposals.</p>
+      </a>
+      <a href="https://firstcontributions.github.io/" target="_blank" rel="noopener noreferrer" class="block p-4 rounded-2xl border border-zinc-200 hover:border-primary hover:bg-orange-50 transition-colors">
+        <p class="font-bold mb-1 text-zinc-900">First Contributions</p>
+        <p class="text-zinc-500 text-xs">Hands-on tutorial to practice your first fork, commit, and pull request.</p>
+      </a>
+    </div>
+  </div>
 </section>
 
 <!-- ═══════════════════ COMPARE ═══════════════════ -->
@@ -5783,7 +5817,7 @@ document.addEventListener('keydown', (e) => {
 if (
     active &&
     (
-        ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName) ||
+        ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(active.tagName) ||
         active.id === 'searchInput'
     )
 ) {
@@ -6266,6 +6300,11 @@ if(e.key.toLowerCase()==='r'){
       if (trigger) {
         trigger.setAttribute('aria-expanded', 'false');
       }
+
+      const answer = item.querySelector('.roadmap-faq-answer');
+      if (answer) {
+        answer.setAttribute('inert', '');
+      }
     });
   }
 
@@ -6316,9 +6355,20 @@ if(e.key.toLowerCase()==='r'){
     if (!item) return;
 
     const isOpen = item.classList.contains('faq-open');
+    const answer = item.querySelector('.roadmap-faq-answer');
 
     item.classList.toggle('faq-open', !isOpen);
     trigger.setAttribute('aria-expanded', String(!isOpen));
+
+    if (answer) {
+      if (!isOpen) {
+        // Opening: remove inert so content is accessible
+        answer.removeAttribute('inert');
+      } else {
+        // Closing: re-add inert so content is hidden from keyboard/AT
+        answer.setAttribute('inert', '');
+      }
+    }
   });
 })();
 </script>
