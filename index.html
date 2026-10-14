@@ -5821,7 +5821,7 @@ if (
     active &&
     (
         ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName) ||
-        (active.tagName === 'BUTTON' && active.closest('#gsocRoadmap')) ||
+        active.tagName === 'BUTTON' ||
         active.id === 'searchInput'
     )
 ) {
