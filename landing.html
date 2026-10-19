@@ -26,7 +26,10 @@
   <meta name="twitter:image" content="https://findmygsoc.vercel.app/src/assets/og-image.jpeg" />
 
   <!-- Pre-load scripts and styling -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Tailwind Play CDN pinned to the immutable versioned build. No integrity attribute:
+       the Play CDN resolves the ?plugins= bundles at serve time, so a fixed hash breaks
+       whenever those change. -->
+  <script src="https://cdn.tailwindcss.com/3.4.17?plugins=forms,container-queries"></script>
 
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />

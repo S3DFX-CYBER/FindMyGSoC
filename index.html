@@ -37,7 +37,10 @@
       }
     }
   </script>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Tailwind Play CDN pinned to the immutable versioned build. No integrity attribute:
+       the Play CDN resolves the ?plugins= bundles at serve time, so a fixed hash breaks
+       whenever those change. -->
+  <script src="https://cdn.tailwindcss.com/3.4.17?plugins=forms,container-queries"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js" integrity="sha384-odPBjvtXVM/5hOYIr3A1dB+flh0c3wAT3bSesIOqEGmyUA4JoKf/YTWy0XKOYAY7" crossorigin="anonymous"></script>
   <script>
     if (typeof marked === 'undefined') {
