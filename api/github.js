@@ -4,6 +4,39 @@ const CACHE = new Map();
 const CACHE_TTL = 60 * 60 * 1000; // 1 hour
 const CACHE_MAX_SIZE = 1000;
 
+// Best-effort rate limiting. Edge instances are ephemeral and horizontally
+// scaled, so this caps abuse from a single client hitting one instance; it is
+// deliberately not a global/distributed limit (that would need an external
+// store). The window is a fixed bucket per client IP.
+const RATE_WINDOW_MS = 60 * 1000;
+const RATE_MAX_REQUESTS = 60;
+const RATE_MAX_KEYS = 5000;
+const RATE = new Map();
+
+function clientId(req) {
+  const forwarded = req.headers.get('x-forwarded-for') || '';
+  const first = forwarded.split(',')[0].trim();
+  return first || req.headers.get('x-real-ip') || 'unknown';
+}
+
+function isRateLimited(id) {
+  const now = Date.now();
+  const entry = RATE.get(id);
+  if (!entry || now - entry.start >= RATE_WINDOW_MS) {
+    if (RATE.size >= RATE_MAX_KEYS) {
+      // Bound memory: drop the oldest quarter of tracked clients.
+      const oldest = [...RATE.entries()]
+        .sort((a, b) => a[1].start - b[1].start)
+        .slice(0, Math.ceil(RATE_MAX_KEYS / 4));
+      for (const [key] of oldest) RATE.delete(key);
+    }
+    RATE.set(id, { start: now, count: 1 });
+    return false;
+  }
+  entry.count += 1;
+  return entry.count > RATE_MAX_REQUESTS;
+}
+
 function safeCacheSet(key, value) {
   if (!CACHE.has(key) && CACHE.size >= CACHE_MAX_SIZE) {
     const firstKey = CACHE.keys().next().value;
@@ -22,6 +55,13 @@ export default async function handler(req) {
 
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers });
+  }
+
+  if (isRateLimited(clientId(req))) {
+    return new Response(JSON.stringify({ error: 'Too many requests' }), {
+      status: 429,
+      headers: { ...headers, 'Retry-After': '60' },
+    });
   }
 
   const { searchParams } = new URL(req.url);
@@ -57,12 +97,17 @@ export default async function handler(req) {
   // A shallow clone of options.headers is used for the retry so that the
   // shared ghHeaders object is never mutated and all other calls in this
   // invocation continue to send the Authorization header normally.
-  const fetchWithFallback = async (url, options) => {
-    let res = await fetch(url, options);
-    if (res.status === 401 && options.headers?.Authorization) {
+  // Every outbound request gets a timeout so a hung upstream can't tie up the
+  // invocation; callers may override it by passing their own `signal`.
+  const fetchWithFallback = async (url, options = {}) => {
+    const requestOptions = options.signal
+      ? options
+      : { ...options, signal: AbortSignal.timeout(8000) };
+    let res = await fetch(url, requestOptions);
+    if (res.status === 401 && requestOptions.headers?.Authorization) {
       const retryOptions = {
-        ...options,
-        headers: { ...options.headers },
+        ...requestOptions,
+        headers: { ...requestOptions.headers },
       };
       delete retryOptions.headers.Authorization;
       res = await fetch(url, retryOptions);
@@ -83,7 +128,7 @@ export default async function handler(req) {
       let repos = [];
       while (page <= 3) {
         try {
-          const res = await fetchWithFallback(`https://api.github.com/users/${user}/repos?per_page=100&sort=updated&page=${page}`, { 
+          const res = await fetchWithFallback(`https://api.github.com/users/${user}/repos?per_page=100&sort=updated&page=${page}`, {
             headers: ghHeaders,
             signal: AbortSignal.timeout(5000)
           });
@@ -97,16 +142,16 @@ export default async function handler(req) {
           page++;
         } catch (e) {
           // Gracefully break loop on timeout/err for pages 2-3, allowing partial results
-          if (page === 1) throw e; 
+          if (page === 1) throw e;
           break;
         }
       }
-      
+
       let totalStars = 0;
       const languageCounts = {};
       const topicCounts = {};
       let activeDays = 9999;
-      
+
       repos.forEach(r => {
         if (r.fork) return; // Skip forks for skill analysis
         totalStars += r.stargazers_count;
@@ -127,7 +172,7 @@ export default async function handler(req) {
 
       const languages = Object.entries(languageCounts).sort((a, b) => b[1] - a[1]).map(x => x[0]);
       const topics = Object.entries(topicCounts).sort((a, b) => b[1] - a[1]).map(x => x[0]);
-      
+
       let activity = 'low';
       if (activeDays < 30) activity = 'high';
       else if (activeDays < 90) activity = 'medium';
@@ -139,12 +184,13 @@ export default async function handler(req) {
         activity,
         ts: Date.now()
       };
-      
+
       safeCacheSet(cacheKey, result);
       return new Response(JSON.stringify(result), { status: 200, headers });
 
     } catch (err) {
-      return new Response(JSON.stringify({ error: err.message }), { status: 500, headers });
+      console.error('[api/github] user mode failed:', err);
+      return new Response(JSON.stringify({ error: 'Failed to load user data' }), { status: 500, headers });
     }
   }
 
@@ -177,7 +223,8 @@ export default async function handler(req) {
       safeCacheSet(repo + '__gfi', { gfi: total, ts: Date.now() });
       return new Response(JSON.stringify({ total, items }), { status: 200, headers });
     } catch (err) {
-      return new Response(JSON.stringify({ total: 0, items: [], error: err.message }), { status: 200, headers });
+      console.error('[api/github] issues mode failed:', err);
+      return new Response(JSON.stringify({ total: 0, items: [], error: 'Failed to load issues' }), { status: 200, headers });
     }
   }
 
@@ -202,7 +249,8 @@ export default async function handler(req) {
       if (gfi !== null) safeCacheSet(cacheKey, { gfi, ts: Date.now() });
       return new Response(JSON.stringify({ gfi }), { status: 200, headers });
     } catch (err) {
-      return new Response(JSON.stringify({ gfi: null, error: err.message }), { status: 200, headers });
+      console.error('[api/github] gfi mode failed:', err);
+      return new Response(JSON.stringify({ gfi: null, error: 'Failed to load issue count' }), { status: 200, headers });
     }
   }
 
@@ -219,8 +267,9 @@ export default async function handler(req) {
     ]);
 
     if (!repoRes.ok) {
-      const err = await repoRes.json().catch(() => ({}));
-      return new Response(JSON.stringify({ error: err.message || 'Repo not found' }), { status: repoRes.status, headers });
+      const upstream = await repoRes.json().catch(() => ({}));
+      console.error('[api/github] repo fetch failed:', repoRes.status, upstream.message || '');
+      return new Response(JSON.stringify({ error: 'GitHub request failed' }), { status: repoRes.status, headers });
     }
 
     const repoData = await repoRes.json();
@@ -263,6 +312,7 @@ export default async function handler(req) {
     return new Response(JSON.stringify(result), { status: 200, headers });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: 'Fetch failed: ' + err.message }), { status: 500, headers });
+    console.error('[api/github] stats failed:', err);
+    return new Response(JSON.stringify({ error: 'Failed to load repository data' }), { status: 500, headers });
   }
 }
