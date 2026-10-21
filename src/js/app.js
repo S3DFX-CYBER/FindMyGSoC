@@ -1772,6 +1772,13 @@ async function renderGoodFirstIssues() {
         <p class="text-xs text-zinc-500 mb-3 font-mono">${issue.repo || ''}</p>
         <div class="flex flex-wrap gap-1.5">
           ${labelsHtml}
+          ${issue.tech_stack && issue.tech_stack.length ? 
+  `<div class="flex flex-wrap gap-1 mt-1">
+    ${issue.tech_stack.slice(0,3).map(t => 
+      `<span class="text-[10px] px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full font-mono">${t}</span>`
+    ).join('')}
+  </div>` 
+: ''}
           <span class="text-[10px] px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded">${String(issue.comments || 0)} comments</span>
         </div>`;
       container.appendChild(card);
