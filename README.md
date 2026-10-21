@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🚀 GSoC 2026 Org Finder
+# 🚀 GSoC 2027 Org Finder
 
-## Find your perfect Google Summer of Code 2026 organization
+## Find your perfect Google Summer of Code 2027 organization
 
 Discover organizations based on **tech stack, domains, competition level, GitHub activity, and beginner-friendly issues** — all in one place.
 
@@ -24,7 +24,8 @@ Discover organizations based on **tech stack, domains, competition level, GitHub
 
 </p>
 
-<img width="100%" alt="Project Banner" src="https://github.com/user-attachments/assets/414e4b55-ec50-4290-97a6-678f23e7c96e" />
+<img width="100%" alt="Project Banner" src="https://github.com/user-attachments/assets/82faf177-834e-40f7-8daf-77d2d3dc4f01" />
+
 
 </div>
 
@@ -63,7 +64,7 @@ open index.html   # macOS
 | General Contributors | [General Contributor Guide](docs/GENERAL_CONTRIBUTOR_GUIDE.md) |
 ## ✨ What is this?
 
-GSoC 2026 Org Finder is a fast, modern, and beginner-friendly platform for exploring Google Summer of Code organizations based on tech stack, domains, interests, and contribution goals.
+GSoC 2027 Org Finder is a fast, modern, and beginner-friendly platform for exploring Google Summer of Code organizations based on tech stack, domains, interests, and contribution goals.
 
 Instead of manually browsing through **184+ organizations**, users can:
 
@@ -429,27 +430,12 @@ For full functionality locally, run `vercel dev` to start the Edge Function.
 
 Found a missing org, wrong category, or incorrect tags? PRs are very welcome!
 
-**Read the guide for your contribution track before getting started:**
-
-| Track | Guide |
-|-------|-------|
-| GSSoC'26 Contributors | [GSSoC Contributor Guide](docs/GSSOC_CONTRIBUTOR_GUIDE.md) |
-| GSSoC'26 Mentors | [GSSoC Mentor Guide](docs/GSSOC_MENTOR_GUIDE.md) |
-| NSoC'26 Contributors | [NSoC Guide](docs/NSOC_GUIDE.md) |
-| General Contributors | [General Contributor Guide](docs/GENERAL_CONTRIBUTOR_GUIDE.md) |
+**Read the CONTRIBUTION guide for your contribution track before getting started:**
 
 For the full contributing reference (architecture, rules, PR workflow), see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Assignment Process
-
-This repo uses a **maintainer-verified** assignment system:
-
-1. Find an issue and comment `/assign gssoc` or `/assign nsoc`
-2. Your request is **queued** (not immediately assigned)
-3. A maintainer verifies the issue and runs `/approve-assignment`
-4. You get notified and can begin work
-
-**Do not start working before you are assigned.**
+You will be assigned by the Maintainer
 
 ### Quick Start
 
@@ -526,7 +512,7 @@ All responses are cached in-memory for **1 hour** on the Edge runtime.
 
 <div align="center">
 
-## 🌟 Proudly Participating In
+## 🌟 Proudly Participated In
 
 ## Nexus Spring of Code 2026 (NSoC'26)  
 ## GirlScript Summer of Code 2026 (GSSoC'26)
@@ -546,78 +532,9 @@ All responses are cached in-memory for **1 hour** on the Edge runtime.
 
 <a href="https://github.com/S3DFX-CYBER"><img src="https://github.com/S3DFX-CYBER.png" width="80px" alt="S3DFX-CYBER" /></a>
 
-**[@S3DFX-CYBER](https://github.com/S3DFX-CYBER)** — Project Admin (PA) for GSSoC'26 and NSoC'26. Responsible for final merge decisions, mentor coordination, repository maintenance, and ensuring contribution quality across all programs.
+**[@S3DFX-CYBER](https://github.com/S3DFX-CYBER)** — Main Project Lead. Responsible for final merge decisions, coordination, repository maintenance, and ensuring contribution quality across all programs.
 
 ---
-
-## 👥 GSSoC Mentors
-
-These mentors help guide and review contributions for the GSSoC program:
-
-<!-- GSSOC_MENTORS_START -->
-<a href="https://github.com/12fahed"><img src="https://github.com/12fahed.png" width="50px" alt="12fahed" /></a>
-<a href="https://github.com/4f4d"><img src="https://github.com/4f4d.png" width="50px" alt="4f4d" /></a>
-<a href="https://github.com/aanjalii01"><img src="https://github.com/aanjalii01.png" width="50px" alt="aanjalii01" /></a>
-<a href="https://github.com/adithyan-css"><img src="https://github.com/adithyan-css.png" width="50px" alt="adithyan-css" /></a>
-<a href="https://github.com/AditthyaSS"><img src="https://github.com/AditthyaSS.png" width="50px" alt="AditthyaSS" /></a>
-<a href="https://github.com/AnirbansarkarS"><img src="https://github.com/AnirbansarkarS.png" width="50px" alt="AnirbansarkarS" /></a>
-<a href="https://github.com/AnirudhPhophalia"><img src="https://github.com/AnirudhPhophalia.png" width="50px" alt="AnirudhPhophalia" /></a>
-<a href="https://github.com/anubhavxdev"><img src="https://github.com/anubhavxdev.png" width="50px" alt="anubhavxdev" /></a>
-<a href="https://github.com/Anushreebasics"><img src="https://github.com/Anushreebasics.png" width="50px" alt="Anushreebasics" /></a>
-<a href="https://github.com/aryanbhutani26"><img src="https://github.com/aryanbhutani26.png" width="50px" alt="aryanbhutani26" /></a>
-<a href="https://github.com/ayu-yishu13"><img src="https://github.com/ayu-yishu13.png" width="50px" alt="ayu-yishu13" /></a>
-<a href="https://github.com/Ayush-Patel-56"><img src="https://github.com/Ayush-Patel-56.png" width="50px" alt="Ayush-Patel-56" /></a>
-<a href="https://github.com/Ayushh-Sharmaa"><img src="https://github.com/Ayushh-Sharmaa.png" width="50px" alt="Ayushh-Sharmaa" /></a>
-<a href="https://github.com/Balaji91221"><img src="https://github.com/Balaji91221.png" width="50px" alt="Balaji91221" /></a>
-<a href="https://github.com/BandhiyaHardik"><img src="https://github.com/BandhiyaHardik.png" width="50px" alt="BandhiyaHardik" /></a>
-<a href="https://github.com/coder-zs-cse"><img src="https://github.com/coder-zs-cse.png" width="50px" alt="coder-zs-cse" /></a>
-<a href="https://github.com/CoderOggy78"><img src="https://github.com/CoderOggy78.png" width="50px" alt="CoderOggy78" /></a>
-<a href="https://github.com/deepak0x"><img src="https://github.com/deepak0x.png" width="50px" alt="deepak0x" /></a>
-<a href="https://github.com/deepaksinghh12"><img src="https://github.com/deepaksinghh12.png" width="50px" alt="deepaksinghh12" /></a>
-<a href="https://github.com/DevROHIT11"><img src="https://github.com/DevROHIT11.png" width="50px" alt="DevROHIT11" /></a>
-<a href="https://github.com/Haile-12"><img src="https://github.com/Haile-12.png" width="50px" alt="Haile-12" /></a>
-<a href="https://github.com/itsdakshjain"><img src="https://github.com/itsdakshjain.png" width="50px" alt="itsdakshjain" /></a>
-<a href="https://github.com/JoeCelaster"><img src="https://github.com/JoeCelaster.png" width="50px" alt="JoeCelaster" /></a>
-<a href="https://github.com/kallal79"><img src="https://github.com/kallal79.png" width="50px" alt="kallal79" /></a>
-<a href="https://github.com/KaranGupta2005"><img src="https://github.com/KaranGupta2005.png" width="50px" alt="KaranGupta2005" /></a>
-<a href="https://github.com/knoxiboy"><img src="https://github.com/knoxiboy.png" width="50px" alt="knoxiboy" /></a>
-<a href="https://github.com/Kota-Jagadeesh"><img src="https://github.com/Kota-Jagadeesh.png" width="50px" alt="Kota-Jagadeesh" /></a>
-<a href="https://github.com/KumarNirupam1"><img src="https://github.com/KumarNirupam1.png" width="50px" alt="KumarNirupam1" /></a>
-<a href="https://github.com/lourduradjou"><img src="https://github.com/lourduradjou.png" width="50px" alt="lourduradjou" /></a>
-<a href="https://github.com/lovestaco"><img src="https://github.com/lovestaco.png" width="50px" alt="lovestaco" /></a>
-<a href="https://github.com/magic-peach"><img src="https://github.com/magic-peach.png" width="50px" alt="magic-peach" /></a>
-<a href="https://github.com/Manan-Chawla"><img src="https://github.com/Manan-Chawla.png" width="50px" alt="Manan-Chawla" /></a>
-<a href="https://github.com/Maxd646"><img src="https://github.com/Maxd646.png" width="50px" alt="Maxd646" /></a>
-<a href="https://github.com/MAYANKSHARMA01010"><img src="https://github.com/MAYANKSHARMA01010.png" width="50px" alt="MAYANKSHARMA01010" /></a>
-<a href="https://github.com/Mohit-368"><img src="https://github.com/Mohit-368.png" width="50px" alt="Mohit-368" /></a>
-<a href="https://github.com/morningstarxcdcode"><img src="https://github.com/morningstarxcdcode.png" width="50px" alt="morningstarxcdcode" /></a>
-<a href="https://github.com/Mrigakshi-Rathore"><img src="https://github.com/Mrigakshi-Rathore.png" width="50px" alt="Mrigakshi-Rathore" /></a>
-<a href="https://github.com/MUKUL-PRASAD-SIGH"><img src="https://github.com/MUKUL-PRASAD-SIGH.png" width="50px" alt="MUKUL-PRASAD-SIGH" /></a>
-<a href="https://github.com/Neilblaze"><img src="https://github.com/Neilblaze.png" width="50px" alt="Neilblaze" /></a>
-<a href="https://github.com/nihalawasthi"><img src="https://github.com/nihalawasthi.png" width="50px" alt="nihalawasthi" /></a>
-<a href="https://github.com/nitinog10"><img src="https://github.com/nitinog10.png" width="50px" alt="nitinog10" /></a>
-<a href="https://github.com/oasis-parzival"><img src="https://github.com/oasis-parzival.png" width="50px" alt="oasis-parzival" /></a>
-<a href="https://github.com/piyushdotcomm"><img src="https://github.com/piyushdotcomm.png" width="50px" alt="piyushdotcomm" /></a>
-<a href="https://github.com/Precise-Goals"><img src="https://github.com/Precise-Goals.png" width="50px" alt="Precise-Goals" /></a>
-<a href="https://github.com/preetbiswas12"><img src="https://github.com/preetbiswas12.png" width="50px" alt="preetbiswas12" /></a>
-<a href="https://github.com/rounakkraaj-1744"><img src="https://github.com/rounakkraaj-1744.png" width="50px" alt="rounakkraaj-1744" /></a>
-<a href="https://github.com/sabeenaviklar"><img src="https://github.com/sabeenaviklar.png" width="50px" alt="sabeenaviklar" /></a>
-<a href="https://github.com/Sagar-Datkhile"><img src="https://github.com/Sagar-Datkhile.png" width="50px" alt="Sagar-Datkhile" /></a>
-<a href="https://github.com/Satya900"><img src="https://github.com/Satya900.png" width="50px" alt="Satya900" /></a>
-<a href="https://github.com/saurabh24thakur"><img src="https://github.com/saurabh24thakur.png" width="50px" alt="saurabh24thakur" /></a>
-<a href="https://github.com/Shravanthi20"><img src="https://github.com/Shravanthi20.png" width="50px" alt="Shravanthi20" /></a>
-<a href="https://github.com/sparshagarwal0411"><img src="https://github.com/sparshagarwal0411.png" width="50px" alt="sparshagarwal0411" /></a>
-<a href="https://github.com/SparshM8"><img src="https://github.com/SparshM8.png" width="50px" alt="SparshM8" /></a>
-<a href="https://github.com/stealthwhizz"><img src="https://github.com/stealthwhizz.png" width="50px" alt="stealthwhizz" /></a>
-<a href="https://github.com/subratamondalnsec"><img src="https://github.com/subratamondalnsec.png" width="50px" alt="subratamondalnsec" /></a>
-<a href="https://github.com/Suvanwita"><img src="https://github.com/Suvanwita.png" width="50px" alt="Suvanwita" /></a>
-<a href="https://github.com/SyedImtiyaz-1"><img src="https://github.com/SyedImtiyaz-1.png" width="50px" alt="SyedImtiyaz-1" /></a>
-<a href="https://github.com/TarunyaProgrammer"><img src="https://github.com/TarunyaProgrammer.png" width="50px" alt="TarunyaProgrammer" /></a>
-<a href="https://github.com/thakurutkarsh22"><img src="https://github.com/thakurutkarsh22.png" width="50px" alt="thakurutkarsh22" /></a>
-<a href="https://github.com/uddalak2005"><img src="https://github.com/uddalak2005.png" width="50px" alt="uddalak2005" /></a>
-<a href="https://github.com/vanshaggarwal07"><img src="https://github.com/vanshaggarwal07.png" width="50px" alt="vanshaggarwal07" /></a>
-<!-- GSSOC_MENTORS_END -->
-
 ## We thank all our Contributors for improving this project
 
 ## 💡 Tips for Users
