@@ -637,7 +637,7 @@ These mentors help guide and review contributions for the GSSoC program:
 <a href="https://github.com/Aditya-debugs141"><img src="https://github.com/Aditya-debugs141.png" width="50px" alt="Aditya-debugs141" /></a>
 <a href="https://github.com/Aditya8369"><img src="https://github.com/Aditya8369.png" width="50px" alt="Aditya8369" /></a>
 <a href="https://github.com/AdityaM-IITH"><img src="https://github.com/AdityaM-IITH.png" width="50px" alt="AdityaM-IITH" /></a>
-<a href="https://github.com/Akshayaqueen"><img src="https://github.com/Akshayaqueen.png" width="50px" alt="Akshayaqueen" /></a>
+<a href="https://github.com/Akshaya-codes13"><img src="https://github.com/Akshaya-codes13.png" width="50px" alt="Akshaya-codes13" /></a>
 <a href="https://github.com/Ashish241"><img src="https://github.com/Ashish241.png" width="50px" alt="Ashish241" /></a>
 <a href="https://github.com/Ashusf90"><img src="https://github.com/Ashusf90.png" width="50px" alt="Ashusf90" /></a>
 <a href="https://github.com/Ashvin-KS"><img src="https://github.com/Ashvin-KS.png" width="50px" alt="Ashvin-KS" /></a>
@@ -680,7 +680,6 @@ These mentors help guide and review contributions for the GSSoC program:
 <a href="https://github.com/PrincePundir123"><img src="https://github.com/PrincePundir123.png" width="50px" alt="PrincePundir123" /></a>
 <a href="https://github.com/PriyaanshPandey"><img src="https://github.com/PriyaanshPandey.png" width="50px" alt="PriyaanshPandey" /></a>
 <a href="https://github.com/Purohit-Yogeshraj"><img src="https://github.com/Purohit-Yogeshraj.png" width="50px" alt="Purohit-Yogeshraj" /></a>
-<a href="https://github.com/Rachit-Kakkad1"><img src="https://github.com/Rachit-Kakkad1.png" width="50px" alt="Rachit-Kakkad1" /></a>
 <a href="https://github.com/S3DFX-CYBER"><img src="https://github.com/S3DFX-CYBER.png" width="50px" alt="S3DFX-CYBER" /></a>
 <a href="https://github.com/SHUBHAM2775"><img src="https://github.com/SHUBHAM2775.png" width="50px" alt="SHUBHAM2775" /></a>
 <a href="https://github.com/Sarvesh-Sarz"><img src="https://github.com/Sarvesh-Sarz.png" width="50px" alt="Sarvesh-Sarz" /></a>
@@ -712,7 +711,9 @@ These mentors help guide and review contributions for the GSSoC program:
 <a href="https://github.com/arghya29"><img src="https://github.com/arghya29.png" width="50px" alt="arghya29" /></a>
 <a href="https://github.com/arpit2006"><img src="https://github.com/arpit2006.png" width="50px" alt="arpit2006" /></a>
 <a href="https://github.com/arushiranjan"><img src="https://github.com/arushiranjan.png" width="50px" alt="arushiranjan" /></a>
+<a href="https://github.com/aryangetsreal"><img src="https://github.com/aryangetsreal.png" width="50px" alt="aryangetsreal" /></a>
 <a href="https://github.com/ash1shkumar"><img src="https://github.com/ash1shkumar.png" width="50px" alt="ash1shkumar" /></a>
+<a href="https://github.com/ayushi2577"><img src="https://github.com/ayushi2577.png" width="50px" alt="ayushi2577" /></a>
 <a href="https://github.com/basantnema31"><img src="https://github.com/basantnema31.png" width="50px" alt="basantnema31" /></a>
 <a href="https://github.com/bhaktiyadav08"><img src="https://github.com/bhaktiyadav08.png" width="50px" alt="bhaktiyadav08" /></a>
 <a href="https://github.com/bhavyanjain3004"><img src="https://github.com/bhavyanjain3004.png" width="50px" alt="bhavyanjain3004" /></a>
@@ -742,7 +743,6 @@ These mentors help guide and review contributions for the GSSoC program:
 <a href="https://github.com/mudit-codez"><img src="https://github.com/mudit-codez.png" width="50px" alt="mudit-codez" /></a>
 <a href="https://github.com/neeraj477"><img src="https://github.com/neeraj477.png" width="50px" alt="neeraj477" /></a>
 <a href="https://github.com/nimkarprachi17"><img src="https://github.com/nimkarprachi17.png" width="50px" alt="nimkarprachi17" /></a>
-<a href="https://github.com/nitinog10"><img src="https://github.com/nitinog10.png" width="50px" alt="nitinog10" /></a>
 <a href="https://github.com/omkartike"><img src="https://github.com/omkartike.png" width="50px" alt="omkartike" /></a>
 <a href="https://github.com/opinder8699"><img src="https://github.com/opinder8699.png" width="50px" alt="opinder8699" /></a>
 <a href="https://github.com/palak-paliwal11"><img src="https://github.com/palak-paliwal11.png" width="50px" alt="palak-paliwal11" /></a>
@@ -764,6 +764,7 @@ These mentors help guide and review contributions for the GSSoC program:
 <a href="https://github.com/shrutssss"><img src="https://github.com/shrutssss.png" width="50px" alt="shrutssss" /></a>
 <a href="https://github.com/srishav3"><img src="https://github.com/srishav3.png" width="50px" alt="srishav3" /></a>
 <a href="https://github.com/syedrazamd"><img src="https://github.com/syedrazamd.png" width="50px" alt="syedrazamd" /></a>
+<a href="https://github.com/theRkakkad"><img src="https://github.com/theRkakkad.png" width="50px" alt="theRkakkad" /></a>
 <a href="https://github.com/v4rshh"><img src="https://github.com/v4rshh.png" width="50px" alt="v4rshh" /></a>
 <a href="https://github.com/vaibhavi-vaishnav"><img src="https://github.com/vaibhavi-vaishnav.png" width="50px" alt="vaibhavi-vaishnav" /></a>
 <a href="https://github.com/yuvraj-k-singh"><img src="https://github.com/yuvraj-k-singh.png" width="50px" alt="yuvraj-k-singh" /></a>
