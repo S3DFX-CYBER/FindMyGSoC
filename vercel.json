@@ -5,8 +5,25 @@
   "buildCommand": "",
   "devCommand": "npx serve . -l $PORT",
   "routes": [
-    { "src": "/app/(.*)", "dest": "/index.html" },
-    { "src": "/app", "dest": "/index.html" },
+    {
+      "src": "/(.*)",
+      "headers": {
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://unpkg.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://github.com https://avatars.githubusercontent.com https://*.githubusercontent.com https://logo.clearbit.com; connect-src 'self' https://va.vercel-scripts.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()"
+      },
+      "continue": true
+    },
+    {
+      "src": "/app/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/app",
+      "dest": "/index.html"
+    },
     {
       "src": "/api/(.*)",
       "headers": {
@@ -22,7 +39,13 @@
       },
       "continue": true
     },
-    { "src": "/api/github", "dest": "/api/github.js" },
-    { "src": "/", "dest": "/landing.html" }
+    {
+      "src": "/api/github",
+      "dest": "/api/github.js"
+    },
+    {
+      "src": "/",
+      "dest": "/landing.html"
+    }
   ]
 }
