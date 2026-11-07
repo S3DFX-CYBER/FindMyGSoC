@@ -5,8 +5,22 @@
   "buildCommand": "",
   "devCommand": "npx serve . -l $PORT",
   "routes": [
-    { "src": "/app/(.*)", "dest": "/index.html" },
-    { "src": "/app", "dest": "/index.html" },
+    {
+      "src": "/app/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/app",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/data/issues.json",
+      "dest": "/api/gfi.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800"
+      }
+    },
     {
       "src": "/api/(.*)",
       "headers": {
@@ -22,7 +36,13 @@
       },
       "continue": true
     },
-    { "src": "/api/github", "dest": "/api/github.js" },
-    { "src": "/", "dest": "/landing.html" }
+    {
+      "src": "/api/github",
+      "dest": "/api/github.js"
+    },
+    {
+      "src": "/",
+      "dest": "/landing.html"
+    }
   ]
 }
