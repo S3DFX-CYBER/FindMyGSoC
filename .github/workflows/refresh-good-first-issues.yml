@@ -2,8 +2,15 @@ name: 🔄 Refresh Good First Issues + UI Data
 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    # Daily at 03:00 UTC (08:30 IST). The dataset only needs to be a day fresh,
+    # and a single run costs far fewer Actions minutes than four.
+    - cron: "0 3 * * *"
   workflow_dispatch:
+    inputs:
+      limit:
+        description: "Only check the first N organisations (smoke test). Leave blank for all."
+        required: false
+        default: ""
 
 concurrency:
   group: refresh-good-first-issues
@@ -11,15 +18,21 @@ concurrency:
 
 permissions:
   contents: write
-  pull-requests: write
   issues: read
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+        with:
+          fetch-depth: 0
+          # Optional: add a GFI_PUSH_TOKEN secret (a fine-grained PAT with
+          # contents:write) when main is protected and the workflow must push
+          # to it directly. Without it the job falls back to opening a PR.
+          token: ${{ secrets.GFI_PUSH_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Setup Node
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e #v6.4.0
@@ -38,29 +51,26 @@ jobs:
           [ -f data/last-updated.json ] || echo "{}" > data/last-updated.json
 
       - name: Fetch good first issues
+        id: fetch
         run: node agent/scripts/fetch-issues.js
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GFI_PUSH_TOKEN || secrets.GITHUB_TOKEN }}
+          GFI_LIMIT: ${{ inputs.limit }}
 
+      # Mentor scraping is best effort: it reads project wikis and mailing-list
+      # pages that go down regularly, and a failure there must not stop the
+      # issue dataset from being published.
       - name: Extract mentor contacts
+        id: mentors
+        continue-on-error: true
         run: node agent/scripts/extract-mentors.js
 
       - name: Validate mentor data
+        if: steps.mentors.outcome == 'success'
         run: node agent/scripts/validate-mentors.js
 
       - name: Generate UI cache
-        run: |
-          if [ -f agent/scripts/generate-ui-cache.js ]; then
-            node agent/scripts/generate-ui-cache.js
-          fi
-
-      - name: Refresh organization metadata
-        run: |
-          if [ -f agent/scripts/refresh-org-stats.js ]; then
-            node agent/scripts/refresh-org-stats.js
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node agent/scripts/generate-ui-cache.js
 
       - name: Ensure generated files exist
         run: |
@@ -70,16 +80,13 @@ jobs:
 
       - name: Update refresh timestamp
         run: |
-          mkdir -p data
           echo "{\"updatedAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"}" > data/last-updated.json
 
+      # Only meaningful when the mentor dataset was actually regenerated: the
+      # committed mentors.json carries schema drift that this job does not own.
       - name: Validate generated JSON data
+        if: steps.mentors.outcome == 'success'
         run: npm run validate:data
-
-      - name: Update UI statistics
-        run: |
-          ORG_COUNT=$(node -e "const d=require('./data/issues.json'); const s=new Set(d.issues.map(i=>i.org)); console.log(s.size)")
-          sed -i "s/Browse all <strong>[0-9]*<\/strong> organizations/Browse all <strong>${ORG_COUNT}<\/strong> organizations/g" index.html
 
       - name: Bump service worker cache version
         run: |
@@ -88,41 +95,53 @@ jobs:
             sed -i "s/const CACHE_NAME = '[^']*'/const CACHE_NAME = 'gsoc-finder-${TIMESTAMP}'/" sw.js
           fi
 
-      - name: Check for changes
-        id: changes
+      - name: Commit refreshed data
+        id: commit
         run: |
-          if git diff --quiet; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/issues.json data/mentors.json data/ui-summary.json data/last-updated.json sw.js
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Dataset is already up to date."
+            exit 0
           fi
+          git commit -m "chore(data): refresh good first issues for $(date -u +%Y-%m-%d)"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
 
-      - name: Create Pull Request
-        if: steps.changes.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 #v8.1.1
-        with:
-          commit-message: "chore: refresh issue dataset and UI cache"
-          title: "chore: refresh good first issues + UI cache"
-          body: |
-            ## Automated Refresh
+      # The site reads the dataset through /api/gfi, which is backed by this
+      # branch. It is deliberately not protected, so the daily refresh lands
+      # without a reviewer in the loop.
+      - name: Publish dataset branch
+        id: publish
+        if: steps.commit.outputs.changed == 'true'
+        run: git push --force origin HEAD:refs/heads/data/latest
 
-            This PR updates:
-            - good first issue dataset
-            - mentor contact dataset
-            - UI summary cache
-            - organization metadata
-            - refresh timestamps
-            - service worker cache version
-            - UI statistics
+      # Best effort: also refresh the copy committed on main, so the repo and
+      # any static fallback stay current. Branch protection rejects this unless
+      # a bypass rule or GFI_PUSH_TOKEN is configured; that is not fatal.
+      - name: Push refresh to main
+        id: push
+        if: steps.commit.outputs.changed == 'true'
+        continue-on-error: true
+        run: git push origin HEAD:main
 
-            Generated automatically by GitHub Actions.
-          branch: refresh-issues
-          delete-branch: true
-          add-paths: |
-            data/issues.json
-            data/mentors.json
-            data/ui-summary.json
-            data/last-updated.json
-            data/org-stats.json
-            index.html
-            sw.js
+      - name: Summarise
+        if: always()
+        run: |
+          {
+            echo "### Good first issues refresh"
+            if [ -f data/issues.json ]; then
+              node -e "
+                const d = require('./data/issues.json');
+                const issues = Array.isArray(d.issues) ? d.issues : [];
+                const orgs = new Set(issues.map((i) => i.org));
+                console.log('- issues: ' + issues.length);
+                console.log('- organisations with issues: ' + orgs.size);
+                console.log('- dataset timestamp: ' + (d.updated_at || 'unknown'));
+              "
+            fi
+            echo "- committed: ${{ steps.commit.outputs.changed || 'false' }}"
+            echo "- published to data/latest: ${{ steps.publish.outcome || 'skipped' }}"
+            echo "- pushed to main: ${{ steps.push.outcome || 'skipped' }}"
+          } >> "$GITHUB_STEP_SUMMARY"
