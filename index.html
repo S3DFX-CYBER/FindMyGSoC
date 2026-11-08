@@ -1946,7 +1946,7 @@ kbd:hover{
   <div class="mb-12">
     <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">First Contributions</span>
     <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Good First Issues</h2>
-    <p class="text-zinc-600 mt-4 max-w-2xl">Pre-fetched from all GSoC 2026 orgs every 6 hours — no rate limits, no token required, instant results.</p>
+    <p class="text-zinc-600 mt-4 max-w-2xl">Pre-fetched from all GSoC 2026 orgs every 24 hours — no rate limits, no token required, instant results.</p>
   </div>
   <!-- Status Banner -->
   <div id="issuesBanner" class="bg-green-50 border border-green-200 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -1954,7 +1954,7 @@ kbd:hover{
       <div class="w-3 h-3 rounded-full bg-green-500 pulse-dot" id="issuesBannerDot"></div>
       <div>
         <p class="font-bold text-green-800 text-sm" id="issuesBannerTitle">Pre-fetched Issues Ready</p>
-        <p class="text-xs text-green-600" id="issuesBannerSubtitle">Updated every 6 hours via GitHub Actions — no API rate limits for visitors.</p>
+        <p class="text-xs text-green-600" id="issuesBannerSubtitle">Updated every 24 hours via GitHub Actions — no API rate limits for visitors.</p>
       </div>
     </div>
     <div class="sm:ml-auto flex flex-col items-start sm:items-end gap-1">
@@ -3662,7 +3662,7 @@ kbd:hover{
     const issuesBannerDot = document.getElementById('issuesBannerDot');
     const issuesBanner = document.getElementById('issuesBanner');
     if (issuesStaleNote) issuesStaleNote.classList.remove('hidden');
-    // Soften the "Updated every 6 hours" claim so it no longer contradicts the stale timestamp
+    // Soften the "Updated every 24 hours" claim so it no longer contradicts the stale timestamp
     if (issuesBannerSubtitle) {
       issuesBannerSubtitle.textContent = 'Data is cached. Updates may be infrequent post-selection.';
     }
@@ -5164,7 +5164,7 @@ if(org.ideas){
   // Dynamic GFIs
   async function renderGoodFirstIssues() {
     try {
-      const res = await fetch('/data/issues.json?v=' + Date.now());
+      const res = await fetch('/data/issues.json');
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       const container = document.querySelector('#issues .grid');

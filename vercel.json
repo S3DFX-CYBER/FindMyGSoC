@@ -5,8 +5,18 @@
   "buildCommand": "",
   "devCommand": "npx serve . -l $PORT",
   "routes": [
-    { "src": "/app/(.*)", "dest": "/index.html" },
-    { "src": "/app", "dest": "/index.html" },
+    {
+      "src": "/app/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/app",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/data/issues.json",
+      "dest": "/api/gfi.js"
+    },
     {
       "src": "/api/(.*)",
       "headers": {
@@ -22,7 +32,13 @@
       },
       "continue": true
     },
-    { "src": "/api/github", "dest": "/api/github.js" },
-    { "src": "/", "dest": "/landing.html" }
+    {
+      "src": "/api/github",
+      "dest": "/api/github.js"
+    },
+    {
+      "src": "/",
+      "dest": "/landing.html"
+    }
   ]
 }
