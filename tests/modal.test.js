@@ -99,7 +99,7 @@ const mockElements = {
   mForks: new StubElement('mForks'),
   mIssues: new StubElement('mIssues'),
   mActivity: new StubElement('mActivity'),
-  mMentorsSection: new StubElement('mMentorsSection'),
+  mMentorSection: new StubElement('mMentorSection'),
   closeOrgModalBtn: new StubElement('closeOrgModalBtn', 'button'),
   closeCompareModalBtn: new StubElement('closeCompareModalBtn', 'button'),
   closeHelpModalBtn: new StubElement('closeHelpModalBtn', 'button'),
