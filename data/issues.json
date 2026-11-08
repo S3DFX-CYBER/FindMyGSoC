@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-07T21:12:46.089Z",
+  "updated_at": "2026-11-08T03:10:22.484Z",
   "source_org_count": 184,
   "total_issues": 45,
   "issues": [
@@ -491,6 +491,24 @@
       "org": "Oppia Foundation",
       "github": "oppia/oppia",
       "logo": "https://avatars.githubusercontent.com/oppia",
+      "title": "[Feature Request]: Migrate acceptance tests for logged-out-user from Puppeteer to Playwright",
+      "url": "https://github.com/oppia/oppia/issues/26833",
+      "repo": "oppia/oppia",
+      "labels": [
+        "good first issue",
+        "enhancement",
+        "Impact: Medium",
+        "Work: Medium"
+      ],
+      "comments": 16,
+      "created_at": "2026-07-19T16:01:51Z",
+      "updated_at": "2026-11-08T01:56:31Z",
+      "language": null
+    },
+    {
+      "org": "Oppia Foundation",
+      "github": "oppia/oppia",
+      "logo": "https://avatars.githubusercontent.com/oppia",
       "title": "Implement missing domain objects with full `validate()` function.",
       "url": "https://github.com/oppia/oppia/issues/21970",
       "repo": "oppia/oppia",
@@ -504,24 +522,6 @@
       "comments": 257,
       "created_at": "2025-02-21T13:47:28Z",
       "updated_at": "2026-11-07T20:34:09Z",
-      "language": null
-    },
-    {
-      "org": "Oppia Foundation",
-      "github": "oppia/oppia",
-      "logo": "https://avatars.githubusercontent.com/oppia",
-      "title": "[Feature Request]: Migrate acceptance tests for logged-out-user from Puppeteer to Playwright",
-      "url": "https://github.com/oppia/oppia/issues/26833",
-      "repo": "oppia/oppia",
-      "labels": [
-        "good first issue",
-        "enhancement",
-        "Impact: Medium",
-        "Work: Medium"
-      ],
-      "comments": 15,
-      "created_at": "2026-07-19T16:01:51Z",
-      "updated_at": "2026-11-07T17:41:02Z",
       "language": null
     },
     {
