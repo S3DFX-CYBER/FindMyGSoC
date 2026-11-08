@@ -466,7 +466,8 @@ Each org entry looks like this:
   years: 5,                 // number of GSoC years participated
   firstYear: 2021,          // first year they participated
   competition: "moderate",  // hot | moderate | chill
-  github: "owner/repo",     // main repo (or just "owner" for umbrella orgs)
+  github: "owner/repo",     // must be owner/repo: the stats API and the
+                            // good-first-issue lookup both reject an owner-only value
   ideas: "https://github.com/org/repo/wiki/Ideas",  // project ideas page URL (optional)
   tags: ["python", "c++", "machine learning"],
   desc: "Short description of what the org does.",

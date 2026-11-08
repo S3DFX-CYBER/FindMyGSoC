@@ -1732,7 +1732,7 @@ function renderSelectedLanguages() {
 // ══════════════════════════════════════════════
 async function renderGoodFirstIssues() {
   try {
-    const res = await fetch('/data/issues.json?v=' + Date.now());
+    const res = await fetch('/data/issues.json');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const container = document.querySelector('#issues .grid');
