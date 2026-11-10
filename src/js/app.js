@@ -647,9 +647,15 @@ const GRID_COLS = () => {
 
 function scrollToFocused() {
   setTimeout(() => {
-    const g = document.getElementById('orgGrid');
-    const card = g?.querySelector(`[data-filtered-idx="${focusedIdx}"]`);
-    if (card) card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    const cards = document.querySelectorAll('#orgGrid article');
+    const card = cards[focusedIdx];
+    if (card) {
+      card.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest'
+      });
+    }
   }, 30);
 }
 
