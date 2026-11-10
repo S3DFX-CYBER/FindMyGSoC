@@ -3358,18 +3358,114 @@ kbd:hover{
     return `<div class="flex flex-wrap gap-2">${chips}</div>`;
   }
 
+  // ── Reaching a mentor ─────────────────────────────────────────────────
+  // An org publishes the chat / mailing list it answers on its own GSoC page.
+  // That page is the reliable route, so it is step 1 here, and the whole block
+  // renders even when the scraped contact data is missing.
+  const GSOC_PROGRAM_YEAR = 2026;
+  const GSOC_ORGS_URL = `https://summerofcode.withgoogle.com/programs/${GSOC_PROGRAM_YEAR}/organizations`;
+
+  function gsocOrgUrl(org) {
+    const ideas = org && typeof org.ideas === 'string' ? org.ideas.trim() : '';
+    const isOfficial = /^https?:\/\/summerofcode\.withgoogle\.com\/(?:programs|archive)\/\d+\/organizations\/[a-z0-9-]+\/?$/i.test(ideas);
+    return isOfficial ? ideas : '';
+  }
+
+  function buildMentorIntro(org) {
+    const name = org && org.name ? org.name : 'this organisation';
+    return [
+      "Hi everyone — I'm <your GitHub handle>, new here and working towards GSoC.",
+      `I read the ${name} ideas page and <project> is the one I would like to work on.`,
+      'I have been through <repo or issue> and would like to start with a small fix.',
+      'Is there a good first issue you would point a newcomer at, or anything I should read before opening a PR?'
+    ].join('\n');
+  }
+
+  function mentorPathHtml(org) {
+    const official = gsocOrgUrl(org);
+    const ideasHref = sanitizeHrefUrl(org && org.ideas);
+    const step1Href = official ? sanitizeHrefUrl(official) : GSOC_ORGS_URL;
+    const step1Label = official ? 'Open their GSoC page' : 'Find them on the GSoC organisations page';
+    const orgName = escapeHtml(org && org.name ? org.name : 'this organisation');
+    const ideasStep = ideasHref
+      ? `<a href="${ideasHref}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip mt-2">Ideas page</a>`
+      : '<span class="text-[11px] text-zinc-400">No ideas page recorded for this org yet.</span>';
+
+    return `
+      <div class="mentor-path rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40 p-4 mb-4">
+        <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">How to reach these mentors</p>
+        <ol class="space-y-3">
+          <li class="flex gap-3">
+            <span class="font-bold text-primary">1</span>
+            <div class="flex-1">
+              <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Open their GSoC page</p>
+              <p class="text-xs text-zinc-500 mt-1">Every accepted org lists the chat, mailing list or email its mentors answer on, on that page. This is the route most newcomers miss.</p>
+              <a href="${step1Href}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip mt-2">${step1Label}</a>
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="font-bold text-primary">2</span>
+            <div class="flex-1">
+              <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Read what they want built</p>
+              <p class="text-xs text-zinc-500 mt-1">Pick one idea, and read the repository it belongs to before you say anything.</p>
+              ${ideasStep}
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="font-bold text-primary">3</span>
+            <div class="flex-1">
+              <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Say hello in public, not in a DM</p>
+              <p class="text-xs text-zinc-500 mt-1">Introduce yourself on the channel, name the idea, and ask one specific question. Do not ask to be assigned work.</p>
+              <details class="mt-2">
+                <summary class="text-xs font-semibold text-primary cursor-pointer">First message template</summary>
+                <pre class="mt-2 whitespace-pre-wrap text-[11px] leading-relaxed bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 text-zinc-700 dark:text-zinc-300">${escapeHtml(buildMentorIntro(org))}</pre>
+                <button type="button" class="mentor-link-chip mt-2" data-copy-intro>Copy template</button>
+              </details>
+            </div>
+          </li>
+        </ol>
+        <p class="text-[11px] text-zinc-400 mt-3">Looking for ${orgName}? Parsed contact details appear below when they could be read from the org's own pages.</p>
+      </div>
+    `;
+  }
+
+  function wireMentorPath(container, org) {
+    if (!container || typeof container.querySelector !== 'function') return;
+    const button = container.querySelector('[data-copy-intro]');
+    if (!button) return;
+    button.addEventListener('click', () => {
+      const text = buildMentorIntro(org);
+      const copy = navigator.clipboard && navigator.clipboard.writeText;
+      if (!copy) {
+        button.textContent = 'Select the text above';
+        return;
+      }
+      navigator.clipboard.writeText(text)
+        .then(() => { button.textContent = 'Copied'; })
+        .catch(() => { button.textContent = 'Select the text above'; });
+    });
+  }
+
   function renderMentorContactSection(org) {
     const container = document.getElementById('mMentorSection');
     if (!container) return;
 
+    container.innerHTML = mentorPathHtml(org);
+    wireMentorPath(container, org);
+    const appendBlock = (html) => {
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = html;
+      container.appendChild(wrapper);
+    };
+
     if (mentorDataState === 'idle' || mentorDataState === 'loading') {
-      container.innerHTML = '<p class="text-sm text-zinc-500">Loading mentor contact data...</p>';
+      appendBlock('<p class="text-sm text-zinc-500">Loading mentor contact data...</p>');
       return;
     }
 
     const entry = getMentorEntry(org.name);
     if (!entry) {
-      container.innerHTML = '<p class="text-sm text-zinc-500">Mentor data unavailable right now.</p>';
+      appendBlock('<p class="text-sm text-zinc-500">Mentor data unavailable right now.</p>');
       return;
     }
 
@@ -3415,19 +3511,19 @@ kbd:hover{
       if (entry.status === 'fetch-failed') {
         message = 'Mentor data unavailable right now.';
       }
-      container.innerHTML = `
+      appendBlock(`
         <div class="rounded-2xl border border-dashed border-zinc-200 p-5">
           <p class="text-sm text-zinc-600">${message}</p>
         </div>
-      `;
+      `);
       return;
     }
 
-    container.innerHTML = `
+    appendBlock(`
       <div class="space-y-4">
         ${sections.join('')}
       </div>
-    `;
+    `);
   }
 
   function getMentorFinderRecords() {
