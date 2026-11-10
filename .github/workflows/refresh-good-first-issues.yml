@@ -22,6 +22,10 @@ permissions:
 
 jobs:
   refresh:
+    # Scope: the good first issue dataset and the two files derived from it.
+    # This job must never write data/mentors.json (hand-curated, see #2104) or
+    # touch sw.js — an automated rewrite of those cost months of verified
+    # mentor contact data.
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -46,7 +50,6 @@ jobs:
         run: |
           mkdir -p data
           [ -f data/issues.json ] || echo "{}" > data/issues.json
-          [ -f data/mentors.json ] || echo "{}" > data/mentors.json
           [ -f data/last-updated.json ] || echo "{}" > data/last-updated.json
 
       # A dispatch with `limit` is a smoke test: it checks a slice and must not
@@ -64,18 +67,6 @@ jobs:
             node agent/scripts/fetch-issues.js
           fi
 
-      # Mentor scraping is best effort: it reads project wikis and mailing-list
-      # pages that go down regularly, and a failure there must not stop the
-      # issue dataset from being published.
-      - name: Extract mentor contacts
-        id: mentors
-        continue-on-error: true
-        run: node agent/scripts/extract-mentors.js
-
-      - name: Validate mentor data
-        if: steps.mentors.outcome == 'success'
-        run: node agent/scripts/validate-mentors.js
-
       - name: Generate UI cache
         run: node agent/scripts/generate-ui-cache.js
 
@@ -90,8 +81,7 @@ jobs:
         run: |
           echo "{\"updatedAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"}" > data/last-updated.json
 
-      # Always runs: the issue dataset is the thing this job exists to publish,
-      # and it must be checked even when mentor scraping failed.
+      # Always runs: the issue dataset must be valid before the derived files are published.
       - name: Validate issue dataset
         run: |
           node -e "
@@ -103,20 +93,6 @@ jobs:
             console.log('issues.json ok: ' + d.issues.length + ' issues');
           "
 
-      # Only meaningful when the mentor dataset was actually regenerated: the
-      # committed mentors.json carries schema drift that this job does not own.
-      - name: Validate generated JSON data
-        if: steps.mentors.outcome == 'success'
-        run: npm run validate:data
-
-      - name: Bump service worker cache version
-        if: inputs.limit == ''
-        run: |
-          if [ -f sw.js ]; then
-            TIMESTAMP=$(date -u +"%Y%m%d%H%M%S")
-            sed -i "s/const CACHE_NAME = '[^']*'/const CACHE_NAME = 'gsoc-finder-${TIMESTAMP}'/" sw.js
-          fi
-
       # Publishing only happens from main, on a real run. A dispatch from a
       # feature branch must never push that branch tip to main, and a smoke
       # test must never publish its slice.
@@ -126,7 +102,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/issues.json data/mentors.json data/ui-summary.json data/last-updated.json sw.js
+          git add data/issues.json data/ui-summary.json data/last-updated.json
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "Dataset is already up to date."
