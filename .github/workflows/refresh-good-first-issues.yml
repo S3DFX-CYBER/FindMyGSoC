@@ -81,7 +81,7 @@ jobs:
         run: |
           echo "{\"updatedAt\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"}" > data/last-updated.json
 
-      # Always runs: the issue dataset is the only thing this job publishes.
+      # Always runs: the issue dataset must be valid before the derived files are published.
       - name: Validate issue dataset
         run: |
           node -e "
