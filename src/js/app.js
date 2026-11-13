@@ -1151,41 +1151,41 @@ function renderOrgs(reset = true) {
     const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
 
     const logoHtml = logoUrl
-      ? safeHTML`<img src="${logoUrl}" data-org-name="${org.name}" alt="${org.name} logo" class="w-full h-full object-contain rounded-lg" />`
-      : safeHTML`<div class="logo-placeholder flex w-full h-full items-center justify-center text-primary font-bold text-xl bg-primary/5">${(org.name || '?')[0].toUpperCase()}</div>`;
+      ? safeHTML`<img src="${logoUrl}" data-org-name="${org.name}" alt="${org.name} logo" />`
+      : safeHTML`<div class="logo-placeholder">${(org.name || '?')[0].toUpperCase()}</div>`;
 
-    const tagsHtml = org.tags.slice(0, 3).map(t => safeHTML`<span class="px-2 py-0.5 bg-surface-container-low dark:bg-zinc-800 text-[10px] font-mono rounded text-zinc-600 dark:text-zinc-400">${t}</span>`);
-    const moreTagsHtml = org.tags.length > 3 ? safeHTML`<span class="px-2 py-0.5 bg-surface-container-low dark:bg-zinc-800 text-[10px] font-mono rounded text-zinc-600 dark:text-zinc-400 cursor-help" title="${org.tags.slice(3).join(', ')}">+${String(org.tags.length - 3)}</span>` : '';
+    const tagsHtml = org.tags.slice(0, 3).map(t => safeHTML`<span class="ocard-tag">${t}</span>`);
+    const moreTagsHtml = org.tags.length > 3 ? safeHTML`<span class="ocard-tag" title="${org.tags.slice(3).join(', ')}">+${String(org.tags.length - 3)}</span>` : '';
 
     const catLabel = getCategoryMeta(org.cat).label.toUpperCase();
     const isBookmarkedStr = isBookmarked ? 'true' : 'false';
 
     card.innerHTML = safeHTML`
-      <div class="flex justify-between items-start mb-4">
-        <div class="w-14 h-14 rounded-xl bg-surface-container-low dark:bg-zinc-800 flex items-center justify-center p-2 overflow-hidden border border-zinc-100 dark:border-zinc-700">
+      <div class="ocard-top">
+        <div class="ocard-ava">
           ${logoHtml}
         </div>
-        <div class="flex items-center gap-2">
-          <span class="bg-primary/10 text-primary text-[10px] font-label uppercase tracking-widest px-2 py-1 rounded-full font-bold">${String(org.years)}y Veteran</span>
-          <span class="complexity-badge ${org.codebase}">${org.codebase}</span>
-          <button class="bookmark-btn ${isBookmarked ? 'active text-orange-500' : 'text-zinc-300'}" data-bookmark-org="${org.name}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}" aria-pressed="${isBookmarkedStr}" aria-label="${isBookmarked ? 'Remove bookmark from ' : 'Add bookmark to '}${org.name}">
+        <div class="ocard-id">
+          <h3>${org.name}</h3>
+          <div class="ocard-sub">${catLabel}<span class="complexity-badge ${org.codebase}">${org.codebase}</span></div>
+        </div>
+        <div class="ocard-badges">
+          <span class="years-badge">${String(org.years)}y veteran</span>
+          <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-bookmark-org="${org.name}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}" aria-pressed="${isBookmarkedStr}" aria-label="${isBookmarked ? 'Remove bookmark from ' : 'Add bookmark to '}${org.name}">
             <span class="material-symbols-outlined text-lg ${isBookmarked ? 'icon-fill' : ''}">star</span>
           </button>
         </div>
       </div>
-      <h3 class="font-headline text-lg font-bold text-on-surface mb-1 group-hover:text-primary transition-colors dark:text-zinc-100">${org.name}</h3>
-      <span class="category-tag inline-block mb-3">${catLabel}</span>
-      <p class="text-on-surface-variant text-sm leading-relaxed mb-4 line-clamp-2 dark:text-zinc-400">${org.desc}</p>
-      <div class="flex flex-wrap gap-1.5 mb-4">
+      <p class="ocard-desc">${org.desc}</p>
+      <div class="ocard-tags">
         ${tagsHtml}
         ${moreTagsHtml}
       </div>
-
-      <div class="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">
-        <button data-compare-org="${org.name}" class="text-[10px] font-bold uppercase tracking-widest ${isComparing ? 'text-primary' : 'text-zinc-400'} hover:text-primary flex items-center gap-1">
-          <span class="material-symbols-outlined text-sm">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Compare'}
+      <div class="ocard-acts">
+        <button data-compare-org="${org.name}" class="mini-btn ${isComparing ? 'on' : ''}">
+          <span class="material-symbols-outlined">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Compare'}
         </button>
-        <button data-open-org="${org.name}" class="text-primary font-bold text-xs uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">View Details <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+        <button data-open-org="${org.name}" class="mini-btn accent">View details <span class="material-symbols-outlined">arrow_forward</span></button>
       </div>`;
 
     grid.appendChild(card);

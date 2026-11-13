@@ -98,28 +98,38 @@
             'xl': '1280px',
             '2xl': '1536px',
           },
+          // Palette from the 2027 redesign handoff. Every existing component —
+          // page markup and the templates in src/js/*.js — picks these up, so the
+          // app speaks the same colour language as the landing page.
           colors: {
-            "surface-container-highest":"#e2e2e2","background":"#f9f9f9",
-            "surface-container":"#eeeeee","primary-container":"#f97316",
-            "surface":"#f9f9f9","surface-variant":"#e2e2e2",
-            "on-background":"#1a1c1c","on-primary":"#ffffff",
-            "on-surface":"#1a1c1c","error":"#ba1a1a",
-            "primary":"#9d4300","on-surface-variant":"#584237",
-            "outline":"#8c7164","surface-container-lowest":"#ffffff",
-            "secondary":"#006c47","secondary-container":"#8af5be",
-            "on-secondary-container":"#00714b","on-secondary":"#ffffff",
-            "surface-container-low":"#f3f3f3","surface-container-high":"#e8e8e8",
-            "surface-dim":"#dadada","primary-fixed":"#ffdbca",
-            "primary-fixed-dim":"#ffb690","error-container":"#ffdad6",
-            "on-error-container":"#93000a","on-secondary-fixed":"#002113",
-            "secondary-fixed-dim":"#71dba6","tertiary":"#5f5e5e",
-            "on-primary-container":"#582200","surface-tint":"#9d4300",
+            "surface-container-highest":"#eadfd2","background":"#ffffff",
+            "surface-container":"#f4ece2","primary-container":"#cf5209",
+            "surface":"#ffffff","surface-variant":"#f4ece2",
+            "on-background":"#211c17","on-primary":"#ffffff",
+            "on-surface":"#211c17","error":"#c5372b",
+            "primary":"#f26a1b","on-surface-variant":"#6e635a",
+            "outline":"#d9cabb","surface-container-lowest":"#ffffff",
+            "secondary":"#1f7a45","secondary-container":"#e7f3ea",
+            "on-secondary-container":"#1f7a45","on-secondary":"#ffffff",
+            "surface-container-low":"#fbf7f2","surface-container-high":"#f2eae0",
+            "surface-dim":"#e8ddd0","primary-fixed":"#fdeee2",
+            "primary-fixed-dim":"#f7c8a6","error-container":"#fbe9e6",
+            "on-error-container":"#c5372b","on-secondary-fixed":"#f2faf5",
+            "secondary-fixed-dim":"#1f7a45","tertiary":"#6e635a",
+            "on-primary-container":"#ffffff","surface-tint":"#f26a1b",
+            // Warm neutrals in place of Tailwind's cool grey ramp, so the dark
+            // theme lands on the same warm ink the landing page uses.
+            "zinc":{
+              "50":"#faf7f4","100":"#f2eae0","200":"#eadfd2","300":"#d9cabb",
+              "400":"#a89a8b","500":"#8c8178","600":"#6e635a","700":"#4a4139",
+              "800":"#2e261f","900":"#1a1512","950":"#12100d"
+            },
           },
           fontFamily: {
-            "headline":["Plus Jakarta Sans"],"body":["Plus Jakarta Sans"],
-            "label":["Space Grotesk"],"mono":["Fira Code"]
+            "headline":["Archivo"],"body":["Archivo"],
+            "label":["JetBrains Mono"],"mono":["JetBrains Mono"]
           },
-          borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},
+          borderRadius:{"DEFAULT":"0.375rem","lg":"0.625rem","xl":"1rem","full":"9999px"},
         },
       },
     }
@@ -1475,7 +1485,7 @@ kbd:hover{
 <!-- ═══════════════════ HERO ═══════════════════ -->
 <!-- ═══════════════════ PAGE HEAD ═══════════════════ -->
 <section class="app-head fade-up" id="top">
-  <div>
+  <div class="app-head-main">
     <h1>Find your perfect GSoC org.</h1>
     <p class="lede">
       184 organisations from the 2026 cycle, indexed with their stacks, mentors and issue queues.
@@ -1500,42 +1510,39 @@ kbd:hover{
       <button id="surpriseBtn"
         class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[color:var(--rd-accent-dark)] bg-[color:var(--rd-accent)] text-white text-sm font-bold transition-transform hover:translate-x-[2px] hover:translate-y-[2px] focus:outline-none focus:ring-2 focus:ring-orange-300"
         aria-label="Surprise Me — open a random organization">
-        🎲 Surprise Me!
+        Surprise Me
       </button>
       <span class="font-[family-name:var(--rd-mono)] text-[11px] uppercase tracking-[0.14em] text-[color:var(--rd-faint)]">
         <strong data-org-count>184</strong> orgs indexed
       </span>
     </div>
+
+    <div class="headstats">
+      <div class="hs">
+        <div class="n" data-org-count>184</div>
+        <div class="l">Total orgs</div>
+      </div>
+      <div class="hs">
+        <div class="n">30+</div>
+        <div class="l">Languages</div>
+      </div>
+      <div class="hs">
+        <div class="n">15+</div>
+        <div class="l">Domains</div>
+      </div>
+    </div>
   </div>
 
-  <!-- Head stats + timeline -->
-  <div class="headstats">
-    <div class="hs">
-      <div class="n" data-org-count>184</div>
-      <div class="l">Total orgs</div>
-    </div>
-    <div class="hs">
-      <div class="n">30+</div>
-      <div class="l">Languages</div>
-    </div>
-    <div class="hs">
-      <div class="n">15+</div>
-      <div class="l">Domains</div>
-    </div>
-  </div>
-</section>
-
-<section class="max-w-[1180px] mx-auto px-4 sm:px-6 pb-4">
   <!-- Timeline Card -->
-  <div id="timeline" class="fade-up" style="animation-delay:.2s">
-    <div class="rounded-[22px] border border-[color:var(--rd-line-soft)] bg-[color:var(--rd-bg)] p-6 sm:p-8 shadow-sm">
-      <div class="flex items-center justify-between mb-6">
+  <div id="timeline" class="app-head-aside fade-up" style="animation-delay:.2s">
+    <div class="rounded-[22px] border border-[color:var(--rd-line-soft)] bg-[color:var(--rd-bg)] p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-5">
         <h3 class="font-[family-name:var(--rd-display)] text-xl font-medium tracking-tight text-[color:var(--rd-ink)]">2026 Timeline</h3>
         <span class="font-[family-name:var(--rd-mono)] text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 rounded-full bg-[color:var(--rd-blue-soft)] text-[color:var(--rd-blue-dark)]">Live</span>
       </div>
       <div id="timeline-milestones" aria-label="GSoC timeline milestones"
-        class="space-y-4 overflow-y-auto max-h-[50vh] pl-4 no-scrollbar focus:outline-none focus:ring-2 focus:ring-orange-300 rounded-lg"></div>
-      <div class="mt-6 pt-5 border-t border-[color:var(--rd-line-soft)]">
+        class="space-y-3 overflow-y-auto max-h-[340px] pl-4 no-scrollbar focus:outline-none focus:ring-2 focus:ring-orange-300 rounded-lg"></div>
+      <div class="mt-5 pt-4 border-t border-[color:var(--rd-line-soft)]">
         <div class="flex items-center justify-between">
           <span class="text-xs text-[color:var(--rd-muted)]" id="countdown-label">Next milestone</span>
           <span id="countdown" class="font-[family-name:var(--rd-mono)] text-sm font-bold text-[color:var(--rd-accent)]">--d --h --m</span>
@@ -3879,7 +3886,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       const isBookmarked = bookmarkedSet.has(org.name);
       const isComparing = compareList.includes(org.name);
       const card = document.createElement('article');
-      card.className = 'org-card group p-6 animate-fade-up cursor-pointer';
+      card.className = 'org-card ocard group animate-fade-up cursor-pointer';
       card.dataset.org = org.name;
       //add event listener to open org modal, when clicking anywhere
       card.addEventListener('click', () => {
@@ -3889,33 +3896,33 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
 
       card.innerHTML = `
-        <div class="flex justify-between items-start mb-4">
-          <div class="w-14 h-14 flex-shrink-0 rounded-xl bg-surface-container-low flex items-center justify-center p-2 overflow-hidden">
-            <img src="${escapeHtml(logoUrl)}" data-org-name="${escapeHtml(org.name)}" alt="${escapeHtml(org.name + ' logo')}" class="w-full h-full object-contain rounded-lg" width="56" height="56" />            <div class="logo-placeholder hidden w-full h-full items-center justify-center text-primary font-bold text-xl bg-primary/5"></div>
+        <div class="ocard-top">
+          <div class="ocard-ava">
+            <img src="${escapeHtml(logoUrl)}" data-org-name="${escapeHtml(org.name)}" alt="${escapeHtml(org.name + ' logo')}" width="56" height="56" />
+            <div class="logo-placeholder hidden"></div>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="bg-primary/10 text-primary text-[10px] font-label uppercase tracking-widest px-2 py-1 rounded-full font-bold">${escapeHtml(String(org.years))}y Veteran</span>
-            <span class="complexity-badge ${escapeHtml(org.codebase)}">${escapeHtml(org.codebase)}</span>
-            <button class="bookmark-btn ${isBookmarked ? 'active' : 'text-zinc-300'}" data-bookmark-org="${escapeHtml(org.name)}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}">
+          <div class="ocard-id">
+            <h3>${escapeHtml(org.name)}</h3>
+            <div class="ocard-sub">${escapeHtml(org.cat.toUpperCase())}<span class="complexity-badge ${escapeHtml(org.codebase)}">${escapeHtml(org.codebase)}</span></div>
+          </div>
+          <div class="ocard-badges">
+            <span class="years-badge">${escapeHtml(String(org.years))}y veteran</span>
+            <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-bookmark-org="${escapeHtml(org.name)}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}">
               <span class="material-symbols-outlined text-lg ${isBookmarked ? 'icon-fill' : ''}">star</span>
             </button>
           </div>
         </div>
-        <h3 class="font-headline text-lg font-bold text-on-surface mb-1 group-hover:text-primary transition-colors">${escapeHtml(org.name)}</h3>
-        <span class="category-tag">${escapeHtml(org.cat.toUpperCase())}</span>
-        <p class="text-on-surface-variant text-sm leading-relaxed mb-4 line-clamp-2">${escapeHtml(org.desc)}</p>
-        <div class="flex flex-wrap gap-1.5 mb-4">
-          ${org.tags.slice(0, 3).map(t => `<span class="px-2 py-0.5 bg-surface-container-low text-[10px] font-mono rounded">${escapeHtml(t)}</span>`).join('')}
-          ${org.tags.length > 3 ? `<span class="px-2 py-0.5 bg-surface-container-low text-[10px] font-mono rounded">+${escapeHtml(String(org.tags.length - 3))}</span>` : ''}
+        <p class="ocard-desc">${escapeHtml(org.desc)}</p>
+        <div class="ocard-tags">
+          ${org.tags.slice(0, 3).map(t => `<span class="ocard-tag">${escapeHtml(t)}</span>`).join('')}
+          ${org.tags.length > 3 ? `<span class="ocard-tag">+${escapeHtml(String(org.tags.length - 3))}</span>` : ''}
         </div>
 
-        <div class="flex items-center justify-between pt-4 border-t border-zinc-100">
-          <div class="flex items-center gap-3">
-             <button data-compare-org="${escapeHtml(org.name)}" class="text-[10px] font-bold uppercase tracking-widest ${isComparing ? 'text-primary' : 'text-zinc-400'} hover:text-primary flex items-center gap-1">
-                <span class="material-symbols-outlined text-sm">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Compare'}
-             </button>
-          </div>
-           <button data-open-org="" class="text-primary font-bold text-xs uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">View <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+        <div class="ocard-acts">
+          <button data-compare-org="${escapeHtml(org.name)}" class="mini-btn ${isComparing ? 'on' : ''}">
+            <span class="material-symbols-outlined">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Compare'}
+          </button>
+          <button data-open-org="" class="mini-btn accent">View <span class="material-symbols-outlined">arrow_forward</span></button>
         </div>
        `;
     card.querySelector('[data-compare-org]').dataset.compareOrg = org.name;
