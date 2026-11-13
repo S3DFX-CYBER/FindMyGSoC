@@ -69,6 +69,7 @@
     }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="src/styles.css" />
   <script>
@@ -1365,87 +1366,50 @@ kbd:hover{
 </button>
 
 
-<!-- ═══════════════════ NAVBAR ═══════════════════ -->
-<header class="fixed top-0 w-full z-50 bg-white/80 glass shadow-sm">
-  <div class="flex items-center justify-between px-4 sm:px-6 py-3 max-w-7xl mx-auto w-full">
-    <div class="flex items-center gap-1.5 sm:gap-4 xl:gap-8">
-      <!-- Hamburger menu button (mobile only) -->
-      <button id="menuBtn" onclick="toggleMenu()" class="inline-flex lg:hidden shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-lg transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
-        <span class="material-symbols-outlined text-zinc-600">menu</span>
-      </button>
+<!-- ═══════════════════ APP BAR ═══════════════════ -->
+<header class="appbar">
+  <div class="appbar-in">
+    <!-- Hamburger menu button (mobile only) -->
+    <button id="menuBtn" onclick="toggleMenu()" class="icon-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
 
-      <!-- Home button (links back to landing page) -->
-      <a href="/"
-         class="inline-flex shrink-0 items-center gap-1 px-1.5 sm:px-2 py-2 hover:bg-zinc-100/50 rounded-lg transition-colors text-zinc-600 hover:text-zinc-900"
-         aria-label="Go to home page" title="Home">
-        <span class="material-symbols-outlined text-lg">home</span>
-        <span class="hidden xs:inline text-sm font-medium whitespace-nowrap">Home</span>
-      </a>
+    <a href="/" class="brand" id="logoLink" aria-label="FindMyGSoC home" title="Home">
+      <span class="mark">G</span>FindMyGSoC
+    </a>
 
-      <a href="#timeline" class="flex items-center gap-2" id="logoLink">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center flex-shrink-0">
-          <span class="text-white font-bold text-sm">G</span>
-        </div>
-        <span class="text-base sm:text-lg font-extrabold tracking-tight text-zinc-900 font-headline whitespace-nowrap">
-          <span class="hidden sm:inline">GSoC 2026 </span>
-          <span class="text-primary italic">Org Finder</span>
-        </span>
-      </a>
-      <nav class="hidden lg:flex items-center gap-4 xl:gap-6 text-sm font-medium">
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#timeline" data-section="timeline">Timeline</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#orgs" data-section="orgs">Organizations</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors whitespace-nowrap" href="#ai-recommender" data-section="ai-recommender">AI Recommender</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#watchlist" data-section="watchlist">Watchlist</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#issues" data-section="issues">Issues</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#mentors" data-section="mentors">Mentors</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#guide" data-section="guide">Guide</a>
-      </nav>
-    </div>
+    <nav class="appnav" aria-label="Sections">
+      <a class="desktop-nav-link" href="#timeline" data-section="timeline">Timeline</a>
+      <a class="desktop-nav-link" href="#orgs" data-section="orgs">Organizations</a>
+      <a class="desktop-nav-link" href="#ai-recommender" data-section="ai-recommender">AI Recommender</a>
+      <a class="desktop-nav-link" href="#watchlist" data-section="watchlist">Watchlist</a>
+      <a class="desktop-nav-link" href="#issues" data-section="issues">Issues</a>
+      <a class="desktop-nav-link" href="#mentors" data-section="mentors">Mentors</a>
+      <a class="desktop-nav-link" href="#guide" data-section="guide">Guide</a>
+    </nav>
 
-    <!-- Right side: Toggle visible on all screens, GitHub button hidden on mobile -->
-    <div class="flex items-center gap-2 sm:gap-3">
+    <div class="right">
+      <span class="cycle">2026 cycle</span>
 
-      <button id="themeToggleBtn" onclick="toggleTheme()"
-        class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
+      <button id="themeToggleBtn" onclick="toggleTheme()" class="icon-btn"
         aria-label="Switch to dark theme" aria-pressed="false" title="Switch to dark theme">
-
-        <span class="material-symbols-outlined text-zinc-600">
-          dark_mode
-        </span>
+        <span class="material-symbols-outlined">dark_mode</span>
       </button>
 
-      <!-- ANALYTICS BUTTON -->
-      <button id="analyticsBtn" onclick="openAnalytics()"
-        class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
-        title="View Analytics & Badges"
-        aria-label="View Analytics and Badges">
-
-        <span class="material-symbols-outlined text-zinc-600">
-          analytics
-        </span>
+      <button id="analyticsBtn" onclick="openAnalytics()" class="icon-btn"
+        title="View Analytics & Badges" aria-label="View Analytics and Badges">
+        <span class="material-symbols-outlined">analytics</span>
       </button>
 
-      <!-- HELP BUTTON -->
-      <button id="helpBtn"
-        class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
-        title="Keyboard shortcuts (?)">
-
-        <span class="material-symbols-outlined text-zinc-600">
-          help
-        </span>
+      <button id="helpBtn" class="icon-btn" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">
+        <span class="material-symbols-outlined">help</span>
       </button>
 
       <a href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank" rel="noopener noreferrer"
-        class="hidden sm:flex items-center gap-2 px-3 xl:px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors whitespace-nowrap">
-
-        <span class="material-symbols-outlined text-sm">
-          star
-        </span>
-
-        <span class="lg:hidden xl:inline">Star & Contribute</span>
-        <span class="hidden lg:inline xl:hidden">Star</span>
+        class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors whitespace-nowrap">
+        <span class="material-symbols-outlined text-sm">star</span>
+        <span class="hidden sm:inline">Star</span>
       </a>
-
     </div>
   </div>
 </header>
@@ -1509,77 +1473,72 @@ kbd:hover{
 </div>
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
-<section class="pt-20 sm:pt-28 pb-12 sm:pb-20 px-4 sm:px-6 max-w-7xl mx-auto fade-up">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-stretch">
-    <div class="lg:col-span-7">
-      <div class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-orange-50 border border-orange-100 text-primary mb-6 sm:mb-8">
-        <span class="material-symbols-outlined text-sm icon-fill" style="color:#f97316">verified</span>
-        <span class="font-label text-[10px] sm:text-xs uppercase font-bold tracking-widest">Google Summer of Code 2026</span>
-      </div>
-      <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold font-headline tracking-tighter text-zinc-900 mb-4 sm:mb-6 leading-[0.95]">
-        Find Your<br/><span class="text-primary italic">Perfect GSoC Org</span>
-      </h1>
-      <p class="text-base sm:text-lg text-zinc-600 max-w-xl mb-8 sm:mb-10 leading-relaxed">
-        Browse all <strong data-org-count>184</strong> organizations. Filter by language, domain, competition, and live GitHub activity. Land your summer internship.
-      </p>
-      <!-- Search Bar -->
-      <div class="relative max-w-xl mb-6 sm:mb-8 search-bar-container">
-        <div class="relative rounded-2xl p-[1.5px] bg-zinc-200 dark:bg-zinc-800 transition-all duration-300 search-border-outer">
-          <!-- SVG Flowing Border Effect -->
-          <svg class="timeline-border-svg" fill="none">
-            <rect class="timeline-border-rect" rx="16" ry="16" pathLength="100" />
-          </svg>
-          <div class="relative z-10 bg-white dark:bg-[#18181b] rounded-[calc(1rem-1.5px)] w-full search-border-inner flex items-center gap-2 transition-all duration-300">
-            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
-            <input id="hero-search" type="text" placeholder="Search organization names..." aria-label="Search GSoC 2026 organizations" class="flex-1 bg-transparent border-0 rounded-2xl py-3 sm:py-4 pl-12 pr-4 text-sm font-medium focus:ring-0 focus:outline-none transition-all text-zinc-900 dark:text-zinc-100" />
-            <button id="hero-search-submit" type="button" class="mr-2 inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-primary/30">
-              Search
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- Surprise Button -->
-      <div class="mb-8 sm:mb-10">
-       <button id="surpriseBtn" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-primary-container text-white rounded-full text-sm font-bold hover:shadow-lg hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2" aria-label="🎲 Surprise Me! - Open a random organization">
-  🎲 Surprise Me!
-</button>
-      </div>
-      <!-- Stat Badges -->
-      <div class="flex flex-wrap gap-3 sm:gap-4">
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-          <span class="material-symbols-outlined text-primary text-lg">groups</span>
-          <div><p class="text-xs sm:text-sm text-zinc-500">Total Orgs</p><p class="font-bold text-lg" data-org-count>184</p></div>
-        </div>
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-          <span class="material-symbols-outlined text-secondary text-lg">code</span>
-          <div><p class="text-xs sm:text-sm text-zinc-500">Languages</p><p class="font-bold text-lg">30+</p></div>
-        </div>
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-          <span class="material-symbols-outlined text-primary-container text-lg">category</span>
-          <div><p class="text-xs sm:text-sm text-zinc-500">Domains</p><p class="font-bold text-lg">15+</p></div>
-        </div>
+<!-- ═══════════════════ PAGE HEAD ═══════════════════ -->
+<section class="app-head fade-up" id="top">
+  <div>
+    <h1>Find your perfect GSoC org.</h1>
+    <p class="lede">
+      184 organisations from the 2026 cycle, indexed with their stacks, mentors and issue queues.
+      Filter by language, domain, competition and live GitHub activity — then shortlist and draft.
+    </p>
+
+    <!-- Search Bar -->
+    <div class="mt-7 max-w-xl">
+      <div class="flex items-center gap-2 rounded-full border border-[color:var(--rd-line)] bg-[color:var(--rd-bg)] px-2 py-1.5 shadow-sm focus-within:border-[color:var(--rd-accent)]">
+        <span class="material-symbols-outlined text-[color:var(--rd-faint)] pl-2">search</span>
+        <input id="hero-search" type="text" placeholder="Search organization names..."
+          aria-label="Search GSoC 2026 organizations"
+          class="flex-1 min-w-0 bg-transparent border-0 py-2 text-sm font-medium focus:ring-0 focus:outline-none text-[color:var(--rd-ink)]" />
+        <button id="hero-search-submit" type="button"
+          class="inline-flex items-center justify-center rounded-full bg-[color:var(--rd-accent)] px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-[color:var(--rd-accent-dark)] focus:outline-none focus:ring-2 focus:ring-orange-300">
+          Search
+        </button>
       </div>
     </div>
-    <!-- Timeline Card -->
-    <div id="timeline" class="lg:col-span-5 fade-up" style="animation-delay:.2s">
-      <div class="relative rounded-2xl sm:rounded-3xl p-[1.5px] bg-zinc-200 dark:bg-zinc-700 transition-colors duration-300">
-        <!-- SVG Flowing Border Effect -->
-        <svg class="timeline-border-svg" fill="none">
-          <rect class="timeline-border-rect" rx="16" ry="16" pathLength="100" />
-        </svg>
-        <!-- Inner Card Content Layer -->
-        <div class="relative z-10 bg-white rounded-[calc(1rem-1.5px)] sm:rounded-[calc(1.5rem-1.5px)] p-6 sm:p-8 h-full w-full">
-          <div class="flex items-center justify-between mb-6 sm:mb-8">
-            <h3 class="font-headline font-extrabold text-lg sm:text-xl">2026 Timeline</h3>
-            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-bold uppercase tracking-wider">Live</span>
-          </div>
-          <div id="timeline-milestones" aria-label="GSoC timeline milestones" class="space-y-4 sm:space-y-5 overflow-y-auto max-h-[50vh] pl-4 no-scrollbar focus:outline-none focus:ring-2 focus:ring-primary/30 rounded-lg"></div>
-          <div class="mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-zinc-100">
-            <div class="flex items-center justify-between">
-              <span class="text-xs text-zinc-500" id="countdown-label">Next milestone</span>
-              <span id="countdown" class="font-mono text-sm font-bold text-primary">--d --h --m</span>
-            </div>
-          </div>
+
+    <div class="mt-5 flex flex-wrap items-center gap-3">
+      <button id="surpriseBtn"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[color:var(--rd-accent-dark)] bg-[color:var(--rd-accent)] text-white text-sm font-bold transition-transform hover:translate-x-[2px] hover:translate-y-[2px] focus:outline-none focus:ring-2 focus:ring-orange-300"
+        aria-label="Surprise Me — open a random organization">
+        🎲 Surprise Me!
+      </button>
+      <span class="font-[family-name:var(--rd-mono)] text-[11px] uppercase tracking-[0.14em] text-[color:var(--rd-faint)]">
+        <strong data-org-count>184</strong> orgs indexed
+      </span>
+    </div>
+  </div>
+
+  <!-- Head stats + timeline -->
+  <div class="headstats">
+    <div class="hs">
+      <div class="n" data-org-count>184</div>
+      <div class="l">Total orgs</div>
+    </div>
+    <div class="hs">
+      <div class="n">30+</div>
+      <div class="l">Languages</div>
+    </div>
+    <div class="hs">
+      <div class="n">15+</div>
+      <div class="l">Domains</div>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-[1180px] mx-auto px-4 sm:px-6 pb-4">
+  <!-- Timeline Card -->
+  <div id="timeline" class="fade-up" style="animation-delay:.2s">
+    <div class="rounded-[22px] border border-[color:var(--rd-line-soft)] bg-[color:var(--rd-bg)] p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="font-[family-name:var(--rd-display)] text-xl font-medium tracking-tight text-[color:var(--rd-ink)]">2026 Timeline</h3>
+        <span class="font-[family-name:var(--rd-mono)] text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 rounded-full bg-[color:var(--rd-blue-soft)] text-[color:var(--rd-blue-dark)]">Live</span>
+      </div>
+      <div id="timeline-milestones" aria-label="GSoC timeline milestones"
+        class="space-y-4 overflow-y-auto max-h-[50vh] pl-4 no-scrollbar focus:outline-none focus:ring-2 focus:ring-orange-300 rounded-lg"></div>
+      <div class="mt-6 pt-5 border-t border-[color:var(--rd-line-soft)]">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-[color:var(--rd-muted)]" id="countdown-label">Next milestone</span>
+          <span id="countdown" class="font-[family-name:var(--rd-mono)] text-sm font-bold text-[color:var(--rd-accent)]">--d --h --m</span>
         </div>
       </div>
     </div>
@@ -1590,8 +1549,8 @@ kbd:hover{
 <!-- ═══════════════════ ORG DIRECTORY ═══════════════════ -->
 <section id="orgs" class="px-6 max-w-7xl mx-auto pb-20">
   <div class="mb-12">
-    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Find projects that fit you</span>
-    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Organizations</h2>
+    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Find projects that fit you</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Organizations</h2>
     <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Browse and filter GSoC 2026 organizations by tech stack, difficulty level, and interests to discover projects that match your skills and goals.</p>
   </div>
   <!-- ═══════════════════ FILTER CHIPS (desktop only) ═══════════════════ -->
@@ -1773,8 +1732,8 @@ kbd:hover{
 <!-- ═══════════════════ AI RECOMMENDER ═══════════════════ -->
 <section id="ai-recommender" class="px-6 max-w-7xl mx-auto py-20 border-t border-zinc-100 dark:border-zinc-800">
   <div class="mb-12">
-    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">AI-Powered</span>
-    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Personalized Org Suggestions</h2>
+    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">AI-Powered</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Personalized Org Suggestions</h2>
     <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Enter your GitHub username or paste your resume to get deterministic AI-style organization recommendations tailored to your skills and experience.</p>
   </div>
 
@@ -1839,8 +1798,8 @@ kbd:hover{
   <div class="max-w-7xl mx-auto">
     <div class="mb-12 flex items-start justify-between gap-4 flex-wrap">
       <div>
-        <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Scholarly Sandbox</span>
-        <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Watchlist.</h2>
+        <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Scholarly Sandbox</span>
+        <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Watchlist.</h2>
         <p class="text-zinc-600 mt-4 max-w-2xl">Curate your open-source journey. Track organizations, monitor deadlines, and prepare your proposals for GSoC 2026.</p>
       </div>
       <button id="clearAllBookmarksBtn"
@@ -1944,8 +1903,8 @@ kbd:hover{
 <!-- ═══════════════════ GOOD FIRST ISSUES ═══════════════════ -->
 <section id="issues" class="py-20 px-6 max-w-7xl mx-auto">
   <div class="mb-12">
-    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">First Contributions</span>
-    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Good First Issues</h2>
+    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">First Contributions</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Good First Issues</h2>
     <p class="text-zinc-600 mt-4 max-w-2xl">Pre-fetched from all GSoC 2026 orgs every 24 hours — no rate limits, no token required, instant results.</p>
   </div>
   <!-- Status Banner -->
@@ -2015,8 +1974,8 @@ kbd:hover{
 <section id="mentors" class="py-20 px-6 bg-surface-container-low">
   <div class="max-w-7xl mx-auto">
     <div class="mb-12">
-      <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Mentor Outreach</span>
-      <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Mentor Finder</h2>
+      <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Mentor Outreach</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Mentor Finder</h2>
       <p class="text-zinc-600 mt-4 max-w-3xl">Pre-fetched contact channels and conservative mentor handles from org ideas pages, so you can find where to introduce yourself before proposal season gets busy.</p>
     </div>
 
@@ -2070,8 +2029,8 @@ kbd:hover{
 <!-- ═══════════════════ NEW TO GSOC — INTERACTIVE ROADMAP ═══════════════════ -->
 <section id="guide" class="py-20 px-6 max-w-7xl mx-auto">
   <div class="mb-12">
-    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">GSoC 101</span>
-    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">New to GSoC? Start here.</h2>
+    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">GSoC 101</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">New to GSoC? Start here.</h2>
     <p class="text-zinc-600 mt-4 max-w-2xl">An interactive roadmap — from understanding the program to landing your first acceptance. Click any block to expand its guide and FAQs.</p>
   </div>
 
@@ -2464,8 +2423,8 @@ kbd:hover{
 <section class="py-20 px-6 max-w-7xl mx-auto">
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
     <div>
-      <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Decision Tool</span>
-      <h2 class="text-4xl font-extrabold font-headline tracking-tighter mt-2 mb-6">Compare Organizations</h2>
+      <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Decision Tool</span>
+      <h2 class="text-4xl font-extrabold font-headline tracking-tighter mt-2 mb-6 sec-title">Compare Organizations</h2>
       <p class="text-zinc-600 leading-relaxed mb-8">Select up to 3 orgs to compare side-by-side. See history, mentor count, tech stack, competition level, and active GFIs at a glance.</p>
       <button onclick="openCompareModal()" class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-xl hover:scale-95 transition-all shadow-lg">
         <span class="material-symbols-outlined">compare</span> Open Comparison Tool
@@ -3920,7 +3879,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       const isBookmarked = bookmarkedSet.has(org.name);
       const isComparing = compareList.includes(org.name);
       const card = document.createElement('article');
-      card.className = 'group bg-white rounded-2xl p-6 border border-zinc-100 transition-all hover:shadow-xl hover:border-primary/20 animate-fade-up cursor-pointer';
+      card.className = 'org-card group p-6 animate-fade-up cursor-pointer';
       card.dataset.org = org.name;
       //add event listener to open org modal, when clicking anywhere
       card.addEventListener('click', () => {

@@ -1,10 +1,11 @@
-const CACHE_NAME = 'gsoc-finder-20261108031148';
+const CACHE_NAME = 'gsoc-finder-20261113000000';
 const CRITICAL_ASSETS = [
   './',
   'index.html',
   'landing.html',
   'manifest.json',
   'src/styles.css',
+  'src/landing.css',
   'src/js/org.js',
   'src/js/app.js',
   'src/js/githubAnalyzer.js',
@@ -18,7 +19,8 @@ const CRITICAL_ASSETS = [
 
 const OPTIONAL_ASSETS = [
   'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap',
-  'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
+  'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
+  'https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap'
 ];
 
 globalThis.addEventListener('install', (event) => {
