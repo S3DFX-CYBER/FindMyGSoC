@@ -1352,6 +1352,119 @@ kbd:hover{
   }
 }
 
+
+/* =========================================================================
+   2027 redesign — dialogs, overlays and list rows
+   These components already carry semantic hooks (.modal, .metric-card,
+   .section-title, .issue-card, .mentor-card, …), so the redesign lands here
+   as a stylesheet layer instead of a markup rewrite. Declared last inside
+   this block so it wins over the rules above.
+   ========================================================================= */
+.modal-bg{background:rgb(20 14 8 / 55%);backdrop-filter:blur(6px)}
+.modal,.an-panel{
+  background:var(--rd-bg);border:1px solid var(--rd-line);border-radius:22px;
+  box-shadow:var(--rd-shadow-lg);
+}
+.modal-header h2{
+  font-family:var(--rd-display);font-weight:500;letter-spacing:-.025em;
+  line-height:1.1;color:var(--rd-ink);
+}
+.modal-header p{color:var(--rd-muted);font-size:13.5px}
+.close-btn{
+  width:36px;height:36px;border-radius:10px;border:1.5px solid var(--rd-line);
+  background:var(--rd-bg);color:var(--rd-ink-2);display:grid;place-items:center;
+  transition:border-color .18s,color .18s,background .18s;
+}
+.close-btn:hover{border-color:var(--rd-accent);color:var(--rd-accent);background:var(--rd-accent-tint)}
+.close-btn .material-symbols-outlined{font-size:18px}
+.category-tag{
+  background:var(--rd-accent-soft);color:var(--rd-accent-dark);
+  font-family:var(--rd-mono);font-size:10px;font-weight:500;letter-spacing:.1em;
+  padding:3px 8px;border-radius:6px;border:0;
+}
+.metrics-grid{gap:10px}
+.metric-card{
+  background:var(--rd-surface);border:1px solid var(--rd-line-soft);
+  border-radius:14px;padding:14px 16px;text-align:left;
+}
+.metric-value{
+  font-family:var(--rd-display);font-size:24px;font-weight:400;letter-spacing:-.02em;
+  line-height:1;margin-bottom:6px;color:var(--rd-ink);
+}
+.metric-label{
+  font-family:var(--rd-mono);font-size:9.5px;font-weight:400;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--rd-faint);
+}
+.section-title{
+  font-family:var(--rd-mono);font-size:10.5px;font-weight:400;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--rd-faint);
+  border-bottom:1px solid var(--rd-line-soft);padding-bottom:8px;
+}
+.tech-tags,.fit-tags{gap:6px}
+.tech-tag{
+  font-family:var(--rd-mono);font-size:10.5px;padding:3px 8px;border-radius:5px;
+  background:var(--rd-surface-2);color:var(--rd-ink-2);border:0;
+}
+.fit-tag{
+  font-family:var(--rd-body);font-size:11px;font-weight:500;padding:4px 9px;
+  border-radius:6px;background:var(--rd-blue-soft);color:var(--rd-blue-dark);border:0;
+}
+.timeline-grid{gap:6px}
+.timeline-grid > *{
+  font-family:var(--rd-mono);font-size:10.5px;padding:4px 9px;border-radius:6px;
+  background:var(--rd-surface-2);color:var(--rd-ink-2);border:0;
+}
+.github-stats-container{
+  background:var(--rd-surface);border:1px solid var(--rd-line-soft);
+  border-radius:12px;padding:10px 14px;display:flex;flex-wrap:wrap;gap:14px;
+}
+.gh-stat-item{font-family:var(--rd-mono);font-size:11px;color:var(--rd-muted)}
+.gh-fetch{
+  border:1.5px solid var(--rd-line);background:var(--rd-bg);color:var(--rd-ink-2);
+  border-radius:8px;font-family:var(--rd-body);font-size:12px;font-weight:600;padding:5px 10px;
+}
+.gh-fetch:hover{border-color:var(--rd-accent);color:var(--rd-accent);background:var(--rd-accent-tint)}
+.issue-card{
+  background:var(--rd-bg);border:1px solid var(--rd-line-soft);border-radius:12px;
+}
+.issue-card:hover{border-color:#f0c9a8;box-shadow:var(--rd-shadow);background:var(--rd-accent-tint)}
+.issue-org{font-family:var(--rd-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--rd-accent-dark)}
+.issue-label{
+  font-family:var(--rd-mono);font-size:10px;padding:2px 7px;border-radius:5px;
+  background:var(--rd-surface-2);color:var(--rd-ink-2);border:0;
+}
+.mentor-card{
+  background:var(--rd-bg);border:1px solid var(--rd-line-soft);border-radius:16px;
+  box-shadow:none;
+}
+.mentor-card:hover{border-color:#f0c9a8;box-shadow:var(--rd-shadow-lg)}
+.mentor-link-chip,.mentor-handle-chip{
+  font-family:var(--rd-mono);font-size:10.5px;padding:3px 8px;border-radius:5px;
+  background:var(--rd-surface-2);color:var(--rd-ink-2);border:0;
+}
+.mentor-link-chip:hover{background:var(--rd-accent-soft);color:var(--rd-accent-dark)}
+.proposal-editor{font-family:var(--rd-mono);font-size:12.5px;background:var(--rd-bg);color:var(--rd-ink)}
+.proposal-preview{background:var(--rd-surface);color:var(--rd-ink-2);font-size:13.5px}
+.proposal-preview h1,.proposal-preview h2,.proposal-preview h3{font-family:var(--rd-display);font-weight:500;letter-spacing:-.02em;color:var(--rd-ink)}
+.an-panel{max-width:720px}
+.an-num{font-family:var(--rd-display);font-weight:400;letter-spacing:-.02em}
+.bookmark-btn{color:var(--rd-faint)}
+.bookmark-btn.active{color:var(--rd-accent)}
+.modal-cta{
+  background:var(--rd-bg);color:var(--rd-ink);border:1.5px solid var(--rd-line);
+  border-radius:11px;font-family:var(--rd-body);font-weight:600;font-size:12.5px;
+  letter-spacing:.02em;
+}
+.modal-cta:hover{border-color:var(--rd-accent);color:var(--rd-accent);background:var(--rd-accent-tint)}
+.modal-proposal-link{
+  background:var(--rd-accent);color:#fff;border:2px solid var(--rd-accent-dark);
+}
+.modal-proposal-link:hover{background:var(--rd-accent-dark);color:#fff}
+.modal-ideas-link{
+  background:var(--rd-accent-soft);color:var(--rd-accent-dark);
+  border:1.5px solid #f6c9a9;
+}
+.modal-ideas-link:hover{background:#fde0cc;color:var(--rd-accent-dark)}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
