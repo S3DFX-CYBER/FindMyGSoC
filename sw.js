@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gsoc-finder-20261113120000';
+const CACHE_NAME = 'gsoc-finder-20261113163000';
 const CRITICAL_ASSETS = [
   './',
   'index.html',
@@ -31,7 +31,8 @@ const OPTIONAL_ASSETS = [
   'src/assets/redesign/suggestions.webp',
   'src/assets/redesign/mentors.webp',
   'src/assets/redesign/band.webp',
-  'src/assets/redesign/compare.webp'
+  'src/assets/redesign/compare.webp',
+  'src/assets/redesign/orgs.webp'
 ];
 
 globalThis.addEventListener('install', (event) => {

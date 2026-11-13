@@ -1,5 +1,5 @@
 /**
- * landing.js — FindMyGSoC Landing Page Scripts
+ * landing.js, FindMyGSoC Landing Page Scripts
  *
  * Responsibilities:
  *  - Safe client-side storage (theme persistence) with input validation
@@ -34,7 +34,7 @@ const SafeStorage = {
     try {
       window.localStorage.setItem(key, value);
     } catch (_e) {
-      // Storage unavailable (private mode, quota exceeded, etc.) — fail silently
+      // Storage unavailable (private mode, quota exceeded, etc.), fail silently
     }
   },
 
@@ -48,7 +48,7 @@ const SafeStorage = {
     try {
       const raw = window.localStorage.getItem(key);
       if (allowList && raw !== null && !allowList.includes(raw)) {
-        // Value is not in the allowlist — treat as absent and clean up
+        // Value is not in the allowlist, treat as absent and clean up
         window.localStorage.removeItem(key);
         return null;
       }
@@ -61,7 +61,7 @@ const SafeStorage = {
 
 // ── Comparison Table Data ─────────────────────────────────────────────────────
 
-/** Single source of truth — eliminates duplicated table rows in markup */
+/** Single source of truth, eliminates duplicated table rows in markup */
 const COMPARISON_DATA = [
   { feature: 'AI skill matching',          fmg: 'primary',   gsoc: false,       god: false,       gh: false },
   { feature: 'Live Good First Issues',     fmg: 'primary',   gsoc: false,       god: false,       gh: 'secondary' },
@@ -82,7 +82,7 @@ const COMPETITORS = [
 
 // ── FAQ Data ──────────────────────────────────────────────────────────────────
 
-/** Single source of truth — eliminates duplicated accordion blocks in markup */
+/** Single source of truth, eliminates duplicated accordion blocks in markup */
 const FAQ_DATA = [
   {
     id: 'faq-ans-1',
@@ -121,13 +121,13 @@ function createComparisonCell(value, isUs) {
   const mark = document.createElement('span');
   if (!value) {
     mark.className = 'n';
-    mark.textContent = '—';
+    mark.textContent = '-';
   } else if (value === 'secondary') {
     mark.className = 'p';
     mark.textContent = 'Partial';
   } else {
     mark.className = 'y';
-    mark.textContent = '✓ Yes';
+    mark.textContent = ' Yes';
   }
 
   td.appendChild(mark);
@@ -280,7 +280,7 @@ function renderFaqList() {
     questionSpan.textContent = item.q;
     summary.appendChild(questionSpan);
 
-    // Decorative plus marker — the <details> element owns the open/closed state
+    // Decorative plus marker, the <details> element owns the open/closed state
     const marker = document.createElement('span');
     marker.className = 'pm';
     marker.setAttribute('aria-hidden', 'true');

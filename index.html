@@ -21,7 +21,7 @@
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "FindMyGSoC — GSoC 2026 Org Finder",
+      "name": "FindMyGSoC, GSoC 2026 Org Finder",
       "url": "https://findmygsoc.vercel.app/",
       "description": "Find your perfect GSoC 2026 organization filtered by tech stack, domain, and competition level.",
       "applicationCategory": "DeveloperApplication",
@@ -98,8 +98,8 @@
             'xl': '1280px',
             '2xl': '1536px',
           },
-          // Palette from the 2027 redesign handoff. Every existing component —
-          // page markup and the templates in src/js/*.js — picks these up, so the
+          // Palette from the 2027 redesign handoff. Every existing component -
+          // page markup and the templates in src/js/*.js, picks these up, so the
           // app speaks the same colour language as the landing page.
           colors: {
             "surface-container-highest":"#eadfd2","background":"#ffffff",
@@ -1354,7 +1354,7 @@ kbd:hover{
 
 
 /* =========================================================================
-   2027 redesign — dialogs, overlays and list rows
+   2027 redesign, dialogs, overlays and list rows
    These components already carry semantic hooks (.modal, .metric-card,
    .section-title, .issue-card, .mentor-card, …), so the redesign lands here
    as a stylesheet layer instead of a markup rewrite. Declared last inside
@@ -1465,6 +1465,645 @@ kbd:hover{
   border:1.5px solid #f6c9a9;
 }
 .modal-ideas-link:hover{background:#fde0cc;color:var(--rd-accent-dark)}
+
+/* ===== 2027 redesign, page frame from the handoff ===== */
+:root{--card:#ffffff}
+.dark{--card:#1a1512}
+
+/* =========================================================================
+   FindMyGSoC, design system
+   Palette derived from the Google Summer of Code material language:
+     white ground, Google blue as the only primary, and the three
+     accent hues used strictly as category tags (never as decoration).
+   Type: Plus Jakarta Sans (display) · DM Sans (body) · JetBrains Mono (data)
+   ========================================================================= */
+:root{
+  --bg:#ffffff;
+  --surface:#fbf7f2;
+  --surface-2:#f4ece2;
+  --line:#eadfd2;
+  --line-soft:#f2eae0;
+
+  --ink:#211c17;
+  --ink-2:#3b332b;
+  --muted:#6e635a;
+  --faint:#8c8178;
+
+  --accent:#f26a1b;
+  --accent-dark:#cf5209;
+  --accent-soft:#fdeee2;
+  --accent-tint:#fff7f1;
+
+  --blue:#2a52d0;
+  --blue-dark:#1d3ea8;
+  --blue-soft:#e9edfb;
+
+  --green:#1f7a45;
+  --green-soft:#e7f3ea;
+  --amber:#9a5b00;
+  --amber-soft:#fbf0df;
+  --red:#c5372b;
+  --red-soft:#fbe9e6;
+
+  --f-display:'Newsreader',Georgia,'Times New Roman',serif;
+  --f-body:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,monospace;
+
+  /* a real modular scale (1.25) instead of ad-hoc clamps */
+  --t-xs:11px; --t-sm:12.5px; --t-base:16px; --t-md:18px;
+  --t-lg:clamp(19px,1.6vw,21px);
+  --t-h3:clamp(20px,1.9vw,24px);
+  --t-h2:clamp(28px,3.5vw,44px);
+  --t-h1:clamp(40px,5.5vw,70px);
+
+  --pad:clamp(18px,5vw,40px);
+  --max:1180px;
+  --r-sm:9px;
+  --r:18px;
+  --r-lg:22px;
+  --shadow:0 1px 2px rgba(60,64,67,.10), 0 1px 3px rgba(60,64,67,.08);
+  --shadow-lg:0 4px 8px rgba(60,64,67,.10), 0 12px 32px rgba(60,64,67,.12);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--f-body);font-size:var(--t-base);line-height:1.65;font-weight:400;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+p{margin:0}
+h1,h2,h3,h4{margin:0;font-family:var(--f-display);letter-spacing:-.022em;line-height:1.04;font-weight:400}
+h1{font-size:var(--t-h1);line-height:.99;letter-spacing:-.032em}
+h2{font-size:var(--t-h2);line-height:1.05;letter-spacing:-.026em}
+h3,h4{font-size:var(--t-h3)}
+::selection{background:var(--accent-soft);color:var(--accent-dark)}
+:focus-visible{outline:3px solid rgba(242,106,27,.42);outline-offset:2px;border-radius:4px}
+
+.wrap{max-width:var(--max);margin:0 auto;padding-inline:var(--pad)}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.02em}
+.eyebrow{font-family:var(--f-mono);font-size:var(--t-xs);font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.lede{font-size:var(--t-lg);line-height:1.58;color:var(--ink-2);max-width:60ch;font-weight:300;letter-spacing:-.003em}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(12px) saturate(1.4);
+  border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+.nav.stuck{border-bottom-color:var(--line-soft)}
+.nav-in{max-width:var(--max);margin:0 auto;padding:14px var(--pad);display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:500;font-size:22px;letter-spacing:-.015em}
+.brand .mark{width:30px;height:30px;flex:none;border-radius:8px;display:block}
+.nav-links{display:flex;gap:26px;margin-left:auto}
+.nav-links a{font-size:14.5px;font-weight:500;color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{display:flex;align-items:center;gap:10px}
+@media(max-width:900px){.nav-links{display:none}.nav-cta{margin-left:auto}}
+@media(max-width:600px){
+  .nav-in{gap:10px;padding:12px var(--pad)}
+  .brand{font-size:15.5px}
+  .brand .mark{width:26px;height:26px}
+  .nav-cta .btn.ghost{display:none}
+  .nav-cta .btn.primary{padding:9px 15px;font-size:13px}
+  .topbar .in{font-size:12px;gap:8px}
+  .topbar .in > span:last-child{display:none}
+}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--f-body);font-weight:600;font-size:14px;letter-spacing:.002em;
+  padding:11px 19px;border-radius:12px;border:2px solid transparent;
+  transition:background .18s,box-shadow .18s,transform .18s var(--ease),color .18s;
+  white-space:nowrap;position:relative}
+.btn svg{width:16px;height:16px;flex:none}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent-dark);box-shadow:4px 4px 0 #f7c8a6}
+.btn.primary:hover{background:var(--accent-dark);box-shadow:2px 2px 0 #f7c8a6;transform:translate(2px,2px)}
+.btn.ghost{background:var(--card);color:var(--ink);border-color:#3a3128;box-shadow:4px 4px 0 #ebe0d2}
+.btn.ghost:hover{background:#fff7f1;box-shadow:2px 2px 0 #ebe0d2;transform:translate(2px,2px)}
+.btn.soft{background:var(--accent-soft);color:var(--accent-dark);border-color:#f6c9a9;box-shadow:4px 4px 0 #f7dcc6}
+.btn.soft:hover{background:#fde0cc;box-shadow:2px 2px 0 #f7dcc6;transform:translate(2px,2px)}
+.btn.sm{padding:8px 13px;font-size:13px;border-radius:10px;box-shadow:3px 3px 0 #f7c8a6}
+.btn.ghost.sm{border-color:#3a3128}
+.btn.ghost.sm{box-shadow:3px 3px 0 #ebe0d2}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(30px,4.6vw,52px) 0 clamp(24px,3.4vw,40px);position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(720px 420px at 82% -10%, #fff2e6, transparent 70%),
+             radial-gradient(620px 400px at 0% 0%, #fdf6ec, transparent 68%)}
+.hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:clamp(28px,5vw,64px);align-items:center}
+.pill{display:inline-flex;align-items:center;gap:9px;padding:6px 14px 6px 8px;border-radius:999px;
+  background:var(--card);border:1px solid var(--line-soft);box-shadow:var(--shadow);
+  font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--ink-2)}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);position:relative;flex:none}
+.pill .dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--blue);opacity:.45;animation:ping 2.6s ease-out infinite}
+@keyframes ping{0%{transform:scale(.6);opacity:.6}80%,100%{transform:scale(1.7);opacity:0}}
+
+.hero h1{margin:22px 0 0;font-size:clamp(38px,4.5vw,58px);line-height:1.02;letter-spacing:-.03em;font-weight:400}
+.hero h1 .hl{color:var(--accent);font-style:italic;font-weight:400;position:relative;white-space:nowrap;z-index:0}
+.hero h1 .hl{position:relative;display:inline-block}
+.hero h1 .squiggle{position:absolute;left:-3%;right:-3%;bottom:-.24em;width:106%;height:.28em;color:var(--accent);overflow:visible}
+.hero h1 .squiggle path{stroke-dasharray:260;stroke-dashoffset:260;animation:draw 1.15s cubic-bezier(.22,1,.36,1) .75s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.hero h1 .squiggle path{animation:none;stroke-dashoffset:0}}
+.hero .lede{margin-top:20px;max-width:44ch;font-weight:300;font-size:clamp(16.5px,1.35vw,18.5px)}
+
+/* search */
+.searchbox{margin-top:28px;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
+  border-radius:999px;padding:6px 6px 6px 18px;box-shadow:var(--shadow);transition:box-shadow .25s,border-color .25s}
+.searchbox:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px rgba(242,106,27,.14)}
+.searchbox svg{width:18px;height:18px;color:var(--faint);flex:none}
+.searchbox input{flex:1;min-width:0;border:0;outline:none;background:none;font-family:var(--f-body);font-size:16px;color:var(--ink);padding:8px 0}
+.searchbox input::placeholder{color:var(--faint)}
+.searchbox .btn{padding:10px 18px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.chips .lbl{font-size:13px;color:var(--faint);margin-right:2px}
+.chip{font-family:var(--f-mono);font-size:11.5px;padding:5px 10px;border-radius:8px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--ink-2);transition:background .2s,border-color .2s,color .2s,transform .2s}
+.chip:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.hero-badges{display:flex;flex-wrap:wrap;gap:16px;margin-top:22px;font-size:13.5px;color:var(--muted)}
+.hero-badges span{display:flex;align-items:center;gap:7px}
+.hero-badges svg{width:15px;height:15px;color:var(--blue);flex:none}
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+
+/* hero media */
+.hero-media{position:relative}
+.hero-media .frame{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-lg);aspect-ratio:4/5;background:var(--surface-2);outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.hero-media .frame img{width:100%;height:100%;object-fit:cover}
+.hero-media .badge{position:absolute;left:-18px;bottom:26px;background:var(--card);border-radius:14px;padding:14px 18px;
+  box-shadow:0 6px 18px rgba(60,64,67,.14),4px 4px 0 #f2e6d8;display:flex;align-items:center;gap:12px;
+  transform:rotate(-1.6deg);transition:transform .35s var(--ease)}
+.hero-media:hover .badge{transform:rotate(0deg)}
+.hero-media .badge .n{font-family:var(--f-display);font-size:30px;font-weight:400;letter-spacing:-.02em;line-height:1;font-variant-numeric:lining-nums}
+.hero-media .badge .l{font-size:12px;color:var(--muted);line-height:1.35}
+.hero-media .badge .ico{width:38px;height:38px;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center;flex:none}
+.hero-media .badge .ico svg{width:19px;height:19px;color:var(--accent)}
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-media{max-width:460px;margin-top:32px}
+  .hero-media .frame{aspect-ratio:16/11}
+  .hero-media .badge{left:auto;right:12px;bottom:-16px;padding:10px 14px}
+}
+
+/* ---------- stats strip ---------- */
+.stats{border-block:1px solid var(--line-soft);background:var(--surface)}
+.stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.stats .s{padding:22px 20px 22px 0;border-right:1px solid var(--line-soft)}
+.stats .s:last-child{border-right:0}
+.stats .n{font-family:var(--f-display);font-size:clamp(24px,2.8vw,34px);font-weight:400;letter-spacing:-.02em;line-height:1;font-variant-numeric:lining-nums}
+.stats .l{font-size:12.5px;color:var(--muted);margin-top:7px}
+@media(max-width:760px){
+  .stats .wrap{grid-template-columns:1fr 1fr}
+  .stats .s:nth-child(2){border-right:0}
+  .stats .s:nth-child(1),.stats .s:nth-child(2){border-bottom:1px solid var(--line-soft)}
+}
+
+/* ---------- sections ---------- */
+.sec{padding:clamp(52px,7vw,84px) 0}
+.sec-hd{max-width:60ch;margin-bottom:clamp(24px,3.5vw,38px)}
+.sec-hd h2{font-size:clamp(26px,3.4vw,40px);letter-spacing:-.035em;margin-top:10px}
+.sec-hd p{margin-top:12px;color:var(--muted);font-size:15.5px;line-height:1.65}
+.sec-hd.center{margin-inline:auto;text-align:center}
+
+/* ---------- finder ---------- */
+.finder{background:var(--surface);border-block:1px solid var(--line-soft);padding:clamp(44px,6vw,72px) 0}
+.finder-top{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;margin-bottom:22px}
+@media(max-width:820px){.finder-top{grid-template-columns:1fr}}
+.finder-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+.finder-tools .chip{background:var(--card)}
+.finder-tools .chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.count{font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-left:auto;white-space:nowrap}
+.count b{color:var(--ink);font-weight:500}
+
+.orgs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:960px){.orgs{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.orgs{grid-template-columns:1fr}}
+
+.org{background:var(--card);border:1px solid var(--line-soft);border-radius:var(--r);padding:18px;
+  display:flex;flex-direction:column;gap:12px;transition:box-shadow .25s,transform .25s var(--ease),border-color .25s;
+  animation:cardIn .45s var(--ease) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.org:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:#f0c9a8}
+.org-head{display:flex;align-items:center;gap:11px}
+.org-ava{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;flex:none;
+  font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:.02em;color:#fff}
+.org h3{font-size:16px;letter-spacing:-.02em;line-height:1.25}
+.org .sub{font-size:12px;color:var(--faint);margin-top:2px}
+.org p{font-size:13.5px;color:var(--muted);line-height:1.55;flex:1}
+.org .tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--f-mono);font-size:10.5px;padding:3px 8px;border-radius:5px;background:var(--surface-2);color:var(--ink-2)}
+.tag.py{background:var(--accent-soft);color:var(--accent-dark)}
+.tag.go{background:var(--blue-soft);color:var(--blue-dark)}
+.tag.rs{background:var(--amber-soft);color:#b06000}
+.tag.beg{background:var(--blue-soft);color:var(--blue-dark);font-family:var(--f-body);font-weight:500}
+.org-foot{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--line-soft);
+  font-size:12.5px;color:var(--muted)}
+.org-foot .go{margin-left:auto;color:var(--accent);font-weight:500;display:inline-flex;align-items:center;gap:4px}
+.org-foot .go svg{width:14px;height:14px}
+.empty{grid-column:1/-1;padding:40px 0;text-align:center;color:var(--muted);font-size:15px}
+
+/* ---------- how it works ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:st}
+@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.steps{grid-template-columns:1fr}}
+.step{position:relative;padding:22px 20px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line-soft)}
+.step .num{font-family:var(--f-mono);font-size:11px;color:var(--accent);letter-spacing:.08em}
+.step h4{font-size:16.5px;margin:10px 0 7px;letter-spacing:-.02em}
+.step p{font-size:13.5px;color:var(--muted);line-height:1.55}
+.step .bar{position:absolute;left:20px;right:20px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:var(--accent);opacity:.5}
+
+/* ---------- community band ---------- */
+.band{position:relative;border-radius:var(--r-lg);overflow:hidden;background:#1a110b;color:#fff;isolation:isolate}
+.band img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:-2;opacity:.55}
+.band::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg, rgba(26,17,11,.94) 0%, rgba(26,17,11,.74) 46%, rgba(26,17,11,.28) 100%)}
+.band-in{padding:clamp(28px,5vw,56px);max-width:56ch}
+.band h2{font-size:clamp(24px,3vw,36px);letter-spacing:-.035em;color:#fff}
+.band p{margin-top:12px;color:rgba(255,255,255,.78);font-size:15.5px;line-height:1.6}
+.band .btn{margin-top:22px}
+
+/* ---------- who it's for ---------- */
+.who{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.who{grid-template-columns:1fr}}
+.who .card{border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden;background:var(--card);transition:box-shadow .25s,transform .25s var(--ease)}
+.who .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.who .card .ph{aspect-ratio:16/10;overflow:hidden;background:var(--surface-2)}
+.who .card .ph img{width:100%;height:100%;object-fit:cover}
+.who .card .ph.panel{position:relative;display:flex;align-items:center;padding:18px 20px}
+.who .card .ph.panel .pl{position:absolute;top:16px;left:20px;font-family:var(--f-mono);font-size:11px;color:var(--accent);letter-spacing:.04em}
+.who .card .ph.panel strong{font-family:var(--f-display);font-weight:400;font-size:clamp(21px,2.1vw,25px);letter-spacing:-.02em;line-height:1.15;color:var(--ink)}
+.who .card .tx{padding:18px 20px 22px}
+.who .card h4{font-size:17px;letter-spacing:-.02em}
+.who .card p{margin-top:8px;font-size:13.5px;color:var(--muted);line-height:1.6}
+.who .card .k{font-family:var(--f-mono);font-size:11px;color:var(--accent);letter-spacing:.06em}
+
+/* ---------- faq ---------- */
+.faq{display:grid;gap:10px;max-width:820px}
+.faq details{border:1px solid var(--line-soft);border-radius:var(--r);background:var(--card);overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.faq details[open]{border-color:#f0c9a8;box-shadow:var(--shadow)}
+.faq summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:14px;
+  font-family:var(--f-body);font-weight:600;font-size:15.5px;letter-spacing:-.008em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .pm{margin-left:auto;width:22px;height:22px;border-radius:50%;background:var(--surface-2);
+  display:grid;place-items:center;flex:none;transition:background .2s,transform .3s}
+.faq details[open] summary .pm{background:var(--accent);color:#fff;transform:rotate(45deg)}
+.faq summary .pm svg{width:12px;height:12px}
+.faq .ans{padding:0 18px 18px;color:var(--muted);font-size:14.5px;line-height:1.65;max-width:68ch}
+.faq .ans code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;color:var(--ink-2)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line-soft);background:var(--surface);padding:40px 0 44px;margin-top:clamp(48px,6vw,80px)}
+.f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px}
+@media(max-width:820px){.f-grid{grid-template-columns:1fr 1fr}}
+footer h5{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin:0 0 14px;font-weight:400}
+footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+footer a{font-size:13.5px;color:var(--muted);transition:color .2s}
+footer a:hover{color:var(--accent)}
+.f-bot{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;margin-top:34px;padding-top:18px;
+  border-top:1px solid var(--line-soft);font-size:12.5px;color:var(--faint)}
+.credits{margin-top:22px;font-size:11.5px;line-height:1.7;color:var(--faint);max-width:80ch}
+
+
+/* ---------- announcement bar ---------- */
+.topbar{background:linear-gradient(90deg,#fff4ea,#fdeee2);border-bottom:1px solid #f7e2d0}
+.topbar .in{max-width:var(--max);margin:0 auto;padding:9px var(--pad);display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  font-size:13px;font-weight:500;color:var(--accent-dark)}
+.topbar .live{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--card);border:1px solid #f6cdb0;color:var(--accent-dark)}
+.topbar .live i{width:6px;height:6px;border-radius:50%;background:var(--blue);display:block}
+.topbar .sp{flex:1}
+
+/* ---------- hero minis ---------- */
+.minis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:clamp(26px,3.4vw,40px)}
+@media(max-width:860px){.minis{grid-template-columns:1fr}}
+.mini{background:var(--card);border:1.5px solid var(--line-soft);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);
+  transition:box-shadow .25s,transform .25s var(--ease)}
+.mini:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.mini .h{display:flex;align-items:center;gap:8px;font-family:var(--f-body);font-weight:600;font-size:14px;letter-spacing:-.005em}
+.mini .h svg{width:17px;height:17px;color:var(--accent);flex:none}
+.mini p{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.5}
+.mini .row{display:flex;flex-wrap:wrap;gap:5px;margin-top:11px}
+.mini .k{font-family:var(--f-mono);font-size:10px;padding:2px 6px;border-radius:4px;background:var(--surface-2);color:var(--ink-2)}
+.mini .k.hi{background:var(--blue-soft);color:var(--blue-dark)}
+.mini .meter{margin-top:11px;display:flex;flex-direction:column;gap:7px}
+.mini .meter div{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:10px;color:var(--muted)}
+.mini .meter .b{flex:1;height:4px;border-radius:2px;background:var(--surface-2);overflow:hidden}
+.mini .meter .b i{display:block;height:100%;background:var(--accent);border-radius:2px}
+.mini .issue{display:flex;align-items:center;gap:8px;margin-top:11px;font-family:var(--f-mono);font-size:10px;color:var(--muted)}
+.mini .issue b{color:var(--ink);font-weight:500}
+.mini .issue .t{margin-left:auto;color:var(--faint)}
+.statusbar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:14px;padding:9px 16px;border:1px solid var(--line-soft);
+  border-radius:999px;background:var(--card);font-family:var(--f-mono);font-size:10.5px;color:var(--muted)}
+.statusbar .ok{color:var(--blue);display:flex;align-items:center;gap:5px}
+.statusbar .ok svg{width:12px;height:12px}
+
+/* ---------- split blocks ---------- */
+.split{display:grid;grid-template-columns:1.06fr .94fr;gap:clamp(24px,4vw,56px);align-items:center}
+@media(max-width:900px){.split{grid-template-columns:1fr}}
+.figure{border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-lg);background:var(--surface-2);outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.figure img{width:100%;height:100%;object-fit:cover;display:block}
+.figure.r43{aspect-ratio:4/3}
+.figure.r169{aspect-ratio:16/9}
+.kstats{display:flex;gap:clamp(20px,3vw,40px);margin-top:24px;flex-wrap:wrap}
+.kstats .k .n{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,2.6vw,32px);letter-spacing:-.02em;line-height:1;font-variant-numeric:lining-nums}
+.kstats .k .l{font-size:12px;color:var(--muted);margin-top:5px}
+
+/* ---------- numbered cards ---------- */
+.numcards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+@media(max-width:860px){.numcards{grid-template-columns:1fr}}
+.ncard{border:1.5px solid var(--line-soft);border-radius:var(--r);padding:22px;background:var(--card);transition:box-shadow .25s,transform .25s var(--ease)}
+.ncard:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.ncard .n{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent-dark);
+  display:grid;place-items:center;font-family:var(--f-mono);font-weight:500;font-size:11px}
+.ncard h4{font-size:17px;font-weight:600;letter-spacing:-.012em;margin:14px 0 8px;font-family:var(--f-body)}
+.ncard p{font-size:13.5px;color:var(--muted);line-height:1.62}
+
+/* ---------- big stats row ---------- */
+.bigstats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px;
+  border-top:1px solid var(--line-soft);padding-top:26px}
+@media(max-width:760px){.bigstats{grid-template-columns:1fr 1fr}}
+.bigstats .b .n{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,2.8vw,34px);letter-spacing:-.02em;line-height:1;font-variant-numeric:lining-nums}
+.bigstats .b .l{font-size:12.5px;color:var(--muted);margin-top:6px}
+
+/* ---------- suite grid ---------- */
+.suite{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:960px){.suite{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.suite{grid-template-columns:1fr}}
+.fcard{border:1.5px solid var(--line-soft);border-radius:var(--r);background:var(--card);padding:20px;
+  display:flex;flex-direction:column;gap:10px;transition:box-shadow .25s,transform .25s var(--ease)}
+.fcard:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.fcard .ic{width:36px;height:36px;border-radius:10px;background:var(--blue-soft);display:grid;place-items:center}
+.fcard .ic svg{width:18px;height:18px;color:var(--blue)}
+.fcard h4{font-size:16px;font-weight:600;letter-spacing:-.01em;margin-top:2px;font-family:var(--f-body)}
+.fcard p{font-size:13.5px;color:var(--muted);line-height:1.62;flex:1;max-width:52ch}
+.fcard .foot{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.fcard .foot span{font-family:var(--f-mono);font-size:10px;padding:2px 7px;border-radius:4px;background:var(--surface-2);color:var(--ink-2)}
+.fcard.wide{grid-column:span 3;flex-direction:row;align-items:center;gap:clamp(20px,3vw,40px)}
+.fcard.wide .tx{flex:1;min-width:0}
+.fcard.wide .tx{flex:1}
+.fcard.wide .ph{width:330px;flex:none;border-radius:12px;overflow:hidden;aspect-ratio:16/10}
+.fcard.wide .ph img{width:100%;height:100%;object-fit:cover}
+@media(max-width:960px){.fcard.wide{grid-column:span 2;flex-direction:column;align-items:flex-start}.fcard.wide .ph{width:100%;aspect-ratio:16/9}}
+@media(max-width:620px){.fcard.wide{grid-column:span 1}}
+
+/* ---------- why grid ---------- */
+.why4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:960px){.why4{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.why4{grid-template-columns:1fr}}
+
+/* ---------- comparison ---------- */
+.cmp{overflow-x:auto;border:1px solid var(--line-soft);border-radius:var(--r);background:var(--card)}
+.cmp table{width:100%;border-collapse:collapse;min-width:640px}
+.cmp th{text-align:left;padding:14px 16px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--line-soft);font-weight:700;white-space:nowrap}
+.cmp th.us{color:var(--accent-dark);background:var(--accent-tint)}
+.cmp td{padding:13px 16px;border-bottom:1px solid var(--line-soft);font-size:13.5px;color:var(--muted)}
+.cmp tr:last-child td{border-bottom:0}
+.cmp td:first-child{color:var(--ink);font-weight:500}
+.cmp td.us{background:var(--accent-tint);color:var(--ink)}
+.cmp .y{color:var(--blue);font-weight:500}
+.cmp .n{color:var(--faint)}
+.cmp .p{color:var(--amber)}
+
+/* ---------- about ---------- */
+.about{background:var(--surface);border-block:1px solid var(--line-soft)}
+.widefig{border-radius:var(--r-lg);overflow:hidden;margin-top:34px;box-shadow:var(--shadow-lg);aspect-ratio:21/9;outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.widefig img{width:100%;height:100%;object-fit:cover}
+@media(max-width:760px){.widefig{aspect-ratio:16/10}}
+
+/* ---------- closing cta ---------- */
+.cta{display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between;
+  border:1px solid var(--line-soft);border-radius:var(--r-lg);padding:clamp(22px,3vw,32px);background:var(--card);box-shadow:var(--shadow)}
+.cta h3{font-size:clamp(22px,2.4vw,28px);letter-spacing:-.022em;font-weight:400}
+.cta p{font-size:13.5px;color:var(--muted);margin-top:6px}
+
+
+/* ===================== APP SHELL ===================== */
+body{background:var(--surface)}
+.appbar{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line-soft)}
+.appbar-in{max-width:1440px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:22px}
+.appbar .brand{font-size:20px}
+.appnav{display:flex;gap:4px;margin-left:6px;overflow-x:auto;scrollbar-width:none}
+.appnav::-webkit-scrollbar{display:none}
+.appnav a{font-size:13.5px;font-weight:500;color:var(--muted);padding:7px 12px;border-radius:9px;white-space:nowrap;
+  transition:background .18s,color .18s}
+.appnav a:hover{background:var(--surface-2);color:var(--ink)}
+.appnav a.on{background:var(--accent-soft);color:var(--accent-dark)}
+.appbar .right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.cycle{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 9px;border-radius:7px;background:var(--blue-soft);color:var(--blue-dark);white-space:nowrap}
+
+.app-head{max-width:1440px;margin:0 auto;padding:26px 22px 6px;display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px}
+.app-head h1{font-size:clamp(30px,3.4vw,44px);letter-spacing:-.03em}
+.app-head p{color:var(--muted);font-size:14.5px;margin-top:8px;max-width:60ch}
+.headstats{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.hs{background:var(--card);border:1.5px solid var(--line-soft);border-radius:12px;padding:9px 14px;min-width:86px}
+.hs .n{font-family:var(--f-display);font-size:22px;line-height:1;font-variant-numeric:lining-nums}
+.hs .l{font-size:10.5px;color:var(--muted);margin-top:3px;font-family:var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
+
+.app-main{max-width:1180px;margin:0 auto;padding:0 22px 60px}
+.section{margin-top:clamp(34px,4.5vw,52px);scroll-margin-top:78px}
+.section-hd{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.section-hd h2{font-size:clamp(24px,2.6vw,32px);letter-spacing:-.025em}
+.section-hd p{color:var(--muted);font-size:14px;margin-top:8px;max-width:62ch;line-height:1.6}
+.section-hd .searchrow{margin-left:auto;flex:1 1 280px;max-width:340px}
+.ph3{font-family:var(--f-body);font-size:14px;font-weight:600;letter-spacing:-.005em;margin-bottom:10px}
+.split-panel{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start}
+@media(max-width:900px){.split-panel{grid-template-columns:1fr}}
+.stack{display:flex;flex-direction:column;gap:14px}
+.filterbar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:10px}
+.langbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+@media(max-width:780px){
+  .appbar-in{gap:10px;padding:10px 14px}
+  .appnav{display:none}
+  .cycle{display:none}
+  .appbar .brand{font-size:17px}
+  .appbar .brand .mark{width:24px;height:24px}
+  .appbar .right .btn{font-size:12px;padding:7px 11px}
+  .app-head{padding:20px 16px 4px}
+  .app-main{padding:0 16px 50px}
+  .hs{padding:7px 11px;min-width:74px}
+  .hs .n{font-size:19px}
+  .cmprow,.cmphead{grid-template-columns:110px repeat(3,minmax(90px,1fr))}
+  .cmpgrid{overflow-x:auto}
+}
+.faq{max-width:none}
+.appfoot{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:44px;padding-top:18px;
+  border-top:1px solid var(--line-soft);font-size:12px;color:var(--faint);font-family:var(--f-mono)}
+.appfoot .mark{border-radius:7px}
+
+/* filters */
+.filters{position:sticky;top:72px;background:var(--card);border:1.5px solid var(--line-soft);border-radius:var(--r);padding:16px}
+@media(max-width:1000px){.filters{position:static}}
+.fsearch{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:10px;
+  padding:9px 12px;background:var(--card);transition:border-color .2s,box-shadow .2s}
+.fsearch:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(242,106,27,.12)}
+.fsearch svg{width:16px;height:16px;color:var(--faint);flex:none;max-width:16px;max-height:16px}
+.fsearch input{flex:1;min-width:0;border:0;background:none;outline:none;font-size:13.5px;font-family:var(--f-body);color:var(--ink)}
+.fgroup{margin-top:18px;border-top:1px solid var(--line-soft);padding-top:14px}
+.fgroup h6{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin:0 0 9px;font-weight:400}
+.fbtn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;font-size:13px;color:var(--ink-2);
+  padding:6px 8px;border-radius:8px;transition:background .16s,color .16s}
+.fbtn:hover{background:var(--surface-2)}
+.fbtn.on{background:var(--accent-soft);color:var(--accent-dark);font-weight:500}
+.fbtn .tick{margin-left:auto;width:14px;height:14px;border-radius:4px;border:1.5px solid var(--line);flex:none}
+.fbtn.on .tick{background:var(--accent);border-color:var(--accent)}
+.fbtn .tick svg{width:10px;height:10px;color:#fff;display:none}
+.fbtn.on .tick svg{display:block}
+.freset{margin-top:16px;width:100%;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  padding:8px;border-radius:9px;border:1.5px solid var(--line);color:var(--muted);transition:.2s}
+.freset:hover{border-color:var(--accent);color:var(--accent)}
+
+/* results */
+.results-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.results-head .c{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.results-head .c b{color:var(--ink);font-weight:500}
+.sortbtn{margin-left:auto;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;color:var(--muted)}
+
+.org-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:760px){.org-grid{grid-template-columns:1fr}}
+.ocard{background:var(--card);border:1.5px solid var(--line-soft);border-radius:var(--r);padding:16px;box-shadow:0 1px 2px rgba(60,64,67,.05);
+  display:flex;flex-direction:column;gap:11px;transition:box-shadow .22s,transform .22s var(--ease),border-color .22s;
+  animation:cardIn .4s var(--ease) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.ocard:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:#f0c9a8}
+.ocard .top{display:flex;gap:11px;align-items:flex-start}
+.ava{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;flex:none;color:#fff;
+  font-family:var(--f-mono);font-size:12px;font-weight:500}
+.ocard h3{font-family:var(--f-body);font-size:15px;font-weight:600;letter-spacing:-.008em;line-height:1.25}
+.ocard .sub{font-size:11.5px;color:var(--faint);margin-top:2px}
+.match{margin-left:auto;text-align:right;flex:none}
+.match .v{font-family:var(--f-display);font-size:19px;line-height:1;color:var(--blue);font-variant-numeric:lining-nums}
+.match .l{font-family:var(--f-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.ocard p{font-size:12.5px;color:var(--muted);line-height:1.55}
+.ocard .tags{display:flex;flex-wrap:wrap;gap:5px}
+.ocard .acts{display:flex;gap:7px;padding-top:11px;border-top:1px solid var(--line-soft);margin-top:auto}
+.mini-btn{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;
+  border-radius:7px;border:1.5px solid var(--line);color:var(--muted);transition:.18s}
+.mini-btn:hover{border-color:var(--accent);color:var(--accent)}
+.mini-btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.mini-btn.watch.on{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* match panel */
+.panel{background:var(--card);border:1.5px solid var(--line-soft);border-radius:var(--r);padding:18px;margin-top:26px;
+  box-shadow:0 1px 2px rgba(60,64,67,.05)}
+.panel h2{font-size:clamp(22px,2.4vw,30px);letter-spacing:-.025em}
+.panel p.sub{color:var(--muted);font-size:14px;margin-top:8px;max-width:62ch}
+.matchform{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.matchform input{flex:1 1 260px;border:1.5px solid var(--line);border-radius:11px;padding:11px 14px;font-size:14px;
+  font-family:var(--f-body);outline:none;background:var(--surface)}
+.matchform input:focus{border-color:var(--accent);background:var(--card)}
+.mres{margin-top:16px;display:grid;gap:8px}
+.mrow{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1.5px solid var(--line-soft);border-radius:11px;
+  background:var(--surface);animation:cardIn .45s var(--ease) both}
+.mrow .bar{width:90px;height:5px;border-radius:3px;background:var(--line-soft);overflow:hidden;flex:none}
+.mrow .bar i{display:block;height:100%;background:var(--blue);border-radius:3px;transition:width .9s var(--ease)}
+.mrow .pc{font-family:var(--f-mono);font-size:11px;color:var(--blue);width:34px;text-align:right}
+.mrow b{font-family:var(--f-body);font-weight:600;font-size:13.5px}
+.mrow .why{font-size:11.5px;color:var(--faint);margin-left:auto;text-align:right}
+
+/* deadlines + gfi + mentors */
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+@media(max-width:820px){.twocol{grid-template-columns:1fr}}
+.dl{display:flex;gap:12px;align-items:flex-start;padding:11px 12px;border:1.5px solid var(--line-soft);border-radius:11px;background:var(--surface);margin-bottom:8px}
+.dl .d{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;color:var(--accent-dark);background:var(--accent-soft);
+  padding:6px 8px;border-radius:7px;text-align:center;flex:none;line-height:1.3}
+.dl b{font-size:13.5px;font-family:var(--f-body);font-weight:600;display:block}
+.dl span{font-size:12px;color:var(--muted)}
+.gfi{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+.gfi:last-child{border-bottom:0}
+.gfi .repo{font-family:var(--f-mono);font-size:11px;color:var(--faint);width:180px;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gfi .ttl{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gfi .age{margin-left:auto;font-family:var(--f-mono);font-size:10.5px;color:var(--faint);flex:none}
+.mrow2{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+.mrow2:last-child{border-bottom:0}
+.mrow2 .ch{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap}
+.ch span{font-family:var(--f-mono);font-size:9.5px;padding:2px 6px;border-radius:5px;background:var(--surface-2);color:var(--ink-2)}
+
+/* anchors clear the sticky bar */
+#matches,#watchlist,#issues,#mentors,#learn,#directory,#top{scroll-margin-top:78px}
+
+/* insight + compare */
+.insight{margin-top:12px;padding:12px;border-radius:11px;background:var(--blue-soft);color:var(--blue-dark);
+  font-size:12.5px;line-height:1.55}
+.cmpgrid{display:grid;gap:10px}
+.cmprow{display:grid;grid-template-columns:170px repeat(3,1fr);gap:10px;padding:10px 12px;border-radius:9px;font-size:12.5px}
+.cmprow:nth-child(odd){background:var(--surface)}
+.cmprow .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);align-self:center}
+.cmprow .v{color:var(--ink-2)}
+.cmphead{display:grid;grid-template-columns:170px repeat(3,1fr);gap:10px;padding:0 12px 8px;border-bottom:1.5px solid var(--line-soft)}
+.cmphead b{font-family:var(--f-body);font-weight:600;font-size:12.5px}
+.cmpempty{color:var(--muted);font-size:13px;padding:8px 0}
+
+/* compare empty state */
+.cmpempty-wrap{display:grid;grid-template-columns:1fr .85fr;gap:20px;align-items:center}
+@media(max-width:760px){.cmpempty-wrap{grid-template-columns:1fr}}
+.cmpfig{margin:0;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:var(--surface-2);
+  outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.cmpfig img{width:100%;height:100%;object-fit:cover}
+.bandfig{aspect-ratio:3/1}
+
+/* panel media */
+.psplit{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(18px,3vw,34px);align-items:center}
+@media(max-width:860px){.psplit{grid-template-columns:1fr}}
+.pfig{margin:0;border-radius:var(--r);overflow:hidden;aspect-ratio:4/3;background:var(--surface-2);
+  outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.pfig img{width:100%;height:100%;object-fit:cover}
+.bandfig{margin:16px 0 4px;border-radius:var(--r);overflow:hidden;aspect-ratio:21/7;background:var(--surface-2);
+  outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.bandfig img{width:100%;height:100%;object-fit:cover}
+@media(max-width:760px){.bandfig{aspect-ratio:16/9}}
+
+/* compare tray */
+.tray{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--card);border-top:1.5px solid var(--line);
+  box-shadow:0 -8px 24px rgba(60,64,67,.10);transform:translateY(110%);transition:transform .35s var(--ease)}
+.tray.show{transform:none}
+.tray-in{max-width:1440px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tray .picks{display:flex;gap:7px;flex-wrap:wrap}
+.pick{display:flex;align-items:center;gap:7px;font-size:12px;background:var(--surface-2);border-radius:8px;padding:5px 9px}
+.pick button{color:var(--faint);font-size:14px;line-height:1}
+.tray .go{margin-left:auto}
+
+/* ---------- motion ---------- */
+.nav-links a{position:relative}
+.nav-links a::after{content:"";position:absolute;left:0;right:100%;bottom:-4px;height:2px;background:var(--accent);
+  transition:right .3s var(--ease)}
+.nav-links a:hover::after{right:0}
+
+[data-stagger] > *{opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+[data-stagger].in > *{opacity:1;transform:none}
+[data-stagger].in > *:nth-child(1){transition-delay:.02s}
+[data-stagger].in > *:nth-child(2){transition-delay:.08s}
+[data-stagger].in > *:nth-child(3){transition-delay:.14s}
+[data-stagger].in > *:nth-child(4){transition-delay:.2s}
+[data-stagger].in > *:nth-child(5){transition-delay:.26s}
+[data-stagger].in > *:nth-child(6){transition-delay:.32s}
+[data-stagger].in > *:nth-child(7){transition-delay:.38s}
+[data-stagger].in > *:nth-child(8){transition-delay:.44s}
+
+.figure img,.hero-media .frame img{transition:transform 1.2s var(--ease)}
+.figure:hover img,.hero-media:hover .frame img{transform:scale(1.03)}
+
+.hero-media{will-change:transform}
+
+/* ---------- reveal ---------- */
+[data-rv]{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+[data-rv].in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  [data-rv]{opacity:1!important;transform:none!important;transition:none!important}
+  *{animation-duration:.001ms!important;animation-iteration-count:1!important}
+  html{scroll-behavior:auto}
+}
+
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
@@ -1602,7 +2241,7 @@ kbd:hover{
     <h1>Find your perfect GSoC org.</h1>
     <p class="lede">
       184 organisations from the 2026 cycle, indexed with their stacks, mentors and issue queues.
-      Filter by language, domain, competition and live GitHub activity — then shortlist and draft.
+      Filter by language, domain, competition and live GitHub activity, then shortlist and draft.
     </p>
 
     <!-- Search Bar -->
@@ -1622,7 +2261,7 @@ kbd:hover{
     <div class="mt-5 flex flex-wrap items-center gap-3">
       <button id="surpriseBtn"
         class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[color:var(--rd-accent-dark)] bg-[color:var(--rd-accent)] text-white text-sm font-bold transition-transform hover:translate-x-[2px] hover:translate-y-[2px] focus:outline-none focus:ring-2 focus:ring-orange-300"
-        aria-label="Surprise Me — open a random organization">
+        aria-label="Surprise Me, open a random organization">
         Surprise Me
       </button>
       <span class="font-[family-name:var(--rd-mono)] text-[11px] uppercase tracking-[0.14em] text-[color:var(--rd-faint)]">
@@ -1667,11 +2306,17 @@ kbd:hover{
 
 
 <!-- ═══════════════════ ORG DIRECTORY ═══════════════════ -->
-<section id="orgs" class="px-6 max-w-7xl mx-auto pb-20">
-  <div class="mb-12">
-    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Find projects that fit you</span>
-    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Organizations</h2>
-    <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Browse and filter GSoC 2026 organizations by tech stack, difficulty level, and interests to discover projects that match your skills and goals.</p>
+<section id="orgs" class="section">
+  <div class="wrap">
+  <div class="mb-12 section-hd with-fig">
+    <div>
+      <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Find projects that fit you</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Organizations</h2>
+      <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Browse and filter GSoC 2026 organizations by tech stack, difficulty level, and interests to discover projects that match your skills and goals.</p>
+    </div>
+    <figure class="sidefig">
+      <img src="src/assets/redesign/orgs.webp" alt="GSoC Alumni Camp attendees going through project notes around a table" loading="lazy" />
+    </figure>
   </div>
   <!-- ═══════════════════ FILTER CHIPS (desktop only) ═══════════════════ -->
   <div class="mb-6 fade-up hidden md:block" style="animation-delay:.3s">
@@ -1834,7 +2479,7 @@ kbd:hover{
   <div id="orgPagination" class="mt-12 flex flex-nowrap items-center justify-center gap-1 overflow-x-auto no-scrollbar" aria-label="Organizations pagination"></div>
   <!-- Empty State -->
   <div id="emptyState" class="hidden py-20 text-center animate-fade-up">
-    <div class="text-6xl mb-4">🔍</div>
+    <div class="mb-4"><span class="material-symbols-outlined" style="font-size:40px;color:var(--rd-faint)">search_off</span></div>
     <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2">No organizations match your current filters.</h3>
     <p class="text-zinc-500 dark:text-zinc-400 mb-8">Try adjusting your search or clearing some filters.</p>
     <button onclick="clearAllFilters()" class="px-8 py-3 bg-primary text-white rounded-xl font-bold hover:bg-orange-600 transition-colors shadow-lg shadow-primary/20">
@@ -1847,10 +2492,12 @@ kbd:hover{
       View More Organizations <span class="material-symbols-outlined text-lg">expand_more</span>
     </button>
   </div>
+  </div>
 </section>
 
 <!-- ═══════════════════ AI RECOMMENDER ═══════════════════ -->
-<section id="ai-recommender" class="px-6 max-w-7xl mx-auto py-20 border-t border-zinc-100 dark:border-zinc-800">
+<section id="ai-recommender" class="section">
+  <div class="wrap">
   <div class="mb-12 section-hd with-fig">
     <div>
       <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">AI-Powered</span>
@@ -1915,10 +2562,12 @@ kbd:hover{
       </div>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- ═══════════════════ WATCHLIST ═══════════════════ -->
-<section id="watchlist" class="bg-surface-container-low py-20 px-6">
+<section id="watchlist" class="section">
+  <div class="wrap">
   <div class="max-w-7xl mx-auto">
     <div class="mb-12 flex items-start justify-between gap-4 flex-wrap">
       <div>
@@ -2022,14 +2671,16 @@ kbd:hover{
       </div>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- ═══════════════════ GOOD FIRST ISSUES ═══════════════════ -->
-<section id="issues" class="py-20 px-6 max-w-7xl mx-auto">
+<section id="issues" class="section">
+  <div class="wrap">
   <div class="mb-12">
     <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">First Contributions</span>
     <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Good First Issues</h2>
-    <p class="text-zinc-600 mt-4 max-w-2xl">Pre-fetched from all GSoC 2026 orgs every 24 hours — no rate limits, no token required, instant results.</p>
+    <p class="text-zinc-600 mt-4 max-w-2xl">Pre-fetched from all GSoC 2026 orgs every 24 hours, no rate limits, no token required, instant results.</p>
   </div>
   <!-- Status Banner -->
   <div id="issuesBanner" class="bg-green-50 border border-green-200 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -2037,7 +2688,7 @@ kbd:hover{
       <div class="w-3 h-3 rounded-full bg-green-500 pulse-dot" id="issuesBannerDot"></div>
       <div>
         <p class="font-bold text-green-800 text-sm" id="issuesBannerTitle">Pre-fetched Issues Ready</p>
-        <p class="text-xs text-green-600" id="issuesBannerSubtitle">Updated every 24 hours via GitHub Actions — no API rate limits for visitors.</p>
+        <p class="text-xs text-green-600" id="issuesBannerSubtitle">Updated every 24 hours via GitHub Actions, no API rate limits for visitors.</p>
       </div>
     </div>
     <div class="sm:ml-auto flex flex-col items-start sm:items-end gap-1">
@@ -2092,10 +2743,12 @@ kbd:hover{
       </div>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- ═══════════════════ MENTOR FINDER ═══════════════════ -->
-<section id="mentors" class="py-20 px-6 bg-surface-container-low">
+<section id="mentors" class="section">
+  <div class="wrap">
   <div class="max-w-7xl mx-auto">
     <div class="mb-12 section-hd with-fig">
       <div>
@@ -2152,14 +2805,16 @@ kbd:hover{
     </div>
   </div>
   <div id="mentorPagination" class="mt-10 flex flex-nowrap items-center justify-center gap-1 overflow-x-auto no-scrollbar" aria-label="Mentor pagination"></div>
+  </div>
 </section>
 
-<!-- ═══════════════════ NEW TO GSOC — INTERACTIVE ROADMAP ═══════════════════ -->
-<section id="guide" class="py-20 px-6 max-w-7xl mx-auto">
+<!-- ═══════════════════ NEW TO GSOC, INTERACTIVE ROADMAP ═══════════════════ -->
+<section id="guide" class="section">
+  <div class="wrap">
   <div class="mb-12">
     <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">GSoC 101</span>
     <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">New to GSoC? Start here.</h2>
-    <p class="text-zinc-600 mt-4 max-w-2xl">An interactive roadmap — from understanding the program to landing your first acceptance. Click any block to expand its guide and FAQs.</p>
+    <p class="text-zinc-600 mt-4 max-w-2xl">An interactive roadmap, from understanding the program to landing your first acceptance. Click any block to expand its guide and FAQs.</p>
   </div>
 
   <figure class="bandfig">
@@ -2198,7 +2853,7 @@ kbd:hover{
           <div class="mb-6">
             <div class="roadmap-step-row">
               <div class="roadmap-step-num">1</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Not an internship at Google.</strong> You write code for independent open source foundations — Apache, Blender, Linux, TensorFlow. Google provides the stipend and the platform.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Not an internship at Google.</strong> You write code for independent open source foundations, Apache, Blender, Linux, TensorFlow. Google provides the stipend and the platform.</p>
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num">2</div>
@@ -2269,7 +2924,7 @@ kbd:hover{
           <div class="mb-6">
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(59,130,246,0.12);color:#3b82f6">1</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>The Rule of 2.</strong> Don't spread across 10 orgs. Pick 1–2 and engage deeply. Google allows up to 3 proposals, but focused effort wins every time.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>The Rule of 2.</strong> Don't spread across 10 orgs. Pick 1-2 and engage deeply. Google allows up to 3 proposals, but focused effort wins every time.</p>
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(59,130,246,0.12);color:#3b82f6">2</div>
@@ -2289,7 +2944,7 @@ kbd:hover{
             <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">How many proposals am I allowed to submit?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Google allows up to 3 total proposals across all organizations. Focusing high effort on 1–2 consistently produces better results than spreading thin.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Google allows up to 3 total proposals across all organizations. Focusing high effort on 1-2 consistently produces better results than spreading thin.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if an org has been in GSoC for 15+ years?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
@@ -2329,7 +2984,7 @@ kbd:hover{
             <span class="text-xs font-bold font-label uppercase tracking-widest text-green-600 opacity-70">03</span>
             <span class="text-lg font-extrabold text-zinc-900 font-headline" style="display:block">How to Contribute</span>
           </span>
-          <span class="text-sm text-zinc-500" style="display:block">From setup to your first merged pull request — with community etiquette.</span>
+          <span class="text-sm text-zinc-500" style="display:block">From setup to your first merged pull request, with community etiquette.</span>
         </span>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
       </button>
@@ -2346,7 +3001,7 @@ kbd:hover{
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(34,197,94,0.12);color:#16a34a">3</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Golden Rule of PRs.</strong> Keep PRs atomic — one fix at a time. Add tests, link the issue, and avoid unsolicited "sir give me task" messages.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Golden Rule of PRs.</strong> Keep PRs atomic, one fix at a time. Add tests, link the issue, and avoid unsolicited "sir give me task" messages.</p>
             </div>
           </div>
           <div class="rounded-2xl bg-green-50 border border-green-100 p-4 mb-6 flex items-center justify-center gap-2 text-xs font-semibold text-zinc-600 flex-wrap">
@@ -2359,15 +3014,15 @@ kbd:hover{
             <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Do I need contributions before the application opens?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. Having 1–3 merged or well-reviewed PRs demonstrates to mentors that you can run the codebase, communicate effectively, and produce working code.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. Having 1-3 merged or well-reviewed PRs demonstrates to mentors that you can run the codebase, communicate effectively, and produce working code.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if mentors take days to review my PR?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Mentors are volunteers with day jobs. Wait 3–4 days before leaving a polite follow-up comment in the PR thread on the public channel.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Mentors are volunteers with day jobs. Wait 3-4 days before leaving a polite follow-up comment in the PR thread on the public channel.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if another contributor claims the issue I wanted?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Always comment first asking to be assigned before writing code. If taken, browse alternative unassigned issues — orgs usually have many open good-first-issues.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Always comment first asking to be assigned before writing code. If taken, browse alternative unassigned issues, orgs usually have many open good-first-issues.</p></div>
             </div>
           </div>
         </div>
@@ -2410,11 +3065,11 @@ kbd:hover{
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(168,85,247,0.12);color:#9333ea">2</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Build in Buffers.</strong> Budget 1–2 weeks for exams, unexpected bugs, and documentation. Mentors trust realistic timelines over overly ambitious ones.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Build in Buffers.</strong> Budget 1-2 weeks for exams, unexpected bugs, and documentation. Mentors trust realistic timelines over overly ambitious ones.</p>
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(168,85,247,0.12);color:#9333ea">3</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Pre-submission Review.</strong> Share a draft with your mentor at least 1–2 weeks before Google's deadline to get early, constructive feedback.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Pre-submission Review.</strong> Share a draft with your mentor at least 1-2 weeks before Google's deadline to get early, constructive feedback.</p>
             </div>
           </div>
           <div class="rounded-2xl bg-purple-50 border border-purple-100 p-4 mb-6 grid grid-cols-2 gap-2 text-xs font-semibold text-zinc-600">
@@ -2427,7 +3082,7 @@ kbd:hover{
             <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Where do I draft my proposal?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Use FindMyGSoC's built-in Markdown Editor to draft, preview, and export your proposal to PDF or Markdown — all stored locally in your browser.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Use FindMyGSoC's built-in Markdown Editor to draft, preview, and export your proposal to PDF or Markdown, all stored locally in your browser.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can I propose a brand new idea not on the org's ideas list?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
@@ -2435,7 +3090,7 @@ kbd:hover{
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can mentors guarantee my acceptance?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. Final selections depend on the number of contributor slots Google grants to each org — mentor enthusiasm alone doesn't guarantee a slot.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. Final selections depend on the number of contributor slots Google grants to each org, mentor enthusiasm alone doesn't guarantee a slot.</p></div>
             </div>
           </div>
         </div>
@@ -2477,11 +3132,11 @@ kbd:hover{
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(234,179,8,0.15);color:#ca8a04">2</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Stipend Range.</strong> $1,500–$6,600 USD, adjusted by Google's Purchasing Power Parity (PPP) formula for your country. Paid in two phases via Payoneer.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Stipend Range.</strong> $1,500-$6,600 USD, adjusted by Google's Purchasing Power Parity (PPP) formula for your country. Paid in two phases via Payoneer.</p>
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(234,179,8,0.15);color:#ca8a04">3</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Evaluations.</strong> Two checkpoints — Midterm and Final. Pass both to receive your stipend. Mentors evaluate code quality, progress, and communication.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Evaluations.</strong> Two checkpoints, Midterm and Final. Pass both to receive your stipend. Mentors evaluate code quality, progress, and communication.</p>
             </div>
           </div>
           <div class="rounded-2xl bg-yellow-50 border border-yellow-100 p-4 mb-6 space-y-3">
@@ -2547,6 +3202,7 @@ kbd:hover{
         <p class="text-zinc-500 text-xs">Hands-on tutorial to practice your first fork, commit, and pull request.</p>
       </a>
     </div>
+  </div>
   </div>
 </section>
 
@@ -2760,7 +3416,7 @@ kbd:hover{
           <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em">Filters Used</div>
         </div>
         <div style="background:var(--bg);border:1.5px solid var(--border2);border-radius:11px;padding:11px;text-align:center">
-          <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:900;margin-bottom:2px" id="aTime">—</div>
+          <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:900;margin-bottom:2px" id="aTime">-</div>
           <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em">Session Time</div>
         </div>
       </div>
@@ -2768,7 +3424,7 @@ kbd:hover{
       <!-- Badges Section -->
       <div style="margin-bottom:24px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-          <h3 style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase">🏆 Achievement Badges</h3>
+          <h3 style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase">Achievement Badges</h3>
           <button onclick="if(typeof BadgeSystem !== 'undefined') { BadgeSystem.resetProgress(); renderBadges(); }" style="font-size:10px;font-weight:700;color:var(--red);background:transparent;border:1.5px solid var(--border);border-radius:8px;padding:4px 10px;cursor:pointer;transition:all .18s" onmouseover="this.style.borderColor='var(--red)';this.style.background='rgba(197,48,48,.06)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='transparent'">
             Reset Progress
           </button>
@@ -3060,12 +3716,12 @@ kbd:hover{
   let matchAllLanguages = false;
   let activeChip = null; // tracks the active quick-filter chip key ('veterans' | 'newcomers' | 'low-competition' | 'high-competition' | 'bookmarked' | 'active' | null)
   const CHANNEL_ICONS = {
-    Slack: '💬',
-    Zulip: '💬',
-    Discord: '🎮',
-    Matrix: '🔗',
-    IRC: '🖥️',
-    'Mailing list': '📧'
+    Slack: '',
+    Zulip: '',
+    Discord: '',
+    Matrix: '',
+    IRC: '',
+    'Mailing list': ''
   };
   const CONTACT_TIPS = {
     Slack: 'Join and say hi in the GSoC channel before DMing mentors.',
@@ -3187,7 +3843,7 @@ kbd:hover{
     applyFilters();
   }
 
-  // NOTE: toggleLanguageMode removed — the matchAllLanguagesToggle checkbox
+  // NOTE: toggleLanguageMode removed, the matchAllLanguagesToggle checkbox
   // uses a direct event listener (line ~1538) and does not use onclick=.
 
   globalThis.togglePill = function(el) {
@@ -3250,7 +3906,7 @@ kbd:hover{
     }
   });
 
-  // Mobile chip toggle — mirrors the real filter-chip
+  // Mobile chip toggle, mirrors the real filter-chip
   globalThis.toggleMobileChip = function(mobileBtn) {
     const targetId = mobileBtn.dataset.mobileChip;
     const realChip = document.getElementById(targetId);
@@ -3283,7 +3939,7 @@ kbd:hover{
     });
   }
 
-  // Mobile language pill toggle — reuses existing selectedLanguages set + applyFilters
+  // Mobile language pill toggle, reuses existing selectedLanguages set + applyFilters
   globalThis.toggleMobileLangPill = function(btn) {
     const lang = btn.dataset.lang;
     if (!lang) return;
@@ -3386,7 +4042,7 @@ kbd:hover{
         if (!safe) return '';
         return `
           <a class="mentor-link-chip" href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer">
-            <span>${CHANNEL_ICONS[record.type] || '💬'}</span>
+            <span>${CHANNEL_ICONS[record.type] || ''}</span>
             <span>${escapeHtml(record.label || record.type)}</span>
           </a>
         `;
@@ -3404,7 +4060,7 @@ kbd:hover{
           if (safe) {
             return `
               <a class="mentor-handle-chip" href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer">
-                <span>🐙</span>
+                <span></span>
                 <span>${escapeHtml(label)}</span>
               </a>
             `;
@@ -3413,7 +4069,7 @@ kbd:hover{
 
         return `
           <span class="mentor-handle-chip">
-            <span>👤</span>
+            <span></span>
             <span>${escapeHtml(mentor.name || 'Mentor')}</span>
           </span>
         `;
@@ -3429,10 +4085,10 @@ kbd:hover{
     const chips = mentorPreview.map((mentor) => {
       if (mentor.githubUrl) {
         const safe = sanitizeHrefUrl(mentor.githubUrl);
-        if (safe) return `<a class="mentor-handle-chip" href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer"><span>🐙</span><span>${escapeHtml(mentor.displayLabel)}</span></a>`;
+        if (safe) return `<a class="mentor-handle-chip" href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer"><span></span><span>${escapeHtml(mentor.displayLabel)}</span></a>`;
       }
 
-      return `<span class="mentor-handle-chip"><span>👤</span><span>${escapeHtml(mentor.displayLabel)}</span></span>`;
+      return `<span class="mentor-handle-chip"><span></span><span>${escapeHtml(mentor.displayLabel)}</span></span>`;
     }).join('');
 
     return `<div class="flex flex-wrap gap-2">${chips}</div>`;
@@ -3679,7 +4335,7 @@ kbd:hover{
         </div>
         ${bodyHtml}
         <div class="mt-5 pt-4 border-t border-zinc-100">
-          ${safeContactHref ? `<a href="${escapeHtml(safeContactHref)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span>📡</span><span>${escapeHtml(contactLabel)}</span></a>` : `<span class="mentor-link-chip"><span>📡</span><span>${escapeHtml(contactLabel)}</span></span>`}
+          ${safeContactHref ? `<a href="${escapeHtml(safeContactHref)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span></span><span>${escapeHtml(contactLabel)}</span></a>` : `<span class="mentor-link-chip"><span></span><span>${escapeHtml(contactLabel)}</span></span>`}
           <p class="text-xs text-zinc-500 mt-3">${helperText}</p>
         </div>
       `;
@@ -3881,7 +4537,7 @@ const connector = !isLast
 
       if (!next) {
         labelEl.textContent = 'GSoC 2026 selection complete';
-        countdownEl.textContent = '🎉 All done!';
+        countdownEl.textContent = ' All done!';
         countdownEl.classList.remove('text-primary');
         countdownEl.classList.add('text-green-600');
         return;
@@ -4436,7 +5092,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
   }
 
   // ══════════════════════════════════════════════
-  // WATCHLIST — centralised bookmark sync helper
+  // WATCHLIST, centralised bookmark sync helper
   // ══════════════════════════════════════════════
   function refreshVisibleBookmarkButtons() {
     document.querySelectorAll('#orgGrid .bookmark-btn[data-bookmark-org]').forEach(btn => {
@@ -4484,7 +5140,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
   // bookmarkedSet stays in sync, then refresh the Watchlist panel.
   document.addEventListener('bookmarkChanged', () => {
     const fresh = new Set(parseStoredBookmarks());
-    // Diff: add new entries, remove stale ones — no full replacement so
+    // Diff: add new entries, remove stale ones, no full replacement so
     // any in-memory state from index.html toggles is also preserved.
     fresh.forEach(n => bookmarkedSet.add(n));
     [...bookmarkedSet].forEach(n => { if (!fresh.has(n)) bookmarkedSet.delete(n); });
@@ -4581,7 +5237,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
               </span>
               <span class="flex items-center gap-1">
                 <span class="material-symbols-outlined text-xs">bar_chart</span>
-                ${escapeHtml(org.competition || '—')}
+                ${escapeHtml(org.competition || '-')}
               </span>
             </div>
             <button data-bookmark-org="${escapeHtml(org.name)}"
@@ -4659,10 +5315,10 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
 
     // ── Competition strategy ──────────────────────────────────────────────────
     const strategyMsg = highComp
-      ? '⚠️ Your watchlist skews towards <strong>high-competition</strong> orgs — consider adding a few <em>Chill</em> orgs to diversify your odds.'
+      ? ' Your watchlist skews towards <strong>high-competition</strong> orgs, consider adding a few <em>Chill</em> orgs to diversify your odds.'
       : lowComp
-        ? '✅ Smart move — your watchlist is weighted towards <strong>lower-competition</strong> orgs, which improves acceptance probability.'
-        : '📊 Your watchlist has a <strong>balanced mix</strong> of competition levels — a solid hedging strategy.';
+        ? ' Smart move, your watchlist is weighted towards <strong>lower-competition</strong> orgs, which improves acceptance probability.'
+        : ' Your watchlist has a <strong>balanced mix</strong> of competition levels, a solid hedging strategy.';
 
     // ── Stack summary line ────────────────────────────────────────────────────
     const stackLine = topTags.length
@@ -4681,12 +5337,12 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     el.innerHTML = `
       <div class="space-y-3 text-sm leading-relaxed">
         <p>
-          <span class="font-bold">📌 Stack Focus:</span>
+          <span class="font-bold"> Stack Focus:</span>
           ${stackLine}
           Highlight experience with <strong>${escapeHtml(advice.tools)}</strong> in your proposals.
         </p>
         <p>
-          <span class="font-bold">🎯 Domain Strategy (${escapeHtml(catLabel)}):</span>
+          <span class="font-bold"> Domain Strategy (${escapeHtml(catLabel)}):</span>
           Before submitting, ${escapeHtml(advice.action)} to demonstrate early commitment to mentors.
         </p>
         <p>${strategyMsg}</p>
@@ -4811,7 +5467,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     const isComparing = compareList.includes(org.name);
     const ideasLinkHTML = (function(){
       const u = sanitizeHrefUrl(org.ideas);
-      return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span>💡</span><span>Visit ideas page</span></a>` : '';
+      return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span class="material-symbols-outlined">lightbulb</span><span>Visit ideas page</span></a>` : '';
     })();
 
     return `
@@ -4967,7 +5623,7 @@ if(org.ideas){
     const orgsToUse = filteredOrgs.length > 0 ? filteredOrgs : ORGS;
 
     if (!orgsToUse.length) {
-      alert('No organizations match your filters — try clearing some!');
+      alert('No organizations match your filters, try clearing some!');
       return;
     }
 
@@ -4977,7 +5633,7 @@ if(org.ideas){
     openModal(randomOrg.name);
   }
 
-  // Filters — all conditions are additive (chip + language pills + search + dropdowns compose)
+  // Filters, all conditions are additive (chip + language pills + search + dropdowns compose)
   function applyFilters() {
     const query = document.getElementById('searchInput').value.trim().toLowerCase();
     const categoryValue = document.getElementById('categoryFilter')?.value || 'all';
@@ -5169,7 +5825,7 @@ if(org.ideas){
     document.getElementById('hero-search-submit')?.addEventListener('click', heroSearchSubmit);
   }
 
-  // Quick-filter chips — mutually exclusive with each other, but additive with
+  // Quick-filter chips, mutually exclusive with each other, but additive with
   // language pills, search, and dropdown filters. applyFilters() reads activeChip.
   document.querySelectorAll('.filter-chip').forEach(chip => {
     chip.addEventListener('click', () => {
@@ -5196,7 +5852,7 @@ if(org.ideas){
         else if (text.includes('actively'))      activeChip = 'active';
         else                                     activeChip = null;
       } else {
-        // Chip was active — clicking again deactivates it
+        // Chip was active, clicking again deactivates it
         activeChip = null;
       }
 
@@ -6339,7 +6995,7 @@ if(e.key.toLowerCase()==='r'){
   <div style="background:#fff;border-radius:16px;width:100%;max-width:500px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 12px;">
       <h2 id="orgPickerTitle" style="font-size:18px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;">Choose an Organization</h2>
-      <button onclick="closeOrgPicker()" aria-label="Close" style="background:none;border:none;cursor:pointer;font-size:20px;color:#71717a;">✕</button>
+      <button onclick="closeOrgPicker()" aria-label="Close" style="background:none;border:none;cursor:pointer;font-size:20px;color:#71717a;">&times;</button>
     </div>
     <div style="padding:0 24px 12px;">
       <input id="orgPickerSearch" type="text" placeholder="Search organizations..."
