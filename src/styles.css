@@ -1290,3 +1290,37 @@ span.eyebrow{
   font-family:var(--rd-mono);font-size:10px;letter-spacing:.06em;
   text-transform:uppercase;color:var(--rd-faint);white-space:nowrap;
 }
+
+/* ---------- section photo bands ---------- */
+.bandfig{
+  margin:0 0 clamp(18px,2.4vw,28px);border-radius:var(--rd-r-lg);overflow:hidden;
+  box-shadow:var(--rd-shadow-lg);background:var(--rd-surface-2);
+  outline:1px solid rgb(33 28 23 / 7%);outline-offset:-1px;
+  height:clamp(150px,17vw,230px);
+}
+.bandfig img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:760px){.bandfig{height:170px}}
+.cmpfig{
+  margin:0;border-radius:14px;overflow:hidden;background:var(--rd-surface-2);
+  outline:1px solid rgb(33 28 23 / 7%);outline-offset:-1px;aspect-ratio:16/9;
+}
+.cmpfig img{width:100%;height:100%;object-fit:cover;display:block}
+.dark .bandfig,.dark .cmpfig{outline-color:rgb(255 255 255 / 8%)}
+
+/* ---------- insight panel ---------- */
+.insight-panel{
+  position:relative;overflow:hidden;border-radius:var(--rd-r);padding:22px;
+  background:var(--rd-accent-tint);border:1px solid #f6c9a9;color:var(--rd-ink);
+}
+.insight-panel h4{
+  margin:0 0 10px;font-family:var(--rd-display);font-size:18px;font-weight:500;
+  letter-spacing:-.02em;color:var(--rd-accent-dark);
+}
+.insight-panel p{
+  margin:0 0 14px;font-size:13.5px;line-height:1.6;color:var(--rd-ink-2);
+}
+.insight-panel .insight-kicker{
+  font-family:var(--rd-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--rd-faint);
+}
+.dark .insight-panel{background:#1f1509;border-color:#4a2f16}

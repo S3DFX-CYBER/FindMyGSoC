@@ -1744,6 +1744,9 @@ kbd:hover{
     <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Enter your GitHub username or paste your resume to get deterministic AI-style organization recommendations tailored to your skills and experience.</p>
   </div>
 
+  <figure class="bandfig">
+    <img src="src/assets/redesign/suggestions.webp" alt="A GSoC contributor speaking at the Alumni Camp India 2026" loading="lazy" />
+  </figure>
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
     <!-- Input Form -->
     <div class="lg:col-span-4 bg-white dark:bg-[#18181b] p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm h-fit">
@@ -1896,11 +1899,11 @@ kbd:hover{
             })();
           </script>
         </div>
-        <div class="bg-gradient-to-br from-primary to-primary-container text-white rounded-2xl p-6 relative overflow-hidden">
-          <div class="absolute top-0 right-0 p-4 opacity-20"><span class="material-symbols-outlined text-5xl">auto_awesome</span></div>
-          <h4 class="font-bold mb-3">AI Application Insight</h4>
-          <p id="aiInsightText" class="text-sm text-orange-100 leading-relaxed mb-4">Select organizations to get personalized contribution advice.</p>
-          <span class="text-[10px] font-label uppercase tracking-widest text-orange-200">Automated System Advice</span>
+        <div class="insight-panel">
+          <div class="absolute top-0 right-0 p-4 opacity-10"><span class="material-symbols-outlined text-5xl">auto_awesome</span></div>
+          <h4>AI Application Insight</h4>
+          <p id="aiInsightText">Select organizations to get personalized contribution advice.</p>
+          <span class="insight-kicker">Automated system advice</span>
         </div>
       </div>
     </div>
@@ -1986,6 +1989,9 @@ kbd:hover{
       <p class="text-zinc-600 mt-4 max-w-3xl">Pre-fetched contact channels and conservative mentor handles from org ideas pages, so you can find where to introduce yourself before proposal season gets busy.</p>
     </div>
 
+  <figure class="bandfig">
+    <img src="src/assets/redesign/mentors.webp" alt="Two contributors in conversation at the Alumni Camp" loading="lazy" />
+  </figure>
     <div class="bg-white border border-zinc-100 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
       <div class="flex items-center gap-3">
         <div class="w-3 h-3 rounded-full pulse-dot" id="mentorBannerDot" style="background-color:#f97316"></div>
@@ -2041,6 +2047,9 @@ kbd:hover{
     <p class="text-zinc-600 mt-4 max-w-2xl">An interactive roadmap — from understanding the program to landing your first acceptance. Click any block to expand its guide and FAQs.</p>
   </div>
 
+  <figure class="bandfig">
+    <img src="src/assets/redesign/band.webp" alt="Contributors watching a session at the GSoC Alumni Camp" loading="lazy" />
+  </figure>
   <div class="space-y-4" id="gsocRoadmap">
 
     <!-- ── Block 01 ── -->
@@ -2438,20 +2447,10 @@ kbd:hover{
       </button>
     </div>
     <div id="compare" class="bg-surface-container-low rounded-3xl p-8 border border-zinc-100">
-      <div class="grid grid-cols-3 gap-4 text-center">
-        <div class="bg-white rounded-xl p-4 border border-zinc-100">
-          <div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center mx-auto mb-3"><span class="material-symbols-outlined text-orange-600">psychology</span></div>
-          <p class="font-bold text-sm">TensorFlow</p><p class="text-[10px] text-zinc-500 font-label uppercase mt-1">15y · 42 mentors</p>
-        </div>
-        <div class="bg-white rounded-xl p-4 border border-zinc-100">
-          <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center mx-auto mb-3"><span class="material-symbols-outlined text-amber-600">developer_board</span></div>
-          <p class="font-bold text-sm">Apache</p><p class="text-[10px] text-zinc-500 font-label uppercase mt-1">19y · 64 mentors</p>
-        </div>
-        <div class="bg-white rounded-xl p-4 border border-zinc-100 border-dashed border-zinc-300">
-          <div class="w-10 h-10 rounded-lg bg-zinc-100 flex items-center justify-center mx-auto mb-3"><span class="material-symbols-outlined text-zinc-400">add</span></div>
-          <p class="font-bold text-sm text-zinc-400">Add org</p><p class="text-[10px] text-zinc-400 font-label uppercase mt-1">slot 3</p>
-        </div>
-      </div>
+      <p class="font-[family-name:var(--rd-mono)] text-[10.5px] uppercase tracking-[0.14em] text-[color:var(--rd-faint)] mb-4">Nothing selected yet</p>
+      <figure class="cmpfig">
+        <img src="src/assets/redesign/compare.webp" alt="A speaker on stage at the GSoC Alumni Camp India 2026" loading="lazy" />
+      </figure>
     </div>
   </div>
 </section>
