@@ -1,0 +1,71 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 2021,
+        "sourceType": "script"
+    },
+    "rules": {
+        "no-unused-vars": [
+            "warn",
+            {
+                "varsIgnorePattern": "^_"
+            }
+        ],
+        "no-console": "off",
+        "eqeqeq": [
+            "error",
+            "always"
+        ],
+        "no-var": "warn",
+        "prefer-const": "warn",
+        "semi": [
+            "warn",
+            "always"
+        ]
+    },
+    "overrides": [
+        {
+            "files": [
+                "src/js/*.js"
+            ],
+            "env": {
+                "browser": true
+            },
+            "globals": {
+                "module": "readonly"
+            }
+        },
+        {
+            "files": [
+                "tests/**/*.test.js"
+            ],
+            "env": {
+                "node": true
+            }
+        },
+        {
+            "files": [
+                "api/*.js"
+            ],
+            "parserOptions": {
+                "sourceType": "module"
+            },
+            "env": {
+                "node": true
+            }
+        },
+        {
+            "files": [
+                "agent/scripts/validate-ideas-urls.js"
+            ],
+            "env": {
+                "node": true,
+                "browser": false
+            }
+        }
+    ]
+}

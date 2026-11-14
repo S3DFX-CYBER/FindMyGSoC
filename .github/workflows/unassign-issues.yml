@@ -1,0 +1,289 @@
+name: 💤 Auto Unassign Inactive Issues
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: read
+  contents: read
+
+jobs:
+  auto-unassign:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Auto unassign inactive contributors
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
+
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const INACTIVE_DAYS = 7;
+            const now = new Date();
+
+            const cutoff =
+              new Date(
+                now.getTime() -
+                INACTIVE_DAYS * 24 * 60 * 60 * 1000
+              );
+
+            const issues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner,
+                repo,
+                state: 'open',
+                per_page: 100
+              }
+            );
+
+            for (const issue of issues) {
+
+              if (issue.pull_request) continue;
+
+              const assignees =
+                (issue.assignees || [])
+                  .map(a => a.login);
+
+              if (assignees.length === 0) continue;
+
+              for (const assignee of assignees) {
+
+                // ------------------------------------------------
+                // Skip maintainers / mentors
+                // ------------------------------------------------
+
+                const { data: perm } =
+                  await github.rest.repos
+                    .getCollaboratorPermissionLevel({
+                      owner,
+                      repo,
+                      username: assignee
+                    })
+                    .catch(() => ({
+                      data: { permission: 'none' }
+                    }));
+
+                if (
+                  ['admin', 'maintain', 'write']
+                    .includes(perm.permission)
+                ) {
+                  continue;
+                }
+
+                // ------------------------------------------------
+                // Get assignment timestamp
+                // ------------------------------------------------
+
+                const events =
+                  await github.paginate(
+                    github.rest.issues.listEvents,
+                    {
+                      owner,
+                      repo,
+                      issue_number: issue.number,
+                      per_page: 100
+                    }
+                  );
+
+                const assignedEvent =
+                  events
+                    .filter(e =>
+                      e.event === 'assigned' &&
+                      e.assignee &&
+                      e.assignee.login === assignee
+                    )
+                    .sort(
+                      (a, b) =>
+                        new Date(b.created_at) -
+                        new Date(a.created_at)
+                    )[0];
+
+                if (!assignedEvent) continue;
+
+                const assignedAt =
+                  new Date(assignedEvent.created_at);
+
+                // Newly assigned
+                if (assignedAt > cutoff) {
+                  continue;
+                }
+
+                // ------------------------------------------------
+                // Detect meaningful recent activity
+                // ------------------------------------------------
+
+                let hasRecentActivity = false;
+
+                // Recent comments
+                const comments =
+                  await github.paginate(
+                    github.rest.issues.listComments,
+                    {
+                      owner,
+                      repo,
+                      issue_number: issue.number,
+                      per_page: 100
+                    }
+                  );
+
+                const meaningfulComments =
+                  comments.filter(c => {
+
+                    if (!c.user) return false;
+
+                    if (c.user.login !== assignee) {
+                      return false;
+                    }
+
+                    const created =
+                      new Date(c.created_at);
+
+                    // Only recent comments count
+                    if (created < cutoff) {
+                      return false;
+                    }
+
+                    const text =
+                      (c.body || '')
+                        .trim()
+                        .toLowerCase();
+
+                    // Ignore trivial comments
+                    const trivialPatterns = [
+                      'working on it',
+                      'assign me',
+                      '/assign',
+                      'started working',
+                      'looking into this',
+                      'wip'
+                    ];
+
+                    return !trivialPatterns
+                      .some(p => text === p);
+                  });
+
+                if (meaningfulComments.length > 0) {
+                  hasRecentActivity = true;
+                }
+
+                // ------------------------------------------------
+                // Detect linked PRs
+                // ------------------------------------------------
+
+                const searchQuery =
+                  `repo:${owner}/${repo} ` +
+                  `is:pr author:${assignee} ` +
+                  `${issue.number}`;
+
+                const { data: searchResult } =
+                  await github.rest.search
+                    .issuesAndPullRequests({
+                      q: searchQuery,
+                      per_page: 20
+                    });
+
+                const linkedPR =
+                  (searchResult.items || [])
+                    .find(pr => {
+
+                      if (pr.state !== 'open') {
+                        return false;
+                      }
+
+                      const updatedAt =
+                        new Date(pr.updated_at);
+
+                      // PR itself inactive
+                      if (updatedAt < cutoff) {
+                        return false;
+                      }
+
+                      const body =
+                        (pr.body || '')
+                          .toLowerCase();
+
+                      return (
+                        body.includes(
+                          `#${issue.number}`
+                        ) ||
+                        body.includes(
+                          `closes #${issue.number}`
+                        ) ||
+                        body.includes(
+                          `fixes #${issue.number}`
+                        ) ||
+                        body.includes(
+                          `resolves #${issue.number}`
+                        )
+                      );
+                    });
+
+                if (linkedPR) {
+                  hasRecentActivity = true;
+                }
+
+                // ------------------------------------------------
+                // Unassign
+                // ------------------------------------------------
+
+                if (hasRecentActivity) {
+                  continue;
+                }
+
+                await github.rest.issues
+                  .removeAssignees({
+                    owner,
+                    repo,
+                    issue_number: issue.number,
+                    assignees: [assignee]
+                  });
+
+                // Remove assigned label if no assignees remain
+                const refreshed =
+                  await github.rest.issues.get({
+                    owner,
+                    repo,
+                    issue_number: issue.number
+                  });
+
+                if (
+                  (refreshed.data.assignees || [])
+                    .length === 0
+                ) {
+                  try {
+                    await github.rest.issues.removeLabel({
+                      owner,
+                      repo,
+                      issue_number: issue.number,
+                      name: 'assigned'
+                    });
+                  } catch (e) {}
+                }
+
+                await github.rest.issues
+                  .createComment({
+                    owner,
+                    repo,
+                    issue_number: issue.number,
+                    body:
+                      `⚠️ Auto-unassigned @${assignee} due to inactivity.\n\n` +
+
+                      `No meaningful activity, recent comments, or active linked PRs were detected within the last ${INACTIVE_DAYS} days.\n\n` +
+
+                      `You may request assignment again after 24 hours using:\n` +
+                      `\`/assign gssoc\` or \`/assign nsoc\``
+                  });
+
+                core.info(
+                  `Unassigned ${assignee} from issue #${issue.number}`
+                );
+              }
+            }

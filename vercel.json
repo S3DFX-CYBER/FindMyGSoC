@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "framework": null,
+  "outputDirectory": ".",
+  "buildCommand": "",
+  "devCommand": "npx serve . -l $PORT",
+  "routes": [
+    {
+      "src": "/app/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/app",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/data/issues.json",
+      "dest": "/api/gfi.js"
+    },
+    {
+      "src": "/api/(.*)",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "s-maxage=3600"
+      },
+      "continue": true
+    },
+    {
+      "src": "/data/(.*)\\.json",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      },
+      "continue": true
+    },
+    {
+      "src": "/api/github",
+      "dest": "/api/github.js"
+    },
+    {
+      "src": "/",
+      "dest": "/landing.html"
+    }
+  ]
+}

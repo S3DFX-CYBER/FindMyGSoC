@@ -1,0 +1,10 @@
+node_modules/
+.vercel
+.env
+.env.local
+.env.*.local
+
+# Editor settings
+.vscode/
+.DS_Store
+*.code-workspace

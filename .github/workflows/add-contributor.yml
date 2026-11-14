@@ -1,0 +1,79 @@
+name: Backfill Contributors
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  backfill-contributors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+
+      - name: Fetch merged PR contributors
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          touch contributors.txt
+          PAGE=1
+          while true; do
+            RESPONSE=$(gh api \
+              -H "Accept: application/vnd.github+json" \
+              "/repos/${GITHUB_REPOSITORY}/pulls?state=closed&per_page=100&page=${PAGE}")
+            COUNT=$(echo "$RESPONSE" | jq length)
+            if [ "$COUNT" -eq 0 ]; then break; fi
+            echo "$RESPONSE" | jq -r '
+              .[] | select(.merged_at != null) | select(.user.type != "Bot") | .user.login
+            ' >> contributors.txt
+            PAGE=$((PAGE + 1))
+          done
+          sort -u contributors.txt -o contributors.txt
+
+      - name: Update README contributors section
+        run: |
+          set -euo pipefail
+          TMP_FILE=$(mktemp)
+          while read -r USERNAME; do
+            if [[ ! "$USERNAME" =~ ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$ ]]; then
+              continue
+            fi
+            PROFILE_URL="https://github.com/${USERNAME}"
+            AVATAR_URL="https://github.com/${USERNAME}.png"
+            echo "<a href=\"${PROFILE_URL}\"><img src=\"${AVATAR_URL}\" width=\"50px\" alt=\"${USERNAME}\" /></a>" >> "$TMP_FILE"
+          done < contributors.txt
+          awk '
+            BEGIN { inside=0 }
+            /<!-- CONTRIBUTORS_START -->/ {
+              print
+              system("cat '"$TMP_FILE"'")
+              inside=1
+              next
+            }
+            /<!-- CONTRIBUTORS_END -->/ {
+              inside=0
+            }
+            !inside
+          ' README.md > README.new
+          mv README.new README.md
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 #v8.1.1
+        with:
+          commit-message: "docs: backfill contributors"
+          title: "docs: backfill contributors"
+          body: |
+            Automated backfill of historical contributors.
+
+            - Fetches merged PR authors
+            - Removes duplicates
+            - Excludes bots
+            - Updates README contributors section
+          branch: backfill-contributors
+          delete-branch: true
+          add-paths: |
+            README.md

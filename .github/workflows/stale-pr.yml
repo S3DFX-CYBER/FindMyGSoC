@@ -1,0 +1,204 @@
+name: 🧹 Stale PR Cleanup
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+  issues: write
+  contents: read
+
+jobs:
+  close-stale-prs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Close stale PRs with unresolved Stage 1 failures
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
+
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const STALE_AFTER_DAYS = 7;
+            const CLOSE_AFTER_DAYS = 7;
+
+            const now = new Date();
+
+            const staleCutoff =
+              new Date(
+                now.getTime() -
+                STALE_AFTER_DAYS * 24 * 60 * 60 * 1000
+              );
+
+            const prs = await github.paginate(
+              github.rest.pulls.list,
+              {
+                owner,
+                repo,
+                state: 'open',
+                sort: 'updated',
+                direction: 'asc',
+                per_page: 100
+              }
+            );
+
+            for (const pr of prs) {
+
+              if (pr.user.type === 'Bot') {
+                continue;
+              }
+
+              const updatedAt =
+                new Date(pr.updated_at);
+
+              // Skip recently updated PRs
+              if (updatedAt > staleCutoff) {
+                continue;
+              }
+
+              const issue_number = pr.number;
+
+              // Fetch labels
+              const { data: labelData } =
+                await github.rest.issues
+                  .listLabelsOnIssue({
+                    owner,
+                    repo,
+                    issue_number
+                  });
+
+              const labels =
+                labelData.map(l =>
+                  l.name.toLowerCase()
+                );
+
+              const hasStage1Failure =
+                labels.includes('needs-stage-1-fixes') ||
+                labels.includes('dco-missing') ||
+                labels.includes('ai-slop');
+
+              const isSpam =
+                labels.includes('spam') ||
+                labels.includes('gssoc:spam');
+
+              const isStale =
+                labels.includes('stale');
+
+              // Only process failed/spam PRs
+              if (
+                !hasStage1Failure &&
+                !isSpam
+              ) {
+                continue;
+              }
+
+              // --------------------------------------------------
+              // FIRST TIME: MARK AS STALE
+              // --------------------------------------------------
+
+              if (!isStale) {
+
+                try {
+
+                  await github.rest.issues.addLabels({
+                    owner,
+                    repo,
+                    issue_number,
+                    labels: ['stale']
+                  });
+
+                } catch (e) {}
+
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number,
+                  body:
+                    `## ⏰ Stale PR Warning\n\n` +
+                    `This PR has been inactive for **${STALE_AFTER_DAYS}+ days** with unresolved issues.\n\n` +
+                    `If there is no activity, it will be automatically closed in **${CLOSE_AFTER_DAYS} days**.\n\n` +
+                    `Please push updates or comment if you need more time.`
+                });
+
+                core.info(
+                  `Marked PR #${issue_number} as stale`
+                );
+
+                continue;
+              }
+
+              // --------------------------------------------------
+              // STALE LABEL EXISTS → CHECK AGE
+              // --------------------------------------------------
+
+              const { data: events } =
+                await github.rest.issues
+                  .listEvents({
+                    owner,
+                    repo,
+                    issue_number,
+                    per_page: 100
+                  });
+
+              const staleEvent =
+                events
+                  .filter(e =>
+                    e.event === 'labeled' &&
+                    e.label &&
+                    e.label.name.toLowerCase() === 'stale'
+                  )
+                  .sort(
+                    (a, b) =>
+                      new Date(b.created_at) -
+                      new Date(a.created_at)
+                  )[0];
+
+              if (!staleEvent) {
+                continue;
+              }
+
+              const staleSince =
+                new Date(staleEvent.created_at);
+
+              const closeCutoff =
+                new Date(
+                  now.getTime() -
+                  CLOSE_AFTER_DAYS * 24 * 60 * 60 * 1000
+                );
+
+              // Not stale long enough yet
+              if (staleSince > closeCutoff) {
+                continue;
+              }
+
+              // --------------------------------------------------
+              // CLOSE PR
+              // --------------------------------------------------
+
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: issue_number,
+                state: 'closed'
+              });
+
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body:
+                  `## 🧹 Auto-Closed (Stale)\n\n` +
+                  `This PR was automatically closed due to prolonged inactivity with unresolved issues.\n\n` +
+                  `You may reopen the PR after addressing the requested changes.`
+              });
+
+              core.info(
+                `Closed stale PR #${issue_number}`
+              );
+            }

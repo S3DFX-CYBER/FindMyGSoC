@@ -1,0 +1,140 @@
+name: 🏷️ Issue Label Enforcement
+
+on:
+  issues:
+    types:
+      - opened
+      - labeled
+      - unlabeled
+
+permissions:
+  issues: write
+
+concurrency:
+  group: issue-label-${{ github.workflow }}-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  enforce-labels:
+    name: Enforce Triage Labels
+
+    if: |
+      github.actor != 'github-actions[bot]'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Issue Labels
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          script: |
+            const issue = context.payload.issue;
+            if (!issue) return;
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const issue_number = issue.number;
+
+            // Ignore bots
+            if (
+              issue.user.type === 'Bot'
+            ) {
+              core.info('Skipping bot issue');
+              return;
+            }
+
+            // Ignore PRs
+            if (issue.pull_request) {
+              core.info('Skipping pull request');
+              return;
+            }
+
+            const labels = (issue.labels || [])
+              .map(l => l.name.toLowerCase());
+
+            // Valid program labels
+            const PROGRAM_LABELS = [
+              'gssoc',
+              'gssoc26',
+              'nsoc',
+              'nsoc26',
+              'hacktoberfest'
+            ];
+
+            const hasProgramLabel =
+              PROGRAM_LABELS.some(l =>
+                labels.includes(l)
+              );
+
+            //
+            // --------------------------------------------------
+            // ISSUE HAS PROGRAM LABEL
+            // --------------------------------------------------
+            //
+
+            if (hasProgramLabel) {
+
+              // Remove needs-triage if present
+              if (labels.includes('needs-triage')) {
+
+                try {
+
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number,
+                    name: 'needs-triage'
+                  });
+
+                  core.info(
+                    'Removed needs-triage label'
+                  );
+
+                } catch (e) {
+
+                  core.info(
+                    `Failed removing label: ${e.message}`
+                  );
+                }
+              }
+
+              return;
+            }
+
+            //
+            // --------------------------------------------------
+            // ISSUE NEEDS TRIAGE
+            // --------------------------------------------------
+            //
+
+            if (!labels.includes('needs-triage')) {
+
+              try {
+
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number,
+                  labels: ['needs-triage']
+                });
+
+                core.info(
+                  'Added needs-triage label'
+                );
+
+              } catch (e) {
+
+                core.info(
+                  `Failed adding label: ${e.message}`
+                );
+              }
+
+            } else {
+
+              core.info(
+                'Issue already marked for triage'
+              );
+            }

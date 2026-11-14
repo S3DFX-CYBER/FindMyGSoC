@@ -1,0 +1,142 @@
+name: Priority Label Manager
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - labeled
+      - unlabeled
+      - synchronize
+
+permissions:
+  pull-requests: write
+  contents: read
+
+concurrency:
+  group: priority-label-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  normalize:
+    # ----------------------------------------
+    # SECURITY GUARD
+    # ----------------------------------------
+
+    if: |
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.actor != 'github-actions[bot]'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Normalize priority labels
+        id: priority
+        env:
+          LABELS_JSON: >-
+            ${{ toJson(github.event.pull_request.labels.*.name) }}
+
+        run: |
+          echo "result=$(node .github/scripts/manage-priority-labels.js)" >> "$GITHUB_OUTPUT"
+
+      - name: Remove duplicate priority labels
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9.0.0
+
+        env:
+          RESULT: ${{ steps.priority.outputs.result }}
+
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          script: |
+
+            let parsed = {};
+            let keep = null;
+            let remove = [];
+
+            // ----------------------------------------
+            // SAFE PARSE
+            // ----------------------------------------
+
+            try {
+
+              parsed = JSON.parse(
+                process.env.RESULT || '{}'
+              );
+
+              keep =
+                parsed.keep || null;
+
+              remove = Array.isArray(parsed.remove)
+                ? parsed.remove
+                : [];
+
+            } catch (error) {
+
+              core.warning(
+                `Failed to parse priority normalization output: ${error.message}`
+              );
+
+              return;
+            }
+
+            // ----------------------------------------
+            // NOTHING TO CLEAN
+            // ----------------------------------------
+
+            if (!remove.length) {
+
+              core.info(
+                'No duplicate priority labels detected.'
+              );
+
+              return;
+            }
+
+            // ----------------------------------------
+            // REMOVE DUPLICATES
+            // ----------------------------------------
+
+            const owner =
+              context.repo.owner;
+
+            const repo =
+              context.repo.repo;
+
+            const issue_number =
+              context.payload.pull_request.number;
+
+            for (const label of remove) {
+
+              try {
+
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo,
+                  issue_number,
+                  name: label
+                });
+
+                core.info(
+                  `Removed duplicate priority label: ${label}`
+                );
+
+              } catch (error) {
+
+                core.warning(
+                  `Failed to remove label ${label}: ${error.message}`
+                );
+              }
+            }
+
+            if (keep) {
+
+              core.info(
+                `Kept priority label: ${keep}`
+              );
+            }

@@ -1,0 +1,232 @@
+name: 🔄 Refresh Change Requests On New Commit
+
+on:
+  pull_request_target:
+    types:
+      - synchronize
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: refresh-change-requests-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  refresh-reviews:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Dismiss stale change requests
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd #v8
+
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const pull_number =
+              context.payload.pull_request.number;
+
+            const latestCommitTime =
+              new Date(
+                context.payload.pull_request.updated_at
+              );
+
+            core.info(
+              `Checking stale reviews for PR #${pull_number}`
+            );
+
+            // ----------------------------------------
+            // LOAD MENTOR LIST
+            // ----------------------------------------
+
+            const mentorFile =
+              await github.rest.repos.getContent({
+                owner,
+                repo,
+                path:
+                  '.github/reviewers/gssoc-mentors.json'
+              });
+
+            const mentorData = JSON.parse(
+              Buffer.from(
+                mentorFile.data.content,
+                'base64'
+              ).toString()
+            );
+
+            const mentors = new Set(
+              (mentorData.reviewers || [])
+                .map(x => x.toLowerCase())
+            );
+
+            // ----------------------------------------
+            // FETCH REVIEWS
+            // ----------------------------------------
+
+            const reviews = await github.paginate(
+              github.rest.pulls.listReviews,
+              {
+                owner,
+                repo,
+                pull_number,
+                per_page: 100
+              }
+            );
+
+            if (!reviews.length) {
+              core.info('No reviews found');
+              return;
+            }
+
+            // ----------------------------------------
+            // KEEP LATEST REVIEW PER USER
+            // ----------------------------------------
+
+            const latestReviewByUser = new Map();
+
+            for (const review of reviews) {
+
+              const login =
+                review.user?.login?.toLowerCase();
+
+              if (!login) continue;
+
+              const existing =
+                latestReviewByUser.get(login);
+
+              if (
+                !existing ||
+                new Date(review.submitted_at) >
+                new Date(existing.submitted_at)
+              ) {
+                latestReviewByUser.set(
+                  login,
+                  review
+                );
+              }
+            }
+
+            // ----------------------------------------
+            // FILTER ELIGIBLE REVIEWS
+            // ----------------------------------------
+
+            const dismissible =
+              Array.from(
+                latestReviewByUser.values()
+              ).filter(review => {
+
+                const login =
+                  review.user?.login?.toLowerCase();
+
+                // only mentor reviews
+                if (!mentors.has(login)) {
+                  return false;
+                }
+
+                // only change requests
+                if (
+                  review.state !==
+                  'CHANGES_REQUESTED'
+                ) {
+                  return false;
+                }
+
+                // review must be older than latest push
+                if (
+                  new Date(review.submitted_at) >=
+                  latestCommitTime
+                ) {
+                  return false;
+                }
+
+                return true;
+              });
+
+            if (!dismissible.length) {
+
+              core.info(
+                'No stale change requests found'
+              );
+
+              return;
+            }
+
+            core.info(
+              `Found ${dismissible.length} stale reviews`
+            );
+
+            // ----------------------------------------
+            // DISMISS REVIEWS
+            // ----------------------------------------
+
+            let dismissed = 0;
+
+            for (const review of dismissible) {
+
+              try {
+
+                await github.rest.pulls.dismissReview({
+                  owner,
+                  repo,
+                  pull_number,
+                  review_id: review.id,
+                  message:
+                    'New commits were pushed addressing review feedback. Please re-review the updated changes.'
+                });
+
+                dismissed++;
+
+                core.info(
+                  `Dismissed review from @${review.user.login}`
+                );
+
+              } catch (e) {
+
+                core.warning(
+                  `Failed dismissing ${review.id}: ${e.message}`
+                );
+              }
+            }
+
+            // ----------------------------------------
+            // LABEL CLEANUP
+            // ----------------------------------------
+
+            async function removeLabel(name) {
+              try {
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo,
+                  issue_number: pull_number,
+                  name
+                });
+              } catch {}
+            }
+
+            if (dismissed > 0) {
+
+              await removeLabel(
+                'changes-requested'
+              );
+
+              await removeLabel(
+                'needs-author-fix'
+              );
+
+              core.info(
+                `Dismissed ${dismissed} stale reviews`
+              );
+            }
+
+            // ----------------------------------------
+            // SMALL COOLDOWN
+            // ----------------------------------------
+
+            await new Promise(
+              r => setTimeout(r, 3000)
+            );

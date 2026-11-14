@@ -1,0 +1,64 @@
+name: 🤖 TENET Agent - PR Review
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  tenet-review:
+    name: TENET Security Review
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login != 'github-actions[bot]' && github.event.pull_request.user.login != 'coderabbitai[bot]'
+
+    # SECURITY: Do NOT add `ref: github.event.pull_request.head.sha` here.
+    # pull_request_target runs with repository secrets.
+    # Checking out fork code could expose secrets.
+    # TENET reads PR diffs through the GitHub API using HEAD_SHA.
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 #v6.2.0
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: agent/tenet_agent/requirements.txt
+
+      - name: Install TENET agent dependencies
+        run: pip install -r agent/tenet_agent/requirements.txt
+
+      - name: Check TENET_AI_KEY is configured
+        id: key_check
+        run: |
+          if [ -z "$TENET_AI_KEY" ]; then
+            echo "has_key=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_key=true" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          TENET_AI_KEY: ${{ secrets.TENET_AI_KEY }}
+
+      - name: Run TENET PR Review
+        if: steps.key_check.outputs.has_key == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TENET_AI_KEY: ${{ secrets.TENET_AI_KEY }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          cd agent/tenet_agent
+          python tenet_review.py
