@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-11-08T03:11:48.507Z",
-  "totalIssues": 45,
-  "totalOrgs": 19,
-  "totalLabels": 57,
+  "generatedAt": "2026-11-14T10:04:24.833Z",
+  "totalIssues": 130,
+  "totalOrgs": 59,
+  "totalLabels": 193,
   "topOrganizations": [
-    "AFLplusplus",
-    "AnkiDroid",
-    "ArduPilot",
-    "Boa",
-    "C2SI",
-    "cBioPortal for Cancer Genomics",
     "checkstyle",
-    "CircuitVerse.org",
-    "DBpedia",
-    "OpenAstronomy"
+    "Oppia Foundation",
+    "Meshery",
+    "LLVM Compiler Infrastructure",
+    "Swift",
+    "The OpenROAD Initiative",
+    "FreeCAD",
+    "The Julia Language",
+    "Internet Archive",
+    "MoFA Org"
   ]
 }
