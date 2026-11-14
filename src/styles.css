@@ -956,3 +956,387 @@ body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',sans-
   transition: opacity 0.2s ease, transform 0.2s ease;
   pointer-events: none;
 }
+
+/* =========================================================================
+   2027 redesign — app layer
+   The design system from the redesign handoff, expressed as its own token
+   set (--rd-*) so it can sit alongside the existing component styles instead
+   of overwriting them. Component rules here target the new page shell
+   (.appbar, .app-head, section headings, .org-card); the legacy component
+   classes above keep driving the modals, panels and widgets that were not
+   part of this pass.
+   ========================================================================= */
+
+:root{
+  --rd-bg:#ffffff;
+  --rd-surface:#fbf7f2;
+  --rd-surface-2:#f4ece2;
+  --rd-line:#eadfd2;
+  --rd-line-soft:#f2eae0;
+  --rd-ink:#211c17;
+  --rd-ink-2:#3b332b;
+  --rd-muted:#6e635a;
+  --rd-faint:#8c8178;
+  --rd-accent:#f26a1b;
+  --rd-accent-dark:#cf5209;
+  --rd-accent-soft:#fdeee2;
+  --rd-accent-tint:#fff7f1;
+  --rd-blue:#2a52d0;
+  --rd-blue-dark:#1d3ea8;
+  --rd-blue-soft:#e9edfb;
+  --rd-green:#1f7a45;
+  --rd-green-soft:#e7f3ea;
+  --rd-amber:#9a5b00;
+  --rd-amber-soft:#fbf0df;
+  --rd-red:#c5372b;
+  --rd-red-soft:#fbe9e6;
+  --rd-display:'Newsreader',georgia,'Times New Roman',serif;
+  --rd-body:'Archivo','Helvetica Neue',arial,sans-serif;
+  --rd-mono:'JetBrains Mono',ui-monospace,monospace;
+  --rd-r-sm:9px;
+  --rd-r:18px;
+  --rd-r-lg:22px;
+  --rd-shadow:0 1px 2px rgba(60,64,67,.10), 0 1px 3px rgba(60,64,67,.08);
+  --rd-shadow-lg:0 4px 8px rgba(60,64,67,.10), 0 12px 32px rgba(60,64,67,.12);
+  --rd-ease:cubic-bezier(.22,1,.36,1);
+}
+
+.dark{
+  --rd-bg:#12100d;
+  --rd-surface:#191512;
+  --rd-surface-2:#241d16;
+  --rd-line:#3a2f26;
+  --rd-line-soft:#2a231c;
+  --rd-ink:#f6ede3;
+  --rd-ink-2:#ddcec0;
+  --rd-muted:#a89a8b;
+  --rd-faint:#8b7d6f;
+  --rd-accent:#f97316;
+  --rd-accent-dark:#fb923c;
+  --rd-accent-soft:#2b1a0c;
+  --rd-accent-tint:#1f1509;
+  --rd-blue:#8fb0ff;
+  --rd-blue-dark:#b9ccff;
+  --rd-blue-soft:#1b2237;
+  --rd-green:#4ade80;
+  --rd-green-soft:#12241a;
+  --rd-amber:#fbbf24;
+  --rd-amber-soft:#2a2010;
+  --rd-red:#f87171;
+  --rd-red-soft:#2a1414;
+  --rd-shadow:0 1px 2px rgba(0,0,0,.5), 0 1px 3px rgba(0,0,0,.4);
+  --rd-shadow-lg:0 4px 8px rgba(0,0,0,.45), 0 12px 32px rgba(0,0,0,.5);
+}
+
+/* Legacy token names, pointed at the redesign palette so the components that
+   were written against them (chips, banners, modals, footer) land on the same
+   colours as the new shell. Declared after the original block, so these win. */
+:root{
+  --bg:#ffffff;
+  --orange:#f26a1b;
+  --orange-deep:#cf5209;
+  --orange-pale:#fdeee2;
+  --orange-mid:#f7e0cf;
+  --orange-border:#f6c9a9;
+  --ink:#211c17;
+  --ink2:#3b332b;
+  --ink3:#6e635a;
+  --muted:#8c8178;
+  --border:#eadfd2;
+  --border2:#f2eae0;
+  --card-bg:#ffffff;
+  --input-bg:#ffffff;
+  --tag-bg:#fbf7f2;
+  --nav-bg:rgba(255,255,255,.9);
+  --modal-bg:#ffffff;
+  --an-bg:#fbf7f2;
+  --blue:#2a52d0;
+  --green:#1f7a45;
+  --red:#c5372b;
+  --shadow:0 1px 2px rgb(60 64 67 / 10%), 0 1px 3px rgb(60 64 67 / 8%);
+  --shadow-lg:0 4px 8px rgb(60 64 67 / 10%), 0 12px 32px rgb(60 64 67 / 12%);
+}
+.dark{
+  --bg:#12100d;
+  --white:#1a1512;
+  --orange:#f97316;
+  --orange-deep:#fb923c;
+  --orange-pale:#2b1a0c;
+  --orange-mid:#2a1a0d;
+  --orange-border:#7c3a0a;
+  --ink:#f6ede3;
+  --ink2:#ddcec0;
+  --ink3:#a89a8b;
+  --muted:#8b7d6f;
+  --border:#3a2f26;
+  --border2:#2a231c;
+  --card-bg:#1a1512;
+  --input-bg:#1a1512;
+  --tag-bg:#12100d;
+  --nav-bg:rgba(18,16,13,.9);
+  --modal-bg:#1a1512;
+  --an-bg:#12100d;
+  --blue:#8fb0ff;
+  --green:#4ade80;
+  --red:#f87171;
+  --shadow:0 1px 4px rgb(0 0 0 / 40%), 0 6px 20px rgb(0 0 0 / 30%);
+  --shadow-lg:0 12px 40px rgb(0 0 0 / 50%);
+}
+
+/* ---------- app bar ---------- */
+.appbar{
+  position:sticky;top:0;z-index:60;
+  background:color-mix(in srgb, var(--rd-bg) 86%, transparent);
+  backdrop-filter:blur(12px) saturate(1.4);
+  border-bottom:1px solid var(--rd-line-soft);
+}
+.appbar-in{
+  max-width:1180px;margin:0 auto;padding:12px clamp(18px,5vw,40px);
+  display:flex;align-items:center;gap:20px;
+}
+.appbar .brand{
+  display:flex;align-items:center;gap:9px;flex:none;
+  font-family:var(--rd-display);font-size:20px;font-weight:500;letter-spacing:-.015em;
+  color:var(--rd-ink);
+}
+.appbar .brand .mark{
+  width:28px;height:28px;border-radius:8px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#fbbc04,var(--rd-accent));color:#fff;
+  font-family:var(--rd-mono);font-size:12px;font-weight:500;
+}
+.appbar .appnav{display:flex;gap:22px;margin-left:auto}
+.appbar .appnav a{
+  font-family:var(--rd-body);font-size:14px;font-weight:500;color:var(--rd-muted);
+  transition:color .2s;white-space:nowrap;
+}
+.appbar .appnav a:hover,.appbar .appnav a.on{color:var(--rd-ink)}
+.appbar .right{display:flex;align-items:center;gap:8px;flex:none}
+.appbar .cycle{
+  font-family:var(--rd-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 9px;border-radius:999px;background:var(--rd-surface-2);color:var(--rd-ink-2);
+  white-space:nowrap;
+}
+.appbar .icon-btn{
+  display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;
+  border-radius:10px;border:1.5px solid var(--rd-line);background:var(--rd-bg);
+  color:var(--rd-ink-2);cursor:pointer;transition:border-color .2s,color .2s,background .2s;
+  flex:none;padding:0;
+}
+.appbar .icon-btn:hover{border-color:var(--rd-accent);color:var(--rd-accent)}
+.appbar .icon-btn svg{width:17px;height:17px}
+@media (max-width:1080px){.appbar .appnav{display:none}}
+@media (max-width:520px){.appbar .cycle{display:none}}
+
+/* ---------- page head ---------- */
+.app-head{
+  max-width:1180px;margin:0 auto;
+  padding:clamp(26px,3.6vw,42px) clamp(18px,5vw,40px) clamp(8px,1.6vw,14px);
+  display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(20px,4vw,44px);align-items:start;
+}
+@media (max-width:980px){
+  .app-head{grid-template-columns:1fr}
+  .app-head-aside{margin-top:26px}
+}
+.app-head .headstats{margin-top:26px}
+.app-head h1{
+  margin:0;font-family:var(--rd-display);font-weight:400;
+  font-size:clamp(32px,3.7vw,46px);line-height:1.05;letter-spacing:-.028em;color:var(--rd-ink);
+  max-width:16ch;
+}
+.app-head .lede{
+  margin:16px 0 0;font-family:var(--rd-body);font-size:clamp(15px,1.3vw,17px);
+  line-height:1.6;color:var(--rd-ink-2);max-width:56ch;font-weight:300;
+}
+.headstats{display:flex;gap:10px;flex-wrap:wrap}
+.headstats .hs{
+  min-width:104px;padding:12px 16px;border-radius:14px;
+  background:var(--rd-surface);border:1px solid var(--rd-line-soft);
+}
+.headstats .hs .n{
+  font-family:var(--rd-display);font-size:26px;line-height:1;letter-spacing:-.02em;
+  color:var(--rd-ink);font-variant-numeric:lining-nums;
+}
+.headstats .hs .l{
+  font-family:var(--rd-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--rd-faint);margin-top:6px;
+}
+
+/* ---------- section headings ---------- */
+h2.sec-title{
+  font-family:var(--rd-display);font-weight:400;letter-spacing:-.035em;line-height:1.06;
+  color:var(--rd-ink);
+}
+span.eyebrow{
+  font-family:var(--rd-mono);font-size:11px;font-weight:400;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--rd-accent);
+}
+.sec-lede{
+  font-family:var(--rd-body);font-size:15.5px;line-height:1.65;color:var(--rd-muted);
+  max-width:62ch;
+}
+
+/* ---------- org card ---------- */
+.org-card{
+  background:var(--rd-bg);
+  border:1px solid var(--rd-line-soft);
+  border-radius:var(--rd-r);
+  box-shadow:none;
+  transition:box-shadow .25s,transform .25s var(--rd-ease),border-color .25s;
+}
+.org-card:hover{
+  box-shadow:var(--rd-shadow-lg);
+  transform:translateY(-2px);
+  border-color:#f0c9a8;
+}
+.dark .org-card:hover{border-color:#5a3316}
+.org-card h3{font-family:var(--rd-display);font-weight:500;letter-spacing:-.02em}
+
+/* ---------- org card (redesign) ---------- */
+.ocard{padding:18px;display:flex;flex-direction:column;gap:12px}
+.ocard-top{display:flex;align-items:center;gap:11px}
+.ocard-ava{
+  width:44px;height:44px;border-radius:11px;flex:none;overflow:hidden;
+  display:grid;place-items:center;background:var(--rd-surface-2);
+  border:1px solid var(--rd-line-soft);padding:6px;
+}
+.ocard-ava img{width:100%;height:100%;object-fit:contain}
+.ocard-ava .logo-placeholder:not(.hidden){
+  display:grid;place-items:center;width:100%;height:100%;
+  font-family:var(--rd-display);font-size:18px;color:var(--rd-accent);
+}
+.ocard-id{min-width:0;flex:1}
+.ocard-id h3{
+  margin:0;font-family:var(--rd-display);font-size:17px;font-weight:500;
+  letter-spacing:-.02em;line-height:1.25;color:var(--rd-ink);
+  transition:color .2s;
+}
+.ocard:hover .ocard-id h3{color:var(--rd-accent)}
+.ocard-sub{
+  margin-top:3px;font-family:var(--rd-mono);font-size:10.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--rd-faint);
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+}
+.ocard-badges{display:flex;align-items:center;gap:6px;flex:none}
+.years-badge{
+  font-family:var(--rd-mono);font-size:10px;letter-spacing:.06em;padding:3px 7px;
+  border-radius:6px;background:var(--rd-accent-soft);color:var(--rd-accent-dark);
+  white-space:nowrap;
+}
+.ocard .bookmark-btn{
+  display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
+  border-radius:8px;color:var(--rd-faint);transition:color .2s,background .2s;background:none;border:0;cursor:pointer;
+}
+.ocard .bookmark-btn:hover{background:var(--rd-surface-2);color:var(--rd-accent)}
+.ocard .bookmark-btn.active{color:var(--rd-accent)}
+.ocard .complexity-badge{
+  font-family:var(--rd-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 6px;border-radius:5px;background:var(--rd-surface-2);color:var(--rd-ink-2);
+}
+.ocard-desc{
+  margin:0;font-size:13.5px;line-height:1.55;color:var(--rd-muted);flex:1;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.ocard-tags{display:flex;flex-wrap:wrap;gap:6px}
+.ocard-tag{
+  font-family:var(--rd-mono);font-size:10.5px;padding:3px 8px;border-radius:5px;
+  background:var(--rd-surface-2);color:var(--rd-ink-2);
+}
+.ocard-acts{
+  display:flex;align-items:center;gap:8px;padding-top:12px;
+  border-top:1px solid var(--rd-line-soft);margin-top:auto;
+}
+.mini-btn{
+  display:inline-flex;align-items:center;gap:5px;font-family:var(--rd-body);
+  font-size:12px;font-weight:600;padding:6px 11px;border-radius:8px;
+  border:1.5px solid var(--rd-line);background:var(--rd-bg);color:var(--rd-ink-2);
+  cursor:pointer;transition:border-color .18s,color .18s,background .18s;white-space:nowrap;
+}
+.mini-btn:hover{border-color:var(--rd-accent);color:var(--rd-accent)}
+.mini-btn.on,.mini-btn.accent{
+  background:var(--rd-accent-soft);border-color:#f6c9a9;color:var(--rd-accent-dark);
+}
+.mini-btn.accent:hover{background:var(--rd-accent);border-color:var(--rd-accent);color:#fff}
+.mini-btn .material-symbols-outlined{font-size:15px}
+.ocard-acts .mini-btn:last-child{margin-left:auto}
+
+/* ---------- filter chips ---------- */
+.filter-chip{
+  font-family:var(--rd-mono);font-size:11.5px;padding:6px 11px;border-radius:8px;
+  border:1.5px solid var(--rd-line);background:var(--rd-bg);color:var(--rd-ink-2);
+  transition:border-color .2s,color .2s,background .2s,transform .2s;
+}
+.filter-chip:hover{border-color:var(--rd-accent);color:var(--rd-accent);transform:translateY(-1px)}
+.filter-chip.bg-orange-600,.filter-chip.bg-primary{background:var(--rd-accent);border-color:var(--rd-accent);color:#fff}
+.filter-chip .material-symbols-outlined{font-size:15px}
+.pill[data-lang]{
+  font-family:var(--rd-mono);font-size:11px;padding:5px 10px;border-radius:7px;
+  border:1.5px solid var(--rd-line);background:var(--rd-bg);color:var(--rd-ink-2);
+  transition:border-color .2s,color .2s,background .2s;
+}
+.pill[data-lang]:hover{border-color:var(--rd-accent);color:var(--rd-accent)}
+.pill[data-lang][aria-pressed="true"]{
+  background:var(--rd-accent);border-color:var(--rd-accent);color:#fff;
+}
+
+/* ---------- list rows ---------- */
+.row-item{
+  display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;
+  border:1px solid var(--rd-line-soft);background:var(--rd-bg);
+  transition:border-color .2s,background .2s;
+}
+.row-item:hover{border-color:#f0c9a8;background:var(--rd-accent-tint)}
+.row-item .row-main{min-width:0;flex:1;font-size:13px;color:var(--rd-ink-2)}
+.row-item .row-meta{
+  font-family:var(--rd-mono);font-size:10px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--rd-faint);white-space:nowrap;
+}
+
+/* ---------- section photo bands ---------- */
+.bandfig{
+  margin:0 0 clamp(18px,2.4vw,28px);border-radius:var(--rd-r-lg);overflow:hidden;
+  box-shadow:var(--rd-shadow-lg);background:var(--rd-surface-2);
+  outline:1px solid rgb(33 28 23 / 7%);outline-offset:-1px;
+  aspect-ratio:3/1;
+}
+.bandfig img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:760px){.bandfig{aspect-ratio:16/10}}
+.cmpfig{
+  margin:0;border-radius:14px;overflow:hidden;background:var(--rd-surface-2);
+  outline:1px solid rgb(33 28 23 / 7%);outline-offset:-1px;aspect-ratio:16/9;
+}
+.cmpfig img{width:100%;height:100%;object-fit:cover;display:block}
+.dark .bandfig,.dark .cmpfig{outline-color:rgb(255 255 255 / 8%)}
+
+/* ---------- insight panel ---------- */
+.insight-panel{
+  position:relative;overflow:hidden;border-radius:var(--rd-r);padding:22px;
+  background:var(--rd-accent-tint);border:1px solid #f6c9a9;color:var(--rd-ink);
+}
+.insight-panel h4{
+  margin:0 0 10px;font-family:var(--rd-display);font-size:18px;font-weight:500;
+  letter-spacing:-.02em;color:var(--rd-accent-dark);
+}
+.insight-panel p{
+  margin:0 0 14px;font-size:13.5px;line-height:1.6;color:var(--rd-ink-2);
+}
+.insight-panel .insight-kicker{
+  font-family:var(--rd-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--rd-faint);
+}
+.dark .insight-panel{background:#1f1509;border-color:#4a2f16}
+
+/* ---------- split section headers with a figure ---------- */
+.section-hd.with-fig{
+  display:grid;grid-template-columns:1fr minmax(240px,340px);
+  gap:clamp(20px,4vw,44px);align-items:center;
+}
+@media (max-width:900px){
+  .section-hd.with-fig{grid-template-columns:1fr}
+}
+.sidefig{
+  margin:0;border-radius:var(--rd-r-lg);overflow:hidden;background:var(--rd-surface-2);
+  box-shadow:var(--rd-shadow-lg);outline:1px solid rgb(33 28 23 / 7%);outline-offset:-1px;
+  aspect-ratio:4/3;
+}
+.sidefig img{width:100%;height:100%;object-fit:cover;display:block}
+.dark .sidefig{outline-color:rgb(255 255 255 / 8%)}

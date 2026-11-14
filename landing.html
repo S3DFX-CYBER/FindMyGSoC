@@ -1,40 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="icon" type="image/png" href="src/assets/icon-512.png">
   <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>FindMyGSoC — Discover GSoC 2026 Orgs & Live GitHub Issues</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FindMyGSoC 2027, find the open source org that fits you</title>
   <meta name="description"
-    content="Discover Google Summer of Code 2026 organizations, track live beginner-friendly Good First Issues, match your skills with AI, and compare orgs side-by-side." />
+    content="Search 184 Google Summer of Code organisations by language, domain and difficulty. Track live good-first issues, match your skills, and draft your proposal. Free, open source, no sign-up." />
   <link rel="canonical" href="https://findmygsoc.vercel.app/" />
 
   <!-- SEO & Social Meta Tags -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="FindMyGSoC" />
-  <meta property="og:title" content="FindMyGSoC — Live GSoC 2026 Org Finder & GFI Tracker" />
+  <meta property="og:title" content="FindMyGSoC 2027, find the open source org that fits you" />
   <meta property="og:description"
-    content="Find your best-fit GSoC 2026 organization and track live beginner-friendly Good First Issues." />
+    content="Search 184 GSoC organisations by language, domain and difficulty. Live good-first issues, skill matching and a proposal editor. No sign-up." />
   <meta property="og:url" content="https://findmygsoc.vercel.app/" />
   <meta property="og:image" content="https://findmygsoc.vercel.app/src/assets/og-image.jpeg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="FindMyGSoC — Live GSoC 2026 Org Finder" />
-  <meta name="twitter:description" content="Discover GSoC 2026 organizations, compare fit, and track live issues." />
+  <meta name="twitter:title" content="FindMyGSoC 2027, find the open source org that fits you" />
+  <meta name="twitter:description"
+    content="Search 184 GSoC organisations, compare fit, and track live beginner-friendly issues." />
   <meta name="twitter:image" content="https://findmygsoc.vercel.app/src/assets/og-image.jpeg" />
 
-  <!-- Pre-load scripts and styling -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="icon" type="image/png" href="src/assets/icon-512.png" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#f26a1b" />
+  <link rel="apple-touch-icon" href="src/assets/icon-512.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="FindMyGSoC" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="src/landing.css" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="src/styles.css" />
-
-  <!-- Theme restoration script to prevent flash of light theme -->
-  <!-- NOTE: Value is validated against an explicit allowlist before touching the DOM,
-       preventing a tampered localStorage entry from injecting arbitrary class names. -->
+  <!-- Theme restoration, runs early to prevent a flash of the wrong theme.
+       The stored value is validated against an allowlist before it touches the DOM,
+       so a tampered localStorage entry cannot inject arbitrary class names. -->
   <script>
     (function () {
       var ALLOWED_THEMES = ['dark', 'light'];
@@ -42,1117 +47,622 @@
         var stored = window.localStorage && window.localStorage.getItem('theme');
         if (stored && ALLOWED_THEMES.indexOf(stored) !== -1 && stored === 'dark') {
           document.documentElement.classList.add('dark');
+          document.documentElement.setAttribute('data-theme', 'dark');
         }
       } catch (_e) {
-        /* Storage unavailable — silently skip theme restore */
+        /* Storage unavailable, silently skip theme restore */
       }
     }());
   </script>
-
-  <!-- Tailwind configuration -->
-  <script src="src/js/tailwind-config.js"></script>
-
-  <link rel="stylesheet" href="src/landing.css" />
 </head>
 
-<body
-  class="bg-zinc-50 dark:bg-[#0f0a05] text-zinc-900 dark:text-zinc-100 font-body antialiased hero-bg min-h-screen flex flex-col transition-colors duration-300 overflow-x-hidden">
+<body>
+  <a class="skip-link" href="#top">Skip to content</a>
 
-  <!-- ═══════════════════ NAVBAR ═══════════════════ -->
-  <header
-    class="fixed top-0 w-full z-50 bg-white/80 dark:bg-[#0f0a05]/80 glass border-b border-zinc-200/50 dark:border-zinc-800/50 shadow-sm transition-colors duration-300">
-    <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 max-w-7xl mx-auto w-full">
-      <div class="flex items-center gap-8">
-        <a href="/"
-          class="flex items-center gap-2.5 group transition-transform duration-300 hover:scale-[1.03]">
-          <div
-            class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center flex-shrink-0 shadow-md shadow-orange-500/20 group-hover:rotate-6 transition-transform duration-300">
-            <span class="text-white font-extrabold text-sm">G</span>
-          </div>
-          <span class="text-lg font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 font-headline">
-            FindMy<span class="text-primary italic">GSoC</span>
-          </span>
-        </a>
-        <nav class="hidden md:flex items-center gap-6 text-sm font-semibold" aria-label="Main navigation">
-          <a class="nav-link text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
-            href="#features">Features</a>
-          <a class="nav-link text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
-            href="#how-it-works">How It Works</a>
-          <a class="nav-link text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
-            href="#about">About</a>
-          <a class="nav-link text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
-            href="#faq">FAQ</a>
-        </nav>
-      </div>
-
-      <!-- Right Nav Buttons -->
-      <div class="flex items-center gap-3">
-        <!-- Theme Toggle -->
-        <button id="themeToggleBtn"
-          class="inline-flex shrink-0 items-center justify-center p-2.5 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 rounded-full transition-colors"
-          aria-label="Switch to dark theme" aria-pressed="false">
-          <span class="material-symbols-outlined text-zinc-600 dark:text-zinc-400">
-            dark_mode
-          </span>
-        </button>
-
-        <!-- Launch App CTA -->
-        <a href="/app"
-          class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-bold rounded-xl hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all shadow-md hover:shadow-orange-500/20 active:scale-95 duration-200">
-          Launch Application
-          <span class="material-symbols-outlined text-sm">rocket_launch</span>
-        </a>
-
-        <!-- Mobile Menu trigger -->
-        <button id="menuBtn"
-          class="inline-flex md:hidden shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 rounded-lg transition-colors"
-          aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
-          <span class="material-symbols-outlined text-zinc-600 dark:text-zinc-400">menu</span>
-        </button>
-      </div>
+  <!-- ===================== ANNOUNCEMENT ===================== -->
+  <div class="topbar">
+    <div class="in">
+      <span class="live"><i></i>2026 index</span>
+      <span>GSoC 2027 · prepare while the 2026 cycle data is live</span>
+      <span class="sp"></span>
+      <span style="font-family:var(--f-mono);font-size:10.5px;color:var(--muted)"><span
+          id="org-count-text">184+ organizations</span> · 30+ languages</span>
     </div>
+  </div>
 
-    <!-- Mobile Menu Drawer -->
-    <div id="mobileMenu"
-      class="hidden md:hidden fixed inset-x-0 top-[60px] bg-white dark:bg-[#1a1108] border-b border-zinc-200 dark:border-zinc-800 p-5 shadow-xl transition-all duration-300">
-      <nav class="flex flex-col gap-4 text-sm font-semibold mb-6" aria-label="Mobile main navigation">
-        <a class="text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
-          href="#features">Features</a>
-        <a class="text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
-          href="#how-it-works">How It Works</a>
-        <a class="text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
-          href="#about">About</a>
-        <a class="text-zinc-600 hover:text-primary dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
-          href="#faq">FAQ</a>
-      </nav>
-      <a href="/app"
-        class="flex items-center justify-center gap-2 w-full px-5 py-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-sm font-bold rounded-xl hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all shadow-md">
-        Launch Application
-        <span class="material-symbols-outlined text-sm">rocket_launch</span>
+  <!-- ===================== NAV ===================== -->
+  <header class="nav" id="nav">
+    <div class="nav-in">
+      <a class="brand" href="#top">
+        <img class="mark" src="src/assets/redesign/logo-mark.png" alt="" width="30" height="30" />
+        FindMyGSoC
       </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#what">What is GSoC</a>
+        <a href="#suite">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#why">Why us</a>
+        <a href="#about">About</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false"
+          aria-controls="mobileMenu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
+        <button class="icon-btn" id="themeToggleBtn" type="button" aria-label="Switch to dark theme"
+          aria-pressed="false" title="Switch to dark theme">
+          <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            aria-hidden="true">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+          </svg>
+          <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19" />
+          </svg>
+        </button>
+        <div class="nav-cta">
+          <a class="btn ghost sm" href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank"
+            rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path
+                d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.05-.49.05-.49.81.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+            </svg>
+            GitHub
+          </a>
+          <a class="btn primary sm" href="/app">Open the app</a>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- ═══════════════════ HERO SECTION ═══════════════════ -->
-  <main class="flex-grow pt-20 md:pt-24 relative overflow-hidden">
-
-    <!-- Dot-grid pattern overlay -->
-    <div class="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
-      <svg class="absolute inset-0 w-full h-full opacity-[0.03] dark:opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern id="hero-dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
-            <circle cx="1.5" cy="1.5" r="1.5" fill="currentColor" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#hero-dots)" class="text-zinc-900 dark:text-zinc-100" />
-      </svg>
-    </div>
-
-    <!-- Ambient Glowing Orbs -->
-    <div
-      class="absolute -top-24 left-1/3 w-[500px] h-[500px] rounded-full bg-primary/10 dark:bg-primary/18 blur-3xl pointer-events-none animate-pulse-orb">
-    </div>
-    <div
-      class="absolute top-48 -right-16 w-96 h-96 rounded-full bg-secondary/6 dark:bg-secondary/12 blur-3xl pointer-events-none animate-pulse-orb"
-      style="animation-delay:-4s"></div>
-    <div
-      class="absolute top-32 -left-16 w-72 h-72 rounded-full bg-amber-400/6 dark:bg-amber-400/10 blur-3xl pointer-events-none animate-pulse-orb"
-      style="animation-delay:-2s"></div>
-    <div
-      class="absolute bottom-0 right-1/3 w-80 h-80 rounded-full bg-purple-400/5 dark:bg-purple-400/8 blur-3xl pointer-events-none animate-pulse-orb"
-      style="animation-delay:-6s"></div>
-
-    <section class="max-w-7xl mx-auto px-4 sm:px-8 text-center mb-10 md:mb-14 relative z-10">
-
-      <!-- Eyebrow Badge -->
-      <div
-        class="hero-entry hero-entry-1 inline-flex items-center gap-2.5 px-4 py-2 rounded-full hero-badge border border-orange-200/60 dark:border-orange-800/40 text-primary dark:text-orange-400 mb-8 relative">
-        <span
-          class="absolute inset-0 rounded-full border border-primary/15 dark:border-orange-500/15 animate-ping opacity-50"></span>
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+  <!-- ===================== MOBILE DRAWER ===================== -->
+  <div class="drawer" id="mobileMenu" data-open="false" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div class="drawer-backdrop" data-drawer-close></div>
+    <nav class="drawer-panel" aria-label="Mobile navigation">
+      <div class="drawer-head">
+        <span class="brand" style="font-size:17px">
+          <img class="mark" src="src/assets/redesign/logo-mark.png" alt="" width="24" height="24" />
+          FindMyGSoC
         </span>
-        <span class="font-label text-[10px] sm:text-xs uppercase font-bold tracking-[0.18em]">GSoC 2026 &middot;
-          Empowering Open Source Contributors</span>
-        <span
-          class="hidden sm:inline-flex items-center gap-1 bg-white/60 dark:bg-zinc-900/60 px-2 py-0.5 rounded-full text-[9px] font-bold text-zinc-500 dark:text-zinc-400 ml-1">
-          <span class="w-1 h-1 rounded-full bg-emerald-500 animate-pulse inline-block"></span> Live
-        </span>
+        <button class="icon-btn" type="button" aria-label="Close menu" data-drawer-close>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
       </div>
+      <a href="#what" data-drawer-close>What is GSoC</a>
+      <a href="#suite" data-drawer-close>Features</a>
+      <a href="#how" data-drawer-close>How it works</a>
+      <a href="#why" data-drawer-close>Why us</a>
+      <a href="#about" data-drawer-close>About</a>
+      <a href="#faq" data-drawer-close>FAQ</a>
+      <a class="btn primary sm" href="/app" style="justify-content:center">Open the app</a>
+    </nav>
+  </div>
 
-      <!-- Main Headline -->
-      <h1
-        class="hero-entry hero-entry-2 font-headline font-extrabold tracking-tighter text-zinc-900 dark:text-zinc-50 mb-6 w-full"
-        style="font-size: clamp(2.6rem, 6.5vw, 5.2rem); line-height: 1.05;">
-        Your Gateway to<br class="hidden sm:block" />
-        <span class="hero-gradient-text">Google Summer of Code 2026</span>
-      </h1>
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <span class="pill"><span class="dot"></span> GSoC 2027 · prep starts now</span>
 
-      <!-- Subtitle -->
-      <p
-        class="hero-entry hero-entry-3 text-base sm:text-lg md:text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-        Discover GSoC organizations, match your skills with AI, track live Good First Issues,
-        and draft winning proposals&nbsp;&mdash; all in one place.
-      </p>
+          <h1>Your gateway to<br />Google Summer<br />of Code <span class="hl">2027</span>.</h1>
 
-      <!-- Action Buttons -->
-      <div class="hero-entry hero-entry-4 flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
-        <a href="/app" id="hero-launch-btn"
-          class="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-9 py-4 bg-gradient-to-r from-primary via-orange-500 to-amber-500 text-white rounded-2xl text-base font-bold shadow-xl shadow-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/40 hover:scale-[1.04] transition-all duration-200 active:scale-95 relative overflow-hidden">
-          <!-- Glow ring on hover -->
-          <span
-            class="absolute inset-0 rounded-2xl ring-2 ring-orange-400/0 group-hover:ring-orange-400/40 transition-all duration-300"></span>
-          <span class="material-symbols-outlined text-lg">rocket_launch</span>
-          Launch Application
-          <span
-            class="material-symbols-outlined text-base opacity-70 group-hover:translate-x-1 transition-transform duration-200">arrow_forward</span>
-        </a>
-        <a href="#features" id="hero-explore-btn"
-          class="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white/80 dark:bg-zinc-800/80 glass text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 rounded-2xl text-base font-bold hover:border-primary/40 hover:text-primary dark:hover:text-orange-400 hover:scale-[1.03] transition-all duration-200">
-          Explore Features
-          <span
-            class="material-symbols-outlined text-lg group-hover:translate-y-1 transition-transform duration-200">south</span>
-        </a>
-      </div>
+          <p class="lede">184 organisations from the 2026 cycle, indexed with their stacks, mentors and issue queues.
+            The 2027 list lands in February, use this to be ready the day it does.</p>
 
-      <!-- Trust bar -->
-      <div class="hero-entry hero-entry-5 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-14">
-        <!-- Avatar stack -->
-        <div class="flex items-center gap-2">
-          <div class="flex -space-x-2.5">
-            <div
-              class="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-primary border-2 border-white dark:border-zinc-900 flex items-center justify-center text-[9px] font-bold text-white">
-              A</div>
-            <div
-              class="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-400 to-secondary border-2 border-white dark:border-zinc-900 flex items-center justify-center text-[9px] font-bold text-white">
-              K</div>
-            <div
-              class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-[9px] font-bold text-white">
-              R</div>
-            <div
-              class="w-7 h-7 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-[9px] font-bold text-white">
-              S</div>
-            <div
-              class="w-7 h-7 rounded-full bg-zinc-200 dark:bg-zinc-700 border-2 border-white dark:border-zinc-900 flex items-center justify-center text-[9px] font-bold text-zinc-500 dark:text-zinc-400">
-              +</div>
+          <div class="hero-badges">
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg> Free &amp; open source</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg> No sign-up required</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M20 6 9 17l-5-5" />
+              </svg> <span id="dash-org-count">184 Orgs</span> indexed</span>
           </div>
-          <span class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">Contributors using FindMyGSoC</span>
+
+          <div class="hero-cta">
+            <a class="btn primary" href="/app">Browse 184 organizations</a>
+            <a class="btn ghost" href="#what">What is GSoC?</a>
+          </div>
         </div>
-        <!-- Divider -->
-        <span class="hidden sm:block w-px h-4 bg-zinc-200 dark:bg-zinc-700"></span>
-        <!-- Stats pills -->
-        <div class="flex items-center gap-3 flex-wrap justify-center">
-          <span class="inline-flex items-center gap-1 text-[11px] font-bold text-zinc-500 dark:text-zinc-400">
-            <span class="material-symbols-outlined text-primary text-sm icon-fill">verified</span>
-            Free &amp; open-source
-          </span>
-          <span class="inline-flex items-center gap-1 text-[11px] font-bold text-zinc-500 dark:text-zinc-400">
-            <span class="material-symbols-outlined text-secondary text-sm icon-fill">check_circle</span>
-            No sign-up required
-          </span>
-          <span id="org-count"
-            class="inline-flex items-center gap-1 text-[11px] font-bold text-zinc-500 dark:text-zinc-400">
-            <span class="material-symbols-outlined text-amber-500 text-sm icon-fill">groups</span>
-            <span id="org-count-text">184+ organizations</span>
-          </span>
+
+        <div class="hero-media" data-rv>
+          <div class="frame">
+            <img src="src/assets/redesign/hero.webp"
+              alt="A speaker at the Alumni Camp podium beside a screen naming a GSoC contributor" width="1100"
+              height="1375" />
+          </div>
+          <div class="badge">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19V9m5 10V5m5 14v-7m5 7V8" />
+              </svg></span>
+            <div>
+              <div class="n" id="org-count">184</div>
+              <div class="l">organisations<br />in this cycle</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Interactive Mini-Dashboard Mockup Preview -->
-      <div
-        class="hero-entry hero-entry-6 relative max-w-5xl mx-auto rounded-3xl border border-zinc-200/60 dark:border-zinc-800/80 bg-white/75 dark:bg-zinc-900/75 p-4 sm:p-6 shadow-2xl shadow-zinc-200/60 dark:shadow-black/50 glass mb-10 animate-float"
-        style="box-shadow: 0 40px 80px -16px rgba(0,0,0,0.14), 0 0 0 1px rgba(0,0,0,0.04);">
-        <!-- Outer glow ring -->
-        <div
-          class="absolute -inset-px rounded-3xl bg-gradient-to-r from-orange-500/10 via-transparent to-emerald-500/10 pointer-events-none">
-        </div>
+      <!-- three capabilities, exactly as the product shows them -->
+      <div class="minis" data-rv>
+        <article class="mini">
+          <div class="h">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M20 20l-4-4" />
+            </svg>
+            Organization search
+          </div>
+          <p>Filter by 30+ languages across 15+ domains with smart tagging.</p>
+          <div class="row"><span class="k hi">Python</span><span class="k hi">Rust</span><span class="k hi">Go</span><span
+              class="k">+28</span></div>
+        </article>
 
-        <!-- Window chrome -->
-        <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-4 mb-5">
-          <!-- Traffic lights -->
-          <div class="flex items-center gap-1.5">
-            <span
-              class="w-3 h-3 rounded-full bg-red-400 block hover:brightness-90 cursor-default transition-all"></span>
-            <span
-              class="w-3 h-3 rounded-full bg-yellow-400 block hover:brightness-90 cursor-default transition-all"></span>
-            <span
-              class="w-3 h-3 rounded-full bg-green-400 block hover:brightness-90 cursor-default transition-all"></span>
+        <article class="mini">
+          <div class="h">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
+              <circle cx="12" cy="12" r="3.4" />
+            </svg>
+            AI skill matching
           </div>
+          <p>GitHub username or CV → instant ranked org recommendations.</p>
+          <div class="meter">
+            <div><span>CNCF</span><span class="b"><i style="width:94%"></i></span><span>94%</span></div>
+            <div><span>NumFOCUS</span><span class="b"><i style="width:87%"></i></span><span>87%</span></div>
+          </div>
+        </article>
 
-          <!-- Tab strip (desktop) -->
-          <div class="hidden sm:flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-lg px-1 py-1">
-            <span
-              class="text-[10px] font-bold bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 px-3 py-1 rounded-md shadow-sm">Organizations</span>
-            <span
-              class="text-[10px] font-medium text-zinc-400 dark:text-zinc-500 px-3 py-1 rounded-md hover:bg-white/60 dark:hover:bg-zinc-700/60 cursor-default transition-colors">Issues</span>
-            <span
-              class="text-[10px] font-medium text-zinc-400 dark:text-zinc-500 px-3 py-1 rounded-md hover:bg-white/60 dark:hover:bg-zinc-700/60 cursor-default transition-colors">Compare</span>
+        <article class="mini">
+          <div class="h">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 3h8l4 4v14H4V3z" />
+              <path d="M8 12h8M8 16h5" />
+            </svg>
+            Live GFIs
           </div>
-
-          <!-- URL bar -->
-          <div
-            class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-700/60 rounded-full w-44 text-left">
-            <span class="material-symbols-outlined text-xs text-emerald-500 icon-fill">lock</span>
-            <span class="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 truncate">findmygsoc.vercel.app</span>
-          </div>
-
-          <!-- Mock Search Bar -->
-          <div
-            class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-700/60 rounded-full w-44 text-left">
-            <span class="material-symbols-outlined text-xs text-zinc-400">search</span>
-            <span class="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 typing-sim typing-caret"></span>
-          </div>
-
-          <!-- Live Indicator -->
-          <div
-            class="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-200 dark:border-emerald-500/30">
-            <span class="relative flex h-1.5 w-1.5">
-              <span
-                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-            </span>
-            <span
-              class="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">Live</span>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-          <!-- Card 1: Org Finder -->
-          <div
-            class="p-5 rounded-2xl bg-zinc-50/80 dark:bg-[#1a1108]/50 border border-zinc-100/80 dark:border-zinc-800/60 hover:border-primary/40 dark:hover:border-orange-500/40 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-200 group cursor-default">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-950/30 flex items-center justify-center">
-                <span class="material-symbols-outlined text-primary text-base">travel_explore</span>
-              </div>
-              <span id="dash-org-count"
-                class="text-[9px] font-bold text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-950/30 px-2 py-0.5 rounded-full">184
-                Orgs</span>
-            </div>
-            <h4 class="font-bold text-sm text-zinc-800 dark:text-zinc-100 mb-1">Organization Search</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mb-3">Filter by 30+ languages across 15+
-              domains with smart tagging.</p>
-            <div class="flex flex-wrap gap-1 pt-2 border-t border-zinc-100 dark:border-zinc-800/60">
-              <span
-                class="text-[9px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded">Python</span>
-              <span
-                class="text-[9px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded">Rust</span>
-              <span
-                class="text-[9px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded">Go</span>
-              <span
-                class="text-[9px] font-semibold bg-orange-100 dark:bg-orange-950/20 text-orange-600 dark:text-orange-400 px-2 py-0.5 rounded">+28</span>
-            </div>
-          </div>
-          <!-- Card 2: AI Match -->
-          <div
-            class="p-5 rounded-2xl bg-zinc-50/80 dark:bg-[#1a1108]/50 border border-zinc-100/80 dark:border-zinc-800/60 hover:border-secondary/40 dark:hover:border-emerald-500/40 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-200 group cursor-default">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950/30 flex items-center justify-center">
-                <span class="material-symbols-outlined text-secondary text-base">psychology</span>
-              </div>
-              <span
-                class="text-[9px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/30 px-2 py-0.5 rounded-full">AI
-                Match</span>
-            </div>
-            <h4 class="font-bold text-sm text-zinc-800 dark:text-zinc-100 mb-1">AI Skill Matching</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mb-3">GitHub username or CV &rarr;
-              instant ranked org recommendations.</p>
-            <div class="flex flex-wrap gap-1 pt-2 border-t border-zinc-100 dark:border-zinc-800/60">
-              <span
-                class="text-[9px] font-semibold bg-emerald-100 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded">94%
-                &middot; CNCF</span>
-              <span
-                class="text-[9px] font-semibold bg-emerald-100 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded">87%
-                &middot; NumFOCUS</span>
-            </div>
-          </div>
-          <!-- Card 3: Live GFIs -->
-          <div
-            class="p-5 rounded-2xl bg-zinc-50/80 dark:bg-[#1a1108]/50 border border-zinc-100/80 dark:border-zinc-800/60 hover:border-amber-400/40 dark:hover:border-amber-400/40 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-200 group cursor-default">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950/30 flex items-center justify-center">
-                <span class="material-symbols-outlined text-amber-600 text-base">bug_report</span>
-              </div>
-              <span
-                class="text-[9px] font-bold text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-950/30 px-2 py-0.5 rounded-full">Live
-                GFIs</span>
-            </div>
-            <h4 class="font-bold text-sm text-zinc-800 dark:text-zinc-100 mb-1">Good First Issues</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mb-3">Updated every 6h &middot;
-              beginner-friendly, ready to claim.</p>
-            <div class="flex flex-wrap gap-1 pt-2 border-t border-zinc-100 dark:border-zinc-800/60">
-              <span
-                class="text-[9px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded">#4392
-                docs</span>
-              <span
-                class="text-[9px] font-semibold bg-amber-100 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded">1h
-                ago</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bottom status bar of the mockup -->
-        <div class="flex items-center justify-between mt-4 pt-3.5 border-t border-zinc-100 dark:border-zinc-800/60">
-          <div class="flex items-center gap-3">
-            <span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block"></span>
-              All systems live
-            </span>
-            <span class="text-[9px] text-zinc-300 dark:text-zinc-700">|</span>
-            <span class="text-[9px] text-zinc-400 dark:text-zinc-500 font-medium">Last synced 3 min ago</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span
-              class="text-[9px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded-full">PWA
-              Ready</span>
-            <span
-              class="text-[9px] font-semibold bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded-full">Offline
-              OK</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════ WHAT IS GSOC? ═══════════════════ -->
-    <section id="what-is-gsoc" class="max-w-7xl mx-auto px-4 sm:px-8 py-14 md:py-20">
-      <!-- Section Header -->
-      <div class="text-center mb-14">
-        <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Program Overview</span>
-        <h2
-          class="text-3xl sm:text-4xl font-extrabold font-headline tracking-tighter mt-2 mb-4 text-zinc-900 dark:text-zinc-50">
-          What is Google Summer of Code?</h2>
-        <p class="text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-          A global, online initiative by Google that connects new contributors with open‑source organizations for a
-          paid, mentored summer coding project.
-        </p>
+          <p>Refreshed daily · beginner-friendly, ready to claim.</p>
+          <div class="issue"><b>#4392</b><span>docs</span><span class="t">good first issue</span></div>
+        </article>
       </div>
 
-      <!-- Two-column layout: description left, pillars right -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-12">
+      <div class="statusbar" data-rv>
+        <span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+            <path d="M20 6 9 17l-5-5" />
+          </svg> 184 orgs indexed</span>
+        <span>Issues refreshed daily</span>
+        <span>PWA ready</span>
+        <span>Offline OK</span>
+      </div>
+    </div>
+  </section>
 
-        <!-- Left: description + quick stats + CTA -->
-        <div class="flex flex-col gap-8">
-          <p class="text-zinc-600 dark:text-zinc-300 text-base leading-relaxed">
-            GSoC gives university students and independent developers the chance to spend a summer writing real
-            production-grade code for established open source projects — under the direct guidance of experienced
-            mentors — while earning a <strong class="text-zinc-800 dark:text-zinc-100 font-semibold">Google-sponsored
-              stipend</strong>.
-          </p>
+  <!-- ===================== WHAT IS GSoC ===================== -->
+  <section class="sec" id="what">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <span class="eyebrow">The programme</span>
+          <h2 style="font-size:clamp(26px,3.4vw,40px);margin-top:10px">What is Google<br />Summer of Code?</h2>
+          <p class="lede" style="margin-top:16px">A global, online initiative by Google that connects new contributors
+            with open source organizations for a paid, mentored summer coding project.</p>
+          <p class="lede" style="margin-top:12px;font-size:15.5px">GSoC gives university students and independent
+            developers the chance to spend a summer writing production-grade code for established open source projects -
+            under the direct guidance of experienced mentors, while earning a Google-sponsored stipend.</p>
 
-          <!-- Quick stats row -->
-          <div class="grid grid-cols-3 gap-4 text-center">
-            <div
-              class="bg-orange-50 dark:bg-orange-950/20 border border-orange-100 dark:border-orange-900/30 rounded-2xl p-4">
-              <p class="text-2xl font-extrabold font-headline text-primary dark:text-orange-400">20+</p>
-              <p class="text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-bold mt-1">Years
-                Running</p>
+          <div class="kstats">
+            <div class="k">
+              <div class="n">20+</div>
+              <div class="l">years running</div>
             </div>
-            <div
-              class="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 rounded-2xl p-4">
-              <p class="text-2xl font-extrabold font-headline text-secondary dark:text-emerald-400">800+</p>
-              <p class="text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-bold mt-1">Orgs Ever
-              </p>
+            <div class="k">
+              <div class="n">1,000+</div>
+              <div class="l">orgs since 2005</div>
             </div>
-            <div class="bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 rounded-2xl p-4">
-              <p class="text-2xl font-extrabold font-headline text-blue-600 dark:text-blue-400">40K+</p>
-              <p class="text-[10px] uppercase tracking-widest text-zinc-500 dark:text-zinc-400 font-bold mt-1">
-                Contributors</p>
+            <div class="k">
+              <div class="n">21,000+</div>
+              <div class="l">contributors</div>
             </div>
           </div>
 
-          <a href="https://summerofcode.withgoogle.com/" target="_blank" rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 self-start px-5 py-2.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm font-semibold text-zinc-700 dark:text-zinc-200 hover:border-primary/40 hover:text-primary dark:hover:text-orange-400 transition-all duration-200 shadow-sm">
-            <span class="material-symbols-outlined text-base">open_in_new</span>
-            Official GSoC Website
+          <a class="btn ghost" href="https://summerofcode.withgoogle.com/" target="_blank" rel="noopener"
+            style="margin-top:24px">
+            Official GSoC website
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 17 17 7M9 7h8v8" />
+            </svg>
           </a>
         </div>
 
-        <!-- Right: Numbered pillars as a timeline -->
-        <div class="flex flex-col gap-0 relative">
-          <!-- Vertical connector line -->
-          <div
-            class="absolute left-5 top-6 bottom-6 w-px bg-gradient-to-b from-primary/40 via-secondary/30 to-blue-400/30 dark:from-orange-500/30 dark:via-emerald-500/20 dark:to-blue-400/20">
-          </div>
-
-          <!-- Step 1 -->
-          <div class="relative flex gap-6 pb-8">
-            <div
-              class="relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-950/40 border-2 border-orange-300 dark:border-orange-700 flex items-center justify-center">
-              <span class="text-sm font-extrabold text-primary">1</span>
-            </div>
-            <div class="pt-1 pb-2">
-              <div class="flex items-center gap-2 mb-1.5">
-                <span class="material-symbols-outlined text-orange-500 text-lg">calendar_month</span>
-                <h3 class="font-bold text-base text-zinc-900 dark:text-zinc-100">12+ Weeks of Coding</h3>
-              </div>
-              <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Work on a structured, multi-week project over summer. Successful participants receive a stipend scaled
-                to their country.
-              </p>
-            </div>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="relative flex gap-6 pb-8">
-            <div
-              class="relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-950/40 border-2 border-emerald-300 dark:border-emerald-700 flex items-center justify-center">
-              <span class="text-sm font-extrabold text-secondary">2</span>
-            </div>
-            <div class="pt-1 pb-2">
-              <div class="flex items-center gap-2 mb-1.5">
-                <span class="material-symbols-outlined text-secondary text-lg">groups</span>
-                <h3 class="font-bold text-base text-zinc-900 dark:text-zinc-100">1-on-1 Mentorship</h3>
-              </div>
-              <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Partner with experienced developers from orgs like Python SF, Linux Foundation, CNCF, and Apache.
-              </p>
-            </div>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="relative flex gap-6">
-            <div
-              class="relative z-10 flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-950/40 border-2 border-blue-300 dark:border-blue-700 flex items-center justify-center">
-              <span class="text-sm font-extrabold text-blue-600 dark:text-blue-400">3</span>
-            </div>
-            <div class="pt-1">
-              <div class="flex items-center gap-2 mb-1.5">
-                <span class="material-symbols-outlined text-blue-500 text-lg">terminal</span>
-                <h3 class="font-bold text-base text-zinc-900 dark:text-zinc-100">Real-world Experience</h3>
-              </div>
-              <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                Write production code, ship pull requests, master Git workflows, and build a portfolio that stands out.
-              </p>
-            </div>
-          </div>
+        <div class="figure r43" data-rv>
+          <img src="src/assets/redesign/what.webp"
+            alt="The Alumni Camp hall filled with attendees at round tables" width="1000" height="750" />
         </div>
       </div>
-    </section>
 
-    <!-- ═══════════════════ DYNAMIC STATS SECTION ═══════════════════ -->
-    <section
-      class="bg-zinc-50 dark:bg-[#1a1108]/30 py-10 md:py-12 border-y border-zinc-200/40 dark:border-zinc-800/40 transition-colors duration-300">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center" id="liveStatsContainer">
-          <!-- Stat 1 -->
-          <div>
-            <div class="text-4xl sm:text-5xl font-extrabold text-primary dark:text-orange-400 font-headline"
-              id="statOrgs">184+</div>
-            <p class="text-xs sm:text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mt-2">
-              Organizations</p>
-          </div>
-          <!-- Stat 2 -->
-          <div>
-            <div class="text-4xl sm:text-5xl font-extrabold text-secondary dark:text-emerald-400 font-headline"
-              id="statVeterans">60+</div>
-            <p class="text-xs sm:text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mt-2">
-              Veterans (10y+)</p>
-          </div>
-          <!-- Stat 3 -->
-          <div>
-            <div class="text-4xl sm:text-5xl font-extrabold text-[#7c3a0d] dark:text-orange-400 font-headline"
-              id="statNewcomers">35+</div>
-            <p class="text-xs sm:text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mt-2">
-              Newcomer Friendly</p>
-          </div>
-          <!-- Stat 4 -->
-          <div>
-            <div class="text-4xl sm:text-5xl font-extrabold text-[#6b21a8] dark:text-purple-400 font-headline">30+</div>
-            <p class="text-xs sm:text-sm font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mt-2">
-              Tech Stacks</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════ FEATURES BENTO GRID ═══════════════════ -->
-    <section id="features" class="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-10 md:pt-16 md:pb-12">
-      <div class="text-center mb-16">
-        <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Discover Features</span>
-        <h2
-          class="text-3xl sm:text-4xl font-extrabold font-headline tracking-tighter mt-2 mb-4 text-zinc-900 dark:text-zinc-50">
-          Complete Suite for GSoC Applicants</h2>
-        <p class="text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto text-sm sm:text-base">Everything you need to
-          discover perfect programs, connect with mentors, and plan your open-source journey.</p>
+      <div class="numcards">
+        <article class="ncard" data-rv>
+          <div class="n">1</div>
+          <h4>12+ weeks of coding</h4>
+          <p>Work on a structured, multi-week project over summer. Successful participants receive a stipend scaled to
+            their country.</p>
+        </article>
+        <article class="ncard" data-rv style="transition-delay:.06s">
+          <div class="n">2</div>
+          <h4>1-on-1 mentorship</h4>
+          <p>Partner with experienced developers from organizations like Python, the Linux Foundation, CNCF and Apache.
+          </p>
+        </article>
+        <article class="ncard" data-rv style="transition-delay:.12s">
+          <div class="n">3</div>
+          <h4>Real-world experience</h4>
+          <p>Write production code, ship pull requests, master Git workflows, and build a portfolio that stands out.</p>
+        </article>
       </div>
 
-      <!-- Bento Grid Layout -->
-      <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
-        <!-- Bento 1: Org Finder (Large) -->
-        <div
-          class="md:col-span-3 bg-white/80 dark:bg-[#1a1108]/40 glass border border-zinc-200/70 dark:border-zinc-800/80 rounded-3xl p-8 bento-card flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-950/20 flex items-center justify-center mb-6">
-              <span class="material-symbols-outlined text-primary dark:text-orange-400 text-2xl">travel_explore</span>
-            </div>
-            <h3 class="text-xl font-bold mb-3 text-zinc-800 dark:text-zinc-100">Live Organization Directory</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-6">Search and filter all 184+
-              organizations based on participation history, codebase complexity, competition level, and tech stack tags.
-            </p>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <span
-              class="text-[10px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-2 py-1 rounded">Moderate
-              Competition</span>
-            <span
-              class="text-[10px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-2 py-1 rounded">Beginner
-              Friendly</span>
-            <span
-              class="text-[10px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-2 py-1 rounded">10+
-              Years History</span>
-          </div>
+      <div class="bigstats">
+        <div class="b">
+          <div class="n" id="statOrgs">184+</div>
+          <div class="l">organisations</div>
         </div>
-
-        <!-- Bento 2: AI Recommender (Medium) -->
-        <div
-          class="md:col-span-3 bg-white/80 dark:bg-[#1a1108]/40 glass border border-zinc-200/70 dark:border-zinc-800/80 rounded-3xl p-8 bento-card flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-950/20 flex items-center justify-center mb-6">
-              <span
-                class="material-symbols-outlined text-secondary dark:text-emerald-400 text-2xl font-bold">psychology</span>
-            </div>
-            <h3 class="text-xl font-bold mb-3 text-zinc-800 dark:text-zinc-100">Smart AI Recommendations</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-6">Connect your GitHub account or
-              upload your developer profile. Our AI algorithms analyze your tech stack and recommend the organizations
-              where you stand the highest chance of acceptance.</p>
-          </div>
-          <div class="flex items-center gap-2.5 text-xs text-secondary dark:text-emerald-400 font-bold">
-            <span class="material-symbols-outlined text-base">offline_bolt</span>
-            Instant Profile matching
-          </div>
+        <div class="b">
+          <div class="n" id="statVeterans">60+</div>
+          <div class="l">veterans (10y+)</div>
         </div>
-
-        <!-- Bento 3: Live Issues (Small) -->
-        <div
-          class="md:col-span-2 bg-white/80 dark:bg-[#1a1108]/40 glass border border-zinc-200/70 dark:border-zinc-800/80 rounded-3xl p-6 bento-card">
-          <div class="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-950/20 flex items-center justify-center mb-5">
-            <span class="material-symbols-outlined text-primary dark:text-orange-400 text-xl">bug_report</span>
-          </div>
-          <h3 class="text-base font-bold mb-2 text-zinc-800 dark:text-zinc-100">Live Good First Issues</h3>
-          <p class="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed">No manual search needed. Explore live
-            beginner-friendly issues from active repos, synced every 6 hours.</p>
+        <div class="b">
+          <div class="n" id="statNewcomers">35+</div>
+          <div class="l">newcomer friendly</div>
         </div>
-
-        <!-- Bento 4: Mentor Directory (Small) -->
-        <div
-          class="md:col-span-2 bg-white/80 dark:bg-[#1a1108]/40 glass border border-zinc-200/70 dark:border-zinc-800/80 rounded-3xl p-6 bento-card">
-          <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-950/20 flex items-center justify-center mb-5">
-            <span class="material-symbols-outlined text-secondary dark:text-emerald-400 text-xl">forum</span>
-          </div>
-          <h3 class="text-base font-bold mb-2 text-zinc-800 dark:text-zinc-100">Mentor Contact Directory</h3>
-          <p class="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed">Direct links to organization Slack
-            channels, Discord servers, IRC channels, and Zulip communities.</p>
-        </div>
-
-        <!-- Bento 5: Comparison Matrix (Small) -->
-        <div
-          class="md:col-span-2 bg-white/80 dark:bg-[#1a1108]/40 glass border border-zinc-200/70 dark:border-zinc-800/80 rounded-3xl p-6 bento-card">
-          <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-950/20 flex items-center justify-center mb-5">
-            <span class="material-symbols-outlined text-amber-600 dark:text-amber-500 text-xl">compare_arrows</span>
-          </div>
-          <h3 class="text-base font-bold mb-2 text-zinc-800 dark:text-zinc-100">Side-by-Side Comparison</h3>
-          <p class="text-zinc-500 dark:text-zinc-400 text-xs leading-relaxed">Select up to 3 organizations to compare
-            years active, active contributors, languages, and open issues.</p>
-        </div>
-
-        <!-- Bento 6: Proposal Builder (Medium) -->
-        <div
-          class="md:col-span-3 bg-white/80 dark:bg-[#1a1108]/40 glass border border-zinc-200/70 dark:border-zinc-800/80 rounded-3xl p-8 bento-card flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-950/20 flex items-center justify-center mb-6">
-              <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-2xl">edit_note</span>
-            </div>
-            <h3 class="text-xl font-bold mb-3 text-zinc-800 dark:text-zinc-100">Markdown Proposal Builder</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-6">Draft your GSoC project proposal
-              directly inside the application. Includes live preview rendering, auto-save drafts, and one-click
-              PDF/Markdown export.</p>
-          </div>
-          <div class="flex items-center gap-2 text-xs text-purple-600 dark:text-purple-400 font-bold">
-            <span class="material-symbols-outlined text-base">article</span>
-            Ready-to-submit exports
-          </div>
-        </div>
-
-        <!-- Bento 7: Offline PWA Support (Medium) -->
-        <div
-          class="md:col-span-3 bg-white/80 dark:bg-[#1a1108]/40 glass border border-zinc-200/70 dark:border-zinc-800/80 rounded-3xl p-8 bento-card flex flex-col justify-between">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-950/20 flex items-center justify-center mb-6">
-              <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-2xl">wifi_off</span>
-            </div>
-            <h3 class="text-xl font-bold mb-3 text-zinc-800 dark:text-zinc-100">100% Client-Side & Offline</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-6">Fully cached using Service Workers.
-              Search, filter, read contributor guides, and edit proposal drafts completely offline without any internet
-              connection.</p>
-          </div>
-          <div class="flex items-center gap-2 text-xs text-blue-600 dark:text-blue-400 font-bold">
-            <span class="material-symbols-outlined text-base">cloud_done</span>
-            Privacy-first. Your drafts stay local.
-          </div>
+        <div class="b">
+          <div class="n">30+</div>
+          <div class="l">tech stacks</div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ═══════════════════ WHY FINDMYGSOC? ═══════════════════ -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-8 pt-6 pb-14 md:pb-16">
-      <!-- Header -->
-      <div class="text-center mb-10">
-        <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Competitive Edge</span>
-        <h2
-          class="text-3xl sm:text-4xl font-extrabold font-headline tracking-tighter mt-2 mb-4 text-zinc-900 dark:text-zinc-50">
-          Why FindMyGSoC Over Others?</h2>
-        <p class="text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
-          Most tools give you a list. We give you a complete platform to discover, analyze, and apply.
-        </p>
+  <!-- ===================== SUITE ===================== -->
+  <section class="sec" id="suite" style="background:var(--surface);border-block:1px solid var(--line-soft)">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="eyebrow">Complete suite</span>
+        <h2>Everything for GSoC applicants.</h2>
+        <p>Discover the right programme, reach the mentors, and plan the summer, in one workspace.</p>
       </div>
 
-      <div class="hidden md:block max-w-4xl mx-auto mb-16 overflow-x-auto">
-        <table class="w-full text-sm border-collapse">
+      <div class="suite">
+        <article class="fcard wide" data-rv>
+          <div class="tx">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 6h16M4 12h16M4 18h10" />
+              </svg></div>
+            <h4>Live organization directory</h4>
+            <p>Search and filter all 184+ organizations by participation history, codebase complexity, competition
+              level and tech-stack tags.</p>
+            <div class="foot"><span>Moderate competition</span><span>Beginner friendly</span><span>10+ years
+                history</span></div>
+          </div>
+          <div class="ph"><img src="src/assets/redesign/suite.webp"
+              alt="Google Summer of Code Alumni Camp kit: tote, t-shirt, notebook, cap, lanyards and stickers" width="1000" height="750" />
+          </div>
+        </article>
+
+        <article class="fcard" data-rv>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
+              <circle cx="12" cy="12" r="3.4" />
+            </svg></div>
+          <h4>Smart AI recommendations</h4>
+          <p>Connect your GitHub account or upload a profile. The matcher ranks organizations by your actual stack.</p>
+          <div class="foot"><span>Instant profile matching</span></div>
+        </article>
+
+        <article class="fcard" data-rv style="transition-delay:.06s">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 3h8l4 4v14H4V3z" />
+              <path d="M8 12h8M8 16h5" />
+            </svg></div>
+          <h4>Live good first issues</h4>
+          <p>No manual searching. Beginner-friendly issues from active repositories, refreshed daily by the project's
+            own workflow.</p>
+          <div class="foot"><span>Daily sync</span><span>Ready to claim</span></div>
+        </article>
+
+        <article class="fcard" data-rv style="transition-delay:.12s">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a3 3 0 0 1-3 3H8l-5 3V6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3z" />
+            </svg></div>
+          <h4>Mentor contact directory</h4>
+          <p>Direct links to each organization's Slack, Discord, IRC and Zulip communities, the rooms where decisions
+            happen.</p>
+          <div class="foot"><span>Slack · Discord · IRC</span></div>
+        </article>
+
+        <article class="fcard" data-rv>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 7h7v10H4zM13 7h7v10h-7z" />
+            </svg></div>
+          <h4>Side-by-side comparison</h4>
+          <p>Select up to three organizations and compare years active, contributors, languages and open issues.</p>
+          <div class="foot"><span>Up to 3 orgs</span></div>
+        </article>
+
+        <article class="fcard" data-rv style="transition-delay:.06s">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 20h4L20 8l-4-4L4 16z" />
+            </svg></div>
+          <h4>Markdown proposal builder</h4>
+          <p>Draft the proposal in-app with live preview, auto-saved drafts, and one-click PDF or Markdown export.</p>
+          <div class="foot"><span>Live preview</span><span>Export</span></div>
+        </article>
+
+        <article class="fcard" data-rv style="transition-delay:.12s">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
+            </svg></div>
+          <h4>100% client-side &amp; offline</h4>
+          <p>Fully cached with service workers. Search, filter, read guides and edit drafts with no connection at all.
+          </p>
+          <div class="foot"><span>Privacy-first</span><span>Drafts stay local</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW IT WORKS ===================== -->
+  <section class="sec" id="how">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="eyebrow">Three steps</span>
+        <h2>How FindMyGSoC works.</h2>
+        <p>From a blank page to a shortlist you can defend in an application.</p>
+      </div>
+
+      <div class="hiw">
+        <article class="hiw-step">
+          <div class="num">01</div>
+          <h4>Match your stack</h4>
+          <p>Paste your GitHub handle or CV text. The matcher extracts your languages and topics, then scores every org
+            in the index against them.</p>
+        </article>
+        <article class="hiw-step">
+          <div class="num">02</div>
+          <h4>Shortlist and compare</h4>
+          <p>Filter by language, domain, competition and beginner-friendliness, bookmark the ones that fit, and line up
+            to three side by side.</p>
+        </article>
+        <article class="hiw-step">
+          <div class="num">03</div>
+          <h4>Contribute, then draft</h4>
+          <p>Claim a good first issue from the org's live queue, then write the proposal in the built-in editor and
+            export it.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WHY ===================== -->
+  <section class="sec" id="why">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="eyebrow">Competitive edge</span>
+        <h2>Why FindMyGSoC over others?</h2>
+        <p>Most tools give you a list. This gives you a way to discover, compare and apply.</p>
+      </div>
+
+      <div class="cmp cmp-desktop" data-rv>
+        <table>
+          <caption class="sr-only">Feature comparison between FindMyGSoC and other GSoC resources</caption>
           <thead>
             <tr>
-              <th
-                class="text-left pb-4 pr-6 text-zinc-400 dark:text-zinc-500 font-semibold text-xs uppercase tracking-widest w-1/3">
-                Feature</th>
-              <th class="pb-4 px-4 text-center">
-                <div class="inline-flex flex-col items-center gap-1">
-                  <span class="text-sm font-extrabold text-primary font-headline">FindMyGSoC</span>
-                  <span
-                    class="text-[9px] uppercase tracking-widest text-orange-400 font-bold bg-orange-50 dark:bg-orange-950/30 px-2 py-0.5 rounded-full">This
-                    tool</span>
-                </div>
-              </th>
-              <th class="pb-4 px-4 text-center text-zinc-400 dark:text-zinc-500 font-semibold text-xs">GSoC Portal</th>
-              <th class="pb-4 px-4 text-center text-zinc-400 dark:text-zinc-500 font-semibold text-xs">
-                <a href="https://www.gsocorganizations.dev/" target="_blank" rel="noopener noreferrer"
-                  class="hover:text-primary transition-colors underline decoration-dotted">gsocorganizations.dev</a>
-              </th>
-              <th class="pb-4 px-4 text-center text-zinc-400 dark:text-zinc-500 font-semibold text-xs">GitHub / Manual
-              </th>
+              <th scope="col">Feature</th>
+              <th scope="col" class="us">FindMyGSoC</th>
+              <th scope="col">GSoC portal</th>
+              <th scope="col">gsocorganizations.dev</th>
+              <th scope="col">GitHub, by hand</th>
             </tr>
           </thead>
-          <tbody id="comparisonRows" class="divide-y divide-zinc-100 dark:divide-zinc-800/60">
-          </tbody>
+          <tbody id="comparisonRows"></tbody>
         </table>
       </div>
-      
-      <!-- mobile only 1-on-1 tabbed comparison -->
-      <div class="md:hidden max-w-md mx-auto mb-16">
-        <div id="comparisonTabpanel" role="tabpanel" aria-labelledby="tab-gsoc" tabindex="0">
-          <table class="w-full text-sm border-collapse table-fixed">
+
+      <div class="cmp-tabs" id="competitorTabs" role="tablist" aria-label="Choose a comparison">
+        <button class="cmp-tab-btn" type="button" role="tab" id="tab-gsoc" data-competitor="gsoc"
+          aria-selected="true">GSoC portal</button>
+        <button class="cmp-tab-btn" type="button" role="tab" id="tab-god" data-competitor="god"
+          aria-selected="false" tabindex="-1">gsocorganizations.dev</button>
+        <button class="cmp-tab-btn" type="button" role="tab" id="tab-gh" data-competitor="gh" aria-selected="false"
+          tabindex="-1">GitHub / Manual</button>
+      </div>
+
+      <div class="cmp-mobile" id="comparisonTabpanel" role="tabpanel" aria-labelledby="tab-gsoc">
+        <div class="cmp">
+          <table>
             <thead>
               <tr>
-                <th class="text-left pb-4 pr-3 text-zinc-400 dark:text-zinc-500 font-semibold text-xs uppercase tracking-widest w-1/2">
-                  Feature
-                </th>
-                <th class="pb-4 px-2 text-center w-1/4">
-                  <div class="inline-flex flex-col items-center gap-1">
-                    <span class="text-sm font-extrabold text-primary font-headline">FindMyGSoC</span>
-                    <span class="text-[9px] uppercase tracking-widest text-orange-400 font-bold bg-orange-50 dark:bg-orange-950/30 px-2 py-0.5 rounded-full">This tool</span>
-                  </div>
-                </th>
-                <th class="pb-4 px-2 text-center text-zinc-400 dark:text-zinc-500 font-semibold text-xs w-1/4">
-                  <span id="mobileCompetitorLabel">GSoC Portal</span>
-                </th>
+                <th scope="col">Feature</th>
+                <th scope="col" class="us">FindMyGSoC</th>
+                <th scope="col" id="mobileCompetitorLabel">GSoC portal</th>
               </tr>
             </thead>
-            <tbody id="comparisonRowsMobile" class="divide-y divide-zinc-100 dark:divide-zinc-800/60">
-            </tbody>
+            <tbody id="comparisonRowsMobile"></tbody>
           </table>
         </div>
-
-        <div id="competitorTabs" role="tablist" aria-label="Choose a competitor to compare against" class="mt-5 flex flex-wrap justify-center gap-1 p-1 rounded-full bg-zinc-100 dark:bg-zinc-800/60 border border-zinc-200/70 dark:border-zinc-700/60">
-          <button type="button" role="tab" id="tab-gsoc" aria-selected="true" aria-controls="comparisonTabpanel" tabindex="0" data-competitor="gsoc" class="compare-tab-btn px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 border border-primary shadow-sm">
-          GSoC Portal
-          </button>
-          <button type="button" role="tab" id="tab-god" aria-selected="false" aria-controls="comparisonTabpanel" tabindex="-1" data-competitor="god" class="compare-tab-btn px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border border-transparent text-zinc-500 dark:text-zinc-400">
-          gsocorganizations.dev
-          </button>
-          <button type="button" role="tab" id="tab-gh" aria-selected="false" aria-controls="comparisonTabpanel" tabindex="-1" data-competitor="gh" class="compare-tab-btn px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border border-transparent text-zinc-500 dark:text-zinc-400">
-          GitHub / Manual
-          </button>
-        </div>
-      </div> 
-
-      <!-- Advantage highlight cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div
-          class="group bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/20 dark:to-orange-950/10 border border-orange-100 dark:border-orange-900/30 rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200">
-          <span class="material-symbols-outlined text-primary text-2xl mb-3 block">psychology</span>
-          <h3 class="font-bold text-sm text-zinc-900 dark:text-zinc-100 mb-1.5">AI-First Discovery</h3>
-          <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">Paste your GitHub or CV and get org
-            matches scored by skill overlap — no manual browsing needed.</p>
-        </div>
-        <div
-          class="group bg-gradient-to-br from-emerald-50 to-emerald-100/50 dark:from-emerald-950/20 dark:to-emerald-950/10 border border-emerald-100 dark:border-emerald-900/30 rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200">
-          <span class="material-symbols-outlined text-secondary text-2xl mb-3 block">shield_lock</span>
-          <h3 class="font-bold text-sm text-zinc-900 dark:text-zinc-100 mb-1.5">100% Private</h3>
-          <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">Everything runs in your browser. Your
-            proposals, bookmarks, and history never leave your device.</p>
-        </div>
-        <div
-          class="group bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-950/10 border border-blue-100 dark:border-blue-900/30 rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200">
-          <span class="material-symbols-outlined text-blue-500 text-2xl mb-3 block">bolt</span>
-          <h3 class="font-bold text-sm text-zinc-900 dark:text-zinc-100 mb-1.5">Instant &amp; Free</h3>
-          <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">No account, no paywall. Open the app and
-            start exploring 184 organizations in under 5 seconds.</p>
-        </div>
-        <div
-          class="group bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-950/20 dark:to-purple-950/10 border border-purple-100 dark:border-purple-900/30 rounded-2xl p-6 hover:-translate-y-1 transition-all duration-200">
-          <span class="material-symbols-outlined text-purple-500 text-2xl mb-3 block">code</span>
-          <h3 class="font-bold text-sm text-zinc-900 dark:text-zinc-100 mb-1.5">Open Source</h3>
-          <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">Built in the open on GitHub. Contribute
-            features, report issues, or fork and self-host — community-driven.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════ ABOUT SECTION ═══════════════════ -->
-    <section id="about"
-      class="max-w-7xl mx-auto px-4 sm:px-8 py-16 md:py-24 border-t border-zinc-200/40 dark:border-zinc-800/40">
-      <!-- Section Header -->
-      <div class="text-center mb-14">
-        <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Our Mission</span>
-        <h2
-          class="text-3xl sm:text-4xl font-extrabold font-headline tracking-tighter mt-2 mb-4 text-zinc-900 dark:text-zinc-50">
-          About FindMyGSoC</h2>
-        <p class="text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-          Empowering university students and independent developers to confidently navigate and succeed in Google Summer
-          of Code.
-        </p>
       </div>
 
-      <!-- About Content Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
-        <!-- Left: Text content -->
-        <div class="flex flex-col gap-6 text-left lg:pr-6">
-          <span
-            class="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-orange-50 dark:bg-orange-950/30 text-primary border border-orange-100 dark:border-orange-900/30">
-            <span class="relative flex h-1.5 w-1.5">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></span>
-            </span>
-            Open Source Initiative
-          </span>
+      <div class="why4" style="margin-top:20px">
+        <article class="fcard" data-rv>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3.4" />
+              <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
+            </svg></div>
+          <h4>AI-first discovery</h4>
+          <p>Paste your GitHub or CV and get organizations scored by skill overlap, no manual browsing.</p>
+        </article>
+        <article class="fcard" data-rv style="transition-delay:.06s">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
+            </svg></div>
+          <h4>100% private</h4>
+          <p>Everything runs in your browser. Proposals, bookmarks and history never leave your device.</p>
+        </article>
+        <article class="fcard" data-rv style="transition-delay:.12s">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2 4 14h6l-1 8 9-12h-6z" />
+            </svg></div>
+          <h4>Instant &amp; free</h4>
+          <p>No account, no paywall. Open the app and start exploring 184 organizations in under five seconds.</p>
+        </article>
+        <article class="fcard" data-rv style="transition-delay:.18s">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 6 3 12l5 6M16 6l5 6-5 6" />
+            </svg></div>
+          <h4>Open source</h4>
+          <p>Built in the open on GitHub. Add features, report issues, or fork and self-host it.</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-          <h3
-            class="text-2xl sm:text-3xl font-extrabold font-headline text-zinc-900 dark:text-zinc-50 tracking-tight leading-tight">
-            Streamlining GSoC Discovery for <span
-              class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-orange-400 to-amber-500">Every
-              Developer</span>
-          </h3>
-
-          <p class="text-zinc-600 dark:text-zinc-300 text-sm sm:text-base leading-relaxed">
-            Google Summer of Code is a career-defining program, but the initial phase of finding the right organization,
-            understanding their codebase complexity, and filtering by relevant tech stacks can feel like a needle in a
-            haystack.
-          </p>
-
-          <p class="text-zinc-600 dark:text-zinc-300 text-sm sm:text-base leading-relaxed">
-            FindMyGSoC is an independent community dashboard designed to bridge this gap. By combining automated data
-            aggregation with a sleek, privacy-focused dashboard, we help you match your skills, monitor active Good
-            First Issues, and draft winning proposals completely client-side.
-          </p>
-          
-          <div
-            class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2 pt-6 border-t border-zinc-200/50 dark:border-zinc-800/60">
-            <div class="flex items-center gap-2.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-              <span
-                class="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center text-secondary">
-                <span class="material-symbols-outlined text-xs icon-fill">check</span>
-              </span>
-              100% Free & Open Source
+  <!-- ===================== ABOUT ===================== -->
+  <section class="sec about" id="about">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <span class="eyebrow">About</span>
+          <h2 style="font-size:clamp(26px,3.4vw,40px);margin-top:10px">Streamlining GSoC discovery<br />for every
+            developer.</h2>
+          <p class="lede" style="margin-top:16px;font-size:15.5px">Google Summer of Code is a career-defining programme,
+            but the first phase, finding the right organization, understanding its codebase, filtering by the stack you
+            actually know, can feel like a needle in a haystack.</p>
+          <p class="lede" style="margin-top:12px;font-size:15.5px">FindMyGSoC is an independent community dashboard built
+            to close that gap: automated data aggregation, a privacy-first workspace, and a shortlist you can defend in
+            an application.</p>
+          <div class="kstats">
+            <div class="k">
+              <div class="n">184+</div>
+              <div class="l">organisations indexed</div>
             </div>
-            <div class="flex items-center gap-2.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-              <span
-                class="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center text-secondary">
-                <span class="material-symbols-outlined text-xs icon-fill">check</span>
-              </span>
-              No Login or Data Collected
+            <div class="k">
+              <div class="n">0</div>
+              <div class="l">accounts required</div>
             </div>
-            <div class="flex items-center gap-2.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-              <span
-                class="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center text-secondary">
-                <span class="material-symbols-outlined text-xs icon-fill">check</span>
-              </span>
-              PWA Support / Fully Offline
-            </div>
-            <div class="flex items-center gap-2.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-              <span
-                class="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center text-secondary">
-                <span class="material-symbols-outlined text-xs icon-fill">check</span>
-              </span>
-              Synced Live Every 6 Hours
+            <div class="k">
+              <div class="n">Apache 2.0</div>
+              <div class="l">licensed, self-hostable</div>
             </div>
           </div>
         </div>
-
-        <!-- Right: Enhanced Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 relative">
-          <!-- Ambient glowing orb behind cards -->
-          <div
-            class="absolute -right-12 -top-12 w-72 h-72 rounded-full bg-primary/10 dark:bg-primary/5 blur-3xl pointer-events-none">
-          </div>
-
-          <!-- Card 1 -->
-          <div
-            class="group relative p-6 rounded-3xl bg-white/70 dark:bg-zinc-900/60 glass border border-zinc-200/50 dark:border-zinc-800/60 hover:border-primary/30 dark:hover:border-orange-500/30 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-orange-500/5">
-            <div
-              class="w-12 h-12 rounded-2xl bg-orange-100/80 dark:bg-orange-950/20 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-              <span class="material-symbols-outlined text-primary text-2xl">groups</span>
-            </div>
-            <h4 class="font-bold text-base text-zinc-900 dark:text-zinc-100 mb-2 font-headline">Community-First</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Built and optimized by active open-source contributors to help you find mentorship and master your
-              application.
-            </p>
-          </div>
-
-          <!-- Card 2 -->
-          <div
-            class="group relative p-6 rounded-3xl bg-white/70 dark:bg-zinc-900/60 glass border border-zinc-200/50 dark:border-zinc-800/60 hover:border-secondary/30 dark:hover:border-emerald-500/30 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-emerald-500/5">
-            <div
-              class="w-12 h-12 rounded-2xl bg-emerald-100/80 dark:bg-emerald-950/20 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300">
-              <span class="material-symbols-outlined text-secondary text-2xl">shield</span>
-            </div>
-            <h4 class="font-bold text-base text-zinc-900 dark:text-zinc-100 mb-2 font-headline">Zero-Data Tracking</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Your proposals, search filters, bookmarks, and CV matches are stored locally on your device. Zero servers
-              involved.
-            </p>
-          </div>
-
-          <!-- Card 3 -->
-          <div
-            class="group relative p-6 rounded-3xl bg-white/70 dark:bg-zinc-900/60 glass border border-zinc-200/50 dark:border-zinc-800/60 hover:border-purple-500/30 dark:hover:border-purple-500/30 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-purple-500/5">
-            <div
-              class="w-12 h-12 rounded-2xl bg-purple-100/80 dark:bg-purple-950/20 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-              <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-2xl">psychology</span>
-            </div>
-            <h4 class="font-bold text-base text-zinc-900 dark:text-zinc-100 mb-2 font-headline">AI-Driven Matching</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Instantly analyze your GitHub profile or resume to discover matching tech stacks and pinpoint
-              high-probability orgs.
-            </p>
-          </div>
-
-          <!-- Card 4 -->
-          <div
-            class="group relative p-6 rounded-3xl bg-white/70 dark:bg-zinc-900/60 glass border border-zinc-200/50 dark:border-zinc-800/60 hover:border-blue-500/30 dark:hover:border-blue-500/30 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-blue-500/5">
-            <div
-              class="w-12 h-12 rounded-2xl bg-blue-100/80 dark:bg-blue-950/20 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300">
-              <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-2xl">sync</span>
-            </div>
-            <h4 class="font-bold text-base text-zinc-900 dark:text-zinc-100 mb-2 font-headline">Real-Time Sync</h4>
-            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Live updates for organization participation archives and beginner-friendly Good First Issues, synced every
-              6 hours.
-            </p>
-          </div>
+        <div class="figure r43" data-rv>
+          <img src="src/assets/redesign/about.webp"
+            alt="The full Alumni Camp India 2026 cohort photographed in the hall" width="1000"
+            height="625" />
         </div>
       </div>
-    </section>
 
-    <!-- ═══════════════════ HOW IT WORKS SECTION ═══════════════════ -->
-    <section id="how-it-works"
-      class="relative overflow-hidden pt-16 pb-20 md:pt-20 md:pb-28 bg-zinc-50 dark:bg-[#0f0a05] transition-colors duration-300">
+      <figure class="widefig" data-rv>
+        <img src="src/assets/redesign/wide.webp"
+          alt="Alumni Camp attendees with hands raised during a session" width="1500" height="750" />
+      </figure>
+    </div>
+  </section>
 
-      <!-- Ambient background orbs -->
-      <div
-        class="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-orange-400/5 dark:bg-orange-500/8 blur-3xl pointer-events-none">
+  <!-- ===================== FAQ ===================== -->
+  <section class="sec" id="faq">
+    <div class="wrap">
+      <div class="sec-hd">
+        <span class="eyebrow">Questions</span>
+        <h2>Frequently asked questions</h2>
+        <p>Short answers to the things people ask before their first contribution.</p>
       </div>
-      <div
-        class="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-purple-400/5 dark:bg-purple-500/6 blur-3xl pointer-events-none">
+      <div class="faq" id="faqList"></div>
+    </div>
+  </section>
+
+  <!-- ===================== CLOSING CTA ===================== -->
+  <section class="sec" id="start" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta">
+        <div>
+          <h3>Ready to find your org?</h3>
+          <p>Browse 184+ organizations, or paste your GitHub username and let the matcher rank them.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn primary" href="/app">Browse organizations</a>
+          <a class="btn ghost" href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank"
+            rel="noopener noreferrer">Star on GitHub</a>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
-
-        <!-- Section Header -->
-        <div class="text-center mb-20">
-          <span
-            class="inline-flex items-center gap-2.5 font-label text-xs font-bold uppercase tracking-[0.22em] text-primary mb-4">
-            <span class="w-8 h-px bg-primary/40 rounded-full"></span>
-            Your Journey
-            <span class="w-8 h-px bg-primary/40 rounded-full"></span>
-          </span>
-          <h2
-            class="text-3xl sm:text-5xl font-extrabold font-headline tracking-tighter mt-1 mb-5 text-zinc-900 dark:text-zinc-50 leading-tight">
-            How FindMyGSoC
-            <span
-              class="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-orange-400 to-amber-400">Empowers
-              You</span>
-          </h2>
-          <p class="text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
-            From first search to accepted proposal — a guided, three-step journey built entirely around you.
-          </p>
-        </div>
-
-        <!-- Steps Grid -->
-        <div class="relative grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto" id="howItWorksSteps">
-
-          <!-- Animated connector line (desktop only) -->
-          <div
-            class="hidden md:block absolute top-14 left-[calc(16.66%+2rem)] right-[calc(16.66%+2rem)] h-px z-0 pointer-events-none overflow-hidden rounded-full bg-gradient-to-r from-orange-400/50 via-emerald-400/50 to-purple-400/50">
-          </div>
-
-          <!-- Step 1: Discover & Match -->
-          <div
-            class="hiw-step group relative bg-white dark:bg-[#1a1108]/60 border border-zinc-200/80 dark:border-zinc-800/80 rounded-3xl p-8 shadow-sm hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-3 transition-all duration-500 opacity-0 translate-y-8 z-10">
-            <span
-              class="absolute top-5 right-6 text-7xl font-extrabold font-headline text-zinc-100 dark:text-zinc-800/60 leading-none select-none pointer-events-none">01</span>
-            <div
-              class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-950/50 dark:to-amber-950/30 flex items-center justify-center shadow-md shadow-orange-500/15 mb-7 group-hover:scale-110 transition-transform duration-300">
-              <span class="material-symbols-outlined text-primary text-[1.6rem]">travel_explore</span>
-            </div>
-            <h3 class="text-xl font-extrabold mb-3 text-zinc-900 dark:text-zinc-100 font-headline relative z-10">
-              Discover &amp; Match</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-6 relative z-10">
-              Browse 184+ organizations or paste your GitHub username — our AI instantly ranks every org by how well it
-              fits your unique tech stack.
-            </p>
-            <div class="flex flex-wrap gap-2 pt-5 border-t border-zinc-100 dark:border-zinc-800/50 relative z-10">
-              <span
-                class="inline-flex items-center gap-1 text-[11px] font-bold bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 px-2.5 py-1 rounded-full border border-orange-100 dark:border-orange-900/40">
-                <span class="material-symbols-outlined text-sm">filter_list</span> Smart Filters
-              </span>
-              <span
-                class="inline-flex items-center gap-1 text-[11px] font-bold bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 px-2.5 py-1 rounded-full border border-orange-100 dark:border-orange-900/40">
-                <span class="material-symbols-outlined text-sm">psychology</span> AI Ranking
-              </span>
-              <span
-                class="inline-flex items-center gap-1 text-[11px] font-bold bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-400 px-2.5 py-1 rounded-full border border-orange-100 dark:border-orange-900/40">
-                <span class="material-symbols-outlined text-sm">bookmark</span> Watchlist
-              </span>
-            </div>
-          </div>
-
-          <!-- Step 2: Engage & Compare -->
-          <div
-            class="hiw-step group relative bg-white dark:bg-[#1a1108]/60 border border-zinc-200/80 dark:border-zinc-800/80 rounded-3xl p-8 shadow-sm hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-3 transition-all duration-500 opacity-0 translate-y-8 z-10"
-            style="transition-delay:0.15s">
-            <span
-              class="absolute top-5 right-6 text-7xl font-extrabold font-headline text-zinc-100 dark:text-zinc-800/60 leading-none select-none pointer-events-none">02</span>
-            <div
-              class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-950/50 dark:to-teal-950/30 flex items-center justify-center shadow-md shadow-emerald-500/15 mb-7 group-hover:scale-110 transition-transform duration-300">
-              <span class="material-symbols-outlined text-secondary text-[1.6rem]">compare_arrows</span>
-            </div>
-            <h3 class="text-xl font-extrabold mb-3 text-zinc-900 dark:text-zinc-100 font-headline relative z-10">Engage
-              &amp; Compare</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-6 relative z-10">
-              Line up to 3 orgs side-by-side, dive into mentor Slack &amp; Discord channels, and claim live Good First
-              Issues to build your contribution record.
-            </p>
-            <div class="flex flex-wrap gap-2 pt-5 border-t border-zinc-100 dark:border-zinc-800/50 relative z-10">
-              <span
-                class="inline-flex items-center gap-1 text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-100 dark:border-emerald-900/40">
-                <span class="material-symbols-outlined text-sm">compare</span> Side-by-Side
-              </span>
-              <span
-                class="inline-flex items-center gap-1 text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-100 dark:border-emerald-900/40">
-                <span class="material-symbols-outlined text-sm">bug_report</span> Live GFIs
-              </span>
-              <span
-                class="inline-flex items-center gap-1 text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-100 dark:border-emerald-900/40">
-                <span class="material-symbols-outlined text-sm">forum</span> Mentor Channels
-              </span>
-            </div>
-          </div>
-
-          <!-- Step 3: Draft & Apply -->
-          <div
-            class="hiw-step group relative bg-white dark:bg-[#1a1108]/60 border border-zinc-200/80 dark:border-zinc-800/80 rounded-3xl p-8 shadow-sm hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-3 transition-all duration-500 opacity-0 translate-y-8 z-10"
-            style="transition-delay:0.3s">
-            <span
-              class="absolute top-5 right-6 text-7xl font-extrabold font-headline text-zinc-100 dark:text-zinc-800/60 leading-none select-none pointer-events-none">03</span>
-            <div
-              class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-100 to-violet-100 dark:from-purple-950/50 dark:to-violet-950/30 flex items-center justify-center shadow-md shadow-purple-500/15 mb-7 group-hover:scale-110 transition-transform duration-300">
-              <span
-                class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-[1.6rem]">edit_note</span>
-            </div>
-            <h3 class="text-xl font-extrabold mb-3 text-zinc-900 dark:text-zinc-100 font-headline relative z-10">Draft
-              &amp; Apply</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed mb-6 relative z-10">
-              Write your proposal in the built-in Markdown editor with live preview and auto-save, then export a
-              polished PDF to submit straight to the GSoC portal.
-            </p>
-            <div class="flex flex-wrap gap-2 pt-5 border-t border-zinc-100 dark:border-zinc-800/50 relative z-10">
-              <span
-                class="inline-flex items-center gap-1 text-[11px] font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-2.5 py-1 rounded-full border border-purple-100 dark:border-purple-900/40">
-                <span class="material-symbols-outlined text-sm">edit_note</span> MD Editor
-              </span>
-              <span
-                class="inline-flex items-center gap-1 text-[11px] font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-2.5 py-1 rounded-full border border-purple-100 dark:border-purple-900/40">
-                <span class="material-symbols-outlined text-sm">preview</span> Live Preview
-              </span>
-              <span
-                class="inline-flex items-center gap-1 text-[11px] font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 px-2.5 py-1 rounded-full border border-purple-100 dark:border-purple-900/40">
-                <span class="material-symbols-outlined text-sm">picture_as_pdf</span> PDF Export
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bottom CTA row -->
-        <div class="mt-16 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="/app"
-            class="inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-primary to-orange-500 text-white rounded-2xl text-sm font-bold shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 hover:scale-[1.04] transition-all duration-200 active:scale-95">
-            <span class="material-symbols-outlined text-base">rocket_launch</span>
-            Start Your Journey Now
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <div class="wrap">
+      <div class="f-grid">
+        <div>
+          <a class="brand" href="#top" style="margin-bottom:12px">
+            <img class="mark" src="src/assets/redesign/logo-mark.png" alt="" width="30" height="30" />
+            FindMyGSoC
           </a>
-          <a href="#faq"
-            class="inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-500 dark:text-zinc-400 hover:text-primary dark:hover:text-orange-400 transition-colors duration-200">
-            <span class="material-symbols-outlined text-base">help_outline</span>
-            Have questions? See FAQ
-          </a>
+          <p style="font-size:13.5px;color:var(--muted);max-width:32ch">A community dashboard for people finding their
+            way into open source. Built in the open.</p>
         </div>
-
-      </div>
-    </section>
-
-    <!-- ═══════════════════ FAQ SECTION ═══════════════════ -->
-    <section id="faq" class="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-      <div class="text-center mb-16">
-        <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Got Questions?</span>
-        <h2
-          class="text-3xl sm:text-4xl font-extrabold font-headline tracking-tighter mt-2 mb-4 text-zinc-900 dark:text-zinc-50">
-          Frequently Asked Questions</h2>
-        <p class="text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto text-sm">Everything you need to know about the
-          platform and the GSoC timeline.</p>
-      </div>
-
-      <div id="faqList" class="space-y-4"></div>
-    </section>
-
-    <!-- ═══════════════════ LAUNCH APPLICATION CTA BANNER ═══════════════════ -->
-    <section class="max-w-5xl mx-auto px-4 sm:px-6 mb-20 md:mb-28">
-      <div
-        class="bg-gradient-to-br from-zinc-900 via-zinc-800 to-[#1c0f05] dark:from-[#1a1108] dark:to-[#0f0a05] border border-zinc-800 rounded-3xl p-8 sm:p-12 text-center shadow-xl relative overflow-hidden">
-        <!-- Background accents -->
-        <div
-          class="absolute inset-0 bg-radial-gradient(ellipse 50% 50% at 50% 50%, rgba(244,107,14,0.1), transparent) pointer-events-none">
+        <div>
+          <h5>Product</h5>
+          <ul>
+            <li><a href="#what">What is GSoC</a></li>
+            <li><a href="#suite">Features</a></li>
+            <li><a href="#how">How it works</a></li>
+            <li><a href="#why">Why us</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
         </div>
-
-        <h2 class="text-2xl sm:text-4xl font-extrabold text-white font-headline mb-4 relative z-10">Ready to Land Your
-          GSoC Slot?</h2>
-        <p class="text-zinc-400 max-w-xl mx-auto text-sm sm:text-base mb-8 relative z-10">Launch the application,
-          compare organizations, filter tech stacks, and find good first issues instantly.</p>
-        <a href="/app"
-          class="inline-flex items-center gap-2.5 px-8 py-4 bg-primary hover:bg-primary-container text-white text-base font-bold rounded-2xl transition-all duration-200 shadow-md relative z-10 hover:scale-[1.02]">
-          Launch Finder Dashboard
-          <span class="material-symbols-outlined text-lg">rocket_launch</span>
-        </a>
+        <div>
+          <h5>Official</h5>
+          <ul>
+            <li><a href="https://summerofcode.withgoogle.com/" target="_blank" rel="noopener">GSoC programme</a></li>
+            <li><a href="https://summerofcode.withgoogle.com/" target="_blank" rel="noopener">Contributor guide</a></li>
+            <li><a href="https://summerofcode.withgoogle.com/" target="_blank" rel="noopener">Mentor guide</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Project</h5>
+          <ul>
+            <li><a href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://github.com/S3DFX-CYBER/FindMyGSoC/blob/main/CONTRIBUTING.md" target="_blank"
+                rel="noopener">Contribute</a></li>
+            <li><a href="https://github.com/S3DFX-CYBER/FindMyGSoC/issues" target="_blank" rel="noopener">Report an
+                issue</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+          </ul>
+        </div>
       </div>
-    </section>
-  </main>
 
-  <!-- ═══════════════════ FOOTER ═══════════════════ -->
-  <div id="footer-placeholder"></div>
+      <div class="credits">
+        Photography: the project's own images, shot at Google Summer of Code Alumni Camp India 2026 (24 July 2026). The
+        people shown are attendees of that event; they have not individually endorsed this project, if you plan to use
+        these publicly, it's worth asking each of them first.
+      </div>
 
-  <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+      <div class="f-bot">
+        <span>© 2027 FindMyGSoC · Apache 2.0 licensed</span>
+        <span>Independent community project. Not affiliated with Google. Google Summer of Code is a programme of Google
+          LLC.</span>
+      </div>
+    </div>
+  </footer>
+
   <script src="agent/scripts/orgs.js"></script>
-  <script src="src/js/footer.js"></script>
-  <!-- Landing page logic (theme, FAQ, comparison table, animations, stats) -->
   <script src="src/js/landing.js"></script>
-
 </body>
 
 </html>

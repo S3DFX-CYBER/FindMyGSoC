@@ -21,7 +21,7 @@
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "FindMyGSoC — GSoC 2026 Org Finder",
+      "name": "FindMyGSoC, GSoC 2026 Org Finder",
       "url": "https://findmygsoc.vercel.app/",
       "description": "Find your perfect GSoC 2026 organization filtered by tech stack, domain, and competition level.",
       "applicationCategory": "DeveloperApplication",
@@ -69,6 +69,7 @@
     }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="src/styles.css" />
   <script>
@@ -97,28 +98,38 @@
             'xl': '1280px',
             '2xl': '1536px',
           },
+          // Palette from the 2027 redesign handoff. Every existing component -
+          // page markup and the templates in src/js/*.js, picks these up, so the
+          // app speaks the same colour language as the landing page.
           colors: {
-            "surface-container-highest":"#e2e2e2","background":"#f9f9f9",
-            "surface-container":"#eeeeee","primary-container":"#f97316",
-            "surface":"#f9f9f9","surface-variant":"#e2e2e2",
-            "on-background":"#1a1c1c","on-primary":"#ffffff",
-            "on-surface":"#1a1c1c","error":"#ba1a1a",
-            "primary":"#9d4300","on-surface-variant":"#584237",
-            "outline":"#8c7164","surface-container-lowest":"#ffffff",
-            "secondary":"#006c47","secondary-container":"#8af5be",
-            "on-secondary-container":"#00714b","on-secondary":"#ffffff",
-            "surface-container-low":"#f3f3f3","surface-container-high":"#e8e8e8",
-            "surface-dim":"#dadada","primary-fixed":"#ffdbca",
-            "primary-fixed-dim":"#ffb690","error-container":"#ffdad6",
-            "on-error-container":"#93000a","on-secondary-fixed":"#002113",
-            "secondary-fixed-dim":"#71dba6","tertiary":"#5f5e5e",
-            "on-primary-container":"#582200","surface-tint":"#9d4300",
+            "surface-container-highest":"#eadfd2","background":"#ffffff",
+            "surface-container":"#f4ece2","primary-container":"#cf5209",
+            "surface":"#ffffff","surface-variant":"#f4ece2",
+            "on-background":"#211c17","on-primary":"#ffffff",
+            "on-surface":"#211c17","error":"#c5372b",
+            "primary":"#f26a1b","on-surface-variant":"#6e635a",
+            "outline":"#d9cabb","surface-container-lowest":"#ffffff",
+            "secondary":"#1f7a45","secondary-container":"#e7f3ea",
+            "on-secondary-container":"#1f7a45","on-secondary":"#ffffff",
+            "surface-container-low":"#fbf7f2","surface-container-high":"#f2eae0",
+            "surface-dim":"#e8ddd0","primary-fixed":"#fdeee2",
+            "primary-fixed-dim":"#f7c8a6","error-container":"#fbe9e6",
+            "on-error-container":"#c5372b","on-secondary-fixed":"#f2faf5",
+            "secondary-fixed-dim":"#1f7a45","tertiary":"#6e635a",
+            "on-primary-container":"#ffffff","surface-tint":"#f26a1b",
+            // Warm neutrals in place of Tailwind's cool grey ramp, so the dark
+            // theme lands on the same warm ink the landing page uses.
+            "zinc":{
+              "50":"#faf7f4","100":"#f2eae0","200":"#eadfd2","300":"#d9cabb",
+              "400":"#a89a8b","500":"#8c8178","600":"#6e635a","700":"#4a4139",
+              "800":"#2e261f","900":"#1a1512","950":"#12100d"
+            },
           },
           fontFamily: {
-            "headline":["Plus Jakarta Sans"],"body":["Plus Jakarta Sans"],
-            "label":["Space Grotesk"],"mono":["Fira Code"]
+            "headline":["Archivo"],"body":["Archivo"],
+            "label":["JetBrains Mono"],"mono":["JetBrains Mono"]
           },
-          borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},
+          borderRadius:{"DEFAULT":"0.375rem","lg":"0.625rem","xl":"1rem","full":"9999px"},
         },
       },
     }
@@ -1341,6 +1352,758 @@ kbd:hover{
   }
 }
 
+
+/* =========================================================================
+   2027 redesign, dialogs, overlays and list rows
+   These components already carry semantic hooks (.modal, .metric-card,
+   .section-title, .issue-card, .mentor-card, …), so the redesign lands here
+   as a stylesheet layer instead of a markup rewrite. Declared last inside
+   this block so it wins over the rules above.
+   ========================================================================= */
+.modal-bg{background:rgb(20 14 8 / 55%);backdrop-filter:blur(6px)}
+.modal,.an-panel{
+  background:var(--rd-bg);border:1px solid var(--rd-line);border-radius:22px;
+  box-shadow:var(--rd-shadow-lg);
+}
+.modal-header h2{
+  font-family:var(--rd-display);font-weight:500;letter-spacing:-.025em;
+  line-height:1.1;color:var(--rd-ink);
+}
+.modal-header p{color:var(--rd-muted);font-size:13.5px}
+.close-btn{
+  width:36px;height:36px;border-radius:10px;border:1.5px solid var(--rd-line);
+  background:var(--rd-bg);color:var(--rd-ink-2);display:grid;place-items:center;
+  transition:border-color .18s,color .18s,background .18s;
+}
+.close-btn:hover{border-color:var(--rd-accent);color:var(--rd-accent);background:var(--rd-accent-tint)}
+.close-btn .material-symbols-outlined{font-size:18px}
+.category-tag{
+  background:var(--rd-accent-soft);color:var(--rd-accent-dark);
+  font-family:var(--rd-mono);font-size:10px;font-weight:500;letter-spacing:.1em;
+  padding:3px 8px;border-radius:6px;border:0;
+}
+.metrics-grid{gap:10px}
+.metric-card{
+  background:var(--rd-surface);border:1px solid var(--rd-line-soft);
+  border-radius:14px;padding:14px 16px;text-align:left;
+}
+.metric-value{
+  font-family:var(--rd-display);font-size:24px;font-weight:400;letter-spacing:-.02em;
+  line-height:1;margin-bottom:6px;color:var(--rd-ink);
+}
+.metric-label{
+  font-family:var(--rd-mono);font-size:9.5px;font-weight:400;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--rd-faint);
+}
+.section-title{
+  font-family:var(--rd-mono);font-size:10.5px;font-weight:400;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--rd-faint);
+  border-bottom:1px solid var(--rd-line-soft);padding-bottom:8px;
+}
+.tech-tags,.fit-tags{gap:6px}
+.tech-tag{
+  font-family:var(--rd-mono);font-size:10.5px;padding:3px 8px;border-radius:5px;
+  background:var(--rd-surface-2);color:var(--rd-ink-2);border:0;
+}
+.fit-tag{
+  font-family:var(--rd-body);font-size:11px;font-weight:500;padding:4px 9px;
+  border-radius:6px;background:var(--rd-blue-soft);color:var(--rd-blue-dark);border:0;
+}
+.timeline-grid{gap:6px}
+.timeline-grid > *{
+  font-family:var(--rd-mono);font-size:10.5px;padding:4px 9px;border-radius:6px;
+  background:var(--rd-surface-2);color:var(--rd-ink-2);border:0;
+}
+.github-stats-container{
+  background:var(--rd-surface);border:1px solid var(--rd-line-soft);
+  border-radius:12px;padding:10px 14px;display:flex;flex-wrap:wrap;gap:14px;
+}
+.gh-stat-item{font-family:var(--rd-mono);font-size:11px;color:var(--rd-muted)}
+.gh-fetch{
+  border:1.5px solid var(--rd-line);background:var(--rd-bg);color:var(--rd-ink-2);
+  border-radius:8px;font-family:var(--rd-body);font-size:12px;font-weight:600;padding:5px 10px;
+}
+.gh-fetch:hover{border-color:var(--rd-accent);color:var(--rd-accent);background:var(--rd-accent-tint)}
+.issue-card{
+  background:var(--rd-bg);border:1px solid var(--rd-line-soft);border-radius:12px;
+}
+.issue-card:hover{border-color:#f0c9a8;box-shadow:var(--rd-shadow);background:var(--rd-accent-tint)}
+.issue-org{font-family:var(--rd-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--rd-accent-dark)}
+.issue-label{
+  font-family:var(--rd-mono);font-size:10px;padding:2px 7px;border-radius:5px;
+  background:var(--rd-surface-2);color:var(--rd-ink-2);border:0;
+}
+.mentor-card{
+  background:var(--rd-bg);border:1px solid var(--rd-line-soft);border-radius:16px;
+  box-shadow:none;
+}
+.mentor-card:hover{border-color:#f0c9a8;box-shadow:var(--rd-shadow-lg)}
+.mentor-link-chip,.mentor-handle-chip{
+  font-family:var(--rd-mono);font-size:10.5px;padding:3px 8px;border-radius:5px;
+  background:var(--rd-surface-2);color:var(--rd-ink-2);border:0;
+}
+.mentor-link-chip:hover{background:var(--rd-accent-soft);color:var(--rd-accent-dark)}
+.proposal-editor{font-family:var(--rd-mono);font-size:12.5px;background:var(--rd-bg);color:var(--rd-ink)}
+.proposal-preview{background:var(--rd-surface);color:var(--rd-ink-2);font-size:13.5px}
+.proposal-preview h1,.proposal-preview h2,.proposal-preview h3{font-family:var(--rd-display);font-weight:500;letter-spacing:-.02em;color:var(--rd-ink)}
+.an-panel{max-width:720px}
+.an-num{font-family:var(--rd-display);font-weight:400;letter-spacing:-.02em}
+.bookmark-btn{color:var(--rd-faint)}
+.bookmark-btn.active{color:var(--rd-accent)}
+.modal-cta{
+  background:var(--rd-bg);color:var(--rd-ink);border:1.5px solid var(--rd-line);
+  border-radius:11px;font-family:var(--rd-body);font-weight:600;font-size:12.5px;
+  letter-spacing:.02em;
+}
+.modal-cta:hover{border-color:var(--rd-accent);color:var(--rd-accent);background:var(--rd-accent-tint)}
+.modal-proposal-link{
+  background:var(--rd-accent);color:#fff;border:2px solid var(--rd-accent-dark);
+}
+.modal-proposal-link:hover{background:var(--rd-accent-dark);color:#fff}
+.modal-ideas-link{
+  background:var(--rd-accent-soft);color:var(--rd-accent-dark);
+  border:1.5px solid #f6c9a9;
+}
+.modal-ideas-link:hover{background:#fde0cc;color:var(--rd-accent-dark)}
+
+/* ===== 2027 redesign, page frame from the handoff ===== */
+:root{--card:#ffffff}
+.dark{--card:#1a1512}
+
+/* =========================================================================
+   FindMyGSoC, design system
+   Palette derived from the Google Summer of Code material language:
+     white ground, Google blue as the only primary, and the three
+     accent hues used strictly as category tags (never as decoration).
+   Type: Plus Jakarta Sans (display) · DM Sans (body) · JetBrains Mono (data)
+   ========================================================================= */
+:root{
+  --bg:#ffffff;
+  --surface:#fbf7f2;
+  --surface-2:#f4ece2;
+  --line:#eadfd2;
+  --line-soft:#f2eae0;
+
+  --ink:#211c17;
+  --ink-2:#3b332b;
+  --muted:#6e635a;
+  --faint:#8c8178;
+
+  --accent:#f26a1b;
+  --accent-dark:#cf5209;
+  --accent-soft:#fdeee2;
+  --accent-tint:#fff7f1;
+
+  --blue:#2a52d0;
+  --blue-dark:#1d3ea8;
+  --blue-soft:#e9edfb;
+
+  --green:#1f7a45;
+  --green-soft:#e7f3ea;
+  --amber:#9a5b00;
+  --amber-soft:#fbf0df;
+  --red:#c5372b;
+  --red-soft:#fbe9e6;
+
+  --f-display:'Newsreader',Georgia,'Times New Roman',serif;
+  --f-body:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,monospace;
+
+  /* a real modular scale (1.25) instead of ad-hoc clamps */
+  --t-xs:11px; --t-sm:12.5px; --t-base:16px; --t-md:18px;
+  --t-lg:clamp(19px,1.6vw,21px);
+  --t-h3:clamp(20px,1.9vw,24px);
+  --t-h2:clamp(28px,3.5vw,44px);
+  --t-h1:clamp(40px,5.5vw,70px);
+
+  --pad:clamp(18px,5vw,40px);
+  --max:1180px;
+  --r-sm:9px;
+  --r:18px;
+  --r-lg:22px;
+  --shadow:0 1px 2px rgba(60,64,67,.10), 0 1px 3px rgba(60,64,67,.08);
+  --shadow-lg:0 4px 8px rgba(60,64,67,.10), 0 12px 32px rgba(60,64,67,.12);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--f-body);font-size:var(--t-base);line-height:1.65;font-weight:400;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+p{margin:0}
+h1,h2,h3,h4{margin:0;font-family:var(--f-display);letter-spacing:-.022em;line-height:1.04;font-weight:400}
+h1{font-size:var(--t-h1);line-height:.99;letter-spacing:-.032em}
+h2{font-size:var(--t-h2);line-height:1.05;letter-spacing:-.026em}
+h3,h4{font-size:var(--t-h3)}
+::selection{background:var(--accent-soft);color:var(--accent-dark)}
+:focus-visible{outline:3px solid rgba(242,106,27,.42);outline-offset:2px;border-radius:4px}
+
+.wrap{max-width:var(--max);margin:0 auto;padding-inline:var(--pad)}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.02em}
+.eyebrow{font-family:var(--f-mono);font-size:var(--t-xs);font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.lede{font-size:var(--t-lg);line-height:1.58;color:var(--ink-2);max-width:60ch;font-weight:300;letter-spacing:-.003em}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(12px) saturate(1.4);
+  border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+.nav.stuck{border-bottom-color:var(--line-soft)}
+.nav-in{max-width:var(--max);margin:0 auto;padding:14px var(--pad);display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:500;font-size:22px;letter-spacing:-.015em}
+.brand .mark{width:30px;height:30px;flex:none;border-radius:8px;display:block}
+.nav-links{display:flex;gap:26px;margin-left:auto}
+.nav-links a{font-size:14.5px;font-weight:500;color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{display:flex;align-items:center;gap:10px}
+@media(max-width:900px){.nav-links{display:none}.nav-cta{margin-left:auto}}
+@media(max-width:600px){
+  .nav-in{gap:10px;padding:12px var(--pad)}
+  .brand{font-size:15.5px}
+  .brand .mark{width:26px;height:26px}
+  .nav-cta .btn.ghost{display:none}
+  .nav-cta .btn.primary{padding:9px 15px;font-size:13px}
+  .topbar .in{font-size:12px;gap:8px}
+  .topbar .in > span:last-child{display:none}
+}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--f-body);font-weight:600;font-size:14px;letter-spacing:.002em;
+  padding:11px 19px;border-radius:12px;border:2px solid transparent;
+  transition:background .18s,box-shadow .18s,transform .18s var(--ease),color .18s;
+  white-space:nowrap;position:relative}
+.btn svg{width:16px;height:16px;flex:none}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent-dark);box-shadow:4px 4px 0 #f7c8a6}
+.btn.primary:hover{background:var(--accent-dark);box-shadow:2px 2px 0 #f7c8a6;transform:translate(2px,2px)}
+.btn.ghost{background:var(--card);color:var(--ink);border-color:#3a3128;box-shadow:4px 4px 0 #ebe0d2}
+.btn.ghost:hover{background:#fff7f1;box-shadow:2px 2px 0 #ebe0d2;transform:translate(2px,2px)}
+.btn.soft{background:var(--accent-soft);color:var(--accent-dark);border-color:#f6c9a9;box-shadow:4px 4px 0 #f7dcc6}
+.btn.soft:hover{background:#fde0cc;box-shadow:2px 2px 0 #f7dcc6;transform:translate(2px,2px)}
+.btn.sm{padding:8px 13px;font-size:13px;border-radius:10px;box-shadow:3px 3px 0 #f7c8a6}
+.btn.ghost.sm{border-color:#3a3128}
+.btn.ghost.sm{box-shadow:3px 3px 0 #ebe0d2}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(30px,4.6vw,52px) 0 clamp(24px,3.4vw,40px);position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(720px 420px at 82% -10%, #fff2e6, transparent 70%),
+             radial-gradient(620px 400px at 0% 0%, #fdf6ec, transparent 68%)}
+.hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:clamp(28px,5vw,64px);align-items:center}
+.pill{display:inline-flex;align-items:center;gap:9px;padding:6px 14px 6px 8px;border-radius:999px;
+  background:var(--card);border:1px solid var(--line-soft);box-shadow:var(--shadow);
+  font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--ink-2)}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);position:relative;flex:none}
+.pill .dot::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--blue);opacity:.45;animation:ping 2.6s ease-out infinite}
+@keyframes ping{0%{transform:scale(.6);opacity:.6}80%,100%{transform:scale(1.7);opacity:0}}
+
+.hero h1{margin:22px 0 0;font-size:clamp(38px,4.5vw,58px);line-height:1.02;letter-spacing:-.03em;font-weight:400}
+.hero h1 .hl{color:var(--accent);font-style:italic;font-weight:400;position:relative;white-space:nowrap;z-index:0}
+.hero h1 .hl{position:relative;display:inline-block}
+.hero h1 .squiggle{position:absolute;left:-3%;right:-3%;bottom:-.24em;width:106%;height:.28em;color:var(--accent);overflow:visible}
+.hero h1 .squiggle path{stroke-dasharray:260;stroke-dashoffset:260;animation:draw 1.15s cubic-bezier(.22,1,.36,1) .75s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.hero h1 .squiggle path{animation:none;stroke-dashoffset:0}}
+.hero .lede{margin-top:20px;max-width:44ch;font-weight:300;font-size:clamp(16.5px,1.35vw,18.5px)}
+
+/* search */
+.searchbox{margin-top:28px;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
+  border-radius:999px;padding:6px 6px 6px 18px;box-shadow:var(--shadow);transition:box-shadow .25s,border-color .25s}
+.searchbox:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px rgba(242,106,27,.14)}
+.searchbox svg{width:18px;height:18px;color:var(--faint);flex:none}
+.searchbox input{flex:1;min-width:0;border:0;outline:none;background:none;font-family:var(--f-body);font-size:16px;color:var(--ink);padding:8px 0}
+.searchbox input::placeholder{color:var(--faint)}
+.searchbox .btn{padding:10px 18px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.chips .lbl{font-size:13px;color:var(--faint);margin-right:2px}
+.chip{font-family:var(--f-mono);font-size:11.5px;padding:5px 10px;border-radius:8px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--ink-2);transition:background .2s,border-color .2s,color .2s,transform .2s}
+.chip:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.hero-badges{display:flex;flex-wrap:wrap;gap:16px;margin-top:22px;font-size:13.5px;color:var(--muted)}
+.hero-badges span{display:flex;align-items:center;gap:7px}
+.hero-badges svg{width:15px;height:15px;color:var(--blue);flex:none}
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+
+/* hero media */
+.hero-media{position:relative}
+.hero-media .frame{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-lg);aspect-ratio:4/5;background:var(--surface-2);outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.hero-media .frame img{width:100%;height:100%;object-fit:cover}
+.hero-media .badge{position:absolute;left:-18px;bottom:26px;background:var(--card);border-radius:14px;padding:14px 18px;
+  box-shadow:0 6px 18px rgba(60,64,67,.14),4px 4px 0 #f2e6d8;display:flex;align-items:center;gap:12px;
+  transform:rotate(-1.6deg);transition:transform .35s var(--ease)}
+.hero-media:hover .badge{transform:rotate(0deg)}
+.hero-media .badge .n{font-family:var(--f-display);font-size:30px;font-weight:400;letter-spacing:-.02em;line-height:1;font-variant-numeric:lining-nums}
+.hero-media .badge .l{font-size:12px;color:var(--muted);line-height:1.35}
+.hero-media .badge .ico{width:38px;height:38px;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center;flex:none}
+.hero-media .badge .ico svg{width:19px;height:19px;color:var(--accent)}
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-media{max-width:460px;margin-top:32px}
+  .hero-media .frame{aspect-ratio:16/11}
+  .hero-media .badge{left:auto;right:12px;bottom:-16px;padding:10px 14px}
+}
+
+/* ---------- stats strip ---------- */
+.stats{border-block:1px solid var(--line-soft);background:var(--surface)}
+.stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.stats .s{padding:22px 20px 22px 0;border-right:1px solid var(--line-soft)}
+.stats .s:last-child{border-right:0}
+.stats .n{font-family:var(--f-display);font-size:clamp(24px,2.8vw,34px);font-weight:400;letter-spacing:-.02em;line-height:1;font-variant-numeric:lining-nums}
+.stats .l{font-size:12.5px;color:var(--muted);margin-top:7px}
+@media(max-width:760px){
+  .stats .wrap{grid-template-columns:1fr 1fr}
+  .stats .s:nth-child(2){border-right:0}
+  .stats .s:nth-child(1),.stats .s:nth-child(2){border-bottom:1px solid var(--line-soft)}
+}
+
+/* ---------- sections ---------- */
+.sec{padding:clamp(52px,7vw,84px) 0}
+.sec-hd{max-width:60ch;margin-bottom:clamp(24px,3.5vw,38px)}
+.sec-hd h2{font-size:clamp(26px,3.4vw,40px);letter-spacing:-.035em;margin-top:10px}
+.sec-hd p{margin-top:12px;color:var(--muted);font-size:15.5px;line-height:1.65}
+.sec-hd.center{margin-inline:auto;text-align:center}
+
+/* ---------- finder ---------- */
+.finder{background:var(--surface);border-block:1px solid var(--line-soft);padding:clamp(44px,6vw,72px) 0}
+.finder-top{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;margin-bottom:22px}
+@media(max-width:820px){.finder-top{grid-template-columns:1fr}}
+.finder-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+.finder-tools .chip{background:var(--card)}
+.finder-tools .chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.count{font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-left:auto;white-space:nowrap}
+.count b{color:var(--ink);font-weight:500}
+
+.orgs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:960px){.orgs{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.orgs{grid-template-columns:1fr}}
+
+.org{background:var(--card);border:1px solid var(--line-soft);border-radius:var(--r);padding:18px;
+  display:flex;flex-direction:column;gap:12px;transition:box-shadow .25s,transform .25s var(--ease),border-color .25s;
+  animation:cardIn .45s var(--ease) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.org:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:#f0c9a8}
+.org-head{display:flex;align-items:center;gap:11px}
+.org-ava{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;flex:none;
+  font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:.02em;color:#fff}
+.org h3{font-size:16px;letter-spacing:-.02em;line-height:1.25}
+.org .sub{font-size:12px;color:var(--faint);margin-top:2px}
+.org p{font-size:13.5px;color:var(--muted);line-height:1.55;flex:1}
+.org .tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--f-mono);font-size:10.5px;padding:3px 8px;border-radius:5px;background:var(--surface-2);color:var(--ink-2)}
+.tag.py{background:var(--accent-soft);color:var(--accent-dark)}
+.tag.go{background:var(--blue-soft);color:var(--blue-dark)}
+.tag.rs{background:var(--amber-soft);color:#b06000}
+.tag.beg{background:var(--blue-soft);color:var(--blue-dark);font-family:var(--f-body);font-weight:500}
+.org-foot{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--line-soft);
+  font-size:12.5px;color:var(--muted)}
+.org-foot .go{margin-left:auto;color:var(--accent);font-weight:500;display:inline-flex;align-items:center;gap:4px}
+.org-foot .go svg{width:14px;height:14px}
+.empty{grid-column:1/-1;padding:40px 0;text-align:center;color:var(--muted);font-size:15px}
+
+/* ---------- how it works ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:st}
+@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.steps{grid-template-columns:1fr}}
+.step{position:relative;padding:22px 20px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line-soft)}
+.step .num{font-family:var(--f-mono);font-size:11px;color:var(--accent);letter-spacing:.08em}
+.step h4{font-size:16.5px;margin:10px 0 7px;letter-spacing:-.02em}
+.step p{font-size:13.5px;color:var(--muted);line-height:1.55}
+.step .bar{position:absolute;left:20px;right:20px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:var(--accent);opacity:.5}
+
+/* ---------- community band ---------- */
+.band{position:relative;border-radius:var(--r-lg);overflow:hidden;background:#1a110b;color:#fff;isolation:isolate}
+.band img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:-2;opacity:.55}
+.band::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg, rgba(26,17,11,.94) 0%, rgba(26,17,11,.74) 46%, rgba(26,17,11,.28) 100%)}
+.band-in{padding:clamp(28px,5vw,56px);max-width:56ch}
+.band h2{font-size:clamp(24px,3vw,36px);letter-spacing:-.035em;color:#fff}
+.band p{margin-top:12px;color:rgba(255,255,255,.78);font-size:15.5px;line-height:1.6}
+.band .btn{margin-top:22px}
+
+/* ---------- who it's for ---------- */
+.who{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.who{grid-template-columns:1fr}}
+.who .card{border:1px solid var(--line-soft);border-radius:var(--r);overflow:hidden;background:var(--card);transition:box-shadow .25s,transform .25s var(--ease)}
+.who .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.who .card .ph{aspect-ratio:16/10;overflow:hidden;background:var(--surface-2)}
+.who .card .ph img{width:100%;height:100%;object-fit:cover}
+.who .card .ph.panel{position:relative;display:flex;align-items:center;padding:18px 20px}
+.who .card .ph.panel .pl{position:absolute;top:16px;left:20px;font-family:var(--f-mono);font-size:11px;color:var(--accent);letter-spacing:.04em}
+.who .card .ph.panel strong{font-family:var(--f-display);font-weight:400;font-size:clamp(21px,2.1vw,25px);letter-spacing:-.02em;line-height:1.15;color:var(--ink)}
+.who .card .tx{padding:18px 20px 22px}
+.who .card h4{font-size:17px;letter-spacing:-.02em}
+.who .card p{margin-top:8px;font-size:13.5px;color:var(--muted);line-height:1.6}
+.who .card .k{font-family:var(--f-mono);font-size:11px;color:var(--accent);letter-spacing:.06em}
+
+/* ---------- faq ---------- */
+.faq{display:grid;gap:10px;max-width:820px}
+.faq details{border:1px solid var(--line-soft);border-radius:var(--r);background:var(--card);overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.faq details[open]{border-color:#f0c9a8;box-shadow:var(--shadow)}
+.faq summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:14px;
+  font-family:var(--f-body);font-weight:600;font-size:15.5px;letter-spacing:-.008em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .pm{margin-left:auto;width:22px;height:22px;border-radius:50%;background:var(--surface-2);
+  display:grid;place-items:center;flex:none;transition:background .2s,transform .3s}
+.faq details[open] summary .pm{background:var(--accent);color:#fff;transform:rotate(45deg)}
+.faq summary .pm svg{width:12px;height:12px}
+.faq .ans{padding:0 18px 18px;color:var(--muted);font-size:14.5px;line-height:1.65;max-width:68ch}
+.faq .ans code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;color:var(--ink-2)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line-soft);background:var(--surface);padding:40px 0 44px;margin-top:clamp(48px,6vw,80px)}
+.f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px}
+@media(max-width:820px){.f-grid{grid-template-columns:1fr 1fr}}
+footer h5{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin:0 0 14px;font-weight:400}
+footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+footer a{font-size:13.5px;color:var(--muted);transition:color .2s}
+footer a:hover{color:var(--accent)}
+.f-bot{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;margin-top:34px;padding-top:18px;
+  border-top:1px solid var(--line-soft);font-size:12.5px;color:var(--faint)}
+.credits{margin-top:22px;font-size:11.5px;line-height:1.7;color:var(--faint);max-width:80ch}
+
+
+/* ---------- announcement bar ---------- */
+.topbar{background:linear-gradient(90deg,#fff4ea,#fdeee2);border-bottom:1px solid #f7e2d0}
+.topbar .in{max-width:var(--max);margin:0 auto;padding:9px var(--pad);display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  font-size:13px;font-weight:500;color:var(--accent-dark)}
+.topbar .live{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--card);border:1px solid #f6cdb0;color:var(--accent-dark)}
+.topbar .live i{width:6px;height:6px;border-radius:50%;background:var(--blue);display:block}
+.topbar .sp{flex:1}
+
+/* ---------- hero minis ---------- */
+.minis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:clamp(26px,3.4vw,40px)}
+@media(max-width:860px){.minis{grid-template-columns:1fr}}
+.mini{background:var(--card);border:1.5px solid var(--line-soft);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);
+  transition:box-shadow .25s,transform .25s var(--ease)}
+.mini:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.mini .h{display:flex;align-items:center;gap:8px;font-family:var(--f-body);font-weight:600;font-size:14px;letter-spacing:-.005em}
+.mini .h svg{width:17px;height:17px;color:var(--accent);flex:none}
+.mini p{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.5}
+.mini .row{display:flex;flex-wrap:wrap;gap:5px;margin-top:11px}
+.mini .k{font-family:var(--f-mono);font-size:10px;padding:2px 6px;border-radius:4px;background:var(--surface-2);color:var(--ink-2)}
+.mini .k.hi{background:var(--blue-soft);color:var(--blue-dark)}
+.mini .meter{margin-top:11px;display:flex;flex-direction:column;gap:7px}
+.mini .meter div{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:10px;color:var(--muted)}
+.mini .meter .b{flex:1;height:4px;border-radius:2px;background:var(--surface-2);overflow:hidden}
+.mini .meter .b i{display:block;height:100%;background:var(--accent);border-radius:2px}
+.mini .issue{display:flex;align-items:center;gap:8px;margin-top:11px;font-family:var(--f-mono);font-size:10px;color:var(--muted)}
+.mini .issue b{color:var(--ink);font-weight:500}
+.mini .issue .t{margin-left:auto;color:var(--faint)}
+.statusbar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:14px;padding:9px 16px;border:1px solid var(--line-soft);
+  border-radius:999px;background:var(--card);font-family:var(--f-mono);font-size:10.5px;color:var(--muted)}
+.statusbar .ok{color:var(--blue);display:flex;align-items:center;gap:5px}
+.statusbar .ok svg{width:12px;height:12px}
+
+/* ---------- split blocks ---------- */
+.split{display:grid;grid-template-columns:1.06fr .94fr;gap:clamp(24px,4vw,56px);align-items:center}
+@media(max-width:900px){.split{grid-template-columns:1fr}}
+.figure{border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-lg);background:var(--surface-2);outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.figure img{width:100%;height:100%;object-fit:cover;display:block}
+.figure.r43{aspect-ratio:4/3}
+.figure.r169{aspect-ratio:16/9}
+.kstats{display:flex;gap:clamp(20px,3vw,40px);margin-top:24px;flex-wrap:wrap}
+.kstats .k .n{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,2.6vw,32px);letter-spacing:-.02em;line-height:1;font-variant-numeric:lining-nums}
+.kstats .k .l{font-size:12px;color:var(--muted);margin-top:5px}
+
+/* ---------- numbered cards ---------- */
+.numcards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+@media(max-width:860px){.numcards{grid-template-columns:1fr}}
+.ncard{border:1.5px solid var(--line-soft);border-radius:var(--r);padding:22px;background:var(--card);transition:box-shadow .25s,transform .25s var(--ease)}
+.ncard:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.ncard .n{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent-dark);
+  display:grid;place-items:center;font-family:var(--f-mono);font-weight:500;font-size:11px}
+.ncard h4{font-size:17px;font-weight:600;letter-spacing:-.012em;margin:14px 0 8px;font-family:var(--f-body)}
+.ncard p{font-size:13.5px;color:var(--muted);line-height:1.62}
+
+/* ---------- big stats row ---------- */
+.bigstats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px;
+  border-top:1px solid var(--line-soft);padding-top:26px}
+@media(max-width:760px){.bigstats{grid-template-columns:1fr 1fr}}
+.bigstats .b .n{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,2.8vw,34px);letter-spacing:-.02em;line-height:1;font-variant-numeric:lining-nums}
+.bigstats .b .l{font-size:12.5px;color:var(--muted);margin-top:6px}
+
+/* ---------- suite grid ---------- */
+.suite{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:960px){.suite{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.suite{grid-template-columns:1fr}}
+.fcard{border:1.5px solid var(--line-soft);border-radius:var(--r);background:var(--card);padding:20px;
+  display:flex;flex-direction:column;gap:10px;transition:box-shadow .25s,transform .25s var(--ease)}
+.fcard:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.fcard .ic{width:36px;height:36px;border-radius:10px;background:var(--blue-soft);display:grid;place-items:center}
+.fcard .ic svg{width:18px;height:18px;color:var(--blue)}
+.fcard h4{font-size:16px;font-weight:600;letter-spacing:-.01em;margin-top:2px;font-family:var(--f-body)}
+.fcard p{font-size:13.5px;color:var(--muted);line-height:1.62;flex:1;max-width:52ch}
+.fcard .foot{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.fcard .foot span{font-family:var(--f-mono);font-size:10px;padding:2px 7px;border-radius:4px;background:var(--surface-2);color:var(--ink-2)}
+.fcard.wide{grid-column:span 3;flex-direction:row;align-items:center;gap:clamp(20px,3vw,40px)}
+.fcard.wide .tx{flex:1;min-width:0}
+.fcard.wide .tx{flex:1}
+.fcard.wide .ph{width:330px;flex:none;border-radius:12px;overflow:hidden;aspect-ratio:16/10}
+.fcard.wide .ph img{width:100%;height:100%;object-fit:cover}
+@media(max-width:960px){.fcard.wide{grid-column:span 2;flex-direction:column;align-items:flex-start}.fcard.wide .ph{width:100%;aspect-ratio:16/9}}
+@media(max-width:620px){.fcard.wide{grid-column:span 1}}
+
+/* ---------- why grid ---------- */
+.why4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:960px){.why4{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.why4{grid-template-columns:1fr}}
+
+/* ---------- comparison ---------- */
+.cmp{overflow-x:auto;border:1px solid var(--line-soft);border-radius:var(--r);background:var(--card)}
+.cmp table{width:100%;border-collapse:collapse;min-width:640px}
+.cmp th{text-align:left;padding:14px 16px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--line-soft);font-weight:700;white-space:nowrap}
+.cmp th.us{color:var(--accent-dark);background:var(--accent-tint)}
+.cmp td{padding:13px 16px;border-bottom:1px solid var(--line-soft);font-size:13.5px;color:var(--muted)}
+.cmp tr:last-child td{border-bottom:0}
+.cmp td:first-child{color:var(--ink);font-weight:500}
+.cmp td.us{background:var(--accent-tint);color:var(--ink)}
+.cmp .y{color:var(--blue);font-weight:500}
+.cmp .n{color:var(--faint)}
+.cmp .p{color:var(--amber)}
+
+/* ---------- about ---------- */
+.about{background:var(--surface);border-block:1px solid var(--line-soft)}
+.widefig{border-radius:var(--r-lg);overflow:hidden;margin-top:34px;box-shadow:var(--shadow-lg);aspect-ratio:21/9;outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.widefig img{width:100%;height:100%;object-fit:cover}
+@media(max-width:760px){.widefig{aspect-ratio:16/10}}
+
+/* ---------- closing cta ---------- */
+.cta{display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between;
+  border:1px solid var(--line-soft);border-radius:var(--r-lg);padding:clamp(22px,3vw,32px);background:var(--card);box-shadow:var(--shadow)}
+.cta h3{font-size:clamp(22px,2.4vw,28px);letter-spacing:-.022em;font-weight:400}
+.cta p{font-size:13.5px;color:var(--muted);margin-top:6px}
+
+
+/* ===================== APP SHELL ===================== */
+body{background:var(--surface)}
+.appbar{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line-soft)}
+.appbar-in{max-width:1440px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:22px}
+.appbar .brand{font-size:20px}
+.appnav{display:flex;gap:4px;margin-left:6px;overflow-x:auto;scrollbar-width:none}
+.appnav::-webkit-scrollbar{display:none}
+.appnav a{font-size:13.5px;font-weight:500;color:var(--muted);padding:7px 12px;border-radius:9px;white-space:nowrap;
+  transition:background .18s,color .18s}
+.appnav a:hover{background:var(--surface-2);color:var(--ink)}
+.appnav a.on{background:var(--accent-soft);color:var(--accent-dark)}
+.appbar .right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.cycle{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 9px;border-radius:7px;background:var(--blue-soft);color:var(--blue-dark);white-space:nowrap}
+
+.app-head{max-width:1440px;margin:0 auto;padding:26px 22px 6px;display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px}
+.app-head h1{font-size:clamp(30px,3.4vw,44px);letter-spacing:-.03em}
+.app-head p{color:var(--muted);font-size:14.5px;margin-top:8px;max-width:60ch}
+.headstats{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+.hs{background:var(--card);border:1.5px solid var(--line-soft);border-radius:12px;padding:9px 14px;min-width:86px}
+.hs .n{font-family:var(--f-display);font-size:22px;line-height:1;font-variant-numeric:lining-nums}
+.hs .l{font-size:10.5px;color:var(--muted);margin-top:3px;font-family:var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
+
+.app-main{max-width:1180px;margin:0 auto;padding:0 22px 60px}
+.section{margin-top:clamp(34px,4.5vw,52px);scroll-margin-top:78px}
+.section-hd{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.section-hd h2{font-size:clamp(24px,2.6vw,32px);letter-spacing:-.025em}
+.section-hd p{color:var(--muted);font-size:14px;margin-top:8px;max-width:62ch;line-height:1.6}
+.section-hd .searchrow{margin-left:auto;flex:1 1 280px;max-width:340px}
+.ph3{font-family:var(--f-body);font-size:14px;font-weight:600;letter-spacing:-.005em;margin-bottom:10px}
+.split-panel{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start}
+@media(max-width:900px){.split-panel{grid-template-columns:1fr}}
+.stack{display:flex;flex-direction:column;gap:14px}
+.filterbar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:10px}
+.langbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+@media(max-width:780px){
+  .appbar-in{gap:10px;padding:10px 14px}
+  .appnav{display:none}
+  .cycle{display:none}
+  .appbar .brand{font-size:17px}
+  .appbar .brand .mark{width:24px;height:24px}
+  .appbar .right .btn{font-size:12px;padding:7px 11px}
+  .app-head{padding:20px 16px 4px}
+  .app-main{padding:0 16px 50px}
+  .hs{padding:7px 11px;min-width:74px}
+  .hs .n{font-size:19px}
+  .cmprow,.cmphead{grid-template-columns:110px repeat(3,minmax(90px,1fr))}
+  .cmpgrid{overflow-x:auto}
+}
+.faq{max-width:none}
+.appfoot{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:44px;padding-top:18px;
+  border-top:1px solid var(--line-soft);font-size:12px;color:var(--faint);font-family:var(--f-mono)}
+.appfoot .mark{border-radius:7px}
+
+/* filters */
+.filters{position:sticky;top:72px;background:var(--card);border:1.5px solid var(--line-soft);border-radius:var(--r);padding:16px}
+@media(max-width:1000px){.filters{position:static}}
+.fsearch{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:10px;
+  padding:9px 12px;background:var(--card);transition:border-color .2s,box-shadow .2s}
+.fsearch:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(242,106,27,.12)}
+.fsearch svg{width:16px;height:16px;color:var(--faint);flex:none;max-width:16px;max-height:16px}
+.fsearch input{flex:1;min-width:0;border:0;background:none;outline:none;font-size:13.5px;font-family:var(--f-body);color:var(--ink)}
+.fgroup{margin-top:18px;border-top:1px solid var(--line-soft);padding-top:14px}
+.fgroup h6{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin:0 0 9px;font-weight:400}
+.fbtn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;font-size:13px;color:var(--ink-2);
+  padding:6px 8px;border-radius:8px;transition:background .16s,color .16s}
+.fbtn:hover{background:var(--surface-2)}
+.fbtn.on{background:var(--accent-soft);color:var(--accent-dark);font-weight:500}
+.fbtn .tick{margin-left:auto;width:14px;height:14px;border-radius:4px;border:1.5px solid var(--line);flex:none}
+.fbtn.on .tick{background:var(--accent);border-color:var(--accent)}
+.fbtn .tick svg{width:10px;height:10px;color:#fff;display:none}
+.fbtn.on .tick svg{display:block}
+.freset{margin-top:16px;width:100%;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  padding:8px;border-radius:9px;border:1.5px solid var(--line);color:var(--muted);transition:.2s}
+.freset:hover{border-color:var(--accent);color:var(--accent)}
+
+/* results */
+.results-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.results-head .c{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.results-head .c b{color:var(--ink);font-weight:500}
+.sortbtn{margin-left:auto;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;color:var(--muted)}
+
+.org-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:760px){.org-grid{grid-template-columns:1fr}}
+.ocard{background:var(--card);border:1.5px solid var(--line-soft);border-radius:var(--r);padding:16px;box-shadow:0 1px 2px rgba(60,64,67,.05);
+  display:flex;flex-direction:column;gap:11px;transition:box-shadow .22s,transform .22s var(--ease),border-color .22s;
+  animation:cardIn .4s var(--ease) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.ocard:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:#f0c9a8}
+.ocard .top{display:flex;gap:11px;align-items:flex-start}
+.ava{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;flex:none;color:#fff;
+  font-family:var(--f-mono);font-size:12px;font-weight:500}
+.ocard h3{font-family:var(--f-body);font-size:15px;font-weight:600;letter-spacing:-.008em;line-height:1.25}
+.ocard .sub{font-size:11.5px;color:var(--faint);margin-top:2px}
+.match{margin-left:auto;text-align:right;flex:none}
+.match .v{font-family:var(--f-display);font-size:19px;line-height:1;color:var(--blue);font-variant-numeric:lining-nums}
+.match .l{font-family:var(--f-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.ocard p{font-size:12.5px;color:var(--muted);line-height:1.55}
+.ocard .tags{display:flex;flex-wrap:wrap;gap:5px}
+.ocard .acts{display:flex;gap:7px;padding-top:11px;border-top:1px solid var(--line-soft);margin-top:auto}
+.mini-btn{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;
+  border-radius:7px;border:1.5px solid var(--line);color:var(--muted);transition:.18s}
+.mini-btn:hover{border-color:var(--accent);color:var(--accent)}
+.mini-btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.mini-btn.watch.on{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* match panel */
+.panel{background:var(--card);border:1.5px solid var(--line-soft);border-radius:var(--r);padding:18px;margin-top:26px;
+  box-shadow:0 1px 2px rgba(60,64,67,.05)}
+.panel h2{font-size:clamp(22px,2.4vw,30px);letter-spacing:-.025em}
+.panel p.sub{color:var(--muted);font-size:14px;margin-top:8px;max-width:62ch}
+.matchform{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.matchform input{flex:1 1 260px;border:1.5px solid var(--line);border-radius:11px;padding:11px 14px;font-size:14px;
+  font-family:var(--f-body);outline:none;background:var(--surface)}
+.matchform input:focus{border-color:var(--accent);background:var(--card)}
+.mres{margin-top:16px;display:grid;gap:8px}
+.mrow{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1.5px solid var(--line-soft);border-radius:11px;
+  background:var(--surface);animation:cardIn .45s var(--ease) both}
+.mrow .bar{width:90px;height:5px;border-radius:3px;background:var(--line-soft);overflow:hidden;flex:none}
+.mrow .bar i{display:block;height:100%;background:var(--blue);border-radius:3px;transition:width .9s var(--ease)}
+.mrow .pc{font-family:var(--f-mono);font-size:11px;color:var(--blue);width:34px;text-align:right}
+.mrow b{font-family:var(--f-body);font-weight:600;font-size:13.5px}
+.mrow .why{font-size:11.5px;color:var(--faint);margin-left:auto;text-align:right}
+
+/* deadlines + gfi + mentors */
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+@media(max-width:820px){.twocol{grid-template-columns:1fr}}
+.dl{display:flex;gap:12px;align-items:flex-start;padding:11px 12px;border:1.5px solid var(--line-soft);border-radius:11px;background:var(--surface);margin-bottom:8px}
+.dl .d{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;color:var(--accent-dark);background:var(--accent-soft);
+  padding:6px 8px;border-radius:7px;text-align:center;flex:none;line-height:1.3}
+.dl b{font-size:13.5px;font-family:var(--f-body);font-weight:600;display:block}
+.dl span{font-size:12px;color:var(--muted)}
+.gfi{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+.gfi:last-child{border-bottom:0}
+.gfi .repo{font-family:var(--f-mono);font-size:11px;color:var(--faint);width:180px;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gfi .ttl{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gfi .age{margin-left:auto;font-family:var(--f-mono);font-size:10.5px;color:var(--faint);flex:none}
+.mrow2{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+.mrow2:last-child{border-bottom:0}
+.mrow2 .ch{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap}
+.ch span{font-family:var(--f-mono);font-size:9.5px;padding:2px 6px;border-radius:5px;background:var(--surface-2);color:var(--ink-2)}
+
+/* anchors clear the sticky bar */
+#matches,#watchlist,#issues,#mentors,#learn,#directory,#top{scroll-margin-top:78px}
+
+/* insight + compare */
+.insight{margin-top:12px;padding:12px;border-radius:11px;background:var(--blue-soft);color:var(--blue-dark);
+  font-size:12.5px;line-height:1.55}
+.cmpgrid{display:grid;gap:10px}
+.cmprow{display:grid;grid-template-columns:170px repeat(3,1fr);gap:10px;padding:10px 12px;border-radius:9px;font-size:12.5px}
+.cmprow:nth-child(odd){background:var(--surface)}
+.cmprow .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);align-self:center}
+.cmprow .v{color:var(--ink-2)}
+.cmphead{display:grid;grid-template-columns:170px repeat(3,1fr);gap:10px;padding:0 12px 8px;border-bottom:1.5px solid var(--line-soft)}
+.cmphead b{font-family:var(--f-body);font-weight:600;font-size:12.5px}
+.cmpempty{color:var(--muted);font-size:13px;padding:8px 0}
+
+/* compare empty state */
+.cmpempty-wrap{display:grid;grid-template-columns:1fr .85fr;gap:20px;align-items:center}
+@media(max-width:760px){.cmpempty-wrap{grid-template-columns:1fr}}
+.cmpfig{margin:0;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:var(--surface-2);
+  outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.cmpfig img{width:100%;height:100%;object-fit:cover}
+.bandfig{aspect-ratio:3/1}
+
+/* panel media */
+.psplit{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(18px,3vw,34px);align-items:center}
+@media(max-width:860px){.psplit{grid-template-columns:1fr}}
+.pfig{margin:0;border-radius:var(--r);overflow:hidden;aspect-ratio:4/3;background:var(--surface-2);
+  outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.pfig img{width:100%;height:100%;object-fit:cover}
+.bandfig{margin:16px 0 4px;border-radius:var(--r);overflow:hidden;aspect-ratio:21/7;background:var(--surface-2);
+  outline:1px solid rgba(33,28,23,.07);outline-offset:-1px}
+.bandfig img{width:100%;height:100%;object-fit:cover}
+@media(max-width:760px){.bandfig{aspect-ratio:16/9}}
+
+/* compare tray */
+.tray{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--card);border-top:1.5px solid var(--line);
+  box-shadow:0 -8px 24px rgba(60,64,67,.10);transform:translateY(110%);transition:transform .35s var(--ease)}
+.tray.show{transform:none}
+.tray-in{max-width:1440px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tray .picks{display:flex;gap:7px;flex-wrap:wrap}
+.pick{display:flex;align-items:center;gap:7px;font-size:12px;background:var(--surface-2);border-radius:8px;padding:5px 9px}
+.pick button{color:var(--faint);font-size:14px;line-height:1}
+.tray .go{margin-left:auto}
+
+/* ---------- motion ---------- */
+.nav-links a{position:relative}
+.nav-links a::after{content:"";position:absolute;left:0;right:100%;bottom:-4px;height:2px;background:var(--accent);
+  transition:right .3s var(--ease)}
+.nav-links a:hover::after{right:0}
+
+[data-stagger] > *{opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+[data-stagger].in > *{opacity:1;transform:none}
+[data-stagger].in > *:nth-child(1){transition-delay:.02s}
+[data-stagger].in > *:nth-child(2){transition-delay:.08s}
+[data-stagger].in > *:nth-child(3){transition-delay:.14s}
+[data-stagger].in > *:nth-child(4){transition-delay:.2s}
+[data-stagger].in > *:nth-child(5){transition-delay:.26s}
+[data-stagger].in > *:nth-child(6){transition-delay:.32s}
+[data-stagger].in > *:nth-child(7){transition-delay:.38s}
+[data-stagger].in > *:nth-child(8){transition-delay:.44s}
+
+.figure img,.hero-media .frame img{transition:transform 1.2s var(--ease)}
+.figure:hover img,.hero-media:hover .frame img{transform:scale(1.03)}
+
+.hero-media{will-change:transform}
+
+/* ---------- reveal ---------- */
+[data-rv]{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+[data-rv].in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  [data-rv]{opacity:1!important;transform:none!important;transition:none!important}
+  *{animation-duration:.001ms!important;animation-iteration-count:1!important}
+  html{scroll-behavior:auto}
+}
+
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
@@ -1365,87 +2128,50 @@ kbd:hover{
 </button>
 
 
-<!-- ═══════════════════ NAVBAR ═══════════════════ -->
-<header class="fixed top-0 w-full z-50 bg-white/80 glass shadow-sm">
-  <div class="flex items-center justify-between px-4 sm:px-6 py-3 max-w-7xl mx-auto w-full">
-    <div class="flex items-center gap-1.5 sm:gap-4 xl:gap-8">
-      <!-- Hamburger menu button (mobile only) -->
-      <button id="menuBtn" onclick="toggleMenu()" class="inline-flex lg:hidden shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-lg transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
-        <span class="material-symbols-outlined text-zinc-600">menu</span>
-      </button>
+<!-- ═══════════════════ APP BAR ═══════════════════ -->
+<header class="appbar">
+  <div class="appbar-in">
+    <!-- Hamburger menu button (mobile only) -->
+    <button id="menuBtn" onclick="toggleMenu()" class="icon-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
 
-      <!-- Home button (links back to landing page) -->
-      <a href="/"
-         class="inline-flex shrink-0 items-center gap-1 px-1.5 sm:px-2 py-2 hover:bg-zinc-100/50 rounded-lg transition-colors text-zinc-600 hover:text-zinc-900"
-         aria-label="Go to home page" title="Home">
-        <span class="material-symbols-outlined text-lg">home</span>
-        <span class="hidden xs:inline text-sm font-medium whitespace-nowrap">Home</span>
-      </a>
+    <a href="/" class="brand" id="logoLink" aria-label="FindMyGSoC home" title="Home">
+      <span class="mark">G</span>FindMyGSoC
+    </a>
 
-      <a href="#timeline" class="flex items-center gap-2" id="logoLink">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center flex-shrink-0">
-          <span class="text-white font-bold text-sm">G</span>
-        </div>
-        <span class="text-base sm:text-lg font-extrabold tracking-tight text-zinc-900 font-headline whitespace-nowrap">
-          <span class="hidden sm:inline">GSoC 2026 </span>
-          <span class="text-primary italic">Org Finder</span>
-        </span>
-      </a>
-      <nav class="hidden lg:flex items-center gap-4 xl:gap-6 text-sm font-medium">
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#timeline" data-section="timeline">Timeline</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#orgs" data-section="orgs">Organizations</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors whitespace-nowrap" href="#ai-recommender" data-section="ai-recommender">AI Recommender</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#watchlist" data-section="watchlist">Watchlist</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#issues" data-section="issues">Issues</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#mentors" data-section="mentors">Mentors</a>
-        <a class="desktop-nav-link text-zinc-600 hover:text-zinc-900 transition-colors" href="#guide" data-section="guide">Guide</a>
-      </nav>
-    </div>
+    <nav class="appnav" aria-label="Sections">
+      <a class="desktop-nav-link" href="#timeline" data-section="timeline">Timeline</a>
+      <a class="desktop-nav-link" href="#orgs" data-section="orgs">Organizations</a>
+      <a class="desktop-nav-link" href="#ai-recommender" data-section="ai-recommender">AI Recommender</a>
+      <a class="desktop-nav-link" href="#watchlist" data-section="watchlist">Watchlist</a>
+      <a class="desktop-nav-link" href="#issues" data-section="issues">Issues</a>
+      <a class="desktop-nav-link" href="#mentors" data-section="mentors">Mentors</a>
+      <a class="desktop-nav-link" href="#guide" data-section="guide">Guide</a>
+    </nav>
 
-    <!-- Right side: Toggle visible on all screens, GitHub button hidden on mobile -->
-    <div class="flex items-center gap-2 sm:gap-3">
+    <div class="right">
+      <span class="cycle">2026 cycle</span>
 
-      <button id="themeToggleBtn" onclick="toggleTheme()"
-        class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
+      <button id="themeToggleBtn" onclick="toggleTheme()" class="icon-btn"
         aria-label="Switch to dark theme" aria-pressed="false" title="Switch to dark theme">
-
-        <span class="material-symbols-outlined text-zinc-600">
-          dark_mode
-        </span>
+        <span class="material-symbols-outlined">dark_mode</span>
       </button>
 
-      <!-- ANALYTICS BUTTON -->
-      <button id="analyticsBtn" onclick="openAnalytics()"
-        class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
-        title="View Analytics & Badges"
-        aria-label="View Analytics and Badges">
-
-        <span class="material-symbols-outlined text-zinc-600">
-          analytics
-        </span>
+      <button id="analyticsBtn" onclick="openAnalytics()" class="icon-btn"
+        title="View Analytics & Badges" aria-label="View Analytics and Badges">
+        <span class="material-symbols-outlined">analytics</span>
       </button>
 
-      <!-- HELP BUTTON -->
-      <button id="helpBtn"
-        class="inline-flex shrink-0 items-center justify-center p-2 hover:bg-zinc-100/50 rounded-full transition-colors"
-        title="Keyboard shortcuts (?)">
-
-        <span class="material-symbols-outlined text-zinc-600">
-          help
-        </span>
+      <button id="helpBtn" class="icon-btn" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">
+        <span class="material-symbols-outlined">help</span>
       </button>
 
       <a href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank" rel="noopener noreferrer"
-        class="hidden sm:flex items-center gap-2 px-3 xl:px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors whitespace-nowrap">
-
-        <span class="material-symbols-outlined text-sm">
-          star
-        </span>
-
-        <span class="lg:hidden xl:inline">Star & Contribute</span>
-        <span class="hidden lg:inline xl:hidden">Star</span>
+        class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors whitespace-nowrap">
+        <span class="material-symbols-outlined text-sm">star</span>
+        <span class="hidden sm:inline">Star</span>
       </a>
-
     </div>
   </div>
 </header>
@@ -1509,77 +2235,69 @@ kbd:hover{
 </div>
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
-<section class="pt-20 sm:pt-28 pb-12 sm:pb-20 px-4 sm:px-6 max-w-7xl mx-auto fade-up">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-stretch">
-    <div class="lg:col-span-7">
-      <div class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-orange-50 border border-orange-100 text-primary mb-6 sm:mb-8">
-        <span class="material-symbols-outlined text-sm icon-fill" style="color:#f97316">verified</span>
-        <span class="font-label text-[10px] sm:text-xs uppercase font-bold tracking-widest">Google Summer of Code 2026</span>
-      </div>
-      <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold font-headline tracking-tighter text-zinc-900 mb-4 sm:mb-6 leading-[0.95]">
-        Find Your<br/><span class="text-primary italic">Perfect GSoC Org</span>
-      </h1>
-      <p class="text-base sm:text-lg text-zinc-600 max-w-xl mb-8 sm:mb-10 leading-relaxed">
-        Browse all <strong data-org-count>184</strong> organizations. Filter by language, domain, competition, and live GitHub activity. Land your summer internship.
-      </p>
-      <!-- Search Bar -->
-      <div class="relative max-w-xl mb-6 sm:mb-8 search-bar-container">
-        <div class="relative rounded-2xl p-[1.5px] bg-zinc-200 dark:bg-zinc-800 transition-all duration-300 search-border-outer">
-          <!-- SVG Flowing Border Effect -->
-          <svg class="timeline-border-svg" fill="none">
-            <rect class="timeline-border-rect" rx="16" ry="16" pathLength="100" />
-          </svg>
-          <div class="relative z-10 bg-white dark:bg-[#18181b] rounded-[calc(1rem-1.5px)] w-full search-border-inner flex items-center gap-2 transition-all duration-300">
-            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
-            <input id="hero-search" type="text" placeholder="Search organization names..." aria-label="Search GSoC 2026 organizations" class="flex-1 bg-transparent border-0 rounded-2xl py-3 sm:py-4 pl-12 pr-4 text-sm font-medium focus:ring-0 focus:outline-none transition-all text-zinc-900 dark:text-zinc-100" />
-            <button id="hero-search-submit" type="button" class="mr-2 inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-primary/30">
-              Search
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- Surprise Button -->
-      <div class="mb-8 sm:mb-10">
-       <button id="surpriseBtn" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-primary-container text-white rounded-full text-sm font-bold hover:shadow-lg hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2" aria-label="🎲 Surprise Me! - Open a random organization">
-  🎲 Surprise Me!
-</button>
-      </div>
-      <!-- Stat Badges -->
-      <div class="flex flex-wrap gap-3 sm:gap-4">
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-          <span class="material-symbols-outlined text-primary text-lg">groups</span>
-          <div><p class="text-xs sm:text-sm text-zinc-500">Total Orgs</p><p class="font-bold text-lg" data-org-count>184</p></div>
-        </div>
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-          <span class="material-symbols-outlined text-secondary text-lg">code</span>
-          <div><p class="text-xs sm:text-sm text-zinc-500">Languages</p><p class="font-bold text-lg">30+</p></div>
-        </div>
-        <div class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-xl border border-zinc-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-          <span class="material-symbols-outlined text-primary-container text-lg">category</span>
-          <div><p class="text-xs sm:text-sm text-zinc-500">Domains</p><p class="font-bold text-lg">15+</p></div>
-        </div>
+<!-- ═══════════════════ PAGE HEAD ═══════════════════ -->
+<section class="app-head fade-up" id="top">
+  <div class="app-head-main">
+    <h1>Find your perfect GSoC org.</h1>
+    <p class="lede">
+      184 organisations from the 2026 cycle, indexed with their stacks, mentors and issue queues.
+      Filter by language, domain, competition and live GitHub activity, then shortlist and draft.
+    </p>
+
+    <!-- Search Bar -->
+    <div class="mt-7 max-w-xl">
+      <div class="flex items-center gap-2 rounded-full border border-[color:var(--rd-line)] bg-[color:var(--rd-bg)] px-2 py-1.5 shadow-sm focus-within:border-[color:var(--rd-accent)]">
+        <span class="material-symbols-outlined text-[color:var(--rd-faint)] pl-2">search</span>
+        <input id="hero-search" type="text" placeholder="Search organization names..."
+          aria-label="Search GSoC 2026 organizations"
+          class="flex-1 min-w-0 bg-transparent border-0 py-2 text-sm font-medium focus:ring-0 focus:outline-none text-[color:var(--rd-ink)]" />
+        <button id="hero-search-submit" type="button"
+          class="inline-flex items-center justify-center rounded-full bg-[color:var(--rd-accent)] px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-[color:var(--rd-accent-dark)] focus:outline-none focus:ring-2 focus:ring-orange-300">
+          Search
+        </button>
       </div>
     </div>
-    <!-- Timeline Card -->
-    <div id="timeline" class="lg:col-span-5 fade-up" style="animation-delay:.2s">
-      <div class="relative rounded-2xl sm:rounded-3xl p-[1.5px] bg-zinc-200 dark:bg-zinc-700 transition-colors duration-300">
-        <!-- SVG Flowing Border Effect -->
-        <svg class="timeline-border-svg" fill="none">
-          <rect class="timeline-border-rect" rx="16" ry="16" pathLength="100" />
-        </svg>
-        <!-- Inner Card Content Layer -->
-        <div class="relative z-10 bg-white rounded-[calc(1rem-1.5px)] sm:rounded-[calc(1.5rem-1.5px)] p-6 sm:p-8 h-full w-full">
-          <div class="flex items-center justify-between mb-6 sm:mb-8">
-            <h3 class="font-headline font-extrabold text-lg sm:text-xl">2026 Timeline</h3>
-            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-bold uppercase tracking-wider">Live</span>
-          </div>
-          <div id="timeline-milestones" aria-label="GSoC timeline milestones" class="space-y-4 sm:space-y-5 overflow-y-auto max-h-[50vh] pl-4 no-scrollbar focus:outline-none focus:ring-2 focus:ring-primary/30 rounded-lg"></div>
-          <div class="mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-zinc-100">
-            <div class="flex items-center justify-between">
-              <span class="text-xs text-zinc-500" id="countdown-label">Next milestone</span>
-              <span id="countdown" class="font-mono text-sm font-bold text-primary">--d --h --m</span>
-            </div>
-          </div>
+
+    <div class="mt-5 flex flex-wrap items-center gap-3">
+      <button id="surpriseBtn"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-[color:var(--rd-accent-dark)] bg-[color:var(--rd-accent)] text-white text-sm font-bold transition-transform hover:translate-x-[2px] hover:translate-y-[2px] focus:outline-none focus:ring-2 focus:ring-orange-300"
+        aria-label="Surprise Me, open a random organization">
+        Surprise Me
+      </button>
+      <span class="font-[family-name:var(--rd-mono)] text-[11px] uppercase tracking-[0.14em] text-[color:var(--rd-faint)]">
+        <strong data-org-count>184</strong> orgs indexed
+      </span>
+    </div>
+
+    <div class="headstats">
+      <div class="hs">
+        <div class="n" data-org-count>184</div>
+        <div class="l">Total orgs</div>
+      </div>
+      <div class="hs">
+        <div class="n">30+</div>
+        <div class="l">Languages</div>
+      </div>
+      <div class="hs">
+        <div class="n">15+</div>
+        <div class="l">Domains</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline Card -->
+  <div id="timeline" class="app-head-aside fade-up" style="animation-delay:.2s">
+    <div class="rounded-[22px] border border-[color:var(--rd-line-soft)] bg-[color:var(--rd-bg)] p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="font-[family-name:var(--rd-display)] text-xl font-medium tracking-tight text-[color:var(--rd-ink)]">2026 Timeline</h3>
+        <span class="font-[family-name:var(--rd-mono)] text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 rounded-full bg-[color:var(--rd-blue-soft)] text-[color:var(--rd-blue-dark)]">Live</span>
+      </div>
+      <div id="timeline-milestones" aria-label="GSoC timeline milestones"
+        class="space-y-3 overflow-y-auto max-h-[340px] pl-4 no-scrollbar focus:outline-none focus:ring-2 focus:ring-orange-300 rounded-lg"></div>
+      <div class="mt-5 pt-4 border-t border-[color:var(--rd-line-soft)]">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-[color:var(--rd-muted)]" id="countdown-label">Next milestone</span>
+          <span id="countdown" class="font-[family-name:var(--rd-mono)] text-sm font-bold text-[color:var(--rd-accent)]">--d --h --m</span>
         </div>
       </div>
     </div>
@@ -1588,11 +2306,17 @@ kbd:hover{
 
 
 <!-- ═══════════════════ ORG DIRECTORY ═══════════════════ -->
-<section id="orgs" class="px-6 max-w-7xl mx-auto pb-20">
-  <div class="mb-12">
-    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Find projects that fit you</span>
-    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Organizations</h2>
-    <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Browse and filter GSoC 2026 organizations by tech stack, difficulty level, and interests to discover projects that match your skills and goals.</p>
+<section id="orgs" class="section">
+  <div class="wrap">
+  <div class="mb-12 section-hd with-fig">
+    <div>
+      <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Find projects that fit you</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Organizations</h2>
+      <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Browse and filter GSoC 2026 organizations by tech stack, difficulty level, and interests to discover projects that match your skills and goals.</p>
+    </div>
+    <figure class="sidefig">
+      <img src="src/assets/redesign/orgs.webp" alt="Attendees at round tables facing the Alumni Camp stage and its two session screens" loading="lazy" />
+    </figure>
   </div>
   <!-- ═══════════════════ FILTER CHIPS (desktop only) ═══════════════════ -->
   <div class="mb-6 fade-up hidden md:block" style="animation-delay:.3s">
@@ -1755,7 +2479,7 @@ kbd:hover{
   <div id="orgPagination" class="mt-12 flex flex-nowrap items-center justify-center gap-1 overflow-x-auto no-scrollbar" aria-label="Organizations pagination"></div>
   <!-- Empty State -->
   <div id="emptyState" class="hidden py-20 text-center animate-fade-up">
-    <div class="text-6xl mb-4">🔍</div>
+    <div class="mb-4"><span class="material-symbols-outlined" style="font-size:40px;color:var(--rd-faint)">search_off</span></div>
     <h3 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2">No organizations match your current filters.</h3>
     <p class="text-zinc-500 dark:text-zinc-400 mb-8">Try adjusting your search or clearing some filters.</p>
     <button onclick="clearAllFilters()" class="px-8 py-3 bg-primary text-white rounded-xl font-bold hover:bg-orange-600 transition-colors shadow-lg shadow-primary/20">
@@ -1768,16 +2492,22 @@ kbd:hover{
       View More Organizations <span class="material-symbols-outlined text-lg">expand_more</span>
     </button>
   </div>
+  </div>
 </section>
 
 <!-- ═══════════════════ AI RECOMMENDER ═══════════════════ -->
-<section id="ai-recommender" class="px-6 max-w-7xl mx-auto py-20 border-t border-zinc-100 dark:border-zinc-800">
-  <div class="mb-12">
-    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">AI-Powered</span>
-    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Personalized Org Suggestions</h2>
-    <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Enter your GitHub username or paste your resume to get deterministic AI-style organization recommendations tailored to your skills and experience.</p>
+<section id="ai-recommender" class="section">
+  <div class="wrap">
+  <div class="mb-12 section-hd with-fig">
+    <div>
+      <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">AI-Powered</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Personalized Org Suggestions</h2>
+      <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Enter your GitHub username or paste your resume to get deterministic AI-style organization recommendations tailored to your skills and experience.</p>
+    </div>
+    <figure class="sidefig">
+      <img src="src/assets/redesign/suggestions.webp" alt="A GSoC Alumni Camp attendee in the audience, wearing the event lanyard" loading="lazy" />
+    </figure>
   </div>
-
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
     <!-- Input Form -->
     <div class="lg:col-span-4 bg-white dark:bg-[#18181b] p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm h-fit">
@@ -1832,15 +2562,17 @@ kbd:hover{
       </div>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- ═══════════════════ WATCHLIST ═══════════════════ -->
-<section id="watchlist" class="bg-surface-container-low py-20 px-6">
+<section id="watchlist" class="section">
+  <div class="wrap">
   <div class="max-w-7xl mx-auto">
     <div class="mb-12 flex items-start justify-between gap-4 flex-wrap">
       <div>
-        <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Scholarly Sandbox</span>
-        <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Watchlist.</h2>
+        <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Scholarly Sandbox</span>
+        <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Watchlist.</h2>
         <p class="text-zinc-600 mt-4 max-w-2xl">Curate your open-source journey. Track organizations, monitor deadlines, and prepare your proposals for GSoC 2026.</p>
       </div>
       <button id="clearAllBookmarksBtn"
@@ -1930,23 +2662,25 @@ kbd:hover{
             })();
           </script>
         </div>
-        <div class="bg-gradient-to-br from-primary to-primary-container text-white rounded-2xl p-6 relative overflow-hidden">
-          <div class="absolute top-0 right-0 p-4 opacity-20"><span class="material-symbols-outlined text-5xl">auto_awesome</span></div>
-          <h4 class="font-bold mb-3">AI Application Insight</h4>
-          <p id="aiInsightText" class="text-sm text-orange-100 leading-relaxed mb-4">Select organizations to get personalized contribution advice.</p>
-          <span class="text-[10px] font-label uppercase tracking-widest text-orange-200">Automated System Advice</span>
+        <div class="insight-panel">
+          <div class="absolute top-0 right-0 p-4 opacity-10"><span class="material-symbols-outlined text-5xl">auto_awesome</span></div>
+          <h4>AI Application Insight</h4>
+          <p id="aiInsightText">Select organizations to get personalized contribution advice.</p>
+          <span class="insight-kicker">Automated system advice</span>
         </div>
       </div>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- ═══════════════════ GOOD FIRST ISSUES ═══════════════════ -->
-<section id="issues" class="py-20 px-6 max-w-7xl mx-auto">
+<section id="issues" class="section">
+  <div class="wrap">
   <div class="mb-12">
-    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">First Contributions</span>
-    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Good First Issues</h2>
-    <p class="text-zinc-600 mt-4 max-w-2xl">Pre-fetched from all GSoC 2026 orgs every 24 hours — no rate limits, no token required, instant results.</p>
+    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">First Contributions</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Good First Issues</h2>
+    <p class="text-zinc-600 mt-4 max-w-2xl">Pre-fetched from all GSoC 2026 orgs every 24 hours, no rate limits, no token required, instant results.</p>
   </div>
   <!-- Status Banner -->
   <div id="issuesBanner" class="bg-green-50 border border-green-200 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -1954,7 +2688,7 @@ kbd:hover{
       <div class="w-3 h-3 rounded-full bg-green-500 pulse-dot" id="issuesBannerDot"></div>
       <div>
         <p class="font-bold text-green-800 text-sm" id="issuesBannerTitle">Pre-fetched Issues Ready</p>
-        <p class="text-xs text-green-600" id="issuesBannerSubtitle">Updated every 24 hours via GitHub Actions — no API rate limits for visitors.</p>
+        <p class="text-xs text-green-600" id="issuesBannerSubtitle">Updated every 24 hours via GitHub Actions, no API rate limits for visitors.</p>
       </div>
     </div>
     <div class="sm:ml-auto flex flex-col items-start sm:items-end gap-1">
@@ -2009,17 +2743,23 @@ kbd:hover{
       </div>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- ═══════════════════ MENTOR FINDER ═══════════════════ -->
-<section id="mentors" class="py-20 px-6 bg-surface-container-low">
+<section id="mentors" class="section">
+  <div class="wrap">
   <div class="max-w-7xl mx-auto">
-    <div class="mb-12">
-      <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Mentor Outreach</span>
-      <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">Mentor Finder</h2>
-      <p class="text-zinc-600 mt-4 max-w-3xl">Pre-fetched contact channels and conservative mentor handles from org ideas pages, so you can find where to introduce yourself before proposal season gets busy.</p>
+    <div class="mb-12 section-hd with-fig">
+      <div>
+        <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Mentor Outreach</span>
+        <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Mentor Finder</h2>
+        <p class="text-zinc-600 mt-4 max-w-3xl">Pre-fetched contact channels and conservative mentor handles from org ideas pages, so you can find where to introduce yourself before proposal season gets busy.</p>
+      </div>
+      <figure class="sidefig">
+        <img src="src/assets/redesign/mentors.webp" alt="The Alumni Camp Delhi 2026 cohort photographed in front of the event signage" loading="lazy" />
+      </figure>
     </div>
-
     <div class="bg-white border border-zinc-100 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
       <div class="flex items-center gap-3">
         <div class="w-3 h-3 rounded-full pulse-dot" id="mentorBannerDot" style="background-color:#f97316"></div>
@@ -2065,16 +2805,21 @@ kbd:hover{
     </div>
   </div>
   <div id="mentorPagination" class="mt-10 flex flex-nowrap items-center justify-center gap-1 overflow-x-auto no-scrollbar" aria-label="Mentor pagination"></div>
+  </div>
 </section>
 
-<!-- ═══════════════════ NEW TO GSOC — INTERACTIVE ROADMAP ═══════════════════ -->
-<section id="guide" class="py-20 px-6 max-w-7xl mx-auto">
+<!-- ═══════════════════ NEW TO GSOC, INTERACTIVE ROADMAP ═══════════════════ -->
+<section id="guide" class="section">
+  <div class="wrap">
   <div class="mb-12">
-    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">GSoC 101</span>
-    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2">New to GSoC? Start here.</h2>
-    <p class="text-zinc-600 mt-4 max-w-2xl">An interactive roadmap — from understanding the program to landing your first acceptance. Click any block to expand its guide and FAQs.</p>
+    <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">GSoC 101</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">New to GSoC? Start here.</h2>
+    <p class="text-zinc-600 mt-4 max-w-2xl">An interactive roadmap, from understanding the program to landing your first acceptance. Click any block to expand its guide and FAQs.</p>
   </div>
 
+  <figure class="bandfig">
+    <img src="src/assets/redesign/band.webp" alt="Contributors lined up on the Alumni Camp India 2026 stage" loading="lazy" />
+  </figure>
   <div class="space-y-4" id="gsocRoadmap">
 
     <!-- ── Block 01 ── -->
@@ -2108,7 +2853,7 @@ kbd:hover{
           <div class="mb-6">
             <div class="roadmap-step-row">
               <div class="roadmap-step-num">1</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Not an internship at Google.</strong> You write code for independent open source foundations — Apache, Blender, Linux, TensorFlow. Google provides the stipend and the platform.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Not an internship at Google.</strong> You write code for independent open source foundations, Apache, Blender, Linux, TensorFlow. Google provides the stipend and the platform.</p>
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num">2</div>
@@ -2179,7 +2924,7 @@ kbd:hover{
           <div class="mb-6">
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(59,130,246,0.12);color:#3b82f6">1</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>The Rule of 2.</strong> Don't spread across 10 orgs. Pick 1–2 and engage deeply. Google allows up to 3 proposals, but focused effort wins every time.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>The Rule of 2.</strong> Don't spread across 10 orgs. Pick 1-2 and engage deeply. Google allows up to 3 proposals, but focused effort wins every time.</p>
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(59,130,246,0.12);color:#3b82f6">2</div>
@@ -2199,7 +2944,7 @@ kbd:hover{
             <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">How many proposals am I allowed to submit?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Google allows up to 3 total proposals across all organizations. Focusing high effort on 1–2 consistently produces better results than spreading thin.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Google allows up to 3 total proposals across all organizations. Focusing high effort on 1-2 consistently produces better results than spreading thin.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if an org has been in GSoC for 15+ years?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
@@ -2239,7 +2984,7 @@ kbd:hover{
             <span class="text-xs font-bold font-label uppercase tracking-widest text-green-600 opacity-70">03</span>
             <span class="text-lg font-extrabold text-zinc-900 font-headline" style="display:block">How to Contribute</span>
           </span>
-          <span class="text-sm text-zinc-500" style="display:block">From setup to your first merged pull request — with community etiquette.</span>
+          <span class="text-sm text-zinc-500" style="display:block">From setup to your first merged pull request, with community etiquette.</span>
         </span>
         <span class="material-symbols-outlined roadmap-chevron">expand_more</span>
       </button>
@@ -2256,7 +3001,7 @@ kbd:hover{
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(34,197,94,0.12);color:#16a34a">3</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Golden Rule of PRs.</strong> Keep PRs atomic — one fix at a time. Add tests, link the issue, and avoid unsolicited "sir give me task" messages.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Golden Rule of PRs.</strong> Keep PRs atomic, one fix at a time. Add tests, link the issue, and avoid unsolicited "sir give me task" messages.</p>
             </div>
           </div>
           <div class="rounded-2xl bg-green-50 border border-green-100 p-4 mb-6 flex items-center justify-center gap-2 text-xs font-semibold text-zinc-600 flex-wrap">
@@ -2269,15 +3014,15 @@ kbd:hover{
             <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Do I need contributions before the application opens?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. Having 1–3 merged or well-reviewed PRs demonstrates to mentors that you can run the codebase, communicate effectively, and produce working code.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Yes. Having 1-3 merged or well-reviewed PRs demonstrates to mentors that you can run the codebase, communicate effectively, and produce working code.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if mentors take days to review my PR?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Mentors are volunteers with day jobs. Wait 3–4 days before leaving a polite follow-up comment in the PR thread on the public channel.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Mentors are volunteers with day jobs. Wait 3-4 days before leaving a polite follow-up comment in the PR thread on the public channel.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">What if another contributor claims the issue I wanted?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Always comment first asking to be assigned before writing code. If taken, browse alternative unassigned issues — orgs usually have many open good-first-issues.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Always comment first asking to be assigned before writing code. If taken, browse alternative unassigned issues, orgs usually have many open good-first-issues.</p></div>
             </div>
           </div>
         </div>
@@ -2320,11 +3065,11 @@ kbd:hover{
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(168,85,247,0.12);color:#9333ea">2</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Build in Buffers.</strong> Budget 1–2 weeks for exams, unexpected bugs, and documentation. Mentors trust realistic timelines over overly ambitious ones.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Build in Buffers.</strong> Budget 1-2 weeks for exams, unexpected bugs, and documentation. Mentors trust realistic timelines over overly ambitious ones.</p>
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(168,85,247,0.12);color:#9333ea">3</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Pre-submission Review.</strong> Share a draft with your mentor at least 1–2 weeks before Google's deadline to get early, constructive feedback.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Pre-submission Review.</strong> Share a draft with your mentor at least 1-2 weeks before Google's deadline to get early, constructive feedback.</p>
             </div>
           </div>
           <div class="rounded-2xl bg-purple-50 border border-purple-100 p-4 mb-6 grid grid-cols-2 gap-2 text-xs font-semibold text-zinc-600">
@@ -2337,7 +3082,7 @@ kbd:hover{
             <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Common Questions</p>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Where do I draft my proposal?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Use FindMyGSoC's built-in Markdown Editor to draft, preview, and export your proposal to PDF or Markdown — all stored locally in your browser.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">Use FindMyGSoC's built-in Markdown Editor to draft, preview, and export your proposal to PDF or Markdown, all stored locally in your browser.</p></div>
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can I propose a brand new idea not on the org's ideas list?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
@@ -2345,7 +3090,7 @@ kbd:hover{
             </div>
             <div class="roadmap-faq-item">
               <button class="roadmap-faq-trigger" aria-expanded="false"><span class="text-xs font-semibold text-zinc-800">Can mentors guarantee my acceptance?</span><span class="material-symbols-outlined roadmap-faq-chevron">expand_more</span></button>
-              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. Final selections depend on the number of contributor slots Google grants to each org — mentor enthusiasm alone doesn't guarantee a slot.</p></div>
+              <div class="roadmap-faq-answer" inert><p class="text-xs text-zinc-500 pb-3 leading-relaxed">No. Final selections depend on the number of contributor slots Google grants to each org, mentor enthusiasm alone doesn't guarantee a slot.</p></div>
             </div>
           </div>
         </div>
@@ -2387,11 +3132,11 @@ kbd:hover{
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(234,179,8,0.15);color:#ca8a04">2</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Stipend Range.</strong> $1,500–$6,600 USD, adjusted by Google's Purchasing Power Parity (PPP) formula for your country. Paid in two phases via Payoneer.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Stipend Range.</strong> $1,500-$6,600 USD, adjusted by Google's Purchasing Power Parity (PPP) formula for your country. Paid in two phases via Payoneer.</p>
             </div>
             <div class="roadmap-step-row">
               <div class="roadmap-step-num" style="background:rgba(234,179,8,0.15);color:#ca8a04">3</div>
-              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Evaluations.</strong> Two checkpoints — Midterm and Final. Pass both to receive your stipend. Mentors evaluate code quality, progress, and communication.</p>
+              <p class="text-sm text-zinc-700 leading-relaxed"><strong>Evaluations.</strong> Two checkpoints, Midterm and Final. Pass both to receive your stipend. Mentors evaluate code quality, progress, and communication.</p>
             </div>
           </div>
           <div class="rounded-2xl bg-yellow-50 border border-yellow-100 p-4 mb-6 space-y-3">
@@ -2458,34 +3203,25 @@ kbd:hover{
       </a>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- ═══════════════════ COMPARE ═══════════════════ -->
 <section class="py-20 px-6 max-w-7xl mx-auto">
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
     <div>
-      <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary">Decision Tool</span>
-      <h2 class="text-4xl font-extrabold font-headline tracking-tighter mt-2 mb-6">Compare Organizations</h2>
+      <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Decision Tool</span>
+      <h2 class="text-4xl font-extrabold font-headline tracking-tighter mt-2 mb-6 sec-title">Compare Organizations</h2>
       <p class="text-zinc-600 leading-relaxed mb-8">Select up to 3 orgs to compare side-by-side. See history, mentor count, tech stack, competition level, and active GFIs at a glance.</p>
       <button onclick="openCompareModal()" class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-xl hover:scale-95 transition-all shadow-lg">
         <span class="material-symbols-outlined">compare</span> Open Comparison Tool
       </button>
     </div>
     <div id="compare" class="bg-surface-container-low rounded-3xl p-8 border border-zinc-100">
-      <div class="grid grid-cols-3 gap-4 text-center">
-        <div class="bg-white rounded-xl p-4 border border-zinc-100">
-          <div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center mx-auto mb-3"><span class="material-symbols-outlined text-orange-600">psychology</span></div>
-          <p class="font-bold text-sm">TensorFlow</p><p class="text-[10px] text-zinc-500 font-label uppercase mt-1">15y · 42 mentors</p>
-        </div>
-        <div class="bg-white rounded-xl p-4 border border-zinc-100">
-          <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center mx-auto mb-3"><span class="material-symbols-outlined text-amber-600">developer_board</span></div>
-          <p class="font-bold text-sm">Apache</p><p class="text-[10px] text-zinc-500 font-label uppercase mt-1">19y · 64 mentors</p>
-        </div>
-        <div class="bg-white rounded-xl p-4 border border-zinc-100 border-dashed border-zinc-300">
-          <div class="w-10 h-10 rounded-lg bg-zinc-100 flex items-center justify-center mx-auto mb-3"><span class="material-symbols-outlined text-zinc-400">add</span></div>
-          <p class="font-bold text-sm text-zinc-400">Add org</p><p class="text-[10px] text-zinc-400 font-label uppercase mt-1">slot 3</p>
-        </div>
-      </div>
+      <p class="font-[family-name:var(--rd-mono)] text-[10.5px] uppercase tracking-[0.14em] text-[color:var(--rd-faint)] mb-4">Nothing selected yet</p>
+      <figure class="cmpfig">
+        <img src="src/assets/redesign/compare.webp" alt="The Alumni Camp wrap-up session on stage, with the closing schedule on screen" loading="lazy" />
+      </figure>
     </div>
   </div>
 </section>
@@ -2680,7 +3416,7 @@ kbd:hover{
           <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em">Filters Used</div>
         </div>
         <div style="background:var(--bg);border:1.5px solid var(--border2);border-radius:11px;padding:11px;text-align:center">
-          <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:900;margin-bottom:2px" id="aTime">—</div>
+          <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:900;margin-bottom:2px" id="aTime">-</div>
           <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em">Session Time</div>
         </div>
       </div>
@@ -2688,7 +3424,7 @@ kbd:hover{
       <!-- Badges Section -->
       <div style="margin-bottom:24px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-          <h3 style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase">🏆 Achievement Badges</h3>
+          <h3 style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase">Achievement Badges</h3>
           <button onclick="if(typeof BadgeSystem !== 'undefined') { BadgeSystem.resetProgress(); renderBadges(); }" style="font-size:10px;font-weight:700;color:var(--red);background:transparent;border:1.5px solid var(--border);border-radius:8px;padding:4px 10px;cursor:pointer;transition:all .18s" onmouseover="this.style.borderColor='var(--red)';this.style.background='rgba(197,48,48,.06)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='transparent'">
             Reset Progress
           </button>
@@ -2980,12 +3716,12 @@ kbd:hover{
   let matchAllLanguages = false;
   let activeChip = null; // tracks the active quick-filter chip key ('veterans' | 'newcomers' | 'low-competition' | 'high-competition' | 'bookmarked' | 'active' | null)
   const CHANNEL_ICONS = {
-    Slack: '💬',
-    Zulip: '💬',
-    Discord: '🎮',
-    Matrix: '🔗',
-    IRC: '🖥️',
-    'Mailing list': '📧'
+    Slack: '',
+    Zulip: '',
+    Discord: '',
+    Matrix: '',
+    IRC: '',
+    'Mailing list': ''
   };
   const CONTACT_TIPS = {
     Slack: 'Join and say hi in the GSoC channel before DMing mentors.',
@@ -3107,7 +3843,7 @@ kbd:hover{
     applyFilters();
   }
 
-  // NOTE: toggleLanguageMode removed — the matchAllLanguagesToggle checkbox
+  // NOTE: toggleLanguageMode removed, the matchAllLanguagesToggle checkbox
   // uses a direct event listener (line ~1538) and does not use onclick=.
 
   globalThis.togglePill = function(el) {
@@ -3170,7 +3906,7 @@ kbd:hover{
     }
   });
 
-  // Mobile chip toggle — mirrors the real filter-chip
+  // Mobile chip toggle, mirrors the real filter-chip
   globalThis.toggleMobileChip = function(mobileBtn) {
     const targetId = mobileBtn.dataset.mobileChip;
     const realChip = document.getElementById(targetId);
@@ -3203,7 +3939,7 @@ kbd:hover{
     });
   }
 
-  // Mobile language pill toggle — reuses existing selectedLanguages set + applyFilters
+  // Mobile language pill toggle, reuses existing selectedLanguages set + applyFilters
   globalThis.toggleMobileLangPill = function(btn) {
     const lang = btn.dataset.lang;
     if (!lang) return;
@@ -3306,7 +4042,7 @@ kbd:hover{
         if (!safe) return '';
         return `
           <a class="mentor-link-chip" href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer">
-            <span>${CHANNEL_ICONS[record.type] || '💬'}</span>
+            <span>${CHANNEL_ICONS[record.type] || ''}</span>
             <span>${escapeHtml(record.label || record.type)}</span>
           </a>
         `;
@@ -3324,7 +4060,7 @@ kbd:hover{
           if (safe) {
             return `
               <a class="mentor-handle-chip" href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer">
-                <span>🐙</span>
+                <span></span>
                 <span>${escapeHtml(label)}</span>
               </a>
             `;
@@ -3333,7 +4069,7 @@ kbd:hover{
 
         return `
           <span class="mentor-handle-chip">
-            <span>👤</span>
+            <span></span>
             <span>${escapeHtml(mentor.name || 'Mentor')}</span>
           </span>
         `;
@@ -3349,10 +4085,10 @@ kbd:hover{
     const chips = mentorPreview.map((mentor) => {
       if (mentor.githubUrl) {
         const safe = sanitizeHrefUrl(mentor.githubUrl);
-        if (safe) return `<a class="mentor-handle-chip" href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer"><span>🐙</span><span>${escapeHtml(mentor.displayLabel)}</span></a>`;
+        if (safe) return `<a class="mentor-handle-chip" href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer"><span></span><span>${escapeHtml(mentor.displayLabel)}</span></a>`;
       }
 
-      return `<span class="mentor-handle-chip"><span>👤</span><span>${escapeHtml(mentor.displayLabel)}</span></span>`;
+      return `<span class="mentor-handle-chip"><span></span><span>${escapeHtml(mentor.displayLabel)}</span></span>`;
     }).join('');
 
     return `<div class="flex flex-wrap gap-2">${chips}</div>`;
@@ -3599,7 +4335,7 @@ kbd:hover{
         </div>
         ${bodyHtml}
         <div class="mt-5 pt-4 border-t border-zinc-100">
-          ${safeContactHref ? `<a href="${escapeHtml(safeContactHref)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span>📡</span><span>${escapeHtml(contactLabel)}</span></a>` : `<span class="mentor-link-chip"><span>📡</span><span>${escapeHtml(contactLabel)}</span></span>`}
+          ${safeContactHref ? `<a href="${escapeHtml(safeContactHref)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span></span><span>${escapeHtml(contactLabel)}</span></a>` : `<span class="mentor-link-chip"><span></span><span>${escapeHtml(contactLabel)}</span></span>`}
           <p class="text-xs text-zinc-500 mt-3">${helperText}</p>
         </div>
       `;
@@ -3801,7 +4537,7 @@ const connector = !isLast
 
       if (!next) {
         labelEl.textContent = 'GSoC 2026 selection complete';
-        countdownEl.textContent = '🎉 All done!';
+        countdownEl.textContent = ' All done!';
         countdownEl.classList.remove('text-primary');
         countdownEl.classList.add('text-green-600');
         return;
@@ -3920,7 +4656,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       const isBookmarked = bookmarkedSet.has(org.name);
       const isComparing = compareList.includes(org.name);
       const card = document.createElement('article');
-      card.className = 'group bg-white rounded-2xl p-6 border border-zinc-100 transition-all hover:shadow-xl hover:border-primary/20 animate-fade-up cursor-pointer';
+      card.className = 'org-card ocard group animate-fade-up cursor-pointer';
       card.dataset.org = org.name;
       //add event listener to open org modal, when clicking anywhere
       card.addEventListener('click', () => {
@@ -3930,33 +4666,33 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
 
       card.innerHTML = `
-        <div class="flex justify-between items-start mb-4">
-          <div class="w-14 h-14 flex-shrink-0 rounded-xl bg-surface-container-low flex items-center justify-center p-2 overflow-hidden">
-            <img src="${escapeHtml(logoUrl)}" data-org-name="${escapeHtml(org.name)}" alt="${escapeHtml(org.name + ' logo')}" class="w-full h-full object-contain rounded-lg" width="56" height="56" />            <div class="logo-placeholder hidden w-full h-full items-center justify-center text-primary font-bold text-xl bg-primary/5"></div>
+        <div class="ocard-top">
+          <div class="ocard-ava">
+            <img src="${escapeHtml(logoUrl)}" data-org-name="${escapeHtml(org.name)}" alt="${escapeHtml(org.name + ' logo')}" width="56" height="56" />
+            <div class="logo-placeholder hidden"></div>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="bg-primary/10 text-primary text-[10px] font-label uppercase tracking-widest px-2 py-1 rounded-full font-bold">${escapeHtml(String(org.years))}y Veteran</span>
-            <span class="complexity-badge ${escapeHtml(org.codebase)}">${escapeHtml(org.codebase)}</span>
-            <button class="bookmark-btn ${isBookmarked ? 'active' : 'text-zinc-300'}" data-bookmark-org="${escapeHtml(org.name)}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}">
+          <div class="ocard-id">
+            <h3>${escapeHtml(org.name)}</h3>
+            <div class="ocard-sub">${escapeHtml(org.cat.toUpperCase())}<span class="complexity-badge ${escapeHtml(org.codebase)}">${escapeHtml(org.codebase)}</span></div>
+          </div>
+          <div class="ocard-badges">
+            <span class="years-badge">${escapeHtml(String(org.years))}y veteran</span>
+            <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-bookmark-org="${escapeHtml(org.name)}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}">
               <span class="material-symbols-outlined text-lg ${isBookmarked ? 'icon-fill' : ''}">star</span>
             </button>
           </div>
         </div>
-        <h3 class="font-headline text-lg font-bold text-on-surface mb-1 group-hover:text-primary transition-colors">${escapeHtml(org.name)}</h3>
-        <span class="category-tag">${escapeHtml(org.cat.toUpperCase())}</span>
-        <p class="text-on-surface-variant text-sm leading-relaxed mb-4 line-clamp-2">${escapeHtml(org.desc)}</p>
-        <div class="flex flex-wrap gap-1.5 mb-4">
-          ${org.tags.slice(0, 3).map(t => `<span class="px-2 py-0.5 bg-surface-container-low text-[10px] font-mono rounded">${escapeHtml(t)}</span>`).join('')}
-          ${org.tags.length > 3 ? `<span class="px-2 py-0.5 bg-surface-container-low text-[10px] font-mono rounded">+${escapeHtml(String(org.tags.length - 3))}</span>` : ''}
+        <p class="ocard-desc">${escapeHtml(org.desc)}</p>
+        <div class="ocard-tags">
+          ${org.tags.slice(0, 3).map(t => `<span class="ocard-tag">${escapeHtml(t)}</span>`).join('')}
+          ${org.tags.length > 3 ? `<span class="ocard-tag">+${escapeHtml(String(org.tags.length - 3))}</span>` : ''}
         </div>
 
-        <div class="flex items-center justify-between pt-4 border-t border-zinc-100">
-          <div class="flex items-center gap-3">
-             <button data-compare-org="${escapeHtml(org.name)}" class="text-[10px] font-bold uppercase tracking-widest ${isComparing ? 'text-primary' : 'text-zinc-400'} hover:text-primary flex items-center gap-1">
-                <span class="material-symbols-outlined text-sm">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Compare'}
-             </button>
-          </div>
-           <button data-open-org="" class="text-primary font-bold text-xs uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">View <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+        <div class="ocard-acts">
+          <button data-compare-org="${escapeHtml(org.name)}" class="mini-btn ${isComparing ? 'on' : ''}">
+            <span class="material-symbols-outlined">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Compare'}
+          </button>
+          <button data-open-org="" class="mini-btn accent">View <span class="material-symbols-outlined">arrow_forward</span></button>
         </div>
        `;
     card.querySelector('[data-compare-org]').dataset.compareOrg = org.name;
@@ -4356,7 +5092,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
   }
 
   // ══════════════════════════════════════════════
-  // WATCHLIST — centralised bookmark sync helper
+  // WATCHLIST, centralised bookmark sync helper
   // ══════════════════════════════════════════════
   function refreshVisibleBookmarkButtons() {
     document.querySelectorAll('#orgGrid .bookmark-btn[data-bookmark-org]').forEach(btn => {
@@ -4404,7 +5140,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
   // bookmarkedSet stays in sync, then refresh the Watchlist panel.
   document.addEventListener('bookmarkChanged', () => {
     const fresh = new Set(parseStoredBookmarks());
-    // Diff: add new entries, remove stale ones — no full replacement so
+    // Diff: add new entries, remove stale ones, no full replacement so
     // any in-memory state from index.html toggles is also preserved.
     fresh.forEach(n => bookmarkedSet.add(n));
     [...bookmarkedSet].forEach(n => { if (!fresh.has(n)) bookmarkedSet.delete(n); });
@@ -4501,7 +5237,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
               </span>
               <span class="flex items-center gap-1">
                 <span class="material-symbols-outlined text-xs">bar_chart</span>
-                ${escapeHtml(org.competition || '—')}
+                ${escapeHtml(org.competition || '-')}
               </span>
             </div>
             <button data-bookmark-org="${escapeHtml(org.name)}"
@@ -4579,10 +5315,10 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
 
     // ── Competition strategy ──────────────────────────────────────────────────
     const strategyMsg = highComp
-      ? '⚠️ Your watchlist skews towards <strong>high-competition</strong> orgs — consider adding a few <em>Chill</em> orgs to diversify your odds.'
+      ? ' Your watchlist skews towards <strong>high-competition</strong> orgs, consider adding a few <em>Chill</em> orgs to diversify your odds.'
       : lowComp
-        ? '✅ Smart move — your watchlist is weighted towards <strong>lower-competition</strong> orgs, which improves acceptance probability.'
-        : '📊 Your watchlist has a <strong>balanced mix</strong> of competition levels — a solid hedging strategy.';
+        ? ' Smart move, your watchlist is weighted towards <strong>lower-competition</strong> orgs, which improves acceptance probability.'
+        : ' Your watchlist has a <strong>balanced mix</strong> of competition levels, a solid hedging strategy.';
 
     // ── Stack summary line ────────────────────────────────────────────────────
     const stackLine = topTags.length
@@ -4601,12 +5337,12 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     el.innerHTML = `
       <div class="space-y-3 text-sm leading-relaxed">
         <p>
-          <span class="font-bold">📌 Stack Focus:</span>
+          <span class="font-bold"> Stack Focus:</span>
           ${stackLine}
           Highlight experience with <strong>${escapeHtml(advice.tools)}</strong> in your proposals.
         </p>
         <p>
-          <span class="font-bold">🎯 Domain Strategy (${escapeHtml(catLabel)}):</span>
+          <span class="font-bold"> Domain Strategy (${escapeHtml(catLabel)}):</span>
           Before submitting, ${escapeHtml(advice.action)} to demonstrate early commitment to mentors.
         </p>
         <p>${strategyMsg}</p>
@@ -4731,7 +5467,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     const isComparing = compareList.includes(org.name);
     const ideasLinkHTML = (function(){
       const u = sanitizeHrefUrl(org.ideas);
-      return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span>💡</span><span>Visit ideas page</span></a>` : '';
+      return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span class="material-symbols-outlined">lightbulb</span><span>Visit ideas page</span></a>` : '';
     })();
 
     return `
@@ -4887,7 +5623,7 @@ if(org.ideas){
     const orgsToUse = filteredOrgs.length > 0 ? filteredOrgs : ORGS;
 
     if (!orgsToUse.length) {
-      alert('No organizations match your filters — try clearing some!');
+      alert('No organizations match your filters, try clearing some!');
       return;
     }
 
@@ -4897,7 +5633,7 @@ if(org.ideas){
     openModal(randomOrg.name);
   }
 
-  // Filters — all conditions are additive (chip + language pills + search + dropdowns compose)
+  // Filters, all conditions are additive (chip + language pills + search + dropdowns compose)
   function applyFilters() {
     const query = document.getElementById('searchInput').value.trim().toLowerCase();
     const categoryValue = document.getElementById('categoryFilter')?.value || 'all';
@@ -5089,7 +5825,7 @@ if(org.ideas){
     document.getElementById('hero-search-submit')?.addEventListener('click', heroSearchSubmit);
   }
 
-  // Quick-filter chips — mutually exclusive with each other, but additive with
+  // Quick-filter chips, mutually exclusive with each other, but additive with
   // language pills, search, and dropdown filters. applyFilters() reads activeChip.
   document.querySelectorAll('.filter-chip').forEach(chip => {
     chip.addEventListener('click', () => {
@@ -5116,7 +5852,7 @@ if(org.ideas){
         else if (text.includes('actively'))      activeChip = 'active';
         else                                     activeChip = null;
       } else {
-        // Chip was active — clicking again deactivates it
+        // Chip was active, clicking again deactivates it
         activeChip = null;
       }
 
@@ -6259,7 +6995,7 @@ if(e.key.toLowerCase()==='r'){
   <div style="background:#fff;border-radius:16px;width:100%;max-width:500px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 12px;">
       <h2 id="orgPickerTitle" style="font-size:18px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;">Choose an Organization</h2>
-      <button onclick="closeOrgPicker()" aria-label="Close" style="background:none;border:none;cursor:pointer;font-size:20px;color:#71717a;">✕</button>
+      <button onclick="closeOrgPicker()" aria-label="Close" style="background:none;border:none;cursor:pointer;font-size:20px;color:#71717a;">&times;</button>
     </div>
     <div style="padding:0 24px 12px;">
       <input id="orgPickerSearch" type="text" placeholder="Search organizations..."

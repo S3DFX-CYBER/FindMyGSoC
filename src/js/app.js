@@ -92,7 +92,7 @@ const UMBRELLA_ORGS = new Set([
 ]);
 
 const CHANNEL_ICONS = {
-  Slack: '💬', Zulip: '💬', Discord: '🎮', Matrix: '🔗', IRC: '🖥️', 'Mailing list': '📧'
+  Slack: 'chat', Zulip: 'forum', Discord: 'forum', Matrix: 'link', IRC: 'terminal', 'Mailing list': 'mail'
 };
 
 const CONTACT_TIPS = {
@@ -221,7 +221,7 @@ function updateCountdown() {
 
     if (!next) {
       labelEl.textContent = 'GSoC 2026 selection complete';
-      countdownEl.textContent = '🎉 All done!';
+      countdownEl.textContent = ' All done!';
       countdownEl.classList.remove('text-primary');
       countdownEl.classList.add('text-green-600');
       return;
@@ -265,7 +265,7 @@ const AN = {
   trackOrg(n) { this.inc('views'); const oc = this.g('orgs', {}); oc[n] = (oc[n] || 0) + 1; this.s('orgs', oc); },
   todayVisits() { return this.g('daily', {})[this.today()] || 0; },
   sessionTime() {
-    const s = sessionStorage.getItem('gaf_s'); if (!s) return '—';
+    const s = sessionStorage.getItem('gaf_s'); if (!s) return '-';
     const sec = Math.floor((Date.now() - parseInt(s)) / 1000);
     return sec < 60 ? sec + 's' : Math.floor(sec / 60) + 'm' + (sec % 60) + 's';
   },
@@ -379,7 +379,7 @@ function sanitizeHrefUrl(url) {
 // URL VALIDATION & SANITIZATION
 // ══════════════════════════════════════════════
 /**
- * Generic URL validator — ensures only http/https protocols are allowed.
+ * Generic URL validator, ensures only http/https protocols are allowed.
  * Does NOT auto-prepend a protocol. The caller must pass a fully-formed URL.
  *
  * @param {string} url - A fully-formed URL string to validate
@@ -479,7 +479,7 @@ async function checkAPI() {
       if (fetchBtn) fetchBtn.style.display = 'flex';
     } else {
       banner.className = 'api-banner api-warn';
-      document.getElementById('apiStrong').textContent = '⚠ API Error';
+      document.getElementById('apiStrong').textContent = ' API Error';
       document.getElementById('apiText').textContent = 'Add GITHUB_TOKEN in Vercel dashboard and redeploy.';
     }
   } catch {
@@ -894,7 +894,7 @@ function renderWatchlist() {
             </span>
             <span class="flex items-center gap-1">
               <span class="material-symbols-outlined text-xs">bar_chart</span>
-              ${org.competition || '—'}
+              ${org.competition || '-'}
             </span>
           </div>
           <button data-bookmark-org="${org.name}"
@@ -992,7 +992,7 @@ function renderCompareModal() {
     ['Codebase', org => org.codebase],
     ['Tech Stack', org => org.tags.join(', ')],
     ['Best Fit', org => org.fit.join(', ')],
-    ['Repository', org => org.github || '—'],
+    ['Repository', org => org.github || '-'],
   ];
 
   body.innerHTML = `
@@ -1141,7 +1141,7 @@ function renderOrgs(reset = true) {
     const isComparing = compareList.includes(org.name);
     const isFocused = focusedIdx === (visibleCount - 12 + i);
     const card = document.createElement('article');
-    card.className = `group bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-100 dark:border-zinc-800 transition-all hover:shadow-xl hover:border-primary/20 animate-fade-up ${isComparing ? 'ring-2 ring-primary/30' : ''} ${isFocused ? 'ring-2 ring-primary' : ''}`;
+    card.className = `org-card group p-6 animate-fade-up ${isComparing ? 'ring-2 ring-primary/30' : ''} ${isFocused ? 'ring-2 ring-primary' : ''}`;
     card.dataset.org = org.name;
     card.setAttribute('role', 'article');
     card.setAttribute('aria-label', `Organization: ${org.name}`);
@@ -1151,41 +1151,41 @@ function renderOrgs(reset = true) {
     const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
 
     const logoHtml = logoUrl
-      ? safeHTML`<img src="${logoUrl}" data-org-name="${org.name}" alt="${org.name} logo" class="w-full h-full object-contain rounded-lg" />`
-      : safeHTML`<div class="logo-placeholder flex w-full h-full items-center justify-center text-primary font-bold text-xl bg-primary/5">${(org.name || '?')[0].toUpperCase()}</div>`;
+      ? safeHTML`<img src="${logoUrl}" data-org-name="${org.name}" alt="${org.name} logo" />`
+      : safeHTML`<div class="logo-placeholder">${(org.name || '?')[0].toUpperCase()}</div>`;
 
-    const tagsHtml = org.tags.slice(0, 3).map(t => safeHTML`<span class="px-2 py-0.5 bg-surface-container-low dark:bg-zinc-800 text-[10px] font-mono rounded text-zinc-600 dark:text-zinc-400">${t}</span>`);
-    const moreTagsHtml = org.tags.length > 3 ? safeHTML`<span class="px-2 py-0.5 bg-surface-container-low dark:bg-zinc-800 text-[10px] font-mono rounded text-zinc-600 dark:text-zinc-400 cursor-help" title="${org.tags.slice(3).join(', ')}">+${String(org.tags.length - 3)}</span>` : '';
+    const tagsHtml = org.tags.slice(0, 3).map(t => safeHTML`<span class="ocard-tag">${t}</span>`);
+    const moreTagsHtml = org.tags.length > 3 ? safeHTML`<span class="ocard-tag" title="${org.tags.slice(3).join(', ')}">+${String(org.tags.length - 3)}</span>` : '';
 
     const catLabel = getCategoryMeta(org.cat).label.toUpperCase();
     const isBookmarkedStr = isBookmarked ? 'true' : 'false';
 
     card.innerHTML = safeHTML`
-      <div class="flex justify-between items-start mb-4">
-        <div class="w-14 h-14 rounded-xl bg-surface-container-low dark:bg-zinc-800 flex items-center justify-center p-2 overflow-hidden border border-zinc-100 dark:border-zinc-700">
+      <div class="ocard-top">
+        <div class="ocard-ava">
           ${logoHtml}
         </div>
-        <div class="flex items-center gap-2">
-          <span class="bg-primary/10 text-primary text-[10px] font-label uppercase tracking-widest px-2 py-1 rounded-full font-bold">${String(org.years)}y Veteran</span>
-          <span class="complexity-badge ${org.codebase}">${org.codebase}</span>
-          <button class="bookmark-btn ${isBookmarked ? 'active text-orange-500' : 'text-zinc-300'}" data-bookmark-org="${org.name}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}" aria-pressed="${isBookmarkedStr}" aria-label="${isBookmarked ? 'Remove bookmark from ' : 'Add bookmark to '}${org.name}">
+        <div class="ocard-id">
+          <h3>${org.name}</h3>
+          <div class="ocard-sub">${catLabel}<span class="complexity-badge ${org.codebase}">${org.codebase}</span></div>
+        </div>
+        <div class="ocard-badges">
+          <span class="years-badge">${String(org.years)}y veteran</span>
+          <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-bookmark-org="${org.name}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}" aria-pressed="${isBookmarkedStr}" aria-label="${isBookmarked ? 'Remove bookmark from ' : 'Add bookmark to '}${org.name}">
             <span class="material-symbols-outlined text-lg ${isBookmarked ? 'icon-fill' : ''}">star</span>
           </button>
         </div>
       </div>
-      <h3 class="font-headline text-lg font-bold text-on-surface mb-1 group-hover:text-primary transition-colors dark:text-zinc-100">${org.name}</h3>
-      <span class="category-tag inline-block mb-3">${catLabel}</span>
-      <p class="text-on-surface-variant text-sm leading-relaxed mb-4 line-clamp-2 dark:text-zinc-400">${org.desc}</p>
-      <div class="flex flex-wrap gap-1.5 mb-4">
+      <p class="ocard-desc">${org.desc}</p>
+      <div class="ocard-tags">
         ${tagsHtml}
         ${moreTagsHtml}
       </div>
-
-      <div class="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">
-        <button data-compare-org="${org.name}" class="text-[10px] font-bold uppercase tracking-widest ${isComparing ? 'text-primary' : 'text-zinc-400'} hover:text-primary flex items-center gap-1">
-          <span class="material-symbols-outlined text-sm">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Compare'}
+      <div class="ocard-acts">
+        <button data-compare-org="${org.name}" class="mini-btn ${isComparing ? 'on' : ''}">
+          <span class="material-symbols-outlined">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Compare'}
         </button>
-        <button data-open-org="${org.name}" class="text-primary font-bold text-xs uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">View Details <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+        <button data-open-org="${org.name}" class="mini-btn accent">View details <span class="material-symbols-outlined">arrow_forward</span></button>
       </div>`;
 
     grid.appendChild(card);
@@ -1379,7 +1379,7 @@ globalThis.fetchModalGH = async function () {
   }
 };
 
-function fmt(n) { return (!n && n !== 0) ? '—' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n); }
+function fmt(n) { return (!n && n !== 0) ? '-' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n); }
 
 // ══════════════════════════════════════════════
 // MODAL DETAILS POPULATOR
@@ -1390,7 +1390,7 @@ function renderModalHeader(org) {
   const isComparing = compareList.includes(org.name);
   const ideasLinkHTML = (() => {
     const u = sanitizeHrefUrl(org.ideas);
-    return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span>💡</span><span>Visit ideas page</span></a>` : '';
+    return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span></span><span>Visit ideas page</span></a>` : '';
   })();
 
   return `
@@ -1441,12 +1441,12 @@ globalThis.openModal = function (name, triggerElement = null) {
   if (mMetrics) {
     const yearsColor = org.years >= 8 ? '#C2410C' : org.years >= 4 ? 'var(--blue)' : 'var(--purple)';
     const competitionColor = cc[org.competition] || '#ccc';
-    const competitionIcon = org.competition === 'hot' ? '🔥' : org.competition === 'moderate' ? '🟡' : '😎';
+    const competitionIcon = org.competition === 'hot' ? 'High' : org.competition === 'moderate' ? 'Moderate' : 'Low';
     mMetrics.innerHTML = safeHTML`
       <div class="metric-card"><p class="metric-value" style="color:${yearsColor}">${String(org.years)}</p><p class="metric-label">Years In</p></div>
       <div class="metric-card"><p class="metric-value" style="color:${competitionColor}">${competitionIcon}</p><p class="metric-label">Competition</p></div>
       <div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${String(org.firstYear)}</p><p class="metric-label">First Year</p></div>
-      <div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--green)" id="mGfiPlaceholder">—</p><p class="metric-label">Good 1st Issues</p></div>
+      <div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--green)" id="mGfiPlaceholder">-</p><p class="metric-label">Good 1st Issues</p></div>
     `;
   }
 
@@ -1456,9 +1456,9 @@ globalThis.openModal = function (name, triggerElement = null) {
   const mIssues = document.getElementById('mIssues');
   const mActivity = document.getElementById('mActivity');
 
-  if (mStars) mStars.textContent = gh ? fmt(gh.stars) : '—';
-  if (mForks) mForks.textContent = gh ? fmt(gh.forks) : '—';
-  if (mIssues) mIssues.textContent = gh ? fmt(gh.issues) : '—';
+  if (mStars) mStars.textContent = gh ? fmt(gh.stars) : '-';
+  if (mForks) mForks.textContent = gh ? fmt(gh.forks) : '-';
+  if (mIssues) mIssues.textContent = gh ? fmt(gh.issues) : '-';
   if (mActivity) {
     const act = gh ? (gh.activity || 'moderate') : 'moderate';
     mActivity.textContent = act.charAt(0).toUpperCase() + act.slice(1);
@@ -1555,7 +1555,7 @@ globalThis.openModal = function (name, triggerElement = null) {
         renderCompareModal();
       } else {
         const placeholders = document.querySelectorAll('.metric-card #mGfiPlaceholder');
-        placeholders.forEach(p => p.textContent = '—');
+        placeholders.forEach(p => p.textContent = '-');
       }
     });
   }
@@ -1574,7 +1574,7 @@ globalThis.closeHelpModal = closeHelpModal;
 globalThis.openRandomOrg = function () {
   const orgsToUse = filteredOrgs.length > 0 ? filteredOrgs : ORGS;
   if (!orgsToUse.length) {
-    alert('No organizations match your filters — try clearing some!');
+    alert('No organizations match your filters, try clearing some!');
     return;
   }
   const array = new Uint32Array(1);
@@ -1874,10 +1874,10 @@ function updateAIInsights() {
   const advice = DOMAIN_ADVICE[topCat] || DOMAIN_ADVICE.other;
 
   const strategyMsg = highComp
-    ? '⚠️ Your watchlist skews towards <strong>high-competition</strong> orgs — consider adding a few <em>Chill</em> orgs to diversify your odds.'
+    ? ' Your watchlist skews towards <strong>high-competition</strong> orgs, consider adding a few <em>Chill</em> orgs to diversify your odds.'
     : lowComp
-      ? '✅ Smart move — your watchlist is weighted towards <strong>lower-competition</strong> orgs, which improves acceptance probability.'
-      : '📊 Your watchlist has a <strong>balanced mix</strong> of competition levels — a solid hedging strategy.';
+      ? ' Smart move, your watchlist is weighted towards <strong>lower-competition</strong> orgs, which improves acceptance probability.'
+      : ' Your watchlist has a <strong>balanced mix</strong> of competition levels, a solid hedging strategy.';
 
   const stackLine = topTags.length
     ? `Your saved orgs centre on <strong>${topTags.map(t => escapeHtml(t)).join(', ')}</strong>.`
@@ -1886,12 +1886,12 @@ function updateAIInsights() {
   el.innerHTML = `
     <div class="space-y-3 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
       <p>
-        <span class="font-bold">📌 Stack Focus:</span>
+        <span class="font-bold"> Stack Focus:</span>
         ${stackLine}
         Highlight experience with <strong>${escapeHtml(advice.tools)}</strong> in your proposals.
       </p>
       <p>
-        <span class="font-bold">🎯 Domain Strategy (${escapeHtml(getCategoryMeta(topCat).label)}):</span>
+        <span class="font-bold"> Domain Strategy (${escapeHtml(getCategoryMeta(topCat).label)}):</span>
         Before submitting, ${escapeHtml(advice.action)} to demonstrate early commitment to mentors.
       </p>
       <p>${strategyMsg}</p>
@@ -2069,12 +2069,12 @@ function renderIssues() {
   if (!container || !statsDiv || !loadMore) return;
 
   if (!allIssues.length) {
-    container.innerHTML = `<div class="issue-empty"><div class="ei">🟢</div><h3>Ready to find your first issue?</h3><p>Click "Load Issues" to fetch Good First Issues from all GSoC orgs.</p></div>`;
+    container.innerHTML = `<div class="issue-empty"><div class="ei"></div><h3>Ready to find your first issue?</h3><p>Click "Load Issues" to fetch Good First Issues from all GSoC orgs.</p></div>`;
     statsDiv.style.display = 'none'; loadMore.style.display = 'none'; return;
   }
 
   if (!filteredIssues.length) {
-    container.innerHTML = `<div class="issue-empty"><div class="ei">🔍</div><h3>No issues match your filters</h3><p>Try adjusting the search or category.</p></div>`;
+    container.innerHTML = `<div class="issue-empty"><div class="ei"></div><h3>No issues match your filters</h3><p>Try adjusting the search or category.</p></div>`;
     statsDiv.style.display = 'flex'; loadMore.style.display = 'none';
   } else {
     shownIssues = Math.min(shownIssues + ISSUES_PAGE_SIZE, filteredIssues.length);
@@ -2104,7 +2104,7 @@ function renderIssueCard(iss) {
     : '';
 
   const commentsHtml = iss.comments > 0
-    ? safeHTML`<span style="font-size:10px;color:var(--muted)">💬 ${String(iss.comments)}</span>`
+    ? safeHTML`<span style="font-size:10px;color:var(--muted)"> ${String(iss.comments)}</span>`
     : '';
 
   const timeStr = relativeTime(iss.created_at);
@@ -2297,15 +2297,15 @@ function renderMentorFinder() {
     card.className = 'mentor-card p-6 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl flex flex-col justify-between hover:shadow-lg transition-all animate-fade-up';
 
     const channelsHtml = (m.channels || []).map(c => {
-      const icon = CHANNEL_ICONS[c.type] || '💬';
+      const icon = CHANNEL_ICONS[c.type] || 'chat';
       const isUrl = sanitizeHrefUrl(c.value);
       if (isUrl) {
         return safeHTML`<a href="${isUrl}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip" title="${CONTACT_TIPS[c.type] || ''}">
-          ${icon} ${c.type}
+          <span class="material-symbols-outlined">${icon}</span> ${c.type}
         </a>`;
       } else {
         return safeHTML`<span class="mentor-handle-chip" title="${CONTACT_TIPS[c.type] || ''}">
-          ${icon} ${c.value}
+          <span class="material-symbols-outlined">${icon}</span> ${c.value}
         </span>`;
       }
     });
@@ -2345,7 +2345,7 @@ function renderMentorContactSection(org) {
     card.className = 'mentor-card p-4 bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-100 dark:border-zinc-800 rounded-xl mb-3 last:mb-0';
 
     const channelsHtml = (m.channels || []).map(c => {
-      const icon = CHANNEL_ICONS[c.type] || '💬';
+      const icon = CHANNEL_ICONS[c.type] || 'chat';
       const isUrl = sanitizeHrefUrl(c.value);
       if (isUrl) {
         return safeHTML`<a href="${isUrl}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip hover:shadow-sm">
