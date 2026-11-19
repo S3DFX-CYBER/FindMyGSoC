@@ -565,3 +565,16 @@ footer a:hover{color:var(--accent)}
   padding:10px 16px;border-radius:0 0 10px;font-weight:600;font-size:14px;
 }
 .skip-link:focus{left:0}
+
+/* ---------- dark theme: surfaces that carried a light shadow ---------- */
+.dark .hero-media .badge{
+  background:var(--card);
+  box-shadow:0 6px 18px rgb(0 0 0 / 55%), 4px 4px 0 #3a2f26;
+}
+.dark .btn.primary{box-shadow:4px 4px 0 #5a3316}
+.dark .btn.primary:hover{box-shadow:2px 2px 0 #5a3316}
+.dark .btn.ghost{box-shadow:4px 4px 0 #2a231c}
+.dark .btn.ghost:hover{box-shadow:2px 2px 0 #2a231c}
+.dark .btn.sm{box-shadow:3px 3px 0 #2a231c}
+.dark .pill{box-shadow:0 1px 2px rgb(0 0 0 / 50%)}
+.dark .statusbar,.dark .mini,.dark .fcard,.dark .ncard{background:var(--card)}

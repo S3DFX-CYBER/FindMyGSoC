@@ -421,10 +421,11 @@ function wireAnchorScroll() {
       if (!target) { return; }
       e.preventDefault();
 
-      // Close mobile menu if open
+      // Close the mobile drawer if it is open. The drawer tracks state on
+      // data-open, not a `hidden` class, so test that instead.
       const mobileMenu = document.getElementById('mobileMenu');
-      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-        toggleMenu();
+      if (mobileMenu && mobileMenu.dataset.open === 'true') {
+        toggleMenu(false);
       }
 
       const top = target.getBoundingClientRect().top + window.scrollY - NAVBAR_HEIGHT;
@@ -521,6 +522,52 @@ function renderLiveStats() {
   setText('footerVeteranOrgCount', String(veteranOrgs));
 }
 
+// ── Live good-first issue ─────────────────────────────────────────────────────
+
+/**
+ * Puts one real, currently-open good first issue in the hero card instead of a
+ * hardcoded sample. Degrades to a plain link to the issue list if the dataset
+ * cannot be reached.
+ */
+async function renderLiveGfi() {
+  const repoEl = document.getElementById('gfiRepo');
+  const labelEl = document.getElementById('gfiLabel');
+  const ageEl = document.getElementById('gfiAge');
+  const row = document.getElementById('gfiRow');
+  if (!repoEl || !row) { return; }
+
+  const relativeAge = (iso) => {
+    const then = Date.parse(iso);
+    if (!Number.isFinite(then)) { return ''; }
+    const days = Math.max(0, Math.floor((Date.now() - then) / 86400000));
+    if (days === 0) { return 'today'; }
+    if (days === 1) { return '1 day ago'; }
+    if (days < 30) { return `${days} days ago`; }
+    const months = Math.floor(days / 30);
+    return months === 1 ? '1 month ago' : `${months} months ago`;
+  };
+
+  try {
+    const res = await fetch('/data/issues.json');
+    if (!res.ok) { throw new Error(`HTTP ${res.status}`); }
+    const data = await res.json();
+    const issues = Array.isArray(data.issues) ? data.issues : [];
+    if (!issues.length) { throw new Error('empty dataset'); }
+
+    const issue = issues[0];
+    repoEl.textContent = issue.repo || issue.org || 'good first issues';
+    labelEl.textContent = (issue.labels && issue.labels[0]) || 'good first issue';
+    ageEl.textContent = relativeAge(issue.updated_at);
+    row.title = issue.title || 'Browse good first issues';
+    if (issue.url) { row.href = issue.url; row.target = '_blank'; row.rel = 'noopener noreferrer'; }
+  } catch (_e) {
+    repoEl.textContent = 'good first issues';
+    labelEl.textContent = '';
+    ageEl.textContent = '';
+    row.href = '/app#issues';
+  }
+}
+
 // ── Bootstrap ─────────────────────────────────────────────────────────────────
 
 // Sync theme icon immediately (theme class already applied by inline head script)
@@ -566,4 +613,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Live org statistics
   renderLiveStats();
+
+  // One real good first issue in the hero card
+  renderLiveGfi();
 });

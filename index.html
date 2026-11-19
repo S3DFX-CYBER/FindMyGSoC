@@ -805,7 +805,7 @@ kbd:hover{
     .dark code.bg-zinc-100 { background: #27272a !important; color: #d4d4d8 !important; }
 
     /* Dark mode - Mobile menu */
-    .dark #mobileMenu #menuPanel { background: #18181b !important; border-right: 1px solid #3f3f46; }
+    .dark #mobileMenu #menuPanel { background: #1a1512 !important; border-right: 1px solid #3a2f26; }
     .dark #mobileMenu .border-zinc-100 { border-color: #3f3f46 !important; }
     .dark #mobileMenu .text-zinc-900 { color: #f4f4f5 !important; }
     .dark #mobileMenu .text-zinc-700 { color: #e5e7eb !important; }
@@ -2104,6 +2104,12 @@ body{background:var(--surface)}
   html{scroll-behavior:auto}
 }
 
+
+/* ---------- app bar nav state, logo, AI results ---------- */
+.appbar .brand .mark{object-fit:contain;background:none;border-radius:8px}
+.appbar .appnav a{color:var(--rd-muted)}
+.appbar .appnav a:hover{color:var(--rd-ink)}
+.appbar .appnav a.is-active{color:var(--rd-accent);font-weight:600}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
@@ -2137,7 +2143,7 @@ body{background:var(--surface)}
     </button>
 
     <a href="/" class="brand" id="logoLink" aria-label="FindMyGSoC home" title="Home">
-      <span class="mark">G</span>FindMyGSoC
+      <img class="mark" src="src/assets/redesign/logo-mark.png" alt="" width="28" height="28" />FindMyGSoC
     </a>
 
     <nav class="appnav" aria-label="Sections">
@@ -2185,9 +2191,7 @@ body{background:var(--surface)}
   <nav class="absolute top-0 left-0 bottom-0 w-72 bg-white shadow-2xl transform transition-transform duration-300 ease-out -translate-x-full" id="menuPanel" aria-label="Main navigation">
     <div class="flex items-center justify-between p-6 border-b border-zinc-100">
       <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center">
-          <span class="text-white font-bold text-sm">G</span>
-        </div>
+        <img class="w-8 h-8 rounded-lg" src="src/assets/redesign/logo-mark.png" alt="" width="32" height="32" />
         <span class="font-extrabold tracking-tight text-zinc-900">Menu</span>
       </div>
       <button onclick="toggleMenu()" class="p-2 hover:bg-zinc-100 rounded-lg transition-colors">
@@ -2553,8 +2557,15 @@ body{background:var(--surface)}
         <p id="aiErrorMsg" class="text-red-600 dark:text-red-300 text-sm"></p>
       </div>
 
+      <!-- Export -->
+      <div class="flex justify-end mb-3">
+        <button id="aiExportPdfBtn" type="button" class="hidden mini-btn accent">
+          <span class="material-symbols-outlined">picture_as_pdf</span> Download as PDF
+        </button>
+      </div>
+
       <!-- Results Container -->
-      <div id="aiResultsContainer" class="org-grid w-full">
+      <div id="aiResultsContainer" class="w-full">
         <div class="flex flex-col items-center justify-center py-20 text-center text-zinc-400 dark:text-zinc-500">
           <span class="material-symbols-outlined text-6xl mb-4 opacity-50">magic_button</span>
           <p class="font-bold">Provide your details to see personalized matches.</p>
@@ -3229,13 +3240,13 @@ body{background:var(--surface)}
 <!-- ═══════════════════ CONTACT ═══════════════════ -->
 <section id="contact" class="py-20 px-6 max-w-7xl mx-auto">
   <div class="text-center mb-12">
-    <h2 class="text-4xl font-extrabold font-headline tracking-tight mb-4">Get in Touch</h2>
+    <h2 class="text-4xl font-extrabold font-headline tracking-tight mb-4 sec-title">Get in Touch</h2>
     <p class="text-zinc-600 max-w-2xl mx-auto">Have questions, feedback, or need help? We'd love to hear from you.</p>
   </div>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
     <a href="https://github.com/S3DFX-CYBER" target="_blank" rel="noopener noreferrer" class="bg-white border border-zinc-200 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all text-center group">
       <div class="w-12 h-12 rounded-xl bg-zinc-100 flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-100 transition-colors">
-        <span class="material-symbols-outlined text-zinc-600 group-hover:text-primary">person</span>
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="w-6 h-6 text-zinc-600 group-hover:text-primary transition-colors"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.05-.49.05-.49.81.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
       </div>
       <h3 class="font-bold mb-2">GitHub Profile</h3>
       <p class="text-sm text-zinc-600">Follow the maintainer and check out other projects.</p>
@@ -3249,7 +3260,7 @@ body{background:var(--surface)}
     </a>
     <a href="https://discord.gg/jYrbHKtn8t" target="_blank" rel="noopener noreferrer" class="bg-white border border-zinc-200 rounded-2xl p-6 hover:border-primary hover:shadow-lg transition-all text-center group">
       <div class="w-12 h-12 rounded-xl bg-zinc-100 flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-100 transition-colors">
-        <span class="material-symbols-outlined text-zinc-600 group-hover:text-primary">forum</span>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-6 h-6 text-zinc-600 group-hover:text-primary transition-colors"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.891.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03ZM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418Zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418Z"/></svg>
       </div>
       <h3 class="font-bold mb-2">Join Discord</h3>
       <p class="text-sm text-zinc-600">Connect with the community for discussions and support.</p>
@@ -6784,13 +6795,7 @@ if(e.key.toLowerCase()==='r'){
     document.querySelectorAll(".desktop-nav-link").forEach(link => {
       const linkSection = link.dataset.section;
 
-      if (linkSection === activeSectionId) {
-        link.classList.remove("text-zinc-600", "hover:text-zinc-900");
-        link.classList.add("text-orange-600", "font-bold", "border-b-2", "border-orange-600");
-      } else {
-        link.classList.remove("text-orange-600", "font-bold", "border-b-2", "border-orange-600");
-        link.classList.add("text-zinc-600", "hover:text-zinc-900");
-      }
+      link.classList.toggle("is-active", linkSection === activeSectionId);
     });
 
     document.querySelectorAll(".mobile-menu-link").forEach(link => {
