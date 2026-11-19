@@ -364,6 +364,14 @@ function trapDrawerFocus(event) {
   const first = focusables[0];
   const last = focusables[focusables.length - 1];
 
+  // Clicking a non-focusable part of the panel parks focus on <body>, so pull
+  // it back before letting Tab walk into the page behind the overlay.
+  if (!menu.contains(document.activeElement)) {
+    event.preventDefault();
+    first.focus();
+    return;
+  }
+
   if (event.shiftKey && document.activeElement === first) {
     event.preventDefault();
     last.focus();
@@ -396,12 +404,6 @@ function toggleMenu(force) {
   btn.setAttribute('aria-expanded', String(isOpen));
   btn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
 
-  if (isOpen) {
-    const firstLink = menu.querySelector('.drawer-panel a, .drawer-panel button');
-    if (firstLink) { firstLink.focus(); }
-  } else {
-    btn.focus();
-  }
 }
 
 // ── Footer Patch ──────────────────────────────────────────────────────────────
@@ -479,6 +481,9 @@ function wireAnchorScroll() {
 
 /** Fade-in for "How It Works" step cards when they enter the viewport. */
 function initHiwAnimations() {
+  // The steps are hidden by .js-reveal, so opt in here too: this runs even when
+  // the page has no [data-rv] targets for initReveals to opt in on.
+  document.documentElement.classList.add('js-reveal');
   const steps = document.querySelectorAll('.hiw-step');
   if (!steps.length) { return; }
 
@@ -511,8 +516,20 @@ function initReveals() {
     return;
   }
 
-  // Only now is it safe to hide the elements we are about to reveal.
+  // Only now is it safe to hide the elements we are about to reveal. Anything
+  // already on screen is marked visible in the same frame, so the hero does not
+  // flash out and fade back in on a slow load.
   document.documentElement.classList.add('js-reveal');
+  const viewportHeight = globalThis.innerHeight || 800;
+  const revealed = [];
+  targets.forEach((el) => {
+    if (el.getBoundingClientRect().top < viewportHeight) {
+      el.classList.add('in');
+      revealed.push(el);
+    }
+  });
+  const pending = Array.from(targets).filter((el) => !revealed.includes(el));
+  if (!pending.length) { return; }
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -523,7 +540,7 @@ function initReveals() {
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
 
-  targets.forEach((el) => observer.observe(el));
+  pending.forEach((el) => observer.observe(el));
 }
 
 /** Adds the hairline border to the sticky nav once the page has scrolled. */
@@ -602,9 +619,12 @@ async function renderLiveGfi() {
     labelEl.textContent = (issue.labels && issue.labels[0]) || 'good first issue';
     ageEl.textContent = relativeAge(issue.updated_at);
     row.title = issue.title || 'Browse good first issues';
+    const rawUrl = String(issue.url || '').trim();
     const safeUrl = (() => {
+      // Mirror the app's helper: absolute http(s) only, never relative.
+      if (!rawUrl) { return ''; }
       try {
-        const parsed = new URL(String(issue.url || ''), globalThis.location.href);
+        const parsed = new URL(rawUrl);
         return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.href : '';
       } catch (_err) {
         return '';

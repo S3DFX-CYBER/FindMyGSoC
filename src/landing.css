@@ -549,13 +549,14 @@ footer a:hover{color:var(--accent)}
 @media(max-width:860px){.hiw{grid-template-columns:1fr}}
 .hiw-step{
   border:1.5px solid var(--line-soft);border-radius:var(--r);padding:22px;background:var(--card);
-  opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .6s var(--ease);
+  transition:opacity .6s var(--ease),transform .6s var(--ease);
 }
+.js-reveal .hiw-step{opacity:0;transform:translateY(14px)}
 .hiw-step .num{font-family:var(--f-mono);font-size:11px;color:var(--accent);letter-spacing:.1em}
 .hiw-step h4{font-size:17px;font-family:var(--f-body);font-weight:600;letter-spacing:-.012em;margin:10px 0 8px}
 .hiw-step p{font-size:13.5px;color:var(--muted);line-height:1.62}
 @media (prefers-reduced-motion:reduce){
-  .hiw-step{opacity:1;transform:none;transition:none}
+  .js-reveal .hiw-step{opacity:1;transform:none;transition:none}
 }
 
 /* ---------- utilities ---------- */
