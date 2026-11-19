@@ -1001,7 +1001,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',sans-
   --rd-ease:cubic-bezier(.22,1,.36,1);
 }
 
-.dark{
+html.dark{
   --rd-bg:#12100d;
   --rd-surface:#191512;
   --rd-surface-2:#241d16;
@@ -1056,7 +1056,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',sans-
   --shadow:0 1px 2px rgb(60 64 67 / 10%), 0 1px 3px rgb(60 64 67 / 8%);
   --shadow-lg:0 4px 8px rgb(60 64 67 / 10%), 0 12px 32px rgb(60 64 67 / 12%);
 }
-.dark{
+html.dark{
   --bg:#12100d;
   --white:#1a1512;
   --orange:#f97316;
