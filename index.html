@@ -3923,12 +3923,12 @@ html.dark .an-note,html.dark .an-panel p{color:#a89a8b}
   let matchAllLanguages = false;
   let activeChip = null; // tracks the active quick-filter chip key ('veterans' | 'newcomers' | 'low-competition' | 'high-competition' | 'bookmarked' | 'active' | null)
   const CHANNEL_ICONS = {
-    Slack: '',
-    Zulip: '',
-    Discord: '',
-    Matrix: '',
-    IRC: '',
-    'Mailing list': ''
+    Slack: 'chat',
+    Zulip: 'forum',
+    Discord: 'forum',
+    Matrix: 'link',
+    IRC: 'terminal',
+    'Mailing list': 'mail'
   };
   const CONTACT_TIPS = {
     Slack: 'Join and say hi in the GSoC channel before DMing mentors.',
@@ -4542,7 +4542,7 @@ html.dark .an-note,html.dark .an-panel p{color:#a89a8b}
         </div>
         ${bodyHtml}
         <div class="mt-5 pt-4 border-t border-zinc-100">
-          ${safeContactHref ? `<a href="${escapeHtml(safeContactHref)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span></span><span>${escapeHtml(contactLabel)}</span></a>` : `<span class="mentor-link-chip"><span></span><span>${escapeHtml(contactLabel)}</span></span>`}
+          ${safeContactHref ? `<a href="${escapeHtml(safeContactHref)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span class="material-symbols-outlined">chat</span><span>${escapeHtml(contactLabel)}</span></a>` : `<span class="mentor-link-chip"><span></span><span>${escapeHtml(contactLabel)}</span></span>`}
           <p class="text-xs text-zinc-500 mt-3">${helperText}</p>
         </div>
       `;
@@ -4995,6 +4995,10 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     const container = document.querySelector('#compare .grid');
     if (!container) return;
     container.innerHTML = '';
+
+    // With nothing selected the placeholder photo and copy stand in for the
+    // grid, so leave it empty rather than filling it with three dead slots.
+    if (!compareList.length) return;
 
     compareList.forEach(name => {
       const org = ORGS.find(o => o.name === name);

@@ -936,6 +936,9 @@ function renderCompare() {
   if (typeof document.createElement !== 'function') return;
   container.innerHTML = '';
 
+  // With nothing selected the placeholder photo and copy stand in for the grid.
+  if (!compareList.length) return;
+
   compareList.forEach(name => {
     const org = ORGS.find(o => o.name === name);
     if (!org) return;
