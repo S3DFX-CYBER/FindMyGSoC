@@ -2336,6 +2336,9 @@ html.dark .an-note,html.dark .an-panel p{color:#a89a8b}
     </nav>
 
     <div class="right">
+      <a href="/" class="icon-btn" aria-label="Back to the landing page" title="Back to the site">
+        <span class="material-symbols-outlined">home</span>
+      </a>
       <span class="cycle">2026 cycle</span>
 
       <button id="themeToggleBtn" onclick="toggleTheme()" class="icon-btn"
@@ -2409,7 +2412,10 @@ html.dark .an-note,html.dark .an-panel p{color:#a89a8b}
       </a>
     </div>
 
-    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-zinc-100">
+    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-zinc-100 space-y-2">
+      <a href="/" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 text-sm font-bold hover:border-primary hover:text-primary transition-colors">
+        <span class="material-symbols-outlined text-base">arrow_back</span> Back to the site
+      </a>
       <a href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-zinc-900 text-white text-sm font-bold hover:bg-zinc-700 transition-colors">
         <span class="material-symbols-outlined text-base">star</span> Star & Contribute
       </a>
@@ -7010,7 +7016,6 @@ if(e.key.toLowerCase()==='r'){
     updateNavState();
   }
 
-  const logoLink = document.getElementById("logoLink");
 
   let isNavClicking = false;
   let navScrollEndTimer = null;
@@ -7032,12 +7037,8 @@ if(e.key.toLowerCase()==='r'){
     }, 150);
   }
 
-  if (logoLink) {
-    logoLink.addEventListener("click", (event) => {
-      event.preventDefault();
-      triggerSmoothScroll(0); // timeline is at index 0
-    });
-  }
+  // The brand links back to the landing page. It used to preventDefault and
+  // scroll to the timeline instead, which left no way off this page.
 
   document.querySelectorAll(".desktop-nav-link").forEach(link => {
     link.addEventListener("click", (e) => {
