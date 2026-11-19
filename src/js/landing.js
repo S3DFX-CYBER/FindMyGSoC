@@ -342,6 +342,37 @@ function toggleTheme() {
 
 // ── Mobile Menu ───────────────────────────────────────────────────────────────
 
+/** Element that had focus before the drawer opened, so it can be restored. */
+let lastFocused = null;
+
+/** Focusable controls inside the open drawer, in tab order. */
+function getDrawerFocusables() {
+  const menu = document.getElementById('mobileMenu');
+  if (!menu) { return []; }
+  return Array.from(menu.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+    .filter((el) => el.offsetParent !== null);
+}
+
+/** Keeps Tab and Shift+Tab inside the drawer while it is open. */
+function trapDrawerFocus(event) {
+  const menu = document.getElementById('mobileMenu');
+  if (!menu || menu.dataset.open !== 'true' || event.key !== 'Tab') { return; }
+
+  const focusables = getDrawerFocusables();
+  if (!focusables.length) { return; }
+
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
 /**
  * Opens or closes the mobile navigation drawer.
  * @param {boolean} [force]  Explicit state; toggles when omitted
@@ -353,6 +384,15 @@ function toggleMenu(force) {
 
   const isOpen = typeof force === 'boolean' ? force : menu.dataset.open !== 'true';
   menu.dataset.open = String(isOpen);
+
+  if (isOpen) {
+    lastFocused = document.activeElement;
+    const focusables = getDrawerFocusables();
+    if (focusables.length) { focusables[0].focus(); }
+  } else if (lastFocused && typeof lastFocused.focus === 'function') {
+    lastFocused.focus();
+    lastFocused = null;
+  }
   btn.setAttribute('aria-expanded', String(isOpen));
   btn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
 
@@ -413,7 +453,7 @@ function patchFooterLinks() {
 /** Wires smooth-scroll behaviour on all in-page anchor links. */
 function wireAnchorScroll() {
   const NAVBAR_HEIGHT = 72;
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href').slice(1);
       if (!targetId) { return; }
@@ -470,6 +510,9 @@ function initReveals() {
     targets.forEach((el) => el.classList.add('in'));
     return;
   }
+
+  // Only now is it safe to hide the elements we are about to reveal.
+  document.documentElement.classList.add('js-reveal');
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -559,7 +602,15 @@ async function renderLiveGfi() {
     labelEl.textContent = (issue.labels && issue.labels[0]) || 'good first issue';
     ageEl.textContent = relativeAge(issue.updated_at);
     row.title = issue.title || 'Browse good first issues';
-    if (issue.url) { row.href = issue.url; row.target = '_blank'; row.rel = 'noopener noreferrer'; }
+    const safeUrl = (() => {
+      try {
+        const parsed = new URL(String(issue.url || ''), globalThis.location.href);
+        return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.href : '';
+      } catch (_err) {
+        return '';
+      }
+    })();
+    if (safeUrl) { row.href = safeUrl; row.target = '_blank'; row.rel = 'noopener noreferrer'; }
   } catch (_e) {
     repoEl.textContent = 'good first issues';
     labelEl.textContent = '';
@@ -593,6 +644,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && drawer.dataset.open === 'true') { toggleMenu(false); }
     });
+    document.addEventListener('keydown', trapDrawerFocus);
   }
 
   // Render data-driven sections

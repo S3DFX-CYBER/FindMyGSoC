@@ -246,10 +246,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+  /** Shows or hides the PDF export control alongside the results. */
+  function setExportVisible(visible) {
+    const btn = document.getElementById('aiExportPdfBtn');
+    if (btn) { btn.classList.toggle('hidden', !visible); }
+  }
+
   function setAnalysisStateUI(isActive) {
     if (isActive) {
       errorState.classList.add('hidden');
       resultsContainer.innerHTML = '';
+      setExportVisible(false);
       loadingState.classList.remove('hidden');
       getRecsBtn.disabled = true;
       getRecsBtn.innerHTML = '<span class="material-symbols-outlined pulse-dot">hourglass_empty</span> Analyzing...';
@@ -299,6 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
     errorMsg.textContent = msg;
     errorState.classList.remove('hidden');
     resultsContainer.innerHTML = '';
+    setExportVisible(false);
   }
 
 
@@ -395,7 +403,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     resultsContainer.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-6">${html}</div>${showMoreHtml}`;
 
-    const exportBtn = document.getElementById('aiExportPdfBtn');
-    if (exportBtn) { exportBtn.classList.remove('hidden'); }
+    setExportVisible(true);
   }
 });

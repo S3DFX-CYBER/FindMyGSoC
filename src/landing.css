@@ -1,9 +1,9 @@
 
 /* =========================================================================
    FindMyGSoC — design system
-   Palette derived from the Google Summer of Code material language:
-     white ground, Google blue as the only primary, and the three
-     accent hues used strictly as category tags (never as decoration).
+   Palette: white ground with a warm neutral surface scale. The orange accent
+   carries primary actions, the active nav state and category tags; the blue is
+   reserved for links inside prose.
    Type: Newsreader (display) · Archivo (body) · JetBrains Mono (data)
    ========================================================================= */
 :root{
@@ -405,10 +405,13 @@ footer a:hover{color:var(--accent)}
 .cta p{font-size:13.5px;color:var(--muted);margin-top:6px}
 
 /* ---------- reveal ---------- */
-[data-rv]{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-[data-rv].in{opacity:1;transform:none}
+/* Reveal animations are opt-in: the page ships visible, and landing.js adds
+   .js-reveal to <html> before observing. A blocked or failed script therefore
+   leaves the content readable instead of blank. */
+.js-reveal [data-rv]{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js-reveal [data-rv].in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
-  [data-rv]{opacity:1!important;transform:none!important;transition:none!important}
+  .js-reveal [data-rv]{opacity:1!important;transform:none!important;transition:none!important}
   *{animation-duration:.001ms!important;animation-iteration-count:1!important}
   html{scroll-behavior:auto}
 }
