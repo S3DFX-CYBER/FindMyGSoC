@@ -1,0 +1,8 @@
+# Security contact for FindMyGSoC.
+# https://www.rfc-editor.org/rfc/rfc9116
+Contact: https://github.com/S3DFX-CYBER/FindMyGSoC/security/advisories/new
+Contact: mailto:saviodsouza8a@gmail.com
+Expires: 2027-11-20T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://findmygsoc.vercel.app/.well-known/security.txt
+Policy: https://github.com/S3DFX-CYBER/FindMyGSoC/blob/main/SECURITY.md

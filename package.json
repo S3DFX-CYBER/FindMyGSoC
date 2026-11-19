@@ -6,7 +6,7 @@
     "scripts": {
         "lint:js": "eslint src/js/app.js src/js/org.js src/js/tailwind-config.js scripts/validate-ideas-urls.js scripts/extract-mentors.js scripts/validate-mentors.js api/github.js src/js/githubAnalyzer.js src/js/skillExtractor.js src/js/recommender.js src/js/recommendation-ui.js src/js/footer.js",
         "lint:css": "stylelint src/styles.css src/landing.css",
-        "lint:html": "htmlhint --config .htmlhintrc index.html privacy.html landing.html",
+        "lint:html": "htmlhint --config .htmlhintrc index.html privacy.html landing.html 404.html",
         "lint": "npm run lint:js && npm run lint:css && npm run lint:html",
         "validate:data": "node scripts/validate-generated-data.js",
         "test": "node --test tests/*.test.js"
