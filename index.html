@@ -2167,6 +2167,12 @@ body{background:var(--surface)}
 .dark .appbar .appnav a:hover{color:#f6ede3}
 .dark .appbar .appnav a.is-active{color:var(--rd-accent)}
 .dark .appbar .cycle{background:#241d16;color:#ddcec0}
+
+/* ---------- drawer, both themes ---------- */
+.dark #menuPanel{background:#1a1512;border-right:1px solid #3a2f26}
+.dark .mobile-menu-link{color:#ddcec0}
+.dark .mobile-menu-link:hover{background:#241d16;color:#f6ede3}
+.dark .mobile-menu-link.text-orange-600{color:var(--rd-accent)}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
@@ -2240,7 +2246,7 @@ body{background:var(--surface)}
 </header>
 
 <!-- Mobile Menu Overlay -->
-<div id="mobileMenu" class="fixed inset-0 z-50 hidden lg:hidden" style="z-index:60;" role="dialog" aria-modal="true" aria-label="Navigation menu">
+<div id="mobileMenu" class="fixed inset-0 z-50 hidden" style="z-index:60;" role="dialog" aria-modal="true" aria-label="Navigation menu">
   <!-- Backdrop -->
   <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleMenu()" onkeydown="if(event.key==='Enter'||event.key===' ')toggleMenu()" tabindex="0" role="button" aria-label="Close menu"></div>
 
@@ -3640,7 +3646,9 @@ body{background:var(--surface)}
   };
 
   function syncMenuWithViewport(event){
-    if(event.matches){
+    // The drawer is also the nav on narrow desktops, so only close it when the
+    // viewport is wide enough for the full link row to be back.
+    if(event.matches && globalThis.innerWidth >= 1140){
       closeMobileMenu({ immediate: true });
     }
   }
