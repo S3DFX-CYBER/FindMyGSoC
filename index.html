@@ -2232,6 +2232,13 @@ html.dark .an-note,html.dark .an-panel p{color:#a89a8b}
   font-size:18px;line-height:1;padding:2px 4px;
 }
 .app-error-close:hover{color:var(--rd-ink)}
+
+/* ---------- compare preview ---------- */
+#compare .grid{
+  display:grid;grid-template-columns:1fr;gap:16px;margin:0 0 18px;
+}
+@media (min-width:640px){#compare .grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+#compare .grid:not(:empty) ~ .compare-empty{display:none}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
@@ -3414,8 +3421,10 @@ html.dark .an-note,html.dark .an-panel p{color:#a89a8b}
       </button>
     </div>
     <div id="compare" class="bg-surface-container-low rounded-3xl p-8 border border-zinc-100">
-      <p class="font-[family-name:var(--rd-mono)] text-[10.5px] uppercase tracking-[0.14em] text-[color:var(--rd-faint)] mb-4">Nothing selected yet</p>
-      <figure class="cmpfig">
+      <!-- renderCompare() writes the selected organisations into this container -->
+      <div class="grid"></div>
+      <p class="compare-empty font-[family-name:var(--rd-mono)] text-[10.5px] uppercase tracking-[0.14em] text-[color:var(--rd-faint)] mb-4">Nothing selected yet</p>
+      <figure class="cmpfig compare-empty">
         <img src="src/assets/redesign/compare.webp" alt="The Alumni Camp wrap-up session on stage, with the closing schedule on screen" loading="lazy" />
       </figure>
     </div>
@@ -4240,7 +4249,7 @@ html.dark .an-note,html.dark .an-panel p{color:#a89a8b}
         if (!safe) return '';
         return `
           <a class="mentor-link-chip" href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer">
-            <span>${CHANNEL_ICONS[record.type] || ''}</span>
+            <span class="material-symbols-outlined">${CHANNEL_ICONS[record.type] || 'chat'}</span>
             <span>${escapeHtml(record.label || record.type)}</span>
           </a>
         `;

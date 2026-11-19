@@ -170,7 +170,7 @@ const BadgeSystem = (function() {
     
     notification.innerHTML = `
       <div class="badge-notification-content">
-        <div class="badge-notification-icon">${def.name.split(' ')[0]}</div>
+        <div class="badge-notification-icon"><span class="material-symbols-outlined">${def.icon || 'emoji_events'}</span></div>
         <div class="badge-notification-text">
           <div class="badge-notification-title">Badge Unlocked!</div>
           <div class="badge-notification-desc">${def.name} - ${level.levelName}</div>
@@ -244,6 +244,7 @@ const BadgeSystem = (function() {
 
       stats[badgeType] = {
         name: def.name,
+        icon: def.icon,
         description: def.description,
         count: count,
         level: level,

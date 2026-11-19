@@ -1141,7 +1141,7 @@ function renderOrgs(reset = true) {
     const isComparing = compareList.includes(org.name);
     const isFocused = focusedIdx === (visibleCount - 12 + i);
     const card = document.createElement('article');
-    card.className = `org-card group p-6 animate-fade-up ${isComparing ? 'ring-2 ring-primary/30' : ''} ${isFocused ? 'ring-2 ring-primary' : ''}`;
+    card.className = `org-card ocard group p-6 animate-fade-up ${isComparing ? 'ring-2 ring-primary/30' : ''} ${isFocused ? 'ring-2 ring-primary' : ''}`;
     card.dataset.org = org.name;
     card.setAttribute('role', 'article');
     card.setAttribute('aria-label', `Organization: ${org.name}`);
