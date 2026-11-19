@@ -12,7 +12,7 @@ const {
   fetchJson,
   collectIssues,
   rejectionReason,
-} = require('../agent/scripts/fetch-issues.js');
+} = require('../scripts/fetch-issues.js');
 
 const DAY = 24 * 60 * 60 * 1000;
 const NOW = Date.parse('2026-11-07T00:00:00Z');

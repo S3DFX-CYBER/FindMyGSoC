@@ -9,7 +9,7 @@ const CRITICAL_ASSETS = [
   'src/js/org.js',
   'src/js/app.js',
   'src/js/landing.js',
-  'agent/scripts/orgs.js',
+  'scripts/orgs.js',
   'src/js/githubAnalyzer.js',
   'src/js/skillExtractor.js',
   'src/js/recommender.js',

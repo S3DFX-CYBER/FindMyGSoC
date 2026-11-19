@@ -12,9 +12,9 @@
  * budget instead, which comfortably covers ~184 repositories.
  *
  * Usage:
- *   node agent/scripts/fetch-issues.js                 # full refresh
- *   node agent/scripts/fetch-issues.js --limit 5       # smoke test
- *   node agent/scripts/fetch-issues.js --dry-run       # report only, no write
+ *   node scripts/fetch-issues.js                 # full refresh
+ *   node scripts/fetch-issues.js --limit 5       # smoke test
+ *   node scripts/fetch-issues.js --dry-run       # report only, no write
  *
  * Env:
  *   GITHUB_TOKEN  optional, but raises the rate limit from 60 to 5,000 req/h
@@ -23,9 +23,9 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const ORGS = require('../../src/js/org.js');
+const ORGS = require('../src/js/org.js');
 
-const DEFAULT_OUTPUT = path.resolve(__dirname, '../../data/issues.json');
+const DEFAULT_OUTPUT = path.resolve(__dirname, '../data/issues.json');
 const ISSUE_LABEL = 'good first issue';
 const MAX_ISSUES_PER_ORG = 3;
 const MAX_AGE_DAYS = 365;

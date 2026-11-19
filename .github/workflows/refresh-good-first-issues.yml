@@ -62,13 +62,13 @@ jobs:
         run: |
           if [ -n "${GFI_LIMIT}" ]; then
             echo "Smoke test: checking ${GFI_LIMIT} organisations, publishing nothing."
-            node agent/scripts/fetch-issues.js --limit "${GFI_LIMIT}" --dry-run
+            node scripts/fetch-issues.js --limit "${GFI_LIMIT}" --dry-run
           else
-            node agent/scripts/fetch-issues.js
+            node scripts/fetch-issues.js
           fi
 
       - name: Generate UI cache
-        run: node agent/scripts/generate-ui-cache.js
+        run: node scripts/generate-ui-cache.js
 
       - name: Ensure generated files exist
         run: |
