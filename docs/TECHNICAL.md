@@ -23,7 +23,7 @@ Three layers, each with one job.
 
 | Layer | What lives there | Why |
 |---|---|---|
-| Static pages | `index.html`, `landing.html`, `src/*.css`, `src/js/*` | Everything that can be computed in the browser is. First paint never waits on a network call. |
+| Static pages | `index.html`, `landing.html`, `src/*.css`, `src/js/*` | Everything that can be computed in the browser is. First paint does not wait on application data or API calls. |
 | Edge functions | `api/github.js`, `api/gfi.js` | Only for data that must be live, and to keep API tokens off the client. |
 | Data job | `.github/workflows/refresh-good-first-issues.yml`, `scripts/` | Anything that changes weekly is generated, not hand-edited. |
 
