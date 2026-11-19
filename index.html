@@ -2107,9 +2107,13 @@ body{background:var(--surface)}
 
 /* ---------- app bar nav state, logo, AI results ---------- */
 .appbar .brand .mark{object-fit:contain;background:none;border-radius:8px}
-.appbar .appnav a{color:var(--rd-muted)}
-.appbar .appnav a:hover{color:var(--rd-ink)}
-.appbar .appnav a.is-active{color:var(--rd-accent);font-weight:600}
+.appbar .appnav a{
+  color:var(--rd-muted);background:transparent;border:0;box-shadow:none;
+  padding:4px 0;
+}
+.appbar .appnav a:hover{color:var(--rd-ink);background:transparent}
+.appbar .appnav a.is-active{color:var(--rd-accent);font-weight:600;background:transparent}
+.appbar .appnav a:focus-visible{outline:2px solid var(--rd-accent);outline-offset:4px;border-radius:4px}
 
 /* ---------- page frame: app overrides ----------
    The handoff's page-frame block above styles the app bar and page head as a
@@ -2148,6 +2152,21 @@ body{background:var(--surface)}
   max-width:16ch;color:var(--rd-ink);
 }
 .app-head p{max-width:56ch}
+
+/* ---------- app bar: explicit dark values ----------
+   The icon buttons and nav links pick their surface from the theme tokens,
+   but the browser's default button face still shows through in dark mode,
+   which is the pale pill that appears mid-bar. Pin the dark values. */
+.dark .appbar .icon-btn{
+  background:#1a1512;border-color:#3a2f26;color:#e6dacb;
+}
+.dark .appbar .icon-btn:hover{
+  background:#241d16;border-color:var(--rd-accent);color:var(--rd-accent);
+}
+.dark .appbar .appnav a{background:transparent;color:#c9bcae}
+.dark .appbar .appnav a:hover{color:#f6ede3}
+.dark .appbar .appnav a.is-active{color:var(--rd-accent)}
+.dark .appbar .cycle{background:#241d16;color:#ddcec0}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
