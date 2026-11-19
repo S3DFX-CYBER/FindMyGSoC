@@ -249,7 +249,7 @@ section is maintained by the [backfill workflow](.github/workflows/add-contribut
 
 ## License
 
-[MIT](LICENSE).
+[Apache License 2.0](LICENSE).
 
 ## Photography
 
