@@ -1,6 +1,6 @@
 // src/js/recommendation-ui.js
 
-/* global analyzeGitHubUser, extractSkills, getRecommendations, escapeHtml, openModal, toggleCompare, toggleBookmark */
+/* global analyzeGitHubUser, extractSkills, getRecommendations, escapeHtml, openModal, toggleCompare, toggleBookmark, html2pdf */
 
 let currentAbortController = null;
 let currentRequestId = 0;
@@ -201,6 +201,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Export the current recommendations as a PDF
+  const exportPdfBtn = document.getElementById('aiExportPdfBtn');
+  if (exportPdfBtn) {
+    exportPdfBtn.addEventListener('click', () => {
+      const target = document.getElementById('aiResultsContainer');
+      if (!target || !target.textContent.trim()) { return; }
+      if (typeof html2pdf === 'undefined') {
+        showError('PDF export is unavailable right now. Please try again in a moment.');
+        return;
+      }
+      const stamp = new Date().toISOString().slice(0, 10);
+      html2pdf().set({
+        margin: 10,
+        filename: `findmygsoc-recommendations-${stamp}.pdf`,
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 2, backgroundColor: '#ffffff', useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      }).from(target).save();
+    });
+  }
+
   // Handle file upload
   if (fileUpload) {
     fileUpload.addEventListener('change', (e) => {
@@ -372,6 +393,9 @@ document.addEventListener('DOMContentLoaded', () => {
          </div>`
       : '';
 
-    resultsContainer.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${html}</div>${showMoreHtml}`;
+    resultsContainer.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-6">${html}</div>${showMoreHtml}`;
+
+    const exportBtn = document.getElementById('aiExportPdfBtn');
+    if (exportBtn) { exportBtn.classList.remove('hidden'); }
   }
 });
