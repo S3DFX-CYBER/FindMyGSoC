@@ -16,7 +16,7 @@ all in the browser, with no account and no build step.
 [Contributing](CONTRIBUTING.md)
 
 [![Code Quality](https://github.com/S3DFX-CYBER/FindMyGSoC/actions/workflows/code-quality.yml/badge.svg)](https://github.com/S3DFX-CYBER/FindMyGSoC/actions/workflows/code-quality.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-211c17.svg)](LICENSE)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-211c17.svg)](LICENSE)
 [![No build step](https://img.shields.io/badge/build-none-f26a1b.svg)](#quick-start)
 
 </div>
