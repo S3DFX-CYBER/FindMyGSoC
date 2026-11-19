@@ -2,7 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const ORGS = require('../../src/js/org.js');
+const ORGS = require('../src/js/org.js');
 
 const CONTACT_TIPS = {
   Slack: 'Join and say hi in the GSoC channel before DMing mentors.',
@@ -25,7 +25,7 @@ const CHANNEL_MATCHERS = [
 const REQUEST_TIMEOUT_MS = 15000;
 const BATCH_SIZE = 5;
 const BATCH_DELAY_MS = 1200;
-const OUTPUT_PATH = path.resolve(__dirname, '../../data/mentors.json');
+const OUTPUT_PATH = path.resolve(__dirname, '../data/mentors.json');
 const DEFAULT_HEADERS = {
   Accept: 'text/html,application/xhtml+xml',
   'User-Agent': 'gsoc-org-finder-mentor-refresh'
