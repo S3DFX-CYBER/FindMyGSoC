@@ -208,7 +208,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const target = document.getElementById('aiResultsContainer');
       if (!target || !target.textContent.trim()) { return; }
       if (typeof html2pdf === 'undefined') {
-        showError('PDF export is unavailable right now. Please try again in a moment.');
+        // Do not route this through showError: that clears the results the user
+        // was trying to export. Warn next to the button instead.
+        exportPdfBtn.textContent = 'PDF export unavailable, try again';
+        setTimeout(() => { exportPdfBtn.textContent = 'Download as PDF'; }, 4000);
         return;
       }
       const stamp = new Date().toISOString().slice(0, 10);

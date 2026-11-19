@@ -481,11 +481,19 @@ function wireAnchorScroll() {
 
 /** Fade-in for "How It Works" step cards when they enter the viewport. */
 function initHiwAnimations() {
+  const steps = document.querySelectorAll('.hiw-step');
+  if (!steps.length) { return; }
+
+  // Check for support before hiding anything: without an observer the steps
+  // would stay hidden, and a throw here would abort the rest of the bootstrap.
+  if (!('IntersectionObserver' in globalThis)) {
+    steps.forEach((step) => { step.style.opacity = '1'; step.style.transform = 'none'; });
+    return;
+  }
+
   // The steps are hidden by .js-reveal, so opt in here too: this runs even when
   // the page has no [data-rv] targets for initReveals to opt in on.
   document.documentElement.classList.add('js-reveal');
-  const steps = document.querySelectorAll('.hiw-step');
-  if (!steps.length) { return; }
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
