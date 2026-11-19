@@ -2173,6 +2173,65 @@ body{background:var(--surface)}
 .dark .mobile-menu-link{color:#ddcec0}
 .dark .mobile-menu-link:hover{background:#241d16;color:#f6ede3}
 .dark .mobile-menu-link.text-orange-600{color:var(--rd-accent)}
+
+/* ---------- analytics panel, both themes ---------- */
+.badge-icon .material-symbols-outlined{font-size:22px;line-height:1}
+html.dark .badge-card{
+  background:linear-gradient(135deg,#241a10 0%,#2a1a0d 100%);
+  border-color:#7c3a0a;
+}
+html.dark .badge-card.badge-locked{opacity:.72}
+html.dark .badge-name{color:#f6ede3}
+html.dark .badge-level,html.dark .badge-count{color:#a89a8b}
+html.dark .an-note,html.dark .an-panel p{color:#a89a8b}
+
+/* ---------- boot overlay + error surface ---------- */
+.app-loader{
+  position:fixed;inset:0;z-index:400;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+  background:var(--rd-bg);color:var(--rd-ink);
+  transition:opacity .35s ease,visibility .35s ease;
+}
+.app-loader img{border-radius:10px}
+.app-loader p{
+  margin:0;font-family:var(--rd-mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--rd-faint);
+}
+.app-loader-bar{
+  width:120px;height:3px;border-radius:3px;overflow:hidden;position:relative;
+  background:var(--rd-surface-2);
+}
+.app-loader-bar::after{
+  content:"";position:absolute;inset:0;width:40%;border-radius:3px;
+  background:var(--rd-accent);animation:appLoaderSweep 1.1s ease-in-out infinite;
+}
+@keyframes appLoaderSweep{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
+.app-loader-done{opacity:0;visibility:hidden}
+@media (prefers-reduced-motion:reduce){
+  .app-loader-bar::after{animation:none;width:100%;opacity:.5}
+}
+
+.app-error{
+  position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
+  z-index:410;display:flex;align-items:center;gap:12px;max-width:min(560px,calc(100vw - 32px));
+  padding:12px 14px;border-radius:14px;
+  background:var(--rd-bg);border:1px solid #f6c9a9;color:var(--rd-ink);
+  box-shadow:var(--rd-shadow-lg);
+}
+.app-error[hidden]{display:none}
+.app-error .material-symbols-outlined{font-size:20px;color:var(--rd-red);flex:none}
+.app-error p{margin:0;font-size:13px;line-height:1.45;color:var(--rd-ink-2)}
+.app-error-action{
+  flex:none;font-family:var(--rd-body);font-weight:600;font-size:12.5px;
+  padding:7px 12px;border-radius:9px;cursor:pointer;
+  background:var(--rd-accent);border:1.5px solid var(--rd-accent-dark);color:#fff;
+}
+.app-error-action:hover{background:var(--rd-accent-dark)}
+.app-error-close{
+  flex:none;background:none;border:0;cursor:pointer;color:var(--rd-faint);
+  font-size:18px;line-height:1;padding:2px 4px;
+}
+.app-error-close:hover{color:var(--rd-ink)}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
@@ -2182,6 +2241,63 @@ body{background:var(--surface)}
   <meta name="apple-mobile-web-app-title" content="FindMyGSoC" />
 </head>
 <body class="bg-background text-on-surface font-body antialiased">
+
+<!-- Boot overlay + global error surface. Placed before the app scripts so they
+     can still be caught if one of them throws while booting. -->
+<div id="appLoader" class="app-loader" role="status" aria-live="polite">
+  <img src="src/assets/redesign/logo-mark.png" alt="" width="44" height="44" />
+  <p>Loading the 2026 index</p>
+  <span class="app-loader-bar" aria-hidden="true"></span>
+</div>
+
+<div id="appError" class="app-error" role="alert" hidden>
+  <span class="material-symbols-outlined" aria-hidden="true">error</span>
+  <p id="appErrorText">Something went wrong.</p>
+  <button type="button" class="app-error-action" onclick="location.reload()">Reload</button>
+  <button type="button" class="app-error-close" aria-label="Dismiss"
+    onclick="this.parentElement.hidden=true">&times;</button>
+</div>
+
+<script>
+  (function () {
+    'use strict';
+
+    // ---- boot overlay: never leave the visitor staring at it ----
+    var loader = document.getElementById('appLoader');
+    var hidden = false;
+    function hideLoader() {
+      if (hidden || !loader) { return; }
+      hidden = true;
+      loader.classList.add('app-loader-done');
+      setTimeout(function () { if (loader.parentNode) { loader.parentNode.removeChild(loader); } }, 400);
+    }
+    if (document.readyState === 'complete') { setTimeout(hideLoader, 250); }
+    else { globalThis.addEventListener('load', function () { setTimeout(hideLoader, 250); }); }
+    // hard stop: a stalled fetch must not trap anyone behind the overlay
+    setTimeout(hideLoader, 8000);
+
+    // ---- global error surface ----
+    var box = document.getElementById('appError');
+    var text = document.getElementById('appErrorText');
+    var shown = false;
+    function report(message) {
+      if (!box || shown) { return; }
+      shown = true;
+      if (text) { text.textContent = message; }
+      box.hidden = false;
+      hideLoader();
+    }
+    globalThis.showAppError = report;
+    globalThis.addEventListener('error', function () {
+      report('Something on this page failed to load. Reloading usually clears it.');
+    });
+    globalThis.addEventListener('unhandledrejection', function () {
+      report('A background request failed. Reloading usually clears it.');
+    });
+  }());
+</script>
+
+
 
 <!-- Section Navigation Buttons -->
 <div id="sectionScrollIndicator" class="section-scroll-indicator" aria-live="polite" aria-atomic="true">
@@ -5095,14 +5211,14 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     Object.keys(stats).forEach(badgeType => {
       const badge = stats[badgeType];
       const isLocked = !badge.level;
-      const icon = badge.name.split(' ')[0];
+      const icon = badge.icon || 'emoji_events';
       const levelName = badge.level ? badge.level.levelName : 'Locked';
       const progress = badge.progress;
 
       html += `
         <div class="badge-card ${isLocked ? 'badge-locked' : ''}">
-          <span class="badge-icon">${icon}</span>
-          <div class="badge-name">${escapeHtml(badge.name.substring(2))}</div>
+          <span class="badge-icon"><span class="material-symbols-outlined">${escapeHtml(icon)}</span></span>
+          <div class="badge-name">${escapeHtml(badge.name)}</div>
           <div class="badge-level">${escapeHtml(levelName)}</div>
           <div class="badge-count">${badge.count}${badge.nextThreshold ? ' / ' + badge.nextThreshold : ''}</div>
           <div class="badge-progress">

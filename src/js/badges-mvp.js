@@ -23,25 +23,25 @@ const BadgeSystem = (function() {
   // Badge definitions with thresholds (4 types)
   const BADGE_DEFINITIONS = {
     explorer: {
-      name: ' Explorer',
+      name: 'Explorer', icon: 'travel_explore',
       description: 'Viewed organizations',
       thresholds: [10, 25, 50, 100],
       levels: ['Bronze', 'Silver', 'Gold', 'Platinum']
     },
     comparator: {
-      name: ' Comparator',
+      name: 'Comparator', icon: 'compare_arrows',
       description: 'Compared organizations',
       thresholds: [5, 15, 30, 50],
       levels: ['Bronze', 'Silver', 'Gold', 'Platinum']
     },
     search_master: {
-      name: ' Search Master',
+      name: 'Search Master', icon: 'search',
       description: 'Performed searches',
       thresholds: [10, 30, 75, 150],
       levels: ['Bronze', 'Silver', 'Gold', 'Platinum']
     },
     filter_pro: {
-      name: ' Filter Pro',
+      name: 'Filter Pro', icon: 'filter_alt',
       description: 'Applied filters',
       thresholds: [15, 40, 100, 200],
       levels: ['Bronze', 'Silver', 'Gold', 'Platinum']
