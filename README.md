@@ -21,10 +21,7 @@ all in the browser, with no account and no build step.
 
 </div>
 
-[![A walkthrough of FindMyGSoC: the landing page, the organisation grid, filtering, the organisation detail panel and the dark theme](docs/assets/demo-poster.png)](docs/assets/demo.mp4)
-
-*A 13 second walkthrough, recorded from the live pages. Click the frame to play
-([docs/assets/demo.mp4](docs/assets/demo.mp4), 900 KB).*
+![A walkthrough of FindMyGSoC: the landing page, the organisation grid, filtering, the organisation detail panel and the dark theme](docs/assets/demo.gif)
 
 ---
 
