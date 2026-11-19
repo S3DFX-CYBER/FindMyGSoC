@@ -408,6 +408,10 @@ footer a:hover{color:var(--accent)}
 /* Reveal animations are opt-in: the page ships visible, and landing.js adds
    .js-reveal to <html> before observing. A blocked or failed script therefore
    leaves the content readable instead of blank. */
+/* The skip link uses native fragment navigation, so the target needs the same
+   offset the smooth-scroll handler applies to every other anchor. */
+.hero#top{scroll-margin-top:72px}
+
 .js-reveal [data-rv]{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .js-reveal [data-rv].in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
