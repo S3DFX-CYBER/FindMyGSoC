@@ -1340,3 +1340,10 @@ span.eyebrow{
 }
 .sidefig img{width:100%;height:100%;object-fit:cover;display:block}
 .dark .sidefig{outline-color:rgb(255 255 255 / 8%)}
+
+/* ---------- version marker in the injected footer ---------- */
+.app-version{
+  font-family:var(--rd-mono);font-size:10px;letter-spacing:.08em;
+  color:var(--rd-faint);white-space:nowrap;
+}
+html.dark .app-version{color:#8b7d6f}

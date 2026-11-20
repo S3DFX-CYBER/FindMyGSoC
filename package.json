@@ -1,6 +1,6 @@
 {
     "name": "gsoc-org-finder",
-    "version": "1.0.0",
+    "version": "1.1.3",
     "description": "GSoC 2026 Organisation Finder",
     "private": true,
     "scripts": {

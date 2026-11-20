@@ -586,3 +586,9 @@ footer a:hover{color:var(--accent)}
 .dark .btn.sm{box-shadow:3px 3px 0 #2a231c}
 .dark .pill{box-shadow:0 1px 2px rgb(0 0 0 / 50%)}
 .dark .statusbar,.dark .mini,.dark .fcard,.dark .ncard{background:var(--card)}
+
+/* ---------- version marker ---------- */
+.ver{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;
+  color:var(--faint);white-space:nowrap;
+}
