@@ -31,15 +31,13 @@ const DIFFICULTY_WORDS = ['easy', 'beginner', 'medium', 'intermediate', 'hard', 
 /** Strips tags, scripts and styles so the text can be scanned safely. */
 function toText(html) {
   return String(html)
-    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    // Tolerate `</script >` and friends, which the naive pattern misses.
+    .replace(/<script\b[\s\S]*?<\/script\s*>/gi, ' ')
+    .replace(/<style\b[\s\S]*?<\/style\s*>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/gi, ' ')
-    .replace(/&amp;/gi, '&')
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>')
-    .replace(/&quot;/gi, '"')
-    .replace(/&#39;/gi, "'")
+    // Entities are dropped rather than decoded: this text is only scanned for
+    // sizes, never rendered, and decoding is how double-unescaping bugs start.
+    .replace(/&[a-z]+;|&#\d+;/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
