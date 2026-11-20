@@ -590,5 +590,5 @@ footer a:hover{color:var(--accent)}
 /* ---------- version marker ---------- */
 .ver{
   font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;
-  color:var(--faint);white-space:nowrap;
+  color:var(--muted);white-space:nowrap;
 }

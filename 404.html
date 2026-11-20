@@ -22,7 +22,7 @@
       try {
         if (localStorage.getItem('theme') === 'dark') {
           document.documentElement.classList.add('dark');
-          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.dataset.theme = 'dark';
         }
       } catch (e) { /* storage blocked, stay light */ }
     }());

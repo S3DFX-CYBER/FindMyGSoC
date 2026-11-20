@@ -315,9 +315,9 @@ function applyTheme(isDark) {
   const root = document.documentElement;
   root.classList.toggle('dark', isDark);
   if (isDark) {
-    root.setAttribute('data-theme', 'dark');
+    root.dataset.theme = 'dark';
   } else {
-    root.setAttribute('data-theme', 'light');
+    root.dataset.theme = 'light';
   }
 }
 

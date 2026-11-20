@@ -26,7 +26,7 @@
       try {
         if (localStorage.getItem('theme') === 'dark') {
           document.documentElement.classList.add('dark');
-          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.dataset.theme = 'dark';
         }
       } catch (e) { /* storage blocked, stay light */ }
     }());
@@ -148,7 +148,8 @@
               <tr><td><code>bookmarks</code></td><td>The organisations on your watchlist.</td></tr>
               <tr><td><code>recentlyViewedOrgs</code></td><td>The organisations you opened most recently.</td></tr>
               <tr><td><code>gssoc_badges</code></td><td>Progress towards the local badge system.</td></tr>
-              <tr><td><code>gaf_proposal_autosave</code></td><td>The draft of the proposal you are writing.</td></tr>
+              <tr><td><code>gaf_proposal_autosave</code></td><td>Whether proposal autosave is switched on, stored as the string <code>true</code> or <code>false</code>.</td></tr>
+              <tr><td><code>gaf_proposal_&lt;org&gt;</code></td><td>The draft of the proposal you are writing for that organisation.</td></tr>
               <tr><td><code>gaf_user_cache</code></td><td>The last GitHub profile analysis, so you do not refetch it.</td></tr>
               <tr><td><code>gaf_*</code></td><td>Local counters for the analytics panel: visits, searches, filters, views.</td></tr>
             </tbody>
@@ -185,7 +186,9 @@
             third-party requests are the font files from Google Fonts, the three
             libraries loaded from jsDelivr (Markdown rendering, HTML sanitising and PDF
             export), and the Tailwind runtime the app page uses for its utility
-            classes.</p>
+            classes. If jsDelivr fails to serve one of those libraries, the page falls
+            back to unpkg.com for the same file, so that host may appear in your network
+            log instead.</p>
         </section>
 
         <section id="third-parties">

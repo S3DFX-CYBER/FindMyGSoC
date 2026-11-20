@@ -2313,7 +2313,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
       if (hidden || !loader) { return; }
       hidden = true;
       loader.classList.add('app-loader-done');
-      setTimeout(function () { if (loader.parentNode) { loader.parentNode.removeChild(loader); } }, 400);
+      setTimeout(function () { if (loader.parentNode) { loader.remove(); } }, 400);
     }
     if (document.readyState === 'complete') { setTimeout(hideLoader, 250); }
     else { globalThis.addEventListener('load', function () { setTimeout(hideLoader, 250); }); }
@@ -2997,7 +2997,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
         <p class="text-zinc-600 mt-4 max-w-3xl">Pre-fetched contact channels and conservative mentor handles from org ideas pages, so you can find where to introduce yourself before proposal season gets busy.</p>
       </div>
       <figure class="sidefig">
-        <img src="src/assets/redesign/mentors.webp" alt="The Alumni Camp Delhi 2026 cohort photographed in front of the event signage" loading="lazy" />
+        <img src="src/assets/redesign/mentors.webp" alt="The Alumni Camp Delhi 2026 cohort in front of the event signage" loading="lazy" />
       </figure>
     </div>
     <div class="bg-white border border-zinc-100 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -3942,6 +3942,15 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
   // programme ends; only the live year lives under /programs/<year>/. Past years
   // built with /programs/ 404, which is the error the year pills used to throw.
   const GSOC_CURRENT_YEAR = 2026;
+  // `years` is a count, not a list, so a gap cannot be ruled out. Only treat a
+  // year as listed when the count matches the whole span from first year, or
+  // when the year is the current one (this dataset is that list).
+  function gsocYearIsListed(org, year) {
+    if (year === GSOC_CURRENT_YEAR) return true;
+    const span = GSOC_CURRENT_YEAR - Number(org.firstYear || GSOC_CURRENT_YEAR) + 1;
+    return Number(org.years) >= span;
+  }
+
   function gsocOrgYearUrl(slug, year) {
     const section = year < GSOC_CURRENT_YEAR ? 'archive' : 'programs';
     return `https://summerofcode.withgoogle.com/${section}/${year}/organizations/${slug}`;
@@ -5815,7 +5824,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       if (active) {
         if (y === 2020) url = sanitizeHrefUrl(org['2020_project_url'] || null);
         else if (y === 2021) url = sanitizeHrefUrl(org['2021_project_url'] || null);
-        else if (org.slug) url = sanitizeHrefUrl(gsocOrgYearUrl(org.slug, y));
+        else if (org.slug && gsocYearIsListed(org, y)) url = sanitizeHrefUrl(gsocOrgYearUrl(org.slug, y));
       }
       if (url) {
         timelineHtml += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="timeline-year-link${isCurrent ? ' current-year' : ''}" title="View ${escapeHtml(org.name)} at GSoC ${y}">${y}</a>`;
