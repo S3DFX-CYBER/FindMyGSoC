@@ -4438,12 +4438,50 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     return sanitizeHrefUrl(gsocOrgYearUrl(org.slug, GSOC_CURRENT_YEAR));
   }
 
+  /** "Where to ask" block: the channel, or the org's own GSoC page as a fallback. */
+  function buildAskBlock(org, gsocPage, primarySafe, primaryLabel) {
+    if (primarySafe) {
+      return `
+        <div class="mentor-ask">
+          <p class="mentor-ask-kicker">Where to ask</p>
+          <p class="mentor-ask-line">
+            The mentors for ${escapeHtml(org.name)} answer in
+            <a href="${escapeHtml(primarySafe)}" target="_blank" rel="noopener noreferrer">${escapeHtml(primaryLabel)}</a>.
+            Ask there rather than in a private message, so the answer helps the next person too.
+          </p>
+        </div>
+      `;
+    }
+    const where = gsocPage
+      ? `Their <a href="${escapeHtml(gsocPage)}" target="_blank" rel="noopener noreferrer">GSoC organisation page</a> lists the contact route they want you to use, usually under the ideas list.`
+      : 'Check the ideas list for the contact route they prefer.';
+    return `
+      <div class="mentor-ask mentor-ask-missing">
+        <p class="mentor-ask-kicker">Where to ask</p>
+        <p class="mentor-ask-line">No public chat channel was found for this organisation. ${where}</p>
+      </div>
+    `;
+  }
+
+  /** The step beginners get stuck on: what a first message should contain. */
+  function buildEtiquetteBlock(ideasPage) {
+    return `
+      <div class="mentor-etiquette">
+        <p class="mentor-ask-kicker">Before you write</p>
+        <ul>
+          <li>Say what you have already read or tried, with a link. It is the difference between a reply and silence.</li>
+          <li>Ask one specific question about the project, not for a task or for your chances.</li>
+          <li>Use the public channel. Private messages to mentors are how first contacts get ignored.</li>
+          <li>Give it a few days. Mentors are volunteers, and the channel history probably already answers it.</li>
+        </ul>
+        ${ideasPage ? `<p class="mentor-etiquette-foot">Read the <a href="${escapeHtml(ideasPage)}" target="_blank" rel="noopener noreferrer">project ideas</a> first, then ask about a specific one.</p>` : ''}
+      </div>
+    `;
+  }
+
   function renderMentorContactSection(org) {
     const container = document.getElementById('mMentorSection');
     if (!container) return;
-
-    const gsocPage = gsocOrgPageUrl(org);
-    const ideasPage = sanitizeHrefUrl(org.ideas);
 
     if (mentorDataState === 'idle' || mentorDataState === 'loading') {
       container.innerHTML = '<p class="text-sm text-zinc-500">Loading mentor contact data...</p>';
@@ -4451,41 +4489,18 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     }
 
     const entry = getMentorEntry(org.name);
-    const channels = (entry && entry.status === 'ok' && entry.channels) ? entry.channels : [];
-    const lists = (entry && entry.status === 'ok' && entry.mailingLists) ? entry.mailingLists : [];
-    const mentors = (entry && entry.status === 'ok' && entry.mentors) ? entry.mentors : [];
+    const ok = Boolean(entry && entry.status === 'ok');
+    const channels = ok ? (entry.channels || []) : [];
+    const lists = ok ? (entry.mailingLists || []) : [];
+    const mentors = ok ? (entry.mentors || []) : [];
     const primary = channels[0] || lists[0] || null;
     const primarySafe = primary ? sanitizeHrefUrl(primary.url) : null;
+    const primaryLabel = primary ? normaliseChannelType(primary.label || primary.type) : '';
 
-    const blocks = [];
+    const blocks = [
+      buildAskBlock(org, gsocOrgPageUrl(org), primarySafe, primaryLabel),
+    ];
 
-    // 1. Where to ask, in one line, with the link that gets you there.
-    if (primarySafe) {
-      blocks.push(`
-        <div class="mentor-ask">
-          <p class="mentor-ask-kicker">Where to ask</p>
-          <p class="mentor-ask-line">
-            The mentors for ${escapeHtml(org.name)} answer in
-            <a href="${escapeHtml(primarySafe)}" target="_blank" rel="noopener noreferrer">${escapeHtml(normaliseChannelType(primary.label || primary.type))}</a>.
-            Ask there rather than in a private message, so the answer helps the next person too.
-          </p>
-        </div>
-      `);
-    } else {
-      // No channel parsed: say so plainly and point at the authoritative page
-      // instead of leaving a dead end.
-      blocks.push(`
-        <div class="mentor-ask mentor-ask-missing">
-          <p class="mentor-ask-kicker">Where to ask</p>
-          <p class="mentor-ask-line">
-            No public chat channel was found for this organisation.
-            ${gsocPage ? `Their <a href="${escapeHtml(gsocPage)}" target="_blank" rel="noopener noreferrer">GSoC organisation page</a> lists the contact route they want you to use, usually under the ideas list.` : 'Check the ideas list for the contact route they prefer.'}
-          </p>
-        </div>
-      `);
-    }
-
-    // 2. Every channel and list that was parsed.
     if (channels.length > 0 || lists.length > 0) {
       blocks.push(`
         <div>
@@ -4498,7 +4513,6 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
       `);
     }
 
-    // 3. Named mentors, when the org publishes handles.
     if (mentors.length > 0) {
       blocks.push(`
         <div>
@@ -4508,19 +4522,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
       `);
     }
 
-    // 4. How to write the first message. This is the step beginners get stuck on.
-    blocks.push(`
-      <div class="mentor-etiquette">
-        <p class="mentor-ask-kicker">Before you write</p>
-        <ul>
-          <li>Say what you have already read or tried, with a link. It is the difference between a reply and silence.</li>
-          <li>Ask one specific question about the project, not for a task or for your chances.</li>
-          <li>Use the public channel. Private messages to mentors are how first contacts get ignored.</li>
-          <li>Give it a few days. Mentors are volunteers, and the channel history probably already answers it.</li>
-        </ul>
-        ${ideasPage ? `<p class="mentor-etiquette-foot">Read the <a href="${escapeHtml(ideasPage)}" target="_blank" rel="noopener noreferrer">project ideas</a> first, then ask about a specific one.</p>` : ''}
-      </div>
-    `);
+    blocks.push(buildEtiquetteBlock(sanitizeHrefUrl(org.ideas)));
 
     if (entry && entry.tip) {
       blocks.push(`

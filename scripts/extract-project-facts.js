@@ -150,14 +150,15 @@ function factsFromPage(html, source) {
   };
 }
 
-/** Reads the org list from the canonical data file. */
+/**
+ * Reads the org list from the canonical data file.
+ *
+ * org.js exports itself for Node, so this is a plain require: no eval, no
+ * dynamic code execution, and no second parser to keep in step.
+ */
 function loadOrgs() {
-  const src = fs.readFileSync(ORGS_PATH, 'utf-8');
-  const body = src.slice(src.indexOf('['), src.lastIndexOf(']') + 1);
-  // The file is a plain array literal of simple values, so evaluating it is safe
-  // here and avoids adding a parser dependency.
-  // eslint-disable-next-line no-new-func
-  return new Function(`return ${body};`)();
+  // eslint-disable-next-line global-require
+  return require(ORGS_PATH);
 }
 
 async function fetchPage(url) {
