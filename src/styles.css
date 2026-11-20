@@ -509,7 +509,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',sans-
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--orange) 0%, var(--blue) 50%, var(--purple) 100%);
+  background: var(--orange);
   z-index: 1;
 }
 
@@ -1347,3 +1347,9 @@ span.eyebrow{
   color:var(--rd-faint);white-space:nowrap;
 }
 html.dark .app-version{color:#8b7d6f}
+
+/* ---------- footer on small screens ---------- */
+@media (max-width:640px){
+  .premium-footer{padding-top:26px}
+  .premium-footer .grid{gap:26px}
+}

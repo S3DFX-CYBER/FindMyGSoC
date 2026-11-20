@@ -2244,6 +2244,38 @@ html.dark .an-note,html.dark .an-panel p{color:#a89a8b}
 }
 @media (min-width:640px){#compare .grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 #compare .grid:not(:empty) ~ .compare-empty{display:none}
+
+/* ---------- mobile: app bar, floating controls, page surface ---------- */
+/* The body carries Tailwind's bg-background utility, which outranks the plain
+   element rule, so the page stayed white in dark mode while the text went light. */
+body{background:var(--rd-bg);color:var(--rd-ink)}
+
+@media (max-width:640px){
+  .appbar-in{padding:8px 12px;gap:8px}
+  .appbar .icon-btn{width:32px;height:32px;border-radius:9px}
+  .appbar .icon-btn .material-symbols-outlined{font-size:18px}
+  .appbar .brand{font-size:15px;gap:6px}
+  .appbar .brand .mark{width:24px;height:24px}
+  .appbar .right{gap:6px}
+  /* the bar cannot hold seven controls at this width */
+  #analyticsBtn,#helpBtn,.appbar .right > a[href*="github"]{display:none}
+
+  /* these float over the content they are meant to navigate */
+  .section-scroll-indicator,.section-scroll-btn{display:none}
+
+  .app-head{padding-top:18px}
+  .app-head h1{font-size:clamp(28px,8vw,34px)}
+  .app-head .headstats{gap:8px}
+  .app-head .hs{padding:8px 10px;min-width:0;flex:1 1 30%}
+}
+@media (max-width:420px){
+  .app-head .hs .hs-label{font-size:9px}
+}
+@media (max-width:360px){
+  /* at this width the brand and two controls are all that fit */
+  .appbar .right > a[href="/"]{display:none}
+  .appbar .brand{font-size:14px}
+}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
@@ -2252,7 +2284,7 @@ html.dark .an-note,html.dark .an-panel p{color:#a89a8b}
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="FindMyGSoC" />
 </head>
-<body class="bg-background text-on-surface font-body antialiased">
+<body class="font-body antialiased">
 
 <!-- Boot overlay + global error surface. Placed before the app scripts so they
      can still be caught if one of them throws while booting. -->
