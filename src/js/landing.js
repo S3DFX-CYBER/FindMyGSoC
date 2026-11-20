@@ -694,6 +694,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Live org statistics
   renderLiveStats();
 
-  // One real good first issue in the hero card
-  renderLiveGfi();
+  // One real good first issue in the hero card. If the fetch fails the card
+  // keeps the static example it shipped with, so the rejection is swallowed on
+  // purpose rather than left unhandled.
+  renderLiveGfi().catch(() => {});
 });
