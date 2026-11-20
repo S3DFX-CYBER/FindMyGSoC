@@ -1,132 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Privacy Policy | FindMyGSoC</title>
-  <meta name="description" content="Privacy Policy for FindMyGSoC." />
+  <meta name="version" content="1.1.3" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy | FindMyGSoC</title>
+  <meta name="description"
+    content="What FindMyGSoC stores on your device, what leaves your browser, and how to clear it. No accounts, no cookies, no ad tracking." />
   <link rel="canonical" href="https://findmygsoc.vercel.app/privacy.html" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="src/styles.css" />
+  <link rel="icon" type="image/png" href="src/assets/icon-512.png" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="src/landing.css" />
 
   <script>
-    (function(){
+    // Honour the theme the app stored, on both the class and the attribute the
+    // stylesheets key on.
+    (function () {
       try {
         if (localStorage.getItem('theme') === 'dark') {
           document.documentElement.classList.add('dark');
+          document.documentElement.dataset.theme = 'dark';
         }
-      } catch(e) {}
-    })();
+      } catch (e) { /* storage blocked, stay light */ }
+    }());
   </script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            "primary": "#9d4300",
-            "primary-container": "#f97316",
-            "surface": "#f9f9f9",
-            "surface-container-low": "#f3f3f3",
-            "on-surface": "#1a1c1c",
-            "secondary": "#006c47",
-          },
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            headline: ['"Plus Jakarta Sans"', 'sans-serif'],
-            mono: ['"Fira Code"', 'monospace']
-          }
-        }
-      }
+
+  <style>
+    .doc { padding: clamp(36px, 6vw, 64px) 0 clamp(48px, 7vw, 80px); }
+    .doc-head { max-width: 62ch; margin-bottom: 34px; }
+    .doc-head h1 {
+      font-family: var(--f-display); font-weight: 400;
+      font-size: clamp(34px, 4.6vw, 52px); line-height: 1.04; letter-spacing: -.03em;
+      margin: 10px 0 12px;
     }
-  </script>
+    .doc-head p { color: var(--muted); font-size: 15px; line-height: 1.65; margin: 0; }
+    .doc-body { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: clamp(24px, 5vw, 56px); align-items: start; }
+    @media (max-width: 900px) { .doc-body { grid-template-columns: 1fr; } }
+
+    .doc section { margin-bottom: 34px; }
+    .doc h2 {
+      font-family: var(--f-display); font-weight: 400; font-size: 24px;
+      letter-spacing: -.02em; margin: 0 0 10px;
+    }
+    .doc h3 { font-size: 15px; font-weight: 600; margin: 20px 0 8px; }
+    .doc p, .doc li { font-size: 14.5px; line-height: 1.72; color: var(--ink-2); }
+    .doc p { margin: 0 0 12px; }
+    .doc ul { margin: 0 0 12px; padding-left: 20px; }
+    .doc li { margin-bottom: 6px; }
+    .doc a { color: var(--blue); text-decoration: underline; text-underline-offset: 2px; }
+    .doc code {
+      font-family: var(--f-mono); font-size: 12px; padding: 1px 6px;
+      border-radius: 5px; background: var(--surface-2); color: var(--ink);
+    }
+
+    .tldr {
+      border: 1.5px solid var(--line); border-left: 4px solid var(--accent);
+      border-radius: var(--r); background: var(--card); padding: 20px 22px; margin-bottom: 34px;
+    }
+    .tldr p:last-child { margin-bottom: 0; }
+
+    .doc table { width: 100%; border-collapse: collapse; margin: 0 0 14px; font-size: 13.5px; }
+    .doc th, .doc td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+    .doc th { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+    .doc td code { white-space: nowrap; }
+
+    .toc {
+      position: sticky; top: 92px; border: 1px solid var(--line-soft); border-radius: var(--r);
+      background: var(--card); padding: 16px 18px;
+    }
+    .toc h2 { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin: 0 0 10px; }
+    .toc ol { margin: 0; padding-left: 16px; }
+    .toc li { font-size: 13px; margin-bottom: 6px; }
+    .toc a { color: var(--muted); text-decoration: none; }
+    .toc a:hover { color: var(--accent); }
+    @media (max-width: 900px) { .toc { position: static; } }
+
+    .updated {
+      font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--faint);
+    }
+  </style>
 </head>
-<body class="privacy-page bg-white text-zinc-900 antialiased selection:bg-orange-200 selection:text-orange-900 transition-colors duration-300">
 
-<header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-zinc-200">
-  <div class="flex items-center justify-between px-4 sm:px-6 py-3 max-w-7xl mx-auto w-full">
-    <div class="flex items-center gap-3">
-      <!-- Mobile menu button -->
-      <button id="mobileMenuBtn" class="inline-flex lg:hidden items-center justify-center p-2 hover:bg-zinc-100/50 rounded-lg transition-colors" aria-label="Open menu" aria-expanded="false">
-        <span class="material-symbols-outlined text-zinc-600">menu</span>
-      </button>
-      <a href="index.html" class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center flex-shrink-0">
-          <span class="text-white font-bold text-sm font-headline">G</span>
-        </div>
-        <span class="text-base sm:text-lg font-extrabold tracking-tight text-zinc-900 font-headline whitespace-nowrap">
-          <span class="hidden sm:inline">GSoC 2026 </span><span class="text-primary font-headline italic">Org Finder</span>
-        </span>
-      </a>
+<body>
+
+  <div class="topbar">
+    <div class="in">
+      <span class="live"><i></i>Privacy</span>
+      <span>FindMyGSoC keeps your data on your device</span>
+      <span class="sp"></span>
+      <a href="/" style="font-family:var(--f-mono);font-size:10.5px;color:var(--muted)">Back to the site</a>
     </div>
-    <nav class="hidden lg:flex items-center gap-6 text-sm font-medium" aria-label="Main navigation">
-      <a href="index.html#orgs" class="text-zinc-600 hover:text-zinc-900 transition-colors">Organizations</a>
-      <a href="index.html#guide" class="text-zinc-600 hover:text-zinc-900 transition-colors">Guide</a>
-      <a href="index.html#issues" class="text-zinc-600 hover:text-zinc-900 transition-colors">Issues</a>
-    </nav>
-    <a href="https://github.com/S3DFX-CYBER/GSoC-Org-Finder-" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors">
-      <span class="material-symbols-outlined text-sm">star</span> Star & Contribute
-    </a>
   </div>
 
-  <!-- Mobile Menu -->
-  <div id="mobileMenu" class="hidden lg:hidden border-t border-zinc-200 bg-white">
-    <nav class="flex flex-col px-4 py-3 gap-1" aria-label="Mobile navigation">
-      <a href="index.html#orgs" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-700 hover:bg-zinc-100 text-sm font-medium transition-colors">
-        <span class="material-symbols-outlined text-base">business</span> Organizations
+  <header class="nav">
+    <div class="nav-in">
+      <a class="brand" href="/">
+        <img class="mark" src="src/assets/redesign/logo-mark.png" alt="" width="30" height="30" />
+        FindMyGSoC
       </a>
-      <a href="index.html#guide" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-700 hover:bg-zinc-100 text-sm font-medium transition-colors">
-        <span class="material-symbols-outlined text-base">menu_book</span> Guide
-      </a>
-      <a href="index.html#issues" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-700 hover:bg-zinc-100 text-sm font-medium transition-colors">
-        <span class="material-symbols-outlined text-base">bug_report</span> Issues
-      </a>
-      <a href="https://github.com/S3DFX-CYBER/GSoC-Org-Finder-" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 mt-2 px-4 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-700 transition-colors w-fit">
-        <span class="material-symbols-outlined text-sm">star</span> Star & Contribute
-      </a>
-    </nav>
-  </div>
-</header>
+      <div class="nav-actions">
+        <a class="btn ghost sm" href="/">Home</a>
+        <a class="btn primary sm" href="/app">Open the app</a>
+      </div>
+    </div>
+  </header>
 
-<script>
-  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const mobileMenu = document.getElementById('mobileMenu');
-  mobileMenuBtn?.addEventListener('click', () => {
-    const isOpen = !mobileMenu.classList.contains('hidden');
-    mobileMenu.classList.toggle('hidden');
-    mobileMenuBtn.setAttribute('aria-expanded', String(!isOpen));
-    mobileMenuBtn.querySelector('.material-symbols-outlined').textContent = isOpen ? 'menu' : 'close';
-  });
-</script>
+  <main class="wrap doc">
+    <div class="doc-head">
+      <span class="eyebrow">Privacy</span>
+      <h1>Your data stays on your device.</h1>
+      <p>
+        FindMyGSoC has no accounts, no cookies and no advertising. Everything you
+        save lives in your own browser, and the only thing that leaves it is the
+        GitHub username you choose to analyse.
+      </p>
+      <p class="updated" style="margin-top:14px">Last updated 20 November 2026</p>
+    </div>
 
-<main class="pt-32 pb-20 px-6 max-w-4xl mx-auto">
-  <h1 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mb-8">Privacy Policy</h1>
-  <div class="prose prose-zinc prose-orange max-w-none">
-    <p class="text-zinc-600 mb-6">Last updated: May 14, 2026</p>
-    
-    <h2 class="text-2xl font-bold mt-10 mb-4">1. Information We Collect</h2>
-    <p class="text-zinc-600 mb-4">FindMyGSoC is a static site built for the open-source community. We do not directly collect, store, or process any personal data. All search and filtering operations occur locally in your browser. However, please note that we use third-party Content Delivery Networks (CDNs) for assets like fonts and styling, which may receive standard network metadata (such as your IP address) when you load the page.</p>
-    
-    <h2 class="text-2xl font-bold mt-10 mb-4">2. Local Storage</h2>
-    <p class="text-zinc-600 mb-4">We use your browser's local storage solely to save your organization bookmarks (Watchlist) and your theme preference (Light/Dark mode). This data never leaves your device.</p>
-    
-    <h2 class="text-2xl font-bold mt-10 mb-4">3. External Links</h2>
-    <p class="text-zinc-600 mb-4">Our site contains links to external websites (e.g., GitHub, GSoC official site, organization pages). We are not responsible for the privacy practices of these external sites.</p>
-    
-    <h2 class="text-2xl font-bold mt-10 mb-4">4. Open Source and Transparency</h2>
-    <p class="text-zinc-600 mb-4">The entire source code of this project is public. You can review it on <a href="https://github.com/S3DFX-CYBER/GSoC-Org-Finder-" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">GitHub</a> to verify how it operates.</p>
-    
-    <h2 class="text-2xl font-bold mt-10 mb-4">5. Changes to This Policy</h2>
-    <p class="text-zinc-600 mb-4">We may update this Privacy Policy from time to time. Any changes will be reflected on this page.</p>
-  </div>
-</main>
+    <div class="doc-body">
+      <div>
 
-<!-- Footer Placeholder -->
-<div id="footer-placeholder"></div>
-<script src="agent/scripts/orgs.js"></script>
-<script src="src/js/footer.js"></script>
+        <div class="tldr">
+          <p><strong>The short version.</strong> No sign-up, no tracking cookies, no
+            profile on a server. Your watchlist, drafts, badges and settings are stored
+            in <code>localStorage</code> in your browser and never uploaded. Clearing
+            your browser data clears all of it.</p>
+        </div>
+
+        <section id="stored">
+          <h2>What is stored on your device</h2>
+          <p>Everything below lives in your browser's <code>localStorage</code> for this
+            site. None of it is transmitted to us.</p>
+          <table>
+            <thead>
+              <tr><th>Key</th><th>What it holds</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>theme</code></td><td>Whether you chose the light or dark theme.</td></tr>
+              <tr><td><code>bookmarks</code></td><td>The organisations on your watchlist.</td></tr>
+              <tr><td><code>recentlyViewedOrgs</code></td><td>The organisations you opened most recently.</td></tr>
+              <tr><td><code>gssoc_badges</code></td><td>Progress towards the local badge system.</td></tr>
+              <tr><td><code>gaf_proposal_autosave</code></td><td>Whether proposal autosave is switched on, stored as the string <code>true</code> or <code>false</code>.</td></tr>
+              <tr><td><code>gaf_proposal_&lt;org&gt;</code></td><td>The draft of the proposal you are writing for that organisation.</td></tr>
+              <tr><td><code>gaf_user_cache</code></td><td>The last GitHub profile analysis, so you do not refetch it.</td></tr>
+              <tr><td><code>gaf_*</code></td><td>Local counters for the analytics panel: visits, searches, filters, views.</td></tr>
+            </tbody>
+          </table>
+          <p>Proposal drafts are stored per organisation, under their own key. They are
+            plain text in your browser, so treat a shared device the way you would treat
+            a shared notebook.</p>
+        </section>
+
+        <section id="leaves">
+          <h2>What leaves your browser</h2>
+          <p>Three things, and only when you ask for them:</p>
+          <ul>
+            <li><strong>The GitHub username you type.</strong> It is sent to our edge
+              function, which asks GitHub for your public profile and repository
+              languages to rank organisations. Nothing else about you is sent, and the
+              result is cached locally.</li>
+            <li><strong>Requests for organisation data.</strong> Repository statistics and
+              good first issues come from our edge functions, which call the public GitHub
+              API. These requests carry no identifier for you.</li>
+            <li><strong>Page performance data.</strong> On the deployed site we use Vercel
+              Speed Insights, which records aggregate web vitals. It does not set
+              advertising cookies and does not build a profile of you. It is disabled
+              when you run the site locally.</li>
+          </ul>
+          <p>Your resume text is processed in your browser and is never uploaded. If you
+            paste it into the recommender, it stays in the page.</p>
+        </section>
+
+        <section id="cookies">
+          <h2>Cookies and tracking</h2>
+          <p>This site sets no cookies. There is no advertising network, no social
+            tracker, no session recording and no fingerprinting script. The only
+            third-party requests are the font files from Google Fonts, the three
+            libraries loaded from jsDelivr (Markdown rendering, HTML sanitising and PDF
+            export), and the Tailwind runtime the app page uses for its utility
+            classes. If jsDelivr fails to serve one of those libraries, the page falls
+            back to unpkg.com for the same file, so that host may appear in your network
+            log instead.</p>
+        </section>
+
+        <section id="third-parties">
+          <h2>Who else is involved</h2>
+          <ul>
+            <li><strong>GitHub</strong> serves the public repository data and logos. Their
+              privacy statement applies to those requests.</li>
+            <li><strong>Vercel</strong> hosts the site and runs the edge functions. Server
+              logs are kept for operational purposes, as with any host.</li>
+            <li><strong>Google Fonts</strong> serves the typefaces. Your browser requests
+              them directly.</li>
+          </ul>
+        </section>
+
+        <section id="clear">
+          <h2>Clearing your data</h2>
+          <p>You are in control of all of it:</p>
+          <ul>
+            <li>Remove individual organisations from the watchlist with the star on any card.</li>
+            <li>Clear everything at once from your browser's site-data settings for this
+              domain. That removes bookmarks, drafts, badges, counters and the theme.</li>
+            <li>Nothing needs to be deleted on our side, because nothing was sent.</li>
+          </ul>
+        </section>
+
+        <section id="children">
+          <h2>Age</h2>
+          <p>FindMyGSoC is a tool for people preparing for Google Summer of Code, and is
+            intended for students old enough to take part in the programme. It collects no
+            personal information, so there is nothing to delete on request.</p>
+        </section>
+
+        <section id="changes">
+          <h2>Changes to this page</h2>
+          <p>If what the site stores changes, this page changes with it in the same pull
+            request. The date at the top is the date of the last change, and the history
+            is public in the repository.</p>
+        </section>
+
+        <section id="contact">
+          <h2>Contact</h2>
+          <p>Questions about privacy, or something here that does not match what you
+            observed? Open an issue on
+            <a href="https://github.com/S3DFX-CYBER/FindMyGSoC/issues" target="_blank"
+              rel="noopener noreferrer">GitHub</a>, or report a vulnerability privately
+            through <a href="https://github.com/S3DFX-CYBER/FindMyGSoC/security/policy"
+              target="_blank" rel="noopener noreferrer">the security policy</a>.</p>
+        </section>
+
+      </div>
+
+      <aside class="toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#stored">What is stored</a></li>
+          <li><a href="#leaves">What leaves your browser</a></li>
+          <li><a href="#cookies">Cookies and tracking</a></li>
+          <li><a href="#third-parties">Who else is involved</a></li>
+          <li><a href="#clear">Clearing your data</a></li>
+          <li><a href="#children">Age</a></li>
+          <li><a href="#changes">Changes</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ol>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div class="f-bot" style="border:0">
+      <span>FindMyGSoC, an open source project. <span class="ver">v1.1.3</span></span>
+      <span>
+        <a href="/">Home</a> ·
+        <a href="/app">App</a> ·
+        <a href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank" rel="noopener noreferrer">GitHub</a> ·
+        <a href="https://github.com/sponsors/S3DFX-CYBER" target="_blank" rel="noopener noreferrer">Sponsor</a>
+      </span>
+    </div>
+  </footer>
 
 </body>
+
 </html>

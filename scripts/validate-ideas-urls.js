@@ -7,10 +7,10 @@
  * - URLs use http or https protocols only
  * - No malicious or suspicious URLs are present
  * 
- * Usage: node agent/scripts/validate-ideas-urls.js
+ * Usage: node scripts/validate-ideas-urls.js
  */
 
-const ORGS = require('../../src/js/org.js');
+const ORGS = require('../src/js/org.js');
 
 console.log('Validating Ideas URLs for GSoC Organizations\n');
 console.log('═'.repeat(60));

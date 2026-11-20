@@ -4,7 +4,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const ROOT_DIR = path.resolve(__dirname, '../..');
+const ROOT_DIR = path.resolve(__dirname, '..');
 
 const errors = [];
 

@@ -60,7 +60,7 @@
         },
         {
             "files": [
-                "agent/scripts/validate-ideas-urls.js"
+                "scripts/validate-ideas-urls.js"
             ],
             "env": {
                 "node": true,

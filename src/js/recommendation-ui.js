@@ -1,6 +1,6 @@
 // src/js/recommendation-ui.js
 
-/* global analyzeGitHubUser, extractSkills, getRecommendations, escapeHtml, openModal, toggleCompare, toggleBookmark */
+/* global analyzeGitHubUser, extractSkills, getRecommendations, escapeHtml, openModal, toggleCompare, toggleBookmark, html2pdf */
 
 let currentAbortController = null;
 let currentRequestId = 0;
@@ -201,6 +201,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Export the current recommendations as a PDF
+  const exportPdfBtn = document.getElementById('aiExportPdfBtn');
+  if (exportPdfBtn) {
+    exportPdfBtn.addEventListener('click', () => {
+      const target = document.getElementById('aiResultsContainer');
+      if (!target || !target.textContent.trim()) { return; }
+      if (typeof html2pdf === 'undefined') {
+        // Do not route this through showError: that clears the results the user
+        // was trying to export. Warn next to the button instead.
+        exportPdfBtn.textContent = 'PDF export unavailable, try again';
+        setTimeout(() => { exportPdfBtn.textContent = 'Download as PDF'; }, 4000);
+        return;
+      }
+      const stamp = new Date().toISOString().slice(0, 10);
+      html2pdf().set({
+        margin: 10,
+        filename: `findmygsoc-recommendations-${stamp}.pdf`,
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 2, backgroundColor: '#ffffff', useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      }).from(target).save();
+    });
+  }
+
   // Handle file upload
   if (fileUpload) {
     fileUpload.addEventListener('change', (e) => {
@@ -225,10 +249,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+  /** Shows or hides the PDF export control alongside the results. */
+  function setExportVisible(visible) {
+    const btn = document.getElementById('aiExportPdfBtn');
+    if (btn) { btn.classList.toggle('hidden', !visible); }
+  }
+
   function setAnalysisStateUI(isActive) {
     if (isActive) {
       errorState.classList.add('hidden');
       resultsContainer.innerHTML = '';
+      setExportVisible(false);
       loadingState.classList.remove('hidden');
       getRecsBtn.disabled = true;
       getRecsBtn.innerHTML = '<span class="material-symbols-outlined pulse-dot">hourglass_empty</span> Analyzing...';
@@ -278,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     errorMsg.textContent = msg;
     errorState.classList.remove('hidden');
     resultsContainer.innerHTML = '';
+    setExportVisible(false);
   }
 
 
@@ -372,6 +404,8 @@ document.addEventListener('DOMContentLoaded', () => {
          </div>`
       : '';
 
-    resultsContainer.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${html}</div>${showMoreHtml}`;
+    resultsContainer.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-6">${html}</div>${showMoreHtml}`;
+
+    setExportVisible(true);
   }
 });
