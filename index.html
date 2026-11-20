@@ -4747,7 +4747,9 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     // Keep the recommender's view of each org in step with the facts.
     ORGS.forEach((o) => { o.projectSizes = projectSizes(o); });
 
-    renderOrgs();
+    // applyFilters() is what populates the grid; renderOrgs() on its own would
+    // paint an empty list.
+    applyFilters();
     const openModalEl = document.getElementById('orgModal');
     if (openModalEl && openModalEl.classList.contains('open')) {
       const orgName = document.querySelector('#mHeader h2')?.textContent;
