@@ -73,6 +73,41 @@ Two places this matters and has been got wrong before:
 A link that fails validation should render as plain text or not at all. It must
 never become an `href`.
 
+## Project facts, and why there are no difficulty labels
+
+The app used to show a `codebase` label (beginner, intermediate, advanced) and a
+`competition` label (chill, moderate, hot) per organisation. Both were guesses
+about an organisation, and the first one was wrong in principle: difficulty in
+GSoC is a property of the **project**, not of the org. Google's programme has
+three project sizes (90, 175 and 350 hours), and any org can host any of them. A
+large, complex org routinely lists a 90 hour project, which is exactly what the
+small tier is for.
+
+So the labels are gone from the UI, and what replaces them is read from the
+org's own ideas page:
+
+```
+scripts/extract-project-facts.js   (weekly, in CI)
+        │  reads each org's ideas page
+        ▼
+data/project-facts.json            { org: { sizes: [90,175], projects: [...] } }
+        │
+        ▼
+index.html  →  card badge, detail panel, compare, filter, sort, analytics
+```
+
+Rules the extractor follows, and the UI inherits:
+
+- A size is recorded only when the page states it, in hours or as
+  small/medium/large. Nothing is inferred from the org's size or reputation.
+- An org whose page states nothing is **absent** from the dataset, and the UI
+  renders no size for it rather than a placeholder guess.
+- The filter, the sort and the recommender all treat "no stated size" as
+  unknown, and unknowns sort last.
+
+The extractor runs in CI because it makes ~184 outbound requests to arbitrary
+org websites; the sandbox and the browser cannot do that.
+
 ## The data pipeline
 
 ```

@@ -1,0 +1,77 @@
+name: 📐 Refresh Project Facts
+
+# Reads each organisation's GSoC ideas page and records what it actually states
+# about its projects: sizes in hours (90, 175, 350) and any stated difficulty.
+# This replaces the old habit of labelling an organisation "beginner" or
+# "advanced", which is a property of a project, not of an org.
+
+on:
+  schedule:
+    # Weekly, Monday 04:00 UTC (09:30 IST). Ideas pages change far less often
+    # than the issue list, and this job makes ~184 outbound requests.
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Smoke test: check only the first N organisations and publish nothing."
+        required: false
+        default: ""
+
+concurrency:
+  group: refresh-project-facts
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a #v4.2.0
+        with:
+          node-version: "24"
+
+      - name: Extract project facts
+        run: |
+          if [ -n "${{ inputs.limit }}" ]; then
+            node scripts/extract-project-facts.js --limit "${{ inputs.limit }}"
+          else
+            node scripts/extract-project-facts.js
+          fi
+
+      - name: Validate the result
+        run: npm run validate:data
+
+      - name: Commit and open a pull request
+        if: github.ref == 'refs/heads/main' && inputs.limit == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- data/project-facts.json; then
+            echo "No change in the project facts."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          BRANCH="chore/refresh-project-facts"
+          git checkout -B "$BRANCH"
+          git add data/project-facts.json
+          git commit -s -m "chore(data): refresh project facts for $(date -u +%Y-%m-%d)"
+          git push --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/${BRANCH}"
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore(data): refresh project facts" \
+            --body "Automated refresh of \`data/project-facts.json\`.
+
+          Project sizes and stated difficulty are read from each organisation's own GSoC ideas page. Nothing is inferred: an org whose page does not state a size is recorded without one, and an org with nothing readable is left out." \
+            || echo "A pull request for this branch already exists."

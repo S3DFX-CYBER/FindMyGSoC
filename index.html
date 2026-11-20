@@ -28,7 +28,7 @@
       "@type": "WebApplication",
       "name": "FindMyGSoC, GSoC 2026 Org Finder",
       "url": "https://findmygsoc.vercel.app/",
-      "description": "Find your perfect GSoC 2026 organization filtered by tech stack, domain, and competition level.",
+      "description": "Find your perfect GSoC 2026 organization filtered by tech stack, domain, project size.",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Any",
       "offers": {
@@ -2276,6 +2276,34 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
   .appbar .right > a[href="/"]{display:none}
   .appbar .brand{font-size:14px}
 }
+
+/* ---------- how to reach the mentors ---------- */
+.mentor-ask{
+  border:1.5px solid var(--rd-line);border-left:4px solid var(--rd-accent);
+  border-radius:var(--rd-r);background:var(--rd-card);padding:16px 18px;
+}
+.mentor-ask-missing{border-left-color:#b98a5a}
+.mentor-ask-kicker{
+  font-family:var(--rd-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--rd-faint);margin:0 0 6px;
+}
+.mentor-ask-line{margin:0;font-size:14px;line-height:1.6;color:var(--rd-ink)}
+.mentor-ask-line a{color:var(--rd-accent);text-decoration:underline;text-underline-offset:2px}
+.mentor-etiquette{
+  border:1px dashed var(--rd-line);border-radius:var(--rd-r);padding:16px 18px;
+}
+.mentor-etiquette ul{margin:8px 0 0;padding-left:18px}
+.mentor-etiquette li{font-size:13.5px;line-height:1.6;color:var(--rd-ink-2);margin-bottom:6px}
+.mentor-etiquette-foot{margin:10px 0 0;font-size:12.5px;color:var(--rd-faint)}
+.mentor-etiquette-foot a{color:var(--rd-accent);text-decoration:underline;text-underline-offset:2px}
+
+/* ---------- sourced project size badge ---------- */
+.project-size-badge{
+  font-family:var(--rd-mono);font-size:9.5px;font-weight:500;letter-spacing:.06em;
+  padding:2px 7px;border-radius:99px;white-space:nowrap;
+  background:var(--rd-surface-2);color:var(--rd-ink-2);border:1px solid var(--rd-line);
+}
+.project-size-badge.hidden{display:none}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
@@ -2474,7 +2502,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     <h1>Find your perfect GSoC org.</h1>
     <p class="lede">
       184 organisations from the 2026 cycle, indexed with their stacks, mentors and issue queues.
-      Filter by language, domain, competition and live GitHub activity, then shortlist and draft.
+      Filter by language, domain, project size and live GitHub activity, then shortlist and draft.
     </p>
 
     <!-- Search Bar -->
@@ -2545,7 +2573,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     <div>
       <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Find projects that fit you</span>
       <h2 class="text-4xl md:text-5xl font-extrabold font-headline tracking-tighter mt-2 sec-title">Organizations</h2>
-      <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Browse and filter GSoC 2026 organizations by tech stack, difficulty level, and interests to discover projects that match your skills and goals.</p>
+      <p class="text-zinc-600 dark:text-zinc-400 mt-4 max-w-2xl">Browse and filter GSoC 2026 organizations by tech stack, project size and interests to find work that fits the time you actually have.</p>
     </div>
     <figure class="sidefig">
       <img src="src/assets/redesign/orgs.webp" alt="Attendees at round tables facing the Alumni Camp stage and its two session screens" loading="lazy" />
@@ -2556,8 +2584,8 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     <div class="flex flex-wrap gap-2 mb-4">
       <button id="chip-veteran" data-tooltip="Organizations that participated in GSoC for many years" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">military_tech</span> Veterans Only</button>
       <button id="chip-newcomer" data-tooltip="Good for first-time contributors and beginners" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">fiber_new</span> Newcomers</button>
-      <button id="chip-hot" data-tooltip="Highly competitive organizations with many applicants" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">local_fire_department</span> High Competition</button>
-      <button id="chip-chill" data-tooltip="Organizations with relatively fewer applicants" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">sentiment_satisfied</span> Low Competition</button>
+      <button id="chip-large-projects" data-tooltip="Organizations whose ideas page lists a 350 hour project" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">timer</span> 350h projects</button>
+      <button id="chip-small-projects" data-tooltip="Organizations whose ideas page lists a 90 hour project, the smallest GSoC size" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">timer</span> 90h projects</button>
       <button id="chip-active" data-tooltip="Organizations with recent GitHub activity" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm">bolt</span> Actively Maintained</button>
       <button id="chip-bookmarked" data-tooltip="Organizations you saved for later" class="filter-chip px-4 py-2 rounded-full bg-surface-container-highest text-xs font-medium hover:bg-primary hover:text-white transition-colors flex items-center gap-1"><span class="material-symbols-outlined text-sm icon-fill" style="color:#f59e0b">star</span> Bookmarked</button>
     </div>
@@ -2679,17 +2707,17 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
         <option value="media">Media</option>
         <option value="other">Other</option>
       </select>
-      <select id="complexityFilter" aria-label="Filter by complexity" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
-        <option value="all">Complexity: All</option>
-        <option value="beginner">Beginner</option>
-        <option value="intermediate">Intermediate</option>
-        <option value="advanced">Advanced</option>
+      <select id="complexityFilter" aria-label="Filter by project size" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
+        <option value="all">Project size: Any</option>
+        <option value="90">Small (90 hours)</option>
+        <option value="175">Medium (175 hours)</option>
+        <option value="350">Large (350 hours)</option>
       </select>
       <select id="sortSelect" aria-label="Sort organizations" class="flex-1 md:flex-none bg-surface-container-low border-none rounded-xl text-xs font-bold focus:ring-2 focus:ring-zinc-500 focus:outline-none cursor-pointer text-zinc-600 px-2 py-2">
         <option value="alpha">Sort: A-Z</option>
         <option value="years-desc">Years (High-Low)</option>
         <option value="years-asc">Years (Low-High)</option>
-        <option value="comp-low">Competition (Chill First)</option>
+        <option value="size-asc">Smallest project first</option>
         <option value="stars">GitHub Stars</option>
         <option value="gfi">Good First Issues</option>
       </select>
@@ -3452,7 +3480,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     <div>
       <span class="font-label text-xs font-bold uppercase tracking-[0.2em] text-primary eyebrow">Decision Tool</span>
       <h2 class="text-4xl font-extrabold font-headline tracking-tighter mt-2 mb-6 sec-title">Compare Organizations</h2>
-      <p class="text-zinc-600 leading-relaxed mb-8">Select up to 3 orgs to compare side-by-side. See history, mentor count, tech stack, competition level, and active GFIs at a glance.</p>
+      <p class="text-zinc-600 leading-relaxed mb-8">Select up to 3 orgs to compare side-by-side. See history, mentor contacts, tech stack, published project sizes and open good first issues at a glance.</p>
       <button onclick="openCompareModal()" class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-xl hover:scale-95 transition-all shadow-lg">
         <span class="material-symbols-outlined">compare</span> Open Comparison Tool
       </button>
@@ -3932,6 +3960,11 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
   let filteredOrgs = [...ORGS];
   let MENTOR_DATA = {};
   let mentorDataState = 'idle';
+
+  // Project-level facts, read from each org's own ideas page by
+  // scripts/extract-project-facts.js. Empty until the fetch lands, and empty
+  // again if the dataset has nothing for an org. Never guessed in the UI.
+  let PROJECT_FACTS = {};
   let compareList = [];
   const bookmarkedSet = (() => {
     return new Set(parseStoredBookmarks());
@@ -3977,14 +4010,56 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
   const selectedLanguages = new Set();
   let matchAllLanguages = false;
   let activeChip = null; // tracks the active quick-filter chip key ('veterans' | 'newcomers' | 'low-competition' | 'high-competition' | 'bookmarked' | 'active' | null)
+  // Keyed lowercase on purpose: the dataset carries the same channel type in
+  // several casings (Matrix and matrix, IRC and irc), and a case-sensitive
+  // lookup silently fell back to the generic glyph for half of them.
   const CHANNEL_ICONS = {
-    Slack: 'chat',
-    Zulip: 'forum',
-    Discord: 'forum',
-    Matrix: 'link',
-    IRC: 'terminal',
-    'Mailing list': 'mail'
+    slack: 'chat',
+    discord: 'forum',
+    zulip: 'forum',
+    forum: 'forum',
+    discourse: 'forum',
+    'discourse forum': 'forum',
+    matrix: 'link',
+    irc: 'terminal',
+    gitter: 'forum',
+    'github discussions': 'forum',
+    github: 'code',
+    telegram: 'chat',
+    email: 'mail',
+    'mailing list': 'mail',
+    'google groups': 'mail',
+    'google-groups': 'mail',
+    'stack overflow': 'help',
+    website: 'language',
+    blog: 'article',
+    x: 'tag',
+    chat: 'chat'
   };
+
+  /** Canonical channel label: trims, collapses spacing, fixes the common casings. */
+  function normaliseChannelType(type) {
+    const raw = String(type || '').trim();
+    if (!raw) return 'Chat';
+    const key = raw.toLowerCase().replace(/\s+/g, ' ');
+    const display = {
+      irc: 'IRC',
+      'github discussions': 'GitHub Discussions',
+      'github': 'GitHub',
+      'google-groups': 'Google Groups',
+      'google groups': 'Google Groups',
+      'stack overflow': 'Stack Overflow',
+      'x': 'X',
+      'discourse forum': 'Discourse',
+      'mailing list': 'Mailing list'
+    };
+    if (display[key]) return display[key];
+    return key.charAt(0).toUpperCase() + key.slice(1);
+  }
+
+  function channelIcon(type) {
+    return CHANNEL_ICONS[String(type || '').trim().toLowerCase()] || 'chat';
+  }
   const CONTACT_TIPS = {
     Slack: 'Join and say hi in the GSoC channel before DMing mentors.',
     Discord: 'Introduce yourself in the public channel before asking project-specific questions.',
@@ -4302,10 +4377,11 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
       .map((record) => {
         const safe = sanitizeHrefUrl(record.url);
         if (!safe) return '';
+        const label = normaliseChannelType(record.label || record.type);
         return `
           <a class="mentor-link-chip" href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer">
-            <span class="material-symbols-outlined">${CHANNEL_ICONS[record.type] || 'chat'}</span>
-            <span>${escapeHtml(record.label || record.type)}</span>
+            <span class="material-symbols-outlined">${channelIcon(record.type)}</span>
+            <span>${escapeHtml(label)}</span>
           </a>
         `;
       })
@@ -4322,7 +4398,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
           if (safe) {
             return `
               <a class="mentor-handle-chip" href="${escapeHtml(safe)}" target="_blank" rel="noopener noreferrer">
-                <span></span>
+                <span class="material-symbols-outlined">code</span>
                 <span>${escapeHtml(label)}</span>
               </a>
             `;
@@ -4331,7 +4407,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
 
         return `
           <span class="mentor-handle-chip">
-            <span></span>
+            <span class="material-symbols-outlined">person</span>
             <span>${escapeHtml(mentor.name || 'Mentor')}</span>
           </span>
         `;
@@ -4356,9 +4432,18 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     return `<div class="flex flex-wrap gap-2">${chips}</div>`;
   }
 
+  /** The organisation's own GSoC page, which lists its contact route. */
+  function gsocOrgPageUrl(org) {
+    if (!org || !org.slug) return null;
+    return sanitizeHrefUrl(gsocOrgYearUrl(org.slug, GSOC_CURRENT_YEAR));
+  }
+
   function renderMentorContactSection(org) {
     const container = document.getElementById('mMentorSection');
     if (!container) return;
+
+    const gsocPage = gsocOrgPageUrl(org);
+    const ideasPage = sanitizeHrefUrl(org.ideas);
 
     if (mentorDataState === 'idle' || mentorDataState === 'loading') {
       container.innerHTML = '<p class="text-sm text-zinc-500">Loading mentor contact data...</p>';
@@ -4366,41 +4451,79 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     }
 
     const entry = getMentorEntry(org.name);
-    if (!entry) {
-      container.innerHTML = '<p class="text-sm text-zinc-500">Mentor data unavailable right now.</p>';
-      return;
-    }
+    const channels = (entry && entry.status === 'ok' && entry.channels) ? entry.channels : [];
+    const lists = (entry && entry.status === 'ok' && entry.mailingLists) ? entry.mailingLists : [];
+    const mentors = (entry && entry.status === 'ok' && entry.mentors) ? entry.mentors : [];
+    const primary = channels[0] || lists[0] || null;
+    const primarySafe = primary ? sanitizeHrefUrl(primary.url) : null;
 
-    const sections = [];
-    if (entry.status === 'ok' && (entry.channels || []).length > 0) {
-      sections.push(`
-        <div>
-          <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">Channels</p>
-          <div class="flex flex-wrap gap-2">${buildChannelChips(entry.channels)}</div>
+    const blocks = [];
+
+    // 1. Where to ask, in one line, with the link that gets you there.
+    if (primarySafe) {
+      blocks.push(`
+        <div class="mentor-ask">
+          <p class="mentor-ask-kicker">Where to ask</p>
+          <p class="mentor-ask-line">
+            The mentors for ${escapeHtml(org.name)} answer in
+            <a href="${escapeHtml(primarySafe)}" target="_blank" rel="noopener noreferrer">${escapeHtml(normaliseChannelType(primary.label || primary.type))}</a>.
+            Ask there rather than in a private message, so the answer helps the next person too.
+          </p>
+        </div>
+      `);
+    } else {
+      // No channel parsed: say so plainly and point at the authoritative page
+      // instead of leaving a dead end.
+      blocks.push(`
+        <div class="mentor-ask mentor-ask-missing">
+          <p class="mentor-ask-kicker">Where to ask</p>
+          <p class="mentor-ask-line">
+            No public chat channel was found for this organisation.
+            ${gsocPage ? `Their <a href="${escapeHtml(gsocPage)}" target="_blank" rel="noopener noreferrer">GSoC organisation page</a> lists the contact route they want you to use, usually under the ideas list.` : 'Check the ideas list for the contact route they prefer.'}
+          </p>
         </div>
       `);
     }
 
-    if (entry.status === 'ok' && (entry.mentors || []).length > 0) {
-      sections.push(`
+    // 2. Every channel and list that was parsed.
+    if (channels.length > 0 || lists.length > 0) {
+      blocks.push(`
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">All channels</p>
+          <div class="flex flex-wrap gap-2">
+            ${buildChannelChips(channels)}
+            ${buildChannelChips(lists.map((list) => ({ ...list, type: 'Mailing list' })))}
+          </div>
+        </div>
+      `);
+    }
+
+    // 3. Named mentors, when the org publishes handles.
+    if (mentors.length > 0) {
+      blocks.push(`
         <div>
           <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">Mentors</p>
-          <div class="flex flex-wrap gap-2">${buildMentorChips(entry.mentors)}</div>
+          <div class="flex flex-wrap gap-2">${buildMentorChips(mentors)}</div>
         </div>
       `);
     }
 
-    if (entry.status === 'ok' && (entry.mailingLists || []).length > 0) {
-      sections.push(`
-        <div>
-          <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">Mailing Lists</p>
-          <div class="flex flex-wrap gap-2">${buildChannelChips(entry.mailingLists.map((list) => ({ ...list, type: 'Mailing list' })))}</div>
-        </div>
-      `);
-    }
+    // 4. How to write the first message. This is the step beginners get stuck on.
+    blocks.push(`
+      <div class="mentor-etiquette">
+        <p class="mentor-ask-kicker">Before you write</p>
+        <ul>
+          <li>Say what you have already read or tried, with a link. It is the difference between a reply and silence.</li>
+          <li>Ask one specific question about the project, not for a task or for your chances.</li>
+          <li>Use the public channel. Private messages to mentors are how first contacts get ignored.</li>
+          <li>Give it a few days. Mentors are volunteers, and the channel history probably already answers it.</li>
+        </ul>
+        ${ideasPage ? `<p class="mentor-etiquette-foot">Read the <a href="${escapeHtml(ideasPage)}" target="_blank" rel="noopener noreferrer">project ideas</a> first, then ask about a specific one.</p>` : ''}
+      </div>
+    `);
 
-    if (entry.tip) {
-      sections.push(`
+    if (entry && entry.tip) {
+      blocks.push(`
         <div class="rounded-2xl bg-orange-50 border border-orange-100 p-4">
           <p class="text-xs font-bold uppercase tracking-widest text-primary mb-1">Contact Tip</p>
           <p class="text-sm text-zinc-700">${escapeHtml(entry.tip)}</p>
@@ -4408,24 +4531,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
       `);
     }
 
-    if (sections.length === 0) {
-      let message = 'No contact info parsed yet.';
-      if (entry.status === 'fetch-failed') {
-        message = 'Mentor data unavailable right now.';
-      }
-      container.innerHTML = `
-        <div class="rounded-2xl border border-dashed border-zinc-200 p-5">
-          <p class="text-sm text-zinc-600">${message}</p>
-        </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = `
-      <div class="space-y-4">
-        ${sections.join('')}
-      </div>
-    `;
+    container.innerHTML = `<div class="space-y-4">${blocks.join('')}</div>`;
   }
 
   function getMentorFinderRecords() {
@@ -4610,6 +4716,44 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
       scrollDirectoryToTop('mentorGrid');
     });
     attachOrgCardListeners(grid);
+  }
+
+  /** Facts the org's ideas page actually stated: sizes in hours, project titles. */
+  function factsFor(org) {
+    return (org && PROJECT_FACTS[org.name]) || null;
+  }
+
+  function projectSizes(org) {
+    const facts = factsFor(org);
+    return facts && Array.isArray(facts.sizes) ? facts.sizes.filter((n) => Number.isFinite(n)) : [];
+  }
+
+  function sizesLabel(org) {
+    const sizes = projectSizes(org);
+    return sizes.length ? sizes.map((n) => `${n}h`).join(' + ') : '';
+  }
+
+  async function loadProjectFacts() {
+    try {
+      const res = await fetch(`/data/project-facts.json?v=${Date.now()}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      PROJECT_FACTS = (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};
+    } catch (_err) {
+      // Not fatal: the UI simply shows no project sizes.
+      PROJECT_FACTS = {};
+    }
+
+    // Keep the recommender's view of each org in step with the facts.
+    ORGS.forEach((o) => { o.projectSizes = projectSizes(o); });
+
+    renderOrgs();
+    const openModalEl = document.getElementById('orgModal');
+    if (openModalEl && openModalEl.classList.contains('open')) {
+      const orgName = document.querySelector('#mHeader h2')?.textContent;
+      const org = ORGS.find((item) => item.name === orgName);
+      if (org) { openModal(org); }
+    }
   }
 
   async function loadMentorData() {
@@ -4935,7 +5079,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
           </div>
           <div class="ocard-id">
             <h3>${escapeHtml(org.name)}</h3>
-            <div class="ocard-sub">${escapeHtml(org.cat.toUpperCase())}<span class="complexity-badge ${escapeHtml(org.codebase)}">${escapeHtml(org.codebase)}</span></div>
+            <div class="ocard-sub">${escapeHtml(org.cat.toUpperCase())}<span class="project-size-badge ${sizesLabel(org) ? '' : 'hidden'}">${escapeHtml(sizesLabel(org) || '')}</span></div>
           </div>
           <div class="ocard-badges">
             <span class="years-badge">${escapeHtml(String(org.years))}y veteran</span>
@@ -5067,7 +5211,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
           <img src="${escapeHtml(logoUrl)}" data-org-name="${escapeHtml(org.name)}" alt="${escapeHtml(org.name)} logo" class="w-full h-full object-contain" />
         </div>
         <p class="font-bold text-sm truncate">${escapeHtml(org.name)}</p>
-        <p class="text-[10px] text-zinc-500 font-label uppercase mt-1">${escapeHtml(String(org.years))}y · ${escapeHtml(org.competition)}</p>
+        <p class="text-[10px] text-zinc-500 font-label uppercase mt-1">${escapeHtml(String(org.years))}y${sizesLabel(org) ? ` · ${escapeHtml(sizesLabel(org))}` : ''}</p>
         <button data-compare-org="${escapeHtml(org.name)}" class="text-[9px] text-red-500 font-bold uppercase mt-2 hover:underline">Remove</button>
       `;
       container.appendChild(item);
@@ -5114,8 +5258,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       ['Category', org => org.cat],
       ['GSoC Years', org => org.years],
       ['First Year', org => org.firstYear],
-      ['Competition', org => org.competition],
-      ['Codebase', org => org.codebase],
+      ['Project size', org => sizesLabel(org) || 'not stated'],
       ['Tech Stack', org => org.tags.join(', ')],
       ['Best Fit', org => org.fit.join(', ')],
       ['Repository', org => org.github],
@@ -5212,7 +5355,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       item.innerHTML = `
         <div>
           <p style="font-weight:700;font-size:14px;color:#1a1c1c;">${escapeHtml(org.name)}</p>
-          <p style="font-size:11px;color:#8c7164;margin-top:2px;">${escapeHtml(org.cat)} · ${escapeHtml(String(org.years))}y · ${escapeHtml(org.competition)}</p>
+          <p style="font-size:11px;color:#8c7164;margin-top:2px;">${escapeHtml(org.cat)} · ${escapeHtml(String(org.years))}y${sizesLabel(org) ? ` · ${escapeHtml(sizesLabel(org))}` : ''}${escapeHtml(org.competition)}</p>
         </div>
         <button style="background:#9d4300;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;">Add</button>
       `;
@@ -5502,8 +5645,8 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
                 ${escapeHtml(String(org.years))}y
               </span>
               <span class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs">bar_chart</span>
-                ${escapeHtml(org.competition || '-')}
+                <span class="material-symbols-outlined text-xs">timer</span>
+                ${escapeHtml(sizesLabel(org) || 'size not stated')}
               </span>
             </div>
             <button data-bookmark-org="${escapeHtml(org.name)}"
@@ -5558,10 +5701,6 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       .map(([t]) => t);
 
     // ── 3. Competition blend ─────────────────────────────────────────────────
-    const compCount = { hot: 0, moderate: 0, chill: 0 };
-    bookmarks.forEach(o => { if (compCount[o.competition] !== undefined) compCount[o.competition]++; });
-    const highComp    = compCount.hot   >= bookmarks.length * 0.5;
-    const lowComp     = compCount.chill >= bookmarks.length * 0.5;
 
     // ── Domain-specific tool recommendations ─────────────────────────────────
     const DOMAIN_ADVICE = {
@@ -5579,12 +5718,19 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     };
     const advice = DOMAIN_ADVICE[topCat] || DOMAIN_ADVICE.other;
 
-    // ── Competition strategy ──────────────────────────────────────────────────
-    const strategyMsg = highComp
-      ? ' Your watchlist skews towards <strong>high-competition</strong> orgs, consider adding a few <em>Chill</em> orgs to diversify your odds.'
-      : lowComp
-        ? ' Smart move, your watchlist is weighted towards <strong>lower-competition</strong> orgs, which improves acceptance probability.'
-        : ' Your watchlist has a <strong>balanced mix</strong> of competition levels, a solid hedging strategy.';
+    // ── Project size coverage ─────────────────────────────────────────────────
+    // Project size coverage, from what the orgs' own ideas pages state. An org
+    // with no stated size is counted as unknown, never assumed.
+    const sizeCounts = { 90: 0, 175: 0, 350: 0, unknown: 0 };
+    bookmarks.forEach((o) => {
+      const sizes = projectSizes(o);
+      if (!sizes.length) { sizeCounts.unknown += 1; return; }
+      sizes.forEach((n) => { if (sizeCounts[n] !== undefined) { sizeCounts[n] += 1; } });
+    });
+    const knownSizes = sizeCounts[90] + sizeCounts[175] + sizeCounts[350];
+    const strategyMsg = knownSizes === 0
+      ? ' None of your saved orgs publish a project size yet, so read each ideas page before committing to one.'
+      : ` Your saved orgs list <strong>${sizeCounts[90]}</strong> small, <strong>${sizeCounts[175]}</strong> medium and <strong>${sizeCounts[350]}</strong> large projects.${sizeCounts.unknown ? ` ${sizeCounts.unknown} have no stated size.` : ''}`;
 
     // ── Stack summary line ────────────────────────────────────────────────────
     const stackLine = topTags.length
@@ -5807,8 +5953,8 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     document.getElementById('mMetrics').innerHTML = `
       <div class="metric-card"><p class="metric-value">${escapeHtml(String(org.years))}</p><p class="metric-label">Years In</p></div>
       <div class="metric-card"><p class="metric-value">${escapeHtml(String(org.firstYear))}</p><p class="metric-label">First Year</p></div>
-      <div class="metric-card"><p class="metric-value font-mono text-sm">${escapeHtml(String(org.competition).toUpperCase())}</p><p class="metric-label">Competition</p></div>
-      <div class="metric-card"><p class="metric-value font-mono text-sm">${escapeHtml(String(org.codebase).toUpperCase())}</p><p class="metric-label">Codebase</p></div>
+      <div class="metric-card"><p class="metric-value font-mono text-sm">${escapeHtml(String(projectSizes(org).length ? projectSizes(org).length : '-'))}</p><p class="metric-label">Sizes listed</p></div>
+      <div class="metric-card"><p class="metric-value font-mono text-sm">${escapeHtml(sizesLabel(org) || 'not stated')}</p><p class="metric-label">Project size</p></div>
     `;
 
     document.getElementById('mDesc').textContent = org.desc;
@@ -5910,7 +6056,7 @@ if(org.ideas){
     filteredOrgs = ORGS.filter(o => {
       const matchSearch = o.name.toLowerCase().includes(query);
       const matchCat = !cat || o.cat === cat;
-      const matchComp = comp === 'all' || o.codebase === comp;
+      const matchComp = comp === 'all' || String(projectSizes(o)[0] || '') === comp;
       const tags = (o.tags || []).map(t => String(t).toLowerCase());
       const matchLang = selectedLanguages.size === 0
         || (matchAllLanguages
@@ -5921,8 +6067,8 @@ if(org.ideas){
       if (activeChip === 'bookmarked')  matchChip = bookmarkedSet.has(o.name);
       else if (activeChip === 'veterans')         matchChip = o.years >= 10;
       else if (activeChip === 'newcomers')   matchChip = o.years <= 3;
-      else if (activeChip === 'low-competition')  matchChip = o.competition === 'chill';
-      else if (activeChip === 'high-competition') matchChip = o.competition === 'hot';
+      else if (activeChip === 'small-projects')   matchChip = projectSizes(o).includes(90);
+      else if (activeChip === 'large-projects')   matchChip = projectSizes(o).includes(350);
 
       return matchSearch && matchCat && matchComp && matchLang && matchChip;
     });
@@ -5957,7 +6103,13 @@ if(org.ideas){
   function applySecondarySort(a, b, sortType) {
     if(sortType==='years-desc') return b.years - a.years;
     if(sortType==='years-asc') return a.years - b.years;
-    if(sortType==='comp-low') return ['chill','moderate','hot'].indexOf(a.competition) - ['chill','moderate','hot'].indexOf(b.competition);
+    // Smallest stated project first; orgs with no stated size sort last rather
+    // than being guessed at.
+    if(sortType==='size-asc') {
+      const sa = projectSizes(a)[0] || 9999;
+      const sb = projectSizes(b)[0] || 9999;
+      return sa - sb;
+    }
     if(sortType==='stars') return (b._gh?.stars||0) - (a._gh?.stars||0);
     if(sortType==='gfi') return (b._gh?.gfi||0) - (a._gh?.gfi||0);
     return a.name.localeCompare(b.name);
@@ -6113,8 +6265,8 @@ if(org.ideas){
         if (text.includes('bookmarked'))         activeChip = 'bookmarked';
         else if (text.includes('veteran'))       activeChip = 'veterans';
         else if (text.includes('newcomer'))      activeChip = 'newcomers';
-        else if (text.includes('low competition'))  activeChip = 'low-competition';
-        else if (text.includes('high competition')) activeChip = 'high-competition';
+        else if (text.includes('90h'))           activeChip = 'small-projects';
+        else if (text.includes('350h'))          activeChip = 'large-projects';
         else if (text.includes('actively'))      activeChip = 'active';
         else                                     activeChip = null;
       } else {
@@ -6593,8 +6745,9 @@ if(org.ideas){
       if (text.includes('bookmarked'))            return 'bookmarked';
       if (text.includes('veteran'))               return 'veterans';
       if (text.includes('newcomer'))              return 'newcomers';
-      if (text.includes('low competition'))       return 'low-competition';
-      if (text.includes('high competition'))      return 'high-competition';
+      if (text.includes('90h'))                   return 'small-projects';
+      if (text.includes('350h'))                  return 'large-projects';
+      if (text.includes('350h'))                  return 'large-projects';
       if (text.includes('actively'))              return 'active';
       return null;
     }
@@ -6637,6 +6790,7 @@ if(org.ideas){
   renderRecentlyViewed();
   updateAIInsights();   // populate AI insight panel on page load
   loadMentorData();
+  loadProjectFacts();
   renderGoodFirstIssues();
   renderCompare();
   // Wire up Recently Viewed clear button
