@@ -41,10 +41,18 @@ jobs:
         with:
           node-version: "24"
 
+      # inputs.limit reaches this step through the environment, never as an
+      # expression spliced into the script, and it is checked to be a number.
       - name: Extract project facts
+        env:
+          LIMIT: ${{ inputs.limit }}
         run: |
-          if [ -n "${{ inputs.limit }}" ]; then
-            node scripts/extract-project-facts.js --limit "${{ inputs.limit }}"
+          set -euo pipefail
+          if [ -n "${LIMIT}" ]; then
+            case "${LIMIT}" in
+              *[!0-9]*) echo "limit must be a number" >&2; exit 1 ;;
+            esac
+            node scripts/extract-project-facts.js --limit "${LIMIT}"
           else
             node scripts/extract-project-facts.js
           fi
