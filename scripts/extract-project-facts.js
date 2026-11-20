@@ -32,8 +32,8 @@ const DIFFICULTY_WORDS = ['easy', 'beginner', 'medium', 'intermediate', 'hard', 
 function toText(html) {
   return String(html)
     // Tolerate `</script >` and friends, which the naive pattern misses.
-    .replace(/<script\b[\s\S]*?<\/script\s*>/gi, ' ')
-    .replace(/<style\b[\s\S]*?<\/style\s*>/gi, ' ')
+    .replace(/<script\b[\s\S]*?<\/script[^>]*>/gi, ' ')
+    .replace(/<style\b[\s\S]*?<\/style[^>]*>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
     // Entities are dropped rather than decoded: this text is only scanned for
     // sizes, never rendered, and decoding is how double-unescaping bugs start.
