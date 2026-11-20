@@ -14,6 +14,12 @@ const bookmarkedSet = new Set(parseStoredBookmarks());
 // Google moves a year's organisation list to /archive/<year>/ once the programme
 // ends; only the live year lives under /programs/<year>/.
 const GSOC_CURRENT_YEAR = 2026;
+/** Published project sizes, when the facts dataset has them for this org. */
+function sizesLabel(org) {
+  const sizes = Array.isArray(org && org.projectSizes) ? org.projectSizes.filter(Number.isFinite) : [];
+  return sizes.length ? sizes.map((n) => `${n}h`).join(' + ') : '';
+}
+
 function gsocYearIsListed(org, year) {
   if (year === GSOC_CURRENT_YEAR) return true;
   const span = GSOC_CURRENT_YEAR - Number(org.firstYear || GSOC_CURRENT_YEAR) + 1;
@@ -908,7 +914,7 @@ function renderWatchlist() {
             </span>
             <span class="flex items-center gap-1">
               <span class="material-symbols-outlined text-xs">bar_chart</span>
-              ${org.competition || '-'}
+              ${sizesLabel(org) || 'size not stated'}
             </span>
           </div>
           <button data-bookmark-org="${org.name}"
@@ -966,7 +972,7 @@ function renderCompare() {
         <img src="${logoUrl}" data-org-name="${org.name}" class="w-full h-full object-contain" />
       </div>
       <p class="font-bold text-sm truncate">${org.name}</p>
-      <p class="text-[10px] text-zinc-500 dark:text-zinc-400 font-label uppercase mt-1">${String(org.years)}y · ${org.competition}</p>
+      <p class="text-[10px] text-zinc-500 dark:text-zinc-400 font-label uppercase mt-1">${String(org.years)}y${sizesLabel(org) ? ` · ${sizesLabel(org)}` : ''}</p>
       <button data-compare-org="${org.name}" class="text-[9px] text-red-500 font-bold uppercase mt-2 hover:underline">Remove</button>
     `;
     container.appendChild(item);
@@ -1005,7 +1011,7 @@ function renderCompareModal() {
     ['Category', org => getCategoryMeta(org.cat).label],
     ['GSoC Years', org => org.years],
     ['First Year', org => org.firstYear],
-    ['Competition', org => org.competition],
+    ['Project size', org => sizesLabel(org) || 'not stated'],
     ['Codebase', org => org.codebase],
     ['Tech Stack', org => org.tags.join(', ')],
     ['Best Fit', org => org.fit.join(', ')],
@@ -1073,8 +1079,8 @@ function matchesFilters(o, cat, compF, search) {
     if (activeChip === 'bookmarked' && !bookmarkedSet.has(o.name)) return false;
     if (activeChip === 'veterans' && o.years < 10) return false;
     if (activeChip === 'newcomers' && o.years > 3) return false;
-    if (activeChip === 'low-competition' && o.competition !== 'chill') return false;
-    if (activeChip === 'high-competition' && o.competition !== 'hot') return false;
+    if (activeChip === 'small-projects' && !(o.projectSizes || []).includes(90)) return false;
+    if (activeChip === 'large-projects' && !(o.projectSizes || []).includes(350)) return false;
     if (activeChip === 'active' && (!o._gh || o._gh.activity !== 'active')) return false;
   }
 
@@ -1125,7 +1131,7 @@ function applyFilters() {
 function applySecondarySort(a, b, sortType) {
   if (sortType === 'years-desc') return b.years - a.years;
   if (sortType === 'years-asc') return a.years - b.years;
-  if (sortType === 'comp-low') return ['chill', 'moderate', 'hot'].indexOf(a.competition) - ['chill', 'moderate', 'hot'].indexOf(b.competition);
+  if (sortType === 'size-asc') return ((a.projectSizes || [])[0] || 9999) - ((b.projectSizes || [])[0] || 9999);
   if (sortType === 'stars') return (b._gh?.stars || 0) - (a._gh?.stars || 0);
   if (sortType === 'gfi') return (b._gh?.gfi || 0) - (a._gh?.gfi || 0);
   return a.name.localeCompare(b.name);
@@ -1453,15 +1459,14 @@ globalThis.openModal = function (name, triggerElement = null) {
   const mDesc = document.getElementById('mDesc');
   if (mDesc) mDesc.textContent = org.desc;
 
-  const cc = { hot: 'var(--red)', moderate: '#92600A', chill: 'var(--green)' };
+
   const mMetrics = document.getElementById('mMetrics');
   if (mMetrics) {
     const yearsColor = org.years >= 8 ? '#C2410C' : org.years >= 4 ? 'var(--blue)' : 'var(--purple)';
-    const competitionColor = cc[org.competition] || '#ccc';
-    const competitionIcon = org.competition === 'hot' ? 'High' : org.competition === 'moderate' ? 'Moderate' : 'Low';
+    const sizes = Array.isArray(org.projectSizes) ? org.projectSizes : [];
     mMetrics.innerHTML = safeHTML`
       <div class="metric-card"><p class="metric-value" style="color:${yearsColor}">${String(org.years)}</p><p class="metric-label">Years In</p></div>
-      <div class="metric-card"><p class="metric-value" style="color:${competitionColor}">${competitionIcon}</p><p class="metric-label">Competition</p></div>
+      <div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${sizesLabel(org) || 'not stated'}</p><p class="metric-label">Project size</p></div>
       <div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${String(org.firstYear)}</p><p class="metric-label">First Year</p></div>
       <div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--green)" id="mGfiPlaceholder">-</p><p class="metric-label">Good 1st Issues</p></div>
     `;
@@ -2460,8 +2465,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (text.includes('bookmarked')) key = 'bookmarked';
         else if (text.includes('veteran')) key = 'veterans';
         else if (text.includes('newcomer')) key = 'newcomers';
-        else if (text.includes('low competition')) key = 'low-competition';
-        else if (text.includes('high competition')) key = 'high-competition';
+        else if (text.includes('90h')) key = 'small-projects';
+        else if (text.includes('350h')) key = 'large-projects';
         else if (text.includes('actively')) key = 'active';
 
         if (key === chip) {
@@ -2569,8 +2574,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (text.includes('bookmarked')) activeChip = 'bookmarked';
         else if (text.includes('veteran')) activeChip = 'veterans';
         else if (text.includes('newcomer')) activeChip = 'newcomers';
-        else if (text.includes('low competition')) activeChip = 'low-competition';
-        else if (text.includes('high competition')) activeChip = 'high-competition';
+        else if (text.includes('90h')) activeChip = 'small-projects';
+        else if (text.includes('350h')) activeChip = 'large-projects';
         else if (text.includes('actively')) activeChip = 'active';
         else activeChip = null;
       }

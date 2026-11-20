@@ -39,10 +39,19 @@ test('getRecommendations calculates matching scores and yields logical match rea
   const resumeSkills = ['Kotlin', 'Android'];
   const recommendations = getRecommendations(resumeSkills, null);
 
-  // FOSSASIA is a known android/java org, so it should be recommended
-  const fossasiaRec = recommendations.find(r => r.org.name === 'FOSSASIA');
-  assert.ok(fossasiaRec, 'FOSSASIA should be recommended');
+  // FOSSASIA is a known android/java org, so it should rank on the skill match.
+  // It used to be pushed into the top 6 by an "intermediate codebase" label that
+  // no longer exists: difficulty is a property of a project, not of an org, and
+  // the recommender now scores on the project sizes an org actually publishes.
+  // What matters is that the match is real and explained, not its exact rank.
+  const ranked = getRecommendations(resumeSkills, null, 15);
+  const fossasiaRec = ranked.find(r => r.org.name === 'FOSSASIA');
+  assert.ok(fossasiaRec, 'FOSSASIA should appear for Kotlin/Android skills');
   assert.ok(fossasiaRec.score > 0, 'FOSSASIA score should be positive with Kotlin/Android skills');
+  assert.ok(
+    fossasiaRec.reasons.some((r) => /android|kotlin|stack/i.test(r)),
+    'the reason should name the stack that matched'
+  );
 });
 
 test('getRecommendations includes stability bonus for veteran organizations', () => {
