@@ -52,7 +52,7 @@
         var stored = window.localStorage && window.localStorage.getItem('theme');
         if (stored && ALLOWED_THEMES.indexOf(stored) !== -1 && stored === 'dark') {
           document.documentElement.classList.add('dark');
-          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.dataset.theme = 'dark';
         }
       } catch (_e) {
         /* Storage unavailable, silently skip theme restore */
@@ -161,13 +161,13 @@
             The 2027 list lands in February, use this to be ready the day it does.</p>
 
           <div class="hero-badges">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <path d="M20 6 9 17l-5-5" />
               </svg> Free &amp; open source</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <path d="M20 6 9 17l-5-5" />
               </svg> No sign-up required</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <path d="M20 6 9 17l-5-5" />
               </svg> <span id="dash-org-count">184 Orgs</span> indexed</span>
           </div>
@@ -185,7 +185,7 @@
               height="1375" />
           </div>
           <div class="badge">
-            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M4 19V9m5 10V5m5 14v-7m5 7V8" />
               </svg></span>
             <div>
@@ -200,7 +200,7 @@
       <div class="minis" data-rv>
         <article class="mini">
           <div class="h">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="11" cy="11" r="7" />
               <path d="M20 20l-4-4" />
             </svg>
@@ -213,7 +213,7 @@
 
         <article class="mini">
           <div class="h">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
               <circle cx="12" cy="12" r="3.4" />
             </svg>
@@ -228,7 +228,7 @@
 
         <article class="mini">
           <div class="h">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M8 3h8l4 4v14H4V3z" />
               <path d="M8 12h8M8 16h5" />
             </svg>
@@ -244,7 +244,7 @@
       </div>
 
       <div class="statusbar" data-rv>
-        <span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+        <span class="ok"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
             <path d="M20 6 9 17l-5-5" />
           </svg> 184 orgs indexed</span>
         <span>Issues refreshed daily</span>
@@ -285,7 +285,7 @@
           <a class="btn ghost" href="https://summerofcode.withgoogle.com/" target="_blank" rel="noopener"
             style="margin-top:24px">
             Official GSoC website
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M7 17 17 7M9 7h8v8" />
             </svg>
           </a>
@@ -350,7 +350,7 @@
       <div class="suite">
         <article class="fcard wide" data-rv>
           <div class="tx">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <div class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M4 6h16M4 12h16M4 18h10" />
               </svg></div>
             <h4>Live organization directory</h4>
@@ -365,7 +365,7 @@
         </article>
 
         <article class="fcard" data-rv>
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
               <circle cx="12" cy="12" r="3.4" />
             </svg></div>
@@ -375,7 +375,7 @@
         </article>
 
         <article class="fcard" data-rv style="transition-delay:.06s">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M8 3h8l4 4v14H4V3z" />
               <path d="M8 12h8M8 16h5" />
             </svg></div>
@@ -386,7 +386,7 @@
         </article>
 
         <article class="fcard" data-rv style="transition-delay:.12s">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15a3 3 0 0 1-3 3H8l-5 3V6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3z" />
             </svg></div>
           <h4>Mentor contact directory</h4>
@@ -396,7 +396,7 @@
         </article>
 
         <article class="fcard" data-rv>
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M4 7h7v10H4zM13 7h7v10h-7z" />
             </svg></div>
           <h4>Side-by-side comparison</h4>
@@ -405,7 +405,7 @@
         </article>
 
         <article class="fcard" data-rv style="transition-delay:.06s">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M4 20h4L20 8l-4-4L4 16z" />
             </svg></div>
           <h4>Markdown proposal builder</h4>
@@ -414,7 +414,7 @@
         </article>
 
         <article class="fcard" data-rv style="transition-delay:.12s">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
             </svg></div>
           <h4>100% client-side &amp; offline</h4>
@@ -509,7 +509,7 @@
 
       <div class="why4" style="margin-top:20px">
         <article class="fcard" data-rv>
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="3.4" />
               <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
             </svg></div>
@@ -517,21 +517,21 @@
           <p>Paste your GitHub or CV and get organizations scored by skill overlap, no manual browsing.</p>
         </article>
         <article class="fcard" data-rv style="transition-delay:.06s">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
             </svg></div>
           <h4>100% private</h4>
           <p>Everything runs in your browser. Proposals, bookmarks and history never leave your device.</p>
         </article>
         <article class="fcard" data-rv style="transition-delay:.12s">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M13 2 4 14h6l-1 8 9-12h-6z" />
             </svg></div>
           <h4>Instant &amp; free</h4>
           <p>No account, no paywall. Open the app and start exploring 184 organizations in under five seconds.</p>
         </article>
         <article class="fcard" data-rv style="transition-delay:.18s">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M8 6 3 12l5 6M16 6l5 6-5 6" />
             </svg></div>
           <h4>Open source</h4>
@@ -572,7 +572,7 @@
         </div>
         <div class="figure r43" data-rv>
           <img src="src/assets/redesign/about.webp"
-            alt="The full Alumni Camp India 2026 cohort photographed in the hall" width="1000"
+            alt="The full Alumni Camp India 2026 cohort in the hall" width="1000"
             height="625" />
         </div>
       </div>

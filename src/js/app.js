@@ -14,6 +14,12 @@ const bookmarkedSet = new Set(parseStoredBookmarks());
 // Google moves a year's organisation list to /archive/<year>/ once the programme
 // ends; only the live year lives under /programs/<year>/.
 const GSOC_CURRENT_YEAR = 2026;
+function gsocYearIsListed(org, year) {
+  if (year === GSOC_CURRENT_YEAR) return true;
+  const span = GSOC_CURRENT_YEAR - Number(org.firstYear || GSOC_CURRENT_YEAR) + 1;
+  return Number(org.years) >= span;
+}
+
 function gsocOrgYearUrl(slug, year) {
   const section = year < GSOC_CURRENT_YEAR ? 'archive' : 'programs';
   return `https://summerofcode.withgoogle.com/${section}/${year}/organizations/${slug}`;
@@ -1499,10 +1505,10 @@ globalThis.openModal = function (name, triggerElement = null) {
     if (active) {
       if (y === 2020) url = sanitizeHrefUrl(org['2020_project_url'] || null);
       else if (y === 2021) url = sanitizeHrefUrl(org['2021_project_url'] || null);
-      else if (org.slug) url = sanitizeHrefUrl(gsocOrgYearUrl(org.slug, y));
+      else if (org.slug && gsocYearIsListed(org, y)) url = sanitizeHrefUrl(gsocOrgYearUrl(org.slug, y));
     }
     timelineHtml += url
-      ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="timeline-year-link${isCurrent ? ' current-year' : ''}" title="View ${escapeHtml(org.name)} at GSoC ${y} on Google's archive">${y}</a>`
+      ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="timeline-year-link${isCurrent ? ' current-year' : ''}" title="View ${escapeHtml(org.name)} at GSoC ${y}">${y}</a>`
       : `<span class="${isCurrent ? 'current-year' : ''} ${active ? 'opacity-100' : 'opacity-30'}">${y}</span>`;
   }
   const mTimeline = document.getElementById('mTimeline');
