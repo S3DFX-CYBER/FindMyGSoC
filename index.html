@@ -3938,6 +3938,15 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
   })();
 
   // Recently Viewed Organizations
+  // Google moves a year's organisation list to /archive/<year>/ once the
+  // programme ends; only the live year lives under /programs/<year>/. Past years
+  // built with /programs/ 404, which is the error the year pills used to throw.
+  const GSOC_CURRENT_YEAR = 2026;
+  function gsocOrgYearUrl(slug, year) {
+    const section = year < GSOC_CURRENT_YEAR ? 'archive' : 'programs';
+    return `https://summerofcode.withgoogle.com/${section}/${year}/organizations/${slug}`;
+  }
+
   const RECENTLY_VIEWED_KEY = 'recentlyViewedOrgs';
   const RECENTLY_VIEWED_LIMIT = 8;
   let recentlyViewed = (() => {
@@ -5801,12 +5810,12 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
     let timelineHtml = '';
     for (let y = 2020; y <= 2026; y++) {
       const active = (y >= org.firstYear);
-      const isCurrent = (y === 2026);
+      const isCurrent = (y === GSOC_CURRENT_YEAR);
       let url = null;
       if (active) {
         if (y === 2020) url = sanitizeHrefUrl(org['2020_project_url'] || null);
         else if (y === 2021) url = sanitizeHrefUrl(org['2021_project_url'] || null);
-        else if (org.slug) url = sanitizeHrefUrl(`https://summerofcode.withgoogle.com/programs/${y}/organizations/${org.slug}`);
+        else if (org.slug) url = sanitizeHrefUrl(gsocOrgYearUrl(org.slug, y));
       }
       if (url) {
         timelineHtml += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="timeline-year-link${isCurrent ? ' current-year' : ''}" title="View ${escapeHtml(org.name)} at GSoC ${y}">${y}</a>`;
