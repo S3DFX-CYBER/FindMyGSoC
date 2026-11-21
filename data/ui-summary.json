@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-11-08T03:11:48.507Z",
-  "totalIssues": 45,
-  "totalOrgs": 19,
-  "totalLabels": 57,
+  "generatedAt": "2026-11-21T10:52:47.200Z",
+  "totalIssues": 131,
+  "totalOrgs": 59,
+  "totalLabels": 178,
   "topOrganizations": [
-    "AFLplusplus",
-    "AnkiDroid",
-    "ArduPilot",
-    "Boa",
-    "C2SI",
-    "cBioPortal for Cancer Genomics",
+    "Oppia Foundation",
+    "Internet Archive",
     "checkstyle",
-    "CircuitVerse.org",
-    "DBpedia",
-    "OpenAstronomy"
+    "Submitty",
+    "LLVM Compiler Infrastructure",
+    "stdlib",
+    "Rizin",
+    "Kiwix",
+    "AnkiDroid",
+    "Meshery"
   ]
 }
