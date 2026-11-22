@@ -79,6 +79,16 @@ Then open <http://localhost:3000>. Use the server rather than opening
 `index.html` from disk: the pages fetch their datasets and a footer component
 over HTTP, and a `file://` page cannot.
 
+The edge functions need Vercel's runtime, because `npx serve` cannot run them:
+
+```bash
+npm i -g vercel
+vercel dev            # serves the pages and /api together on :3000
+```
+
+Without a `GITHUB_TOKEN` in the environment the functions still answer, but with
+GitHub's unauthenticated rate limit, so the stats and issue panels may go quiet.
+
 If you want the tooling (lint and tests):
 
 ```bash
