@@ -3,6 +3,8 @@ const test = require('node:test');
 const assert = require('node:assert');
 const {
   hoursFromText,
+  parseDetailHtml,
+  outputPathFor,
   normaliseProject,
   buildDataset,
   projectArray,
@@ -106,4 +108,33 @@ test('builds a dataset grouped by organisation', () => {
 
 test('refuses a payload with no project array', () => {
   assert.throws(() => buildDataset({ nope: true }), /project array/);
+});
+
+// Shaped like a project detail page: a label, then the comma-separated values.
+const DETAIL_HTML = `
+<div><h1>6LoWPAN Mesh Under Routing Enhancements</h1>
+<p>Contributor</p><p>Usham Roy</p>
+<p>Mentors</p><p>Tommaso Pecorella, Adnan Rashid</p>
+<p>Technologies</p><p>python, linux, c++, cmake</p>
+<p>Topics</p><p>iot, ipv6, network simulation</p>
+<p>This project enhances 6LoWPAN mesh under routing. Medium 175 hours.</p></div>`;
+
+test('reads technologies, topics and size from a detail page', () => {
+  const d = parseDetailHtml(DETAIL_HTML);
+  assert.deepStrictEqual(d.technologies, ['python', 'linux', 'c++', 'cmake']);
+  assert.deepStrictEqual(d.topics, ['iot', 'ipv6', 'network simulation']);
+  assert.strictEqual(d.hours, 175);
+});
+
+test('returns nothing rather than guessing when a section is missing', () => {
+  const d = parseDetailHtml('<p>Technologies</p><p>rust</p>');
+  assert.deepStrictEqual(d.technologies, ['rust']);
+  assert.deepStrictEqual(d.topics, []);
+  assert.strictEqual(d.hours, null);
+});
+
+test('writes one file per year, so a fetch cannot clobber another year', () => {
+  assert.match(outputPathFor(2026), /projects-2026\.json$/);
+  assert.match(outputPathFor(2025), /projects-2025\.json$/);
+  assert.notStrictEqual(outputPathFor(2025), outputPathFor(2026));
 });

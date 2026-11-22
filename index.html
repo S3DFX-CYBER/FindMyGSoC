@@ -4829,7 +4829,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
   async function loadProjectFacts() {
     const [facts, accepted, proposals] = await Promise.all([
       fetch(`/data/project-facts.json?v=${Date.now()}`).then((r) => (r.ok ? r.json() : null)).catch(() => null),
-      fetch(`/data/projects-2026.json?v=${Date.now()}`).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      fetch(`/data/projects-${GSOC_CURRENT_YEAR}.json?v=${Date.now()}`).then((r) => (r.ok ? r.json() : null)).catch(() => null),
       fetch(`/data/accepted-proposals.json?v=${Date.now()}`).then((r) => (r.ok ? r.json() : null)).catch(() => null),
     ]);
 

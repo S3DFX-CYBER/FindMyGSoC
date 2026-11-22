@@ -381,6 +381,9 @@ section is maintained by the [backfill workflow](.github/workflows/add-contribut
 <a href="https://github.com/a638011"><img src="https://github.com/a638011.png" width="50px" alt="a638011" /></a>
 <a href="https://github.com/anirudh645"><img src="https://github.com/anirudh645.png" width="50px" alt="anirudh645" /></a>
 <a href="https://github.com/abdussamad567"><img src="https://github.com/abdussamad567.png" width="50px" alt="abdussamad567" /></a>
+<a href="https://github.com/PranavJogdand"><img src="https://github.com/PranavJogdand.png" width="50px" alt="PranavJogdand" /></a>
+<a href="https://github.com/nirula23-v"><img src="https://github.com/nirula23-v.png" width="50px" alt="nirula23-v" /></a>
+<a href="https://github.com/nitinog10"><img src="https://github.com/nitinog10.png" width="50px" alt="nitinog10" /></a>
 <!-- CONTRIBUTORS_END -->
 
 ## License
