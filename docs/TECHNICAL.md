@@ -82,10 +82,21 @@ Two datasets, two questions:
 | `data/projects-2026.json` | Google's own project pages, via `scripts/fetch-official-projects.js` | What was actually accepted, with mentors, technologies, topics and size. |
 | `data/project-facts.json` | Each org's ideas page, via `scripts/extract-project-facts.js` | What is still only an idea, which is what next year's applicant reads. |
 
-The accepted dataset wins where both exist. A size is read from the prose Google
-writes ("Medium 175 hours"), stored as a number, and left `null` when the text
-does not state one. Nothing is inferred from the org's size or reputation, and
-the UI renders nothing rather than a guess.
+Precedence for a project size, in order, per organisation:
+
+1. A size stated by one of its accepted projects.
+2. Otherwise, a size stated on its own ideas page.
+3. Otherwise, nothing is shown.
+
+That means an org can have accepted projects and still fall back to the ideas
+page for a size, if none of its accepted projects state one. A size is read from
+the prose Google writes ("Medium 175 hours"), stored as a number, and left `null`
+when the text does not state one. Nothing is inferred from the org's size or
+reputation, and the UI renders nothing rather than a guess.
+
+`data/projects-<year>.json` is not committed empty: it appears when the workflow
+first runs, and the UI treats a missing file as "not fetched yet" rather than as
+"no projects".
 
 `data/accepted-proposals.json` is a third, smaller thing: a map from organisation
 to the community-collected accepted proposals at
