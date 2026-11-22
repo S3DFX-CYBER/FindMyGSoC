@@ -56,6 +56,27 @@ function headings(html) {
   return out;
 }
 
+/**
+ * True when a heading is plausibly a project title.
+ *
+ * Learned the hard way: scraped ideas pages are full of headings that are page
+ * furniture ("Sort by:", "Replies: 18"), policy prose ("Contributor
+ * Responsibility**You must understand the code you submit.**") and section
+ * labels ("Background and Motivation", "Project Ideas"). A title is short, has
+ * no markdown emphasis left in it, and is not a sentence.
+ */
+function isUsableTitle(text) {
+  const t = String(text || '').trim();
+  if (t.length < 4 || t.length > 90) return false;
+  if (/[*_`#]/.test(t)) return false;
+  if (/[.!?]$/.test(t)) return false;
+  if (t.split(/\s+/).length > 12) return false;
+  if (/\b(you|your|we|our|must|should|will|shall)\b/i.test(t)) return false;
+
+  const furniture = /^(replies|sort by|all other|personal information|labels|milestone|assignee|search|issues|pull requests|projects|discussions|wiki|home|menu|contributor|mentors?|timeline|apply|about|contact|faq|news|blog|background|motivation|introduction|overview|requirements|resources|rubrics?|policy|guidelines?|ideas? list|project ideas|classic projects?)\b/i;
+  return !furniture.test(t);
+}
+
 /** Every size the page states, in hours. */
 function extractSizes(html) {
   const text = toText(html);
@@ -116,7 +137,7 @@ function extractProjects(html) {
     const before = text.slice(Math.max(0, m.index - 400), m.index);
     const title = heads
       .map((h) => h.text)
-      .filter((t) => before.includes(t))
+      .filter((t) => before.includes(t) && isUsableTitle(t))
       .pop() || null;
     const key = `${title || ''}|${hours}`;
     if (seen.has(key)) {
@@ -216,4 +237,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { factsFromPage, extractSizes, extractProjects, extractDifficulty, toText };
+module.exports = { factsFromPage, extractSizes, extractProjects, extractDifficulty, isUsableTitle, toText };

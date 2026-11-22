@@ -2322,7 +2322,10 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
 .proposal-accepted-link{margin:6px 0 0;font-size:12px}
 .proposal-accepted-link a{
   color:var(--rd-accent);text-decoration:underline;text-underline-offset:2px;
+  margin-left:5px;
 }
+.proposal-accepted-label{color:var(--rd-faint);margin-right:2px}
+.proposal-accepted-item{color:var(--rd-ink-2)}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
@@ -6672,13 +6675,34 @@ if(org.ideas){
     }
 
     const count = Number(entry.proposals) || 1;
+    const titles = Array.isArray(entry.projects) ? entry.projects.slice(0, 3) : [];
+
     slot.hidden = false;
-    slot.innerHTML = '';
+    slot.textContent = '';
+
+    // Show what is actually in there, so the link is not a blind jump.
+    if (titles.length) {
+      const label = document.createElement('span');
+      label.className = 'proposal-accepted-label';
+      label.textContent = 'Accepted proposals to read: ';
+      slot.appendChild(label);
+
+      titles.forEach((project, index) => {
+        const item = document.createElement('span');
+        item.className = 'proposal-accepted-item';
+        const size = Number.isFinite(project.hours) ? ` (${project.hours}h)` : '';
+        item.textContent = `${index ? ', ' : ''}${project.title}${size}`;
+        slot.appendChild(item);
+      });
+    }
+
     const link = document.createElement('a');
     link.href = url;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.textContent = `Read ${count === 1 ? 'an accepted proposal' : `${count} accepted proposals`} for this org`;
+    link.textContent = titles.length
+      ? ` ${count === 1 ? 'Open it' : `Open all ${count}`}`
+      : `Read ${count === 1 ? 'an accepted proposal' : `${count} accepted proposals`} for this org`;
     slot.appendChild(link);
   }
 
