@@ -14,6 +14,25 @@ const bookmarkedSet = new Set(parseStoredBookmarks());
 // Google moves a year's organisation list to /archive/<year>/ once the programme
 // ends; only the live year lives under /programs/<year>/.
 const GSOC_CURRENT_YEAR = 2026;
+/** Project facts for this mirror, loaded once so sizes can be shown. */
+let PROJECT_FACTS = {};
+
+async function loadProjectFacts() {
+  try {
+    const res = await fetch('/data/project-facts.json');
+    if (!res.ok) return;
+    const data = await res.json();
+    PROJECT_FACTS = (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};
+    delete PROJECT_FACTS._meta;
+    ORGS.forEach((o) => {
+      const facts = PROJECT_FACTS[o.name];
+      o.projectSizes = facts && Array.isArray(facts.sizes) ? facts.sizes.filter(Number.isFinite) : [];
+    });
+  } catch (_err) {
+    PROJECT_FACTS = {};
+  }
+}
+
 /** Published project sizes, when the facts dataset has them for this org. */
 function sizesLabel(org) {
   const sizes = Array.isArray(org && org.projectSizes) ? org.projectSizes.filter(Number.isFinite) : [];
@@ -1473,7 +1492,11 @@ globalThis.openModal = function (name, triggerElement = null) {
     if (sizes.length) {
       cards.push(`<div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${sizesLabel(org)}</p><p class="metric-label">Project size</p></div>`);
     }
-    mMetrics.innerHTML = cards.join('');
+    const gfi = org._gh && typeof org._gh.gfi === 'number' ? org._gh.gfi : null;
+    if (gfi !== null) {
+      cards.push(`<div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--green)" id="mGfiPlaceholder">${gfi}</p><p class="metric-label">Good 1st Issues</p></div>`);
+    }
+    mMetrics.innerHTML = cards.slice(0, 4).join('');
   }
 
   const gh = org._gh;
@@ -2384,11 +2407,11 @@ function renderMentorContactSection(org) {
       const isUrl = sanitizeHrefUrl(c.value);
       if (isUrl) {
         return safeHTML`<a href="${isUrl}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip hover:shadow-sm">
-          ${icon} ${c.type}: Connect
+          <span class="material-symbols-outlined">${icon}</span> ${c.type}: Connect
         </a>`;
       } else {
         return safeHTML`<span class="mentor-handle-chip">
-          ${icon} ${c.type}: ${c.value}
+          <span class="material-symbols-outlined">${icon}</span> ${c.type}: ${c.value}
         </span>`;
       }
     });

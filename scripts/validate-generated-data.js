@@ -324,7 +324,82 @@ function validateOrgStatsJson() {
   expectPlainObject(filePath, '', data);
 }
 
+/**
+ * --only=project-facts,projects limits the run to the datasets a caller is about
+ * to write. The refresh workflow uses it so that pre-existing warnings in
+ * hand-curated files cannot block a refresh that never touches them.
+ */
+function selected(args) {
+  const flag = args.find((a) => a.startsWith('--only'));
+  if (!flag) return null;
+  const list = flag.includes('=') ? flag.split('=')[1] : args[args.indexOf(flag) + 1];
+  return new Set(String(list || '').split(',').map((v) => v.trim()).filter(Boolean));
+}
+
+function validateProjectFactsJson() {
+  const filePath = 'data/project-facts.json';
+  // Absent means "not fetched yet", which is a valid state for a generated file.
+  if (!fs.existsSync(path.join(ROOT_DIR, filePath))) return;
+  const data = loadJson(filePath);
+  if (!data) return;
+  if (!isPlainObject(data)) {
+    addError(filePath, '', 'expected an object keyed by organisation');
+    return;
+  }
+  Object.entries(data).forEach(([org, facts]) => {
+    if (org === '_meta') return;
+    if (!isPlainObject(facts)) {
+      addError(filePath, org, 'expected an object');
+      return;
+    }
+    if (facts.sizes !== undefined && !Array.isArray(facts.sizes)) {
+      addError(filePath, `${org}.sizes`, 'expected an array');
+    }
+  });
+}
+
+function validateProjectsJson() {
+  const filePath = 'data/projects-2026.json';
+  if (!fs.existsSync(path.join(ROOT_DIR, filePath))) return;
+  const data = loadJson(filePath);
+  if (!data) return;
+  if (!isPlainObject(data)) {
+    addError(filePath, '', 'expected an object keyed by organisation');
+    return;
+  }
+  Object.entries(data).forEach(([org, projects]) => {
+    if (org === '_meta') return;
+    if (!Array.isArray(projects)) {
+      addError(filePath, org, 'expected an array of projects');
+      return;
+    }
+    projects.forEach((project, i) => {
+      if (!isPlainObject(project) || !isNonEmptyString(project.title)) {
+        addError(filePath, `${org}[${i}].title`, 'expected a string');
+      }
+      if (project.hours !== null && project.hours !== undefined && typeof project.hours !== 'number') {
+        addError(filePath, `${org}[${i}].hours`, 'expected a number or null');
+      }
+    });
+  });
+}
+
 function main() {
+  const only = selected(process.argv.slice(2));
+  const want = (name) => !only || only.has(name);
+
+  if (want('project-facts')) validateProjectFactsJson();
+  if (want('projects')) validateProjectsJson();
+  if (only) {
+    if (errors.length > 0) {
+      console.error('Generated data validation failed:\n');
+      errors.forEach((error) => console.error(`- ${error}`));
+      process.exit(1);
+    }
+    console.log('Generated data validation passed for ' + Array.from(only).join(', '));
+    return;
+  }
+
   const issuesData = validateIssuesJson();
   validateLastUpdatedJson();
   validateMentorsJson();

@@ -178,13 +178,23 @@ function groupByOrg(projects) {
   return out;
 }
 
-/** Builds the whole dataset from a payload. */
+/** True when an item has already been through normaliseProject. */
+function isNormalised(item) {
+  return Boolean(item && item.org && item.title && 'codeUrl' in item);
+}
+
+/** Builds the whole dataset from a payload, or from normalised projects. */
 function buildDataset(payload, year = 2026) {
   const items = projectArray(payload);
   if (!items) {
     throw new Error('payload does not contain a project array');
   }
-  const projects = items.filter(looksLikeProject).map((i) => normaliseProject(i, year));
+  // Enriched projects arrive already normalised. Running them through
+  // normaliseProject a second time silently dropped their url and codeUrl,
+  // because those fields only exist on the normalised shape.
+  const projects = items
+    .filter((i) => isNormalised(i) || looksLikeProject(i))
+    .map((i) => (isNormalised(i) ? i : normaliseProject(i, year)));
   const grouped = groupByOrg(projects);
   const withHours = projects.filter((p) => p.hours !== null).length;
 
@@ -201,21 +211,23 @@ function buildDataset(payload, year = 2026) {
   };
 }
 
-async function fetchJson(url) {
+/**
+ * One timed request, used by both the JSON and the HTML paths so their timeout,
+ * user agent and cleanup cannot drift apart.
+ */
+async function request(url, { accept = '*/*', timeoutMs = 25000 } = {}) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 25000);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(url, {
       signal: controller.signal,
       headers: {
-        accept: 'application/json',
+        accept,
         'user-agent': 'FindMyGSoC-data-bot/1.0 (+https://findmygsoc.vercel.app)',
       },
     });
     if (!res.ok) return null;
-    const type = res.headers.get('content-type') || '';
-    if (!/json/i.test(type)) return null;
-    return await res.json();
+    return res;
   } catch (_err) {
     return null;
   } finally {
@@ -223,12 +235,42 @@ async function fetchJson(url) {
   }
 }
 
+async function fetchJson(url) {
+  const res = await request(url, { accept: 'application/json' });
+  if (!res) return null;
+  const type = res.headers.get('content-type') || '';
+  if (!/json/i.test(type)) return null;
+  try {
+    return await res.json();
+  } catch (_err) {
+    return null;
+  }
+}
+
+/**
+ * One project's details: the JSON endpoint for it first, then the rendered page.
+ * The page is a single-page app, so the endpoint is the one that reliably has
+ * the fields; the page is a fallback for years whose endpoint differs.
+ */
+async function fetchProjectDetail(id, year, section) {
+  const api = await fetchJson(`${SITE}/api/${section}/programs/${year}/projects/${id}/`);
+  if (api && typeof api === 'object') {
+    return {
+      technologies: listOf(api.tech_tags || api.projectTechnologies || api.technologies),
+      topics: listOf(api.topic_tags || api.projectTopics || api.topics),
+      hours: hoursFromText(String(api.abstract_html || api.abstract || api.description || '')),
+    };
+  }
+  const html = await fetchText(`${SITE}/${section}/${year}/projects/${id}`);
+  return html ? parseDetailHtml(html) : null;
+}
+
 /**
  * Fills in technologies, topics and size from each project's own page, for the
  * projects the list payload left incomplete. Bounded on purpose: this is one
  * request per project, and the whole dataset is around 1,100 of them.
  */
-async function enrichProjects(projects, year, { limit = 5, cap = 1200 } = {}) {
+async function enrichProjects(projects, year, { limit = 5, cap = 400 } = {}) {
   const targets = projects
     .filter((p) => p.url && (!p.technologies.length || !p.topics.length || p.hours === null))
     .slice(0, cap);
@@ -240,9 +282,9 @@ async function enrichProjects(projects, year, { limit = 5, cap = 1200 } = {}) {
     while (index < targets.length) {
       const project = targets[index++];
       const id = project.url.split('/').pop();
-      const html = await fetchText(`${SITE}/programs/${year}/projects/${id}`);
-      if (html) {
-        const detail = parseDetailHtml(html);
+      const section = year < CURRENT_YEAR ? 'archive' : 'programs';
+      const detail = await fetchProjectDetail(id, year, section);
+      if (detail) {
         if (!project.technologies.length) project.technologies = detail.technologies;
         if (!project.topics.length) project.topics = detail.topics;
         if (project.hours === null) project.hours = detail.hours;
@@ -256,19 +298,12 @@ async function enrichProjects(projects, year, { limit = 5, cap = 1200 } = {}) {
 }
 
 async function fetchText(url) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 25000);
+  const res = await request(url, { accept: 'text/html' });
+  if (!res) return null;
   try {
-    const res = await fetch(url, {
-      signal: controller.signal,
-      headers: { 'user-agent': 'FindMyGSoC-data-bot/1.0 (+https://findmygsoc.vercel.app)' },
-    });
-    if (!res.ok) return null;
     return await res.text();
   } catch (_err) {
     return null;
-  } finally {
-    clearTimeout(timer);
   }
 }
 
@@ -286,7 +321,9 @@ async function main() {
   } else {
     for (const url of endpoints(year)) {
       const candidate = await fetchJson(url);
-      if (candidate && projectArray(candidate)) {
+      // An empty array is a successful HTTP response but not usable data: it
+      // would replace the dataset with nothing.
+      if (candidate && projectArray(candidate) && projectArray(candidate).length > 0) {
         payload = candidate;
         console.log(`using ${url}`);
         break;
