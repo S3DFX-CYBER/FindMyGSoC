@@ -6,6 +6,7 @@ const {
   extractSizes,
   extractProjects,
   extractDifficulty,
+  isUsableTitle,
 } = require('../scripts/extract-project-facts.js');
 
 const HOURS_PAGE = `
@@ -68,4 +69,42 @@ test('does not duplicate the same title and size', () => {
   const projects = extractProjects(repeated);
   const keys = projects.map((p) => `${p.title}|${p.hours}`);
   assert.strictEqual(new Set(keys).size, keys.length);
+});
+
+test('rejects page furniture and prose as project titles', () => {
+  const junk = [
+    'Sort by:',
+    'Replies: 18 comments',
+    'Personal Information',
+    'Background and Motivation',
+    'Project Ideas',
+    'Rubrics',
+    'Contributor Responsibility**You must understand the code you submit.**',
+    'However, despite its power, **TaskWarrior lacks a modern cross-platform client**',
+    'This is a sentence that ends properly.',
+  ];
+  for (const t of junk) {
+    assert.strictEqual(isUsableTitle(t), false, `should reject: ${t}`);
+  }
+});
+
+test('accepts real project titles', () => {
+  const real = [
+    'MariData GeoPlatform and Routing',
+    'DBpedia Hindi Chapter 2026: Fine-Tuning Indic Models',
+    'Add complex layouts to sway',
+    'Sample Platform NG',
+    'Feature-complete SVG import and rendering support',
+  ];
+  for (const t of real) {
+    assert.strictEqual(isUsableTitle(t), true, `should accept: ${t}`);
+  }
+});
+
+test('does not attach a furniture heading to a project size', () => {
+  const page = `
+    <h2>Background and Motivation</h2>
+    <p>Why this matters. 175 hours of work.</p>`;
+  const projects = extractProjects(page);
+  assert.strictEqual(projects[0].title, null, 'a furniture heading is not a title');
 });

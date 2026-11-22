@@ -2,168 +2,428 @@
  "_meta": {
   "source": "https://github.com/satwiksps/GSoC_archive_2026",
   "licence": "MIT",
-  "note": "Accepted GSoC 2026 proposals, community-collected. Counts are PDFs present at build time, not an official figure.",
+  "note": "Accepted GSoC 2026 proposals, community-collected. Titles and sizes were read from the PDFs; a size is recorded only when the proposal states one.",
   "orgs": 32,
-  "proposals": 39
+  "proposals": 39,
+  "withProjects": 39
  },
  "AOSSIE": {
   "dir": "AOSSIE",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/AOSSIE"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/AOSSIE",
+  "projects": [
+   {
+    "title": "Order-Book Auction-Based Exchange",
+    "contributor": "aniket866",
+    "hours": 350
+   }
+  ]
  },
  "AnkiDroid": {
   "dir": "AnkiDroid",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/AnkiDroid"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/AnkiDroid",
+  "projects": [
+   {
+    "title": "Redesign Deck Picker",
+    "contributor": "ShaanNarendran",
+    "hours": 175
+   }
+  ]
  },
  "C2SI": {
   "dir": "C2SI",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/C2SI"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/C2SI",
+  "projects": [
+   {
+    "title": "GDB UI",
+    "contributor": "",
+    "hours": 350
+   }
+  ]
  },
  "CNCF": {
   "dir": "CNCF",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/CNCF"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/CNCF",
+  "projects": [
+   {
+    "title": "Reactive Agents With Drasi And Dapr",
+    "contributor": "JeffreyJPZ",
+    "hours": null
+   }
+  ]
  },
  "Cuneiform Digital Library Initiative (CDLI)": {
   "dir": "CDLI",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/CDLI"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/CDLI",
+  "projects": [
+   {
+    "title": "CDLI MCP",
+    "contributor": "GSOC26",
+    "hours": null
+   }
+  ]
  },
  "DeepChem": {
   "dir": "DeepChem",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/DeepChem"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/DeepChem",
+  "projects": [
+   {
+    "title": "GSoC DeepChem",
+    "contributor": "2026",
+    "hours": null
+   }
+  ]
  },
  "Django Software Foundation": {
   "dir": "Django Software Foundation",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Django%20Software%20Foundation"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Django%20Software%20Foundation",
+  "projects": [
+   {
+    "title": "Unified Dark Mode and UI Consistency for Django Issue Tracker",
+    "contributor": "kehach07",
+    "hours": 175
+   }
+  ]
  },
  "FLARE": {
   "dir": "FLARE",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/FLARE"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/FLARE",
+  "projects": [
+   {
+    "title": "quantumstrand-vee1e-proposal",
+    "contributor": "",
+    "hours": null
+   }
+  ]
  },
  "FOSSASIA": {
   "dir": "FOSSASIA",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/FOSSASIA"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/FOSSASIA",
+  "projects": [
+   {
+    "title": "Cross-Platform SCM Support for Scrum Helper",
+    "contributor": "mateeb-haider",
+    "hours": null
+   }
+  ]
  },
  "GNU Octave": {
   "dir": "GNU Octave",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/GNU%20Octave"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/GNU%20Octave",
+  "projects": [
+   {
+    "title": "Add anova Classdef Object to the GNU Octave Statistics Package",
+    "contributor": "beingamanforever",
+    "hours": null
+   }
+  ]
  },
  "Global Alliance for Genomics and Health": {
   "dir": "GA4GH",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/GA4GH"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/GA4GH",
+  "projects": [
+   {
+    "title": "Genomic-Data-Compliance-RegBot",
+    "contributor": "",
+    "hours": null
+   }
+  ]
  },
  "Haskell.org": {
   "dir": "Haskell",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Haskell"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Haskell",
+  "projects": [
+   {
+    "title": "Goto Dependency",
+    "contributor": "Defination",
+    "hours": null
+   }
+  ]
  },
  "HumanAI": {
   "dir": "Human AI",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Human%20AI"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Human%20AI",
+  "projects": [
+   {
+    "title": "AI for Mental Health Bias-Aware Crisis Signal Detection and Confidence-Based Scoring System",
+    "contributor": "gokulan006",
+    "hours": null
+   }
+  ]
  },
  "JSON Schema": {
   "dir": "JSON Schema",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/JSON%20Schema"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/JSON%20Schema",
+  "projects": [
+   {
+    "title": "Add Support for Reporting on the Annotation Test Suite",
+    "contributor": "VIDIT45AGARWAL",
+    "hours": 175
+   }
+  ]
  },
  "Joplin": {
   "dir": "Joplin",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Joplin"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Joplin",
+  "projects": [
+   {
+    "title": "AI-based Note Categorisation and Taggin",
+    "contributor": "",
+    "hours": 350
+   }
+  ]
  },
  "Kiwix": {
   "dir": "Kiwix",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Kiwix"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Kiwix",
+  "projects": [
+   {
+    "title": "Architectural Refactoring of MWoffliner",
+    "contributor": "VikramAditya33",
+    "hours": 90
+   }
+  ]
  },
  "Learning Unlimited": {
   "dir": "Learning Unlimited",
   "proposals": 2,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Learning%20Unlimited"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Learning%20Unlimited",
+  "projects": [
+   {
+    "title": "Regression Tests",
+    "contributor": "Expansion(vipulpandey21)",
+    "hours": null
+   },
+   {
+    "title": "Theming Improvements",
+    "contributor": "Oval17",
+    "hours": null
+   }
+  ]
  },
  "LibreCube Initiative": {
   "dir": "LibreCube Initiative",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/LibreCube%20Initiative"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/LibreCube%20Initiative",
+  "projects": [
+   {
+    "title": "GNU Radio Based SDR Reciever",
+    "contributor": "DitoluT",
+    "hours": null
+   }
+  ]
  },
  "Machine Learning for Science (ML4SCI)": {
   "dir": "ML4SCI",
   "proposals": 2,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/ML4SCI"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/ML4SCI",
+  "projects": [
+   {
+    "title": "Neural Operators for Fast Simulation of Strong Gravitational Lensing",
+    "contributor": "Metrex-Nova",
+    "hours": null
+   },
+   {
+    "title": "Physics-Informed Models for Squared Amplitude Calculation",
+    "contributor": "",
+    "hours": null
+   }
+  ]
  },
  "Mixxx": {
   "dir": "Mixxx",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Mixxx"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Mixxx",
+  "projects": [
+   {
+    "title": "Mixxx LatenightQML",
+    "contributor": "Ayush",
+    "hours": null
+   }
+  ]
  },
  "NumFOCUS": {
   "dir": "NumFOCUS",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/NumFOCUS"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/NumFOCUS",
+  "projects": [
+   {
+    "title": "sbi Neural Network Builder API Refactor",
+    "contributor": "satwiksps",
+    "hours": 350
+   }
+  ]
  },
  "OWASP Foundation": {
   "dir": "OWASP",
   "proposals": 3,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/OWASP"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/OWASP",
+  "projects": [
+   {
+    "title": "BLT NEXT",
+    "contributor": "mdkaifansari04",
+    "hours": null
+   },
+   {
+    "title": "Blt University  security focused platform",
+    "contributor": "e-esakman",
+    "hours": null
+   },
+   {
+    "title": "Nest Rudransh",
+    "contributor": "Shrivastava",
+    "hours": 350
+   }
+  ]
  },
  "Open Science Labs": {
   "dir": "Open Science Labs",
   "proposals": 2,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Open%20Science%20Labs"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Open%20Science%20Labs",
+  "projects": [
+   {
+    "title": "Automating Event Data Pipelines and Enhancing Discovery UX for DU Event Board",
+    "contributor": "sanvishukla",
+    "hours": 350
+   },
+   {
+    "title": "Implement Enterprise Security & Provider Ecosystem Expansion",
+    "contributor": "atharvamhaske",
+    "hours": 350
+   }
+  ]
  },
  "OpenStreetMap": {
   "dir": "OpenStreetMap",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/OpenStreetMap"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/OpenStreetMap",
+  "projects": [
+   {
+    "title": "category)support nominatim",
+    "contributor": "rupam-golui",
+    "hours": null
+   }
+  ]
  },
  "OpenVINO Toolkit": {
   "dir": "OpenVINO Toolkit",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/OpenVINO%20Toolkit"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/OpenVINO%20Toolkit",
+  "projects": [
+   {
+    "title": "OpenVINO GenAI Image-to-Video",
+    "contributor": "goyaladitya05",
+    "hours": 350
+   }
+  ]
  },
  "Project Mesa": {
   "dir": "Mesa",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Mesa"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Mesa",
+  "projects": [
+   {
+    "title": "Meta Agents",
+    "contributor": "",
+    "hours": null
+   }
+  ]
  },
  "Python Software Foundation": {
   "dir": "Python Software Foundation",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Python%20Software%20Foundation"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Python%20Software%20Foundation",
+  "projects": [
+   {
+    "title": "DIPY",
+    "contributor": "",
+    "hours": null
+   }
+  ]
  },
  "R project for statistical computing": {
   "dir": "R",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/R"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/R",
+  "projects": [
+   {
+    "title": "Multilingual Documenta on of R Packages",
+    "contributor": "adit-0132",
+    "hours": 350
+   }
+  ]
  },
  "The Linux Foundation": {
   "dir": "The Linux Foundation",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/The%20Linux%20Foundation"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/The%20Linux%20Foundation",
+  "projects": [
+   {
+    "title": "Proposal-GSoC-2026",
+    "contributor": "",
+    "hours": null
+   }
+  ]
  },
  "UC OSPO": {
   "dir": "UC OSPO",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/UC%20OSPO"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/UC%20OSPO",
+  "projects": [
+   {
+    "title": "Environmental NeTworked Sensor I",
+    "contributor": "",
+    "hours": null
+   }
+  ]
  },
  "rocket.chat": {
   "dir": "Rocket.chat",
   "proposals": 3,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Rocket.chat"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Rocket.chat",
+  "projects": [
+   {
+    "title": "New Users Anti Spammer System meet",
+    "contributor": "jain",
+    "hours": null
+   },
+   {
+    "title": "RC - Embedded Chat 2026 Proposal - Aryan Verma",
+    "contributor": "",
+    "hours": 175
+   },
+   {
+    "title": "Room Header Buttons Ordering",
+    "contributor": "TheRazorbill",
+    "hours": 90
+   }
+  ]
  },
  "stdlib": {
   "dir": "stdlib",
   "proposals": 1,
-  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/stdlib"
+  "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/stdlib",
+  "projects": [
+   {
+    "title": "Add Batch Machine Learning Algorithms in Javascript and C",
+    "contributor": "nakul-krishnakumar",
+    "hours": null
+   }
+  ]
  }
 }
