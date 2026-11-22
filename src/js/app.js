@@ -1464,12 +1464,16 @@ globalThis.openModal = function (name, triggerElement = null) {
   if (mMetrics) {
     const yearsColor = org.years >= 8 ? '#C2410C' : org.years >= 4 ? 'var(--blue)' : 'var(--purple)';
     const sizes = Array.isArray(org.projectSizes) ? org.projectSizes : [];
-    mMetrics.innerHTML = safeHTML`
-      <div class="metric-card"><p class="metric-value" style="color:${yearsColor}">${String(org.years)}</p><p class="metric-label">Years In</p></div>
-      <div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${sizesLabel(org) || 'not stated'}</p><p class="metric-label">Project size</p></div>
-      <div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${String(org.firstYear)}</p><p class="metric-label">First Year</p></div>
-      <div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--green)" id="mGfiPlaceholder">-</p><p class="metric-label">Good 1st Issues</p></div>
-    `;
+    // Same rule as the inline renderer: no card that would read "-" or
+    // "not stated". A card only appears when it carries a fact.
+    const cards = [
+      `<div class="metric-card"><p class="metric-value" style="color:${yearsColor}">${String(org.years)}</p><p class="metric-label">Years In</p></div>`,
+      `<div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${String(org.firstYear)}</p><p class="metric-label">First Year</p></div>`,
+    ];
+    if (sizes.length) {
+      cards.push(`<div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${sizesLabel(org)}</p><p class="metric-label">Project size</p></div>`);
+    }
+    mMetrics.innerHTML = cards.join('');
   }
 
   const gh = org._gh;

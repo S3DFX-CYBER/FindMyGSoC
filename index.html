@@ -6098,12 +6098,7 @@ function renderPaginationControls(containerId, totalItems, currentPage, onPageCh
       });
     }
 
-    document.getElementById('mMetrics').innerHTML = `
-      <div class="metric-card"><p class="metric-value">${escapeHtml(String(org.years))}</p><p class="metric-label">Years In</p></div>
-      <div class="metric-card"><p class="metric-value">${escapeHtml(String(org.firstYear))}</p><p class="metric-label">First Year</p></div>
-      <div class="metric-card"><p class="metric-value font-mono text-sm">${escapeHtml(String(projectSizes(org).length ? projectSizes(org).length : '-'))}</p><p class="metric-label">Sizes listed</p></div>
-      <div class="metric-card"><p class="metric-value font-mono text-sm">${escapeHtml(sizesLabel(org) || 'not stated')}</p><p class="metric-label">Project size</p></div>
-    `;
+    document.getElementById('mMetrics').innerHTML = buildMetricCards(org);
 
     document.getElementById('mDesc').textContent = org.desc;
     document.getElementById('mTech').innerHTML = org.tags.map(t => `<span class="tech-tag">${escapeHtml(t)}</span>`).join('');
