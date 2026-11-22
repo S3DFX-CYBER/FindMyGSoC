@@ -79,7 +79,9 @@ function parseDetailHtml(html) {
     .replace(/<script[\s\S]*?<\/script[^>]*>/gi, ' ')
     .replace(/<style[\s\S]*?<\/style[^>]*>/gi, ' ')
     .replace(/<[^>]+>/g, '\n')
-    .replace(/&amp;/g, '&')
+    // No entity decoding: decoding &amp; and then other entities is how
+    // double-unescaping bugs start, and this text is only scanned for labels
+    // and a size, never rendered.
     .replace(/&nbsp;/g, ' ')
     .replace(/\n{2,}/g, '\n')
     .trim();
