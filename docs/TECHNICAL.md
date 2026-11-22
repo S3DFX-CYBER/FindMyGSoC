@@ -94,6 +94,23 @@ the prose Google writes ("Medium 175 hours"), stored as a number, and left `null
 when the text does not state one. Nothing is inferred from the org's size or
 reputation, and the UI renders nothing rather than a guess.
 
+The endpoint is `https://summerofcode.withgoogle.com/api/archive/programs/<year>/projects/`,
+and it returns a flat array. The fields that matter here:
+
+| Field | Used for |
+|---|---|
+| `organization_name` | grouping |
+| `title`, `id` | the project, and its page |
+| `mentor_names` | who to talk to |
+| `tech_tags`, `topic_tags` | matching and display |
+| `contributor_display_name` | attribution |
+| `project_code_url` | the "view code" link |
+| `abstract_html` | the only place a size appears, in prose |
+| `status` | passed or active |
+
+There is no size field, which is why the size is parsed from the abstract and
+left null when the abstract does not state one.
+
 `data/projects-<year>.json` is not committed empty: it appears when the workflow
 first runs, and the UI treats a missing file as "not fetched yet" rather than as
 "no projects".

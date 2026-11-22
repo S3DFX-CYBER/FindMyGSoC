@@ -138,3 +138,36 @@ test('writes one file per year, so a fetch cannot clobber another year', () => {
   assert.match(outputPathFor(2025), /projects-2025\.json$/);
   assert.notStrictEqual(outputPathFor(2025), outputPathFor(2026));
 });
+
+// The shape /api/archive/programs/2026/projects/ actually returns, trimmed.
+const REAL_PAYLOAD = [
+  {
+    title: 'PyGoat v3 - Microservices, Labs, and Learning Paths',
+    project_code_url: 'https://samyak003.in/gsoc-report.html',
+    tech_tags: ['python', 'postgresql', 'django', 'docker'],
+    topic_tags: ['web development', 'web application security'],
+    status: 'passed',
+    program_slug: '2026',
+    contributor_display_name: 'samyak003',
+    mentor_names: ['Rupak', 'Garvita_Kataria'],
+    abstract_short: 'This proposal outlines modernization of Pygoat.',
+    abstract_html: 'A structural overhaul. Medium 175 hours of work.',
+    id: 'qeGHeh6D',
+    organization_name: 'OWASP Foundation',
+    organization_slug: 'owasp-foundation',
+  },
+];
+
+test('reads the payload the archive endpoint really returns', () => {
+  const data = buildDataset(REAL_PAYLOAD, 2026);
+  const project = data['OWASP Foundation'][0];
+  assert.strictEqual(project.title, 'PyGoat v3 - Microservices, Labs, and Learning Paths');
+  assert.strictEqual(project.hours, 175, 'size parsed from abstract_html');
+  assert.deepStrictEqual(project.mentors, ['Rupak', 'Garvita_Kataria']);
+  assert.deepStrictEqual(project.technologies, ['python', 'postgresql', 'django', 'docker']);
+  assert.deepStrictEqual(project.topics, ['web development', 'web application security']);
+  assert.strictEqual(project.contributor, 'samyak003');
+  assert.strictEqual(project.status, 'passed');
+  assert.strictEqual(project.codeUrl, 'https://samyak003.in/gsoc-report.html');
+  assert.strictEqual(project.url, 'https://summerofcode.withgoogle.com/programs/2026/projects/qeGHeh6D');
+});
