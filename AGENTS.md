@@ -11,8 +11,9 @@ opening a pull request.
 
 FindMyGSoC is a static site that helps people find a Google Summer of Code
 organisation that fits them. It has no framework, no bundler and no build step.
-Two HTML pages, two stylesheets, a set of vanilla JavaScript modules, a JSON
-dataset, and two Vercel edge functions.
+Four HTML pages (the app, the landing page, privacy and the 404), two
+stylesheets, a set of vanilla JavaScript modules, JSON datasets, and two Vercel
+edge functions.
 
 ## Hard constraints
 

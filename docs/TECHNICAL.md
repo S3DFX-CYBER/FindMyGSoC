@@ -109,7 +109,10 @@ and it returns a flat array. The fields that matter here:
 | `status` | passed or active |
 
 There is no size field, which is why the size is parsed from the abstract and
-left null when the abstract does not state one.
+left null when the abstract does not state one. The list payload also omits
+technologies and topics for some years, so `enrichProjects()` asks the
+per-project endpoint for whatever is missing, bounded to 400 projects per run and
+`--enrich-concurrency` requests at a time.
 
 `data/projects-<year>.json` is not committed empty: it appears when the workflow
 first runs, and the UI treats a missing file as "not fetched yet" rather than as
