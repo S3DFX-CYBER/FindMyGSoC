@@ -2,8 +2,10 @@
 
 Thanks for taking the time to contribute. This guide is the same for everyone:
 whether you arrived from NSoC, GSSoC, Hacktoberfest, or just found the repo, the
-path from "I want to help" to "merged" is identical. There are no separate
-tracks and no separate rules.
+path from "I want to help" to "merged" is the same. Issues still carry programme
+labels, and the programmes have their own rules about who may be assigned, so a
+maintainer may apply those when assigning work. The contribution requirements
+below do not change.
 
 - [Ways to contribute](#ways-to-contribute)
 - [Set up locally](#set-up-locally)
@@ -44,7 +46,7 @@ For the tooling (lint, tests, data validation):
 
 ```bash
 npm ci
-npm test                   # 38 tests, node:test, no framework
+npm test                   # node:test, no framework
 npm run lint               # ESLint, Stylelint, HTMLHint
 npm run validate:data      # checks the generated datasets
 ```
@@ -102,8 +104,8 @@ in plain English beats a clever one.
 
 Fill in the template. Two fields matter more than the rest:
 
-- **Related issue.** `Closes #123` in the body. A PR without a linked issue is
-  closed rather than reviewed.
+- **Related issue.** `Closes #123` in the body. A PR without one is usually
+  sent back for it, and the label automation reports it as missing.
 - **What changed and why.** Two or three sentences. Reviewers should not have to
   read the diff to understand the intent.
 
