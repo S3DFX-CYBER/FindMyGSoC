@@ -73,6 +73,26 @@ Two places this matters and has been got wrong before:
 A link that fails validation should render as plain text or not at all. It must
 never become an `href`.
 
+## Where project data comes from
+
+Two datasets, two questions:
+
+| File | Source | Answers |
+|---|---|---|
+| `data/projects-2026.json` | Google's own project pages, via `scripts/fetch-official-projects.js` | What was actually accepted, with mentors, technologies, topics and size. |
+| `data/project-facts.json` | Each org's ideas page, via `scripts/extract-project-facts.js` | What is still only an idea, which is what next year's applicant reads. |
+
+The accepted dataset wins where both exist. A size is read from the prose Google
+writes ("Medium 175 hours"), stored as a number, and left `null` when the text
+does not state one. Nothing is inferred from the org's size or reputation, and
+the UI renders nothing rather than a guess.
+
+`data/accepted-proposals.json` is a third, smaller thing: a map from organisation
+to the community-collected accepted proposals at
+`github.com/satwiksps/GSoC_archive_2026` (MIT). The proposal builder links to it
+so a first-time applicant can read a real proposal for the org they are applying
+to. It is a static map, refreshed by hand when that archive changes.
+
 ## Project facts, and why there are no difficulty labels
 
 The app used to show a `codebase` label (beginner, intermediate, advanced) and a
