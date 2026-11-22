@@ -4482,6 +4482,48 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
   }
 
   /**
+   * The metric strip. Every card has to say something true: a card that would
+   * read "-" or "not stated" is left out entirely, and a card carrying a real
+   * fact takes its place.
+   */
+  function buildMetricCards(org) {
+    const cards = [
+      { value: String(org.years), label: 'Years In' },
+      { value: String(org.firstYear), label: 'First Year' },
+    ];
+
+    const sizes = projectSizes(org);
+    if (sizes.length) {
+      cards.push({ value: sizes.map((n) => `${n}h`).join(' / '), label: 'Project size', mono: true });
+    }
+
+    const accepted = acceptedProjects(org);
+    if (accepted.length) {
+      cards.push({ value: String(accepted.length), label: 'Accepted projects' });
+    }
+
+    const archive = acceptedProposalEntry(org);
+    if (archive && archive.proposals) {
+      cards.push({ value: String(archive.proposals), label: 'Proposals to read' });
+    }
+
+    const entry = getMentorEntry(org.name);
+    const channels = entry && entry.status === 'ok'
+      ? (entry.channels || []).length + (entry.mailingLists || []).length
+      : 0;
+    if (channels) {
+      cards.push({ value: String(channels), label: 'Contact channels' });
+    }
+
+    return cards.slice(0, 4).map((card) => `
+      <div class="metric-card">
+        <p class="metric-value${card.mono ? ' font-mono text-sm' : ''}">${escapeHtml(card.value)}</p>
+        <p class="metric-label">${escapeHtml(card.label)}</p>
+      </div>
+    `).join('');
+  }
+
+  /**
    * Reference material for the org: what Google accepted, and the accepted
    * proposals the community archive holds. Either can be present without the
    * other, so both are rendered into the same block.
