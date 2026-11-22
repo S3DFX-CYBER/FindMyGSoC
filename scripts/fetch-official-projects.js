@@ -128,23 +128,36 @@ function projectArray(payload) {
 /** True when an item carries the two fields we cannot do without. */
 function looksLikeProject(item) {
   return Boolean(item && typeof item === 'object' && item.title &&
-    (item.organization || item.organizationName || item.org));
+    (item.organization_name || item.organization || item.organizationName || item.org));
 }
 
-/** Normalises one API project into the shape the app reads. */
+/**
+ * Normalises one API project into the shape the app reads.
+ *
+ * Field names come from the payload the archive endpoint actually returns:
+ * organization_name, tech_tags, topic_tags, mentor_names,
+ * contributor_display_name, abstract_html and project_code_url. The earlier
+ * aliases are kept so a shape change does not silently empty the dataset.
+ */
 function normaliseProject(item, year) {
-  const description = String(item.description || item.abstract || '');
-  const org = nameOf(item.organization) || nameOf(item.organizationName) || nameOf(item.org);
+  const description = String(
+    item.abstract_html || item.abstract || item.abstract_short || item.description || ''
+  );
+  const org = nameOf(item.organization_name) || nameOf(item.organization) ||
+    nameOf(item.organizationName) || nameOf(item.org);
   const id = item.id || item.projectId || null;
+
   return {
     org,
     title: String(item.title || '').trim(),
     url: id ? `${SITE}/programs/${year}/projects/${id}` : '',
+    codeUrl: typeof item.project_code_url === 'string' ? item.project_code_url : '',
     hours: hoursFromText(description),
-    mentors: listOf(item.mentors || item.mentor),
-    technologies: listOf(item.projectTechnologies || item.technologies || item.tech),
-    topics: listOf(item.projectTopics || item.topics),
-    contributor: nameOf(item.contributor || item.student),
+    status: typeof item.status === 'string' ? item.status : '',
+    mentors: listOf(item.mentor_names || item.mentors || item.mentor),
+    technologies: listOf(item.tech_tags || item.projectTechnologies || item.technologies || item.tech),
+    topics: listOf(item.topic_tags || item.projectTopics || item.topics),
+    contributor: nameOf(item.contributor_display_name) || nameOf(item.contributor || item.student),
     description: description.slice(0, 600),
   };
 }

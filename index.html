@@ -2315,6 +2315,11 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
 .accepted-project-main{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;font-size:13.5px;line-height:1.5}
 .accepted-project-main a{color:var(--rd-ink);text-decoration:none;font-weight:500}
 .accepted-project-main a:hover{color:var(--rd-accent);text-decoration:underline;text-underline-offset:2px}
+.accepted-project-code{
+  font-family:var(--rd-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--rd-faint);text-decoration:none;border-bottom:1px dotted currentColor;
+}
+.accepted-project-code:hover{color:var(--rd-accent)}
 .accepted-project-tech{margin:2px 0 0;font-family:var(--rd-mono);font-size:10.5px;color:var(--rd-faint)}
 .accepted-project-more{margin:8px 0 0;font-size:12px;color:var(--rd-faint)}
 
@@ -4488,9 +4493,14 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
       const title = project.url
         ? `<a href="${escapeHtml(project.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(project.title)}</a>`
         : escapeHtml(project.title);
+      // Every project page links its code; showing it saves the extra click.
+      const codeUrl = sanitizeHrefUrl(project.codeUrl);
+      const code = codeUrl
+        ? `<a class="accepted-project-code" href="${escapeHtml(codeUrl)}" target="_blank" rel="noopener noreferrer">code</a>`
+        : '';
       return `
         <li class="accepted-project">
-          <div class="accepted-project-main">${title}${size}</div>
+          <div class="accepted-project-main">${title}${size}${code}</div>
           ${tech ? `<p class="accepted-project-tech">${escapeHtml(tech)}</p>` : ''}
         </li>
       `;
