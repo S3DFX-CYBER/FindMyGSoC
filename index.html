@@ -2304,6 +2304,25 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
   background:var(--rd-surface-2);color:var(--rd-ink-2);border:1px solid var(--rd-line);
 }
 .project-size-badge.hidden{display:none}
+
+/* ---------- accepted projects in the org panel ---------- */
+.accepted-projects{
+  border:1px solid var(--rd-line);border-radius:var(--rd-r);padding:14px 16px;background:var(--rd-card);
+}
+.accepted-projects ul{margin:8px 0 0;padding:0;list-style:none}
+.accepted-project{padding:8px 0;border-top:1px solid var(--rd-line)}
+.accepted-project:first-child{border-top:0;padding-top:0}
+.accepted-project-main{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;font-size:13.5px;line-height:1.5}
+.accepted-project-main a{color:var(--rd-ink);text-decoration:none;font-weight:500}
+.accepted-project-main a:hover{color:var(--rd-accent);text-decoration:underline;text-underline-offset:2px}
+.accepted-project-tech{margin:2px 0 0;font-family:var(--rd-mono);font-size:10.5px;color:var(--rd-faint)}
+.accepted-project-more{margin:8px 0 0;font-size:12px;color:var(--rd-faint)}
+
+/* ---------- accepted proposal link in the builder ---------- */
+.proposal-accepted-link{margin:6px 0 0;font-size:12px}
+.proposal-accepted-link a{
+  color:var(--rd-accent);text-decoration:underline;text-underline-offset:2px;
+}
 </style>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#F46B0E" />
@@ -3570,6 +3589,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
       <div class="timeline-grid" id="mTimeline"></div>
 
       <div class="section-title">Mentors &amp; Contact</div>
+      <div id="mProjects" class="space-y-3"></div>
       <div id="mMentorSection" class="space-y-4">
         <p class="text-sm text-zinc-500">Loading mentor contact data...</p>
       </div>
@@ -3602,6 +3622,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
             <p id="pwPrivacyNote">Drafts are stored only on this device when autosave is enabled.</p>
           </label>
           <div id="pwProposalStats" class="proposal-stats" aria-live="polite"></div>
+          <p id="pwAcceptedLink" class="proposal-accepted-link" hidden></p>
       </div>
       <div class="proposal-toolbar">
         <button type="button" id="pwClearBtn" class="proposal-btn proposal-btn-danger" aria-label="Clear proposal draft">
@@ -3965,6 +3986,14 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
   // scripts/extract-project-facts.js. Empty until the fetch lands, and empty
   // again if the dataset has nothing for an org. Never guessed in the UI.
   let PROJECT_FACTS = {};
+
+  // Accepted projects, from Google's own project pages by way of
+  // scripts/fetch-official-projects.js. This is the authoritative source: what
+  // was accepted, with mentors, technologies and the stated size.
+  let ACCEPTED_PROJECTS = {};
+
+  // Community-collected accepted proposals, per organisation. MIT licensed.
+  let ACCEPTED_PROPOSALS = {};
   let compareList = [];
   const bookmarkedSet = (() => {
     return new Set(parseStoredBookmarks());
@@ -4438,6 +4467,45 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     return sanitizeHrefUrl(gsocOrgYearUrl(org.slug, GSOC_CURRENT_YEAR));
   }
 
+  /** What Google actually accepted for this org, with sizes and technologies. */
+  function renderAcceptedProjects(org) {
+    const container = document.getElementById('mProjects');
+    if (!container) return;
+
+    const projects = acceptedProjects(org);
+    if (!projects.length) {
+      container.innerHTML = '';
+      return;
+    }
+
+    const shown = projects.slice(0, 4);
+    const rows = shown.map((project) => {
+      const size = Number.isFinite(project.hours) ? `<span class="project-size-badge">${project.hours}h</span>` : '';
+      const tech = (project.technologies || []).slice(0, 3).join(', ');
+      const title = project.url
+        ? `<a href="${escapeHtml(project.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(project.title)}</a>`
+        : escapeHtml(project.title);
+      return `
+        <li class="accepted-project">
+          <div class="accepted-project-main">${title}${size}</div>
+          ${tech ? `<p class="accepted-project-tech">${escapeHtml(tech)}</p>` : ''}
+        </li>
+      `;
+    }).join('');
+
+    const more = projects.length > shown.length
+      ? `<p class="accepted-project-more">and ${projects.length - shown.length} more accepted this year</p>`
+      : '';
+
+    container.innerHTML = `
+      <div class="accepted-projects">
+        <p class="mentor-ask-kicker">Accepted projects ${new Date().getFullYear() === GSOC_CURRENT_YEAR ? 'this year' : String(GSOC_CURRENT_YEAR)}</p>
+        <ul>${rows}</ul>
+        ${more}
+      </div>
+    `;
+  }
+
   /** "Where to ask" block: the channel, or the org's own GSoC page as a fallback. */
   function buildAskBlock(org, gsocPage, primarySafe, primaryLabel) {
     if (primarySafe) {
@@ -4720,12 +4788,32 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     attachOrgCardListeners(grid);
   }
 
+  /** Projects Google accepted for this org in the current programme. */
+  function acceptedProjects(org) {
+    return (org && ACCEPTED_PROJECTS[org.name]) || [];
+  }
+
+  /** Sizes stated by accepted projects, deduplicated and sorted. */
+  function acceptedSizes(org) {
+    return Array.from(new Set(acceptedProjects(org).map((p) => p.hours).filter(Number.isFinite)))
+      .sort((a, b) => a - b);
+  }
+
+  /** Where this org's accepted proposals live, if the archive has any. */
+  function acceptedProposalEntry(org) {
+    return (org && ACCEPTED_PROPOSALS[org.name]) || null;
+  }
+
   /** Facts the org's ideas page actually stated: sizes in hours, project titles. */
   function factsFor(org) {
     return (org && PROJECT_FACTS[org.name]) || null;
   }
 
   function projectSizes(org) {
+    // Accepted projects first: they are what actually ran. The ideas page is the
+    // fallback for orgs with no accepted project listed.
+    const accepted = acceptedSizes(org);
+    if (accepted.length) return accepted;
     const facts = factsFor(org);
     return facts && Array.isArray(facts.sizes) ? facts.sizes.filter((n) => Number.isFinite(n)) : [];
   }
@@ -4736,15 +4824,19 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
   }
 
   async function loadProjectFacts() {
-    try {
-      const res = await fetch(`/data/project-facts.json?v=${Date.now()}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      PROJECT_FACTS = (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};
-    } catch (_err) {
-      // Not fatal: the UI simply shows no project sizes.
-      PROJECT_FACTS = {};
-    }
+    const [facts, accepted, proposals] = await Promise.all([
+      fetch(`/data/project-facts.json?v=${Date.now()}`).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      fetch(`/data/projects-2026.json?v=${Date.now()}`).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      fetch(`/data/accepted-proposals.json?v=${Date.now()}`).then((r) => (r.ok ? r.json() : null)).catch(() => null),
+    ]);
+
+    const isMap = (v) => v && typeof v === 'object' && !Array.isArray(v);
+    PROJECT_FACTS = isMap(facts) ? facts : {};
+    ACCEPTED_PROJECTS = isMap(accepted) ? accepted : {};
+    ACCEPTED_PROPOSALS = isMap(proposals) ? proposals : {};
+    delete PROJECT_FACTS._meta;
+    delete ACCEPTED_PROJECTS._meta;
+    delete ACCEPTED_PROPOSALS._meta;
 
     // Keep the recommender's view of each org in step with the facts.
     ORGS.forEach((o) => { o.projectSizes = projectSizes(o); });
@@ -4785,7 +4877,7 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
       const orgName = document.querySelector('#mHeader h2')?.textContent;
       if (orgName) {
         const org = ORGS.find((item) => item.name === orgName);
-        if (org) renderMentorContactSection(org);
+        if (org) { renderMentorContactSection(org); renderAcceptedProjects(org); }
       }
     }
   }
@@ -6016,6 +6108,7 @@ if(org.ideas){
   document.getElementById('mIdeasBtn').after(copyBtn);
 }
     renderMentorContactSection(org);
+    renderAcceptedProjects(org);
 
     const draftBtn = document.getElementById('mDraftBtn');
     if (draftBtn) {
@@ -6561,6 +6654,34 @@ if(org.ideas){
     }
   }
 
+  /**
+   * Points at real accepted proposals for this org when the community archive has
+   * any. Reading one before writing your own is the single most useful thing a
+   * first-time applicant can do, and the link is filtered to their org.
+   */
+  function renderAcceptedProposalLink(orgName) {
+    const slot = document.getElementById('pwAcceptedLink');
+    if (!slot) return;
+
+    const entry = ACCEPTED_PROPOSALS[orgName];
+    const url = entry ? sanitizeHrefUrl(entry.url) : null;
+    if (!url) {
+      slot.hidden = true;
+      slot.textContent = '';
+      return;
+    }
+
+    const count = Number(entry.proposals) || 1;
+    slot.hidden = false;
+    slot.innerHTML = '';
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = `Read ${count === 1 ? 'an accepted proposal' : `${count} accepted proposals`} for this org`;
+    slot.appendChild(link);
+  }
+
   function openProposalBuilder(orgName) {
     currentProposalOrg = orgName;
     const modal = document.getElementById('proposalModal');
@@ -6570,6 +6691,7 @@ if(org.ideas){
 
     document.getElementById('pwOrgName').textContent = orgName + ' Proposal';
     syncAutosaveToggle();
+    renderAcceptedProposalLink(orgName);
 
     const saved = getDraft(orgName);
     if (saved === null) {
