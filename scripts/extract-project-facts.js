@@ -45,7 +45,9 @@ function toText(html) {
 /** Headings and bold leads, in document order, with their text. */
 function headings(html) {
   const out = [];
-  const re = /<(h[1-4]|strong|b)\b[^>]*>([\s\S]*?)<\/\1>/gi;
+  // h1 is the page title and bold runs are usually prose, so neither is a
+  // candidate for a project heading.
+  const re = /<(h[2-4])\b[^>]*>([\s\S]*?)<\/\1>/gi;
   let m;
   while ((m = re.exec(html)) !== null) {
     const text = toText(m[2]);
@@ -67,7 +69,7 @@ function headings(html) {
  */
 function isUsableTitle(text) {
   const t = String(text || '').trim();
-  if (t.length < 4 || t.length > 90) return false;
+  if (t.length < 4 || t.length > 120) return false;
   if (/[*_`#]/.test(t)) return false;
   if (/[.!?]$/.test(t)) return false;
   if (t.split(/\s+/).length > 12) return false;
@@ -113,15 +115,19 @@ function extractSizes(html) {
   return Array.from(sizes).sort((a, b) => a - b);
 }
 
-/** Difficulty words the page states outright, if any. */
+/**
+ * Difficulty, only when the page labels it as difficulty.
+ *
+ * Scanning for the bare words recorded "intermediate" from a sentence about
+ * C++ skills. This matches a label: "Difficulty: Hard", "Level - medium".
+ */
 function extractDifficulty(html) {
-  const text = toText(html).toLowerCase();
+  const text = toText(html);
   const found = new Set();
-  for (const word of DIFFICULTY_WORDS) {
-    const re = new RegExp(`\\b${word}\\b`, 'i');
-    if (re.test(text)) {
-      found.add(word);
-    }
+  const labelRe = /\b(difficulty|level)\b\s*[:\-–]?\s*(easy|beginner|medium|intermediate|hard|advanced)\b/gi;
+  let m;
+  while ((m = labelRe.exec(text)) !== null) {
+    found.add(m[2].toLowerCase());
   }
   return Array.from(found);
 }
@@ -151,7 +157,7 @@ function extractProjects(html) {
     const idx = text.indexOf(head.text);
     const window = idx === -1 ? '' : text.slice(idx + head.text.length, idx + head.text.length + 600);
     const match = /\b(90|175|350)\s*(?:hours?|hrs?|h)\b/i.exec(window);
-    const word = /\bsize\b\s*[:\-–]?\s*(small|medium|large)\b/i.exec(window);
+    const word = /\b(?:size|length|effort|scope)\b\s*[:\-–]?\s*(small|medium|large)\b/i.exec(window);
     let hours = null;
     if (match) {
       hours = Number(match[1]);
@@ -171,7 +177,9 @@ function factsFromPage(html, source) {
   const projects = extractProjects(html);
   const difficulty = extractDifficulty(html);
 
-  if (!sizes.length && !projects.length) {
+  // A page can state a difficulty or list titled ideas without ever stating a
+  // size; that is still information worth keeping.
+  if (!sizes.length && !projects.length && !difficulty.length) {
     return null;
   }
 
@@ -219,30 +227,66 @@ async function fetchPage(url) {
   }
 }
 
+/** Reads the dataset from the last run, so a failed fetch cannot erase it. */
+function readPrevious() {
+  try {
+    return JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf-8'));
+  } catch (_err) {
+    return {};
+  }
+}
+
 async function main() {
-  const limitArg = process.argv.indexOf('--limit');
-  const limit = limitArg > -1 ? Number(process.argv[limitArg + 1]) : Infinity;
+  const args = process.argv.slice(2);
+  const limitArg = args.indexOf('--limit');
+  const limit = limitArg > -1 ? Number(args[limitArg + 1]) : Infinity;
+  const concArg = args.indexOf('--concurrency');
+  const concurrency = concArg > -1 ? Math.max(1, Number(args[concArg + 1])) : 6;
 
-  const orgs = loadOrgs().filter((o) => o && o.name && o.ideas);
+  const orgs = loadOrgs().filter((o) => o && o.name && o.ideas).slice(0, Number.isFinite(limit) ? limit : undefined);
+  const previous = readPrevious();
   const out = {};
-  let fetched = 0;
+  let checked = 0;
+  let failed = 0;
 
-  for (const org of orgs.slice(0, limit)) {
-    const html = await fetchPage(org.ideas);
-    fetched += 1;
-    if (!html) {
-      continue;
+  // Bounded concurrency: 184 serial requests at a 20 second timeout can outlast
+  // the job's own timeout, and a run that is killed writes nothing at all.
+  let index = 0;
+  const worker = async () => {
+    while (index < orgs.length) {
+      const org = orgs[index++];
+      const html = await fetchPage(org.ideas);
+      checked += 1;
+      if (!html) {
+        failed += 1;
+        // A page that could not be fetched is not a page that lost its facts.
+        if (previous[org.name]) {
+          out[org.name] = previous[org.name];
+        }
+        continue;
+      }
+      const facts = factsFromPage(html, org.ideas);
+      if (facts) {
+        out[org.name] = facts;
+      }
     }
-    const facts = factsFromPage(html, org.ideas);
-    if (facts) {
-      out[org.name] = facts;
-    }
+  };
+  await Promise.all(Array.from({ length: concurrency }, worker));
+
+  // A run that lost a large share of the dataset is a broken run, not a
+  // smaller dataset. Refuse to publish it rather than open a deletion PR.
+  const before = Object.keys(previous).length;
+  const after = Object.keys(out).length;
+  if (before > 20 && after < before * 0.7) {
+    console.error(`refusing to write: coverage fell from ${before} to ${after} orgs`);
+    process.exitCode = 1;
+    return;
   }
 
   fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
   fs.writeFileSync(OUTPUT_PATH, `${JSON.stringify(out, null, 2)}\n`, 'utf-8');
 
-  console.log(`checked ${fetched} ideas pages, recorded facts for ${Object.keys(out).length} orgs`);
+  console.log(`checked ${checked} ideas pages (${failed} unreachable), recorded facts for ${after} orgs`);
 }
 
 if (require.main === module) {

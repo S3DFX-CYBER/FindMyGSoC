@@ -68,8 +68,11 @@ jobs:
             node scripts/extract-project-facts.js
           fi
 
+      # validate:data also checks datasets this job does not touch, and reports
+      # pre-existing warnings in data/mentors.json. Only the two files this job
+      # writes are checked here, and a warning there is fatal.
       - name: Validate the result
-        run: npm run validate:data
+        run: node scripts/validate-generated-data.js --only project-facts,projects
 
       - name: Commit and open a pull request
         if: github.ref == 'refs/heads/main' && inputs.limit == ''
@@ -96,4 +99,5 @@ jobs:
           - \`data/project-facts.json\` comes from each org's ideas page: what is still an idea.
 
           Sizes are read from the text Google and the orgs write. Where nothing is stated, the value is null and the UI shows nothing, rather than guessing from the org's size or reputation." \
-            || echo "A pull request for this branch already exists."
+            || gh pr view "$BRANCH" --json number >/dev/null 2>&1 \
+            || { echo "gh pr create failed" >&2; exit 1; }

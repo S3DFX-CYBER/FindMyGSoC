@@ -181,7 +181,7 @@
   "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/Joplin",
   "projects": [
    {
-    "title": "AI-based Note Categorisation and Taggin",
+    "title": "AI-based Note Categorisation and Tagging",
     "contributor": "",
     "hours": 350
    }
@@ -280,7 +280,7 @@
     "hours": null
    },
    {
-    "title": "Blt University  security focused platform",
+    "title": "Blt University security focused platform",
     "contributor": "e-esakman",
     "hours": null
    },
@@ -314,7 +314,7 @@
   "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/OpenStreetMap",
   "projects": [
    {
-    "title": "category)support nominatim",
+    "title": "Nominatim support",
     "contributor": "rupam-golui",
     "hours": null
    }
@@ -362,7 +362,7 @@
   "url": "https://github.com/satwiksps/GSoC_archive_2026/tree/main/R",
   "projects": [
    {
-    "title": "Multilingual Documenta on of R Packages",
+    "title": "Multilingual Documentation of R Packages",
     "contributor": "adit-0132",
     "hours": 350
    }

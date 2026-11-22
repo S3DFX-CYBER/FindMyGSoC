@@ -2259,6 +2259,8 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
   .appbar .right{gap:6px}
   /* the bar cannot hold seven controls at this width */
   #analyticsBtn,#helpBtn,.appbar .right > a[href*="github"]{display:none}
+  /* hidden from the bar, but reachable from the drawer */
+  .drawer-analytics{display:flex}
 
   /* these float over the content they are meant to navigate */
   .section-scroll-indicator,.section-scroll-btn{display:none}
@@ -2491,6 +2493,10 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
         <span class="material-symbols-outlined text-lg">schedule</span>
         Timeline
       </a>
+      <button type="button" onclick="toggleMenu(); openAnalytics();" class="drawer-analytics mobile-menu-link w-full text-left items-center gap-3 px-4 py-3 rounded-lg text-zinc-700 hover:bg-zinc-100 font-medium text-sm transition-colors">
+        <span class="material-symbols-outlined text-lg">insights</span>
+        Analytics
+      </button>
       <a href="#orgs" class="mobile-menu-link flex items-center gap-3 px-4 py-3 rounded-lg text-zinc-700 hover:bg-zinc-100 font-medium text-sm transition-colors" data-section="orgs">
         <span class="material-symbols-outlined text-lg">business</span>
         Organizations

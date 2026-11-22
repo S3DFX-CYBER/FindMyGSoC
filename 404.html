@@ -8,14 +8,14 @@
   <title>Page not found | FindMyGSoC</title>
   <meta name="description" content="That page does not exist. Head back to FindMyGSoC." />
   <meta name="robots" content="noindex" />
-  <link rel="icon" type="image/png" href="src/assets/icon-512.png" />
+  <link rel="icon" type="image/png" href="/src/assets/icon-512.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="src/landing.css" />
+  <link rel="stylesheet" href="/src/landing.css" />
 
   <script>
     (function () {
@@ -75,8 +75,8 @@
       <a class="btn ghost" href="/">Back to the home page</a>
     </div>
 
-    <p class="note">
-      <span>Returning home in <span id="count">8</span>s</span>
+    <p class="note" id="redirectNote" hidden>
+      <span aria-live="polite" aria-atomic="true">Returning home in <span id="count">8</span>s</span>
       <button type="button" id="stay">Stay here</button>
     </p>
 
@@ -94,6 +94,10 @@
       var countEl = document.getElementById('count');
       var stay = document.getElementById('stay');
       var cancelled = false;
+      // Without JavaScript there is no countdown and no redirect, so the whole
+      // note stays hidden rather than offering a control that cannot work.
+      var noteEl = document.getElementById('redirectNote');
+      if (noteEl) { noteEl.hidden = false; }
 
       var timer = setInterval(function () {
         if (cancelled) { return; }
