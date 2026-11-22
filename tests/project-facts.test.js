@@ -101,10 +101,47 @@ test('accepts real project titles', () => {
   }
 });
 
-test('does not attach a furniture heading to a project size', () => {
+test('does not turn a furniture heading into a project', () => {
   const page = `
     <h2>Background and Motivation</h2>
     <p>Why this matters. 175 hours of work.</p>`;
   const projects = extractProjects(page);
-  assert.strictEqual(projects[0].title, null, 'a furniture heading is not a title');
+  assert.deepStrictEqual(projects, [], 'a furniture heading yields no project at all');
+});
+
+test('reads a page-level size statement, like OWASP writes', () => {
+  // From community.owasp.org/initiatives/gsoc/gsoc2026ideas
+  const page = '<p>All 2026 GSoC ideas are Large Projects.</p>';
+  assert.deepStrictEqual(extractSizes(page), [350]);
+});
+
+test('does not read a page-level statement out of a sentence about something else', () => {
+  const page = '<p>All of our projects have small communities.</p>';
+  assert.deepStrictEqual(extractSizes(page), []);
+});
+
+// Mirrors the structure of community.owasp.org/initiatives/gsoc/gsoc2026ideas:
+// an h3 per project, an h4 per idea, and one page-level size statement.
+const OWASP_STYLE_PAGE = `
+<html><body>
+  <h1>GSoC 2026 Ideas</h1>
+  <p>Tips to get you started: read the guidelines, check our GitHub org.</p>
+  <h2>List of Project Ideas</h2>
+  <h3>Bug Logging Tool (BLT)</h3>
+  <p>All 2026 GSoC ideas are Large Projects.</p>
+  <h4>BLT-Next: Core BLT Migration to GitHub Pages</h4>
+  <p>Revamp the BLT website with a fresh, modern design.</p>
+  <h4>BLT-Preflight: Pre-Contribution Security Intent</h4>
+  <p>Provide security intent guidance before contributors submit code.</p>
+  <h3>OWASP Web Application Honeypot Project</h3>
+  <p>Identify emerging attacks against web applications.</p>
+</body></html>`;
+
+test('reads an org ideas page shaped like OWASP publishes them', () => {
+  const facts = factsFromPage(OWASP_STYLE_PAGE, 'https://community.owasp.org/initiatives/gsoc/gsoc2026ideas');
+  assert.ok(facts, 'the page should produce facts');
+  assert.deepStrictEqual(facts.sizes, [350], 'the page-level statement is read');
+  const titles = facts.projects.map((p) => p.title).filter(Boolean);
+  assert.ok(titles.some((t) => /BLT-Next/.test(t)), 'idea headings become titles');
+  assert.ok(!titles.some((t) => /^List of Project Ideas$/.test(t)), 'section labels are rejected');
 });

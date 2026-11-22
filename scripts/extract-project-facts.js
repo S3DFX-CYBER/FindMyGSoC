@@ -73,7 +73,7 @@ function isUsableTitle(text) {
   if (t.split(/\s+/).length > 12) return false;
   if (/\b(you|your|we|our|must|should|will|shall)\b/i.test(t)) return false;
 
-  const furniture = /^(replies|sort by|all other|personal information|labels|milestone|assignee|search|issues|pull requests|projects|discussions|wiki|home|menu|contributor|mentors?|timeline|apply|about|contact|faq|news|blog|background|motivation|introduction|overview|requirements|resources|rubrics?|policy|guidelines?|ideas? list|project ideas|classic projects?)\b/i;
+  const furniture = /^(replies|sort by|all other|personal information|labels|milestone|assignee|search|issues|pull requests|projects|discussions|wiki|home|menu|contributor|mentors?|timeline|apply|about|contact|faq|news|blog|background|motivation|introduction|overview|requirements|resources|rubrics?|policy|guidelines?|ideas? list|project ideas|classic projects?|list of|tips|getting started|table of contents)\b/i;
   return !furniture.test(t);
 }
 
@@ -100,6 +100,16 @@ function extractSizes(html) {
     }
   }
 
+  // A page-level statement, which some orgs use instead of a size per idea:
+  // "All 2026 GSoC ideas are Large Projects". It is stated, so it counts.
+  const allRe = /\ball\b[^.]{0,60}?\b(small|medium|large)\b\s*(?:projects?|ideas?|tasks?)/gi;
+  while ((m = allRe.exec(text)) !== null) {
+    const hours = SIZE_WORDS[m[1].toLowerCase()];
+    if (hours) {
+      sizes.add(hours);
+    }
+  }
+
   return Array.from(sizes).sort((a, b) => a - b);
 }
 
@@ -117,34 +127,39 @@ function extractDifficulty(html) {
 }
 
 /**
- * Project blocks: each size mention paired with the nearest heading before it.
- * A title is only recorded when a heading sits within the preceding 400
- * characters, which keeps unrelated page furniture out.
+ * Project entries: one per usable heading, with the size stated near it.
+ *
+ * Ideas pages differ in where they put the size. Some write it under the
+ * heading ("175 hours"), some state it once for the whole page. So the heading
+ * is the anchor and the size is looked for in the text that follows it; when
+ * there is none, the entry keeps a null size rather than borrowing another
+ * project's.
  */
 function extractProjects(html) {
-  const heads = headings(html);
   const text = toText(html);
+  const heads = headings(html);
   const projects = [];
   const seen = new Set();
 
-  const re = /\b(\d{2,3})\s*(?:hours?|hrs?|h)\b/gi;
-  let m;
-  while ((m = re.exec(text)) !== null) {
-    const hours = Number(m[1]);
-    if (!GSOC_SIZES.includes(hours)) {
-      continue;
+  for (const head of heads) {
+    if (!isUsableTitle(head.text)) continue;
+    if (seen.has(head.text)) continue;
+    seen.add(head.text);
+
+    // The 600 characters after the heading, which is where a size would sit.
+    const after = text.slice(0, 0);
+    const idx = text.indexOf(head.text);
+    const window = idx === -1 ? '' : text.slice(idx + head.text.length, idx + head.text.length + 600);
+    const match = /\b(90|175|350)\s*(?:hours?|hrs?|h)\b/i.exec(window);
+    const word = /\bsize\b\s*[:\-–]?\s*(small|medium|large)\b/i.exec(window);
+    let hours = null;
+    if (match) {
+      hours = Number(match[1]);
+    } else if (word) {
+      hours = SIZE_WORDS[word[1].toLowerCase()] || null;
     }
-    const before = text.slice(Math.max(0, m.index - 400), m.index);
-    const title = heads
-      .map((h) => h.text)
-      .filter((t) => before.includes(t) && isUsableTitle(t))
-      .pop() || null;
-    const key = `${title || ''}|${hours}`;
-    if (seen.has(key)) {
-      continue;
-    }
-    seen.add(key);
-    projects.push({ title, hours });
+
+    projects.push({ title: head.text, hours });
   }
 
   return projects.slice(0, 40);

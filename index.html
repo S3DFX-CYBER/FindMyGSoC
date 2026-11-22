@@ -2321,6 +2321,12 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
 }
 .accepted-project-code:hover{color:var(--rd-accent)}
 .accepted-project-tech{margin:2px 0 0;font-family:var(--rd-mono);font-size:10.5px;color:var(--rd-faint)}
+.accepted-project-by{
+  font-family:var(--rd-mono);font-size:9.5px;color:var(--rd-faint);
+  margin-left:2px;
+}
+.accepted-projects-reference{border-left:4px solid var(--rd-accent)}
+.accepted-project-more a{color:var(--rd-accent);text-decoration:underline;text-underline-offset:2px}
 .accepted-project-more{margin:8px 0 0;font-size:12px;color:var(--rd-faint)}
 
 /* ---------- accepted proposal link in the builder ---------- */
@@ -4475,14 +4481,45 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     return sanitizeHrefUrl(gsocOrgYearUrl(org.slug, GSOC_CURRENT_YEAR));
   }
 
-  /** What Google actually accepted for this org, with sizes and technologies. */
+  /**
+   * Reference material for the org: what Google accepted, and the accepted
+   * proposals the community archive holds. Either can be present without the
+   * other, so both are rendered into the same block.
+   */
   function renderAcceptedProjects(org) {
     const container = document.getElementById('mProjects');
     if (!container) return;
 
     const projects = acceptedProjects(org);
+    const archive = acceptedProposalEntry(org);
+    const blocks = [];
+
+    if (archive && Array.isArray(archive.projects) && archive.projects.length) {
+      const rows = archive.projects.slice(0, 3).map((p) => {
+        const size = Number.isFinite(p.hours) ? `<span class="project-size-badge">${p.hours}h</span>` : '';
+        const who = p.contributor ? `<span class="accepted-project-by">${escapeHtml(p.contributor)}</span>` : '';
+        return `
+          <li class="accepted-project">
+            <div class="accepted-project-main">${escapeHtml(p.title)}${size}${who}</div>
+          </li>
+        `;
+      }).join('');
+      const url = sanitizeHrefUrl(archive.url);
+      const more = archive.proposals > archive.projects.slice(0, 3).length
+        ? `<p class="accepted-project-more">${archive.proposals} in the archive</p>`
+        : '';
+      blocks.push(`
+        <div class="accepted-projects accepted-projects-reference">
+          <p class="mentor-ask-kicker">Reference: accepted proposals</p>
+          <ul>${rows}</ul>
+          ${more}
+          ${url ? `<p class="accepted-project-more"><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Read them before writing your own</a></p>` : ''}
+        </div>
+      `);
+    }
+
     if (!projects.length) {
-      container.innerHTML = '';
+      container.innerHTML = blocks.join('');
       return;
     }
 
@@ -4510,13 +4547,15 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
       ? `<p class="accepted-project-more">and ${projects.length - shown.length} more accepted this year</p>`
       : '';
 
-    container.innerHTML = `
+    blocks.push(`
       <div class="accepted-projects">
-        <p class="mentor-ask-kicker">Accepted projects ${new Date().getFullYear() === GSOC_CURRENT_YEAR ? 'this year' : String(GSOC_CURRENT_YEAR)}</p>
+        <p class="mentor-ask-kicker">Accepted projects ${GSOC_CURRENT_YEAR}</p>
         <ul>${rows}</ul>
         ${more}
       </div>
-    `;
+    `);
+
+    container.innerHTML = blocks.join('');
   }
 
   /** "Where to ask" block: the channel, or the org's own GSoC page as a fallback. */
