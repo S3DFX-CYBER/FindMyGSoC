@@ -22,14 +22,16 @@ function loadJson(relativePath) {
     raw = fs.readFileSync(absolutePath, 'utf8');
   } catch (error) {
     addError(relativePath, '', `could not read file (${error.message})`);
-    return null;
+    // undefined means "no value to check". A parsed `null` is a value, and it
+    // has to reach the object-type check rather than look like a read failure.
+    return undefined;
   }
 
   try {
     return JSON.parse(raw);
   } catch (error) {
     addError(relativePath, '', `invalid JSON (${error.message})`);
-    return null;
+    return undefined;
   }
 }
 
@@ -318,7 +320,7 @@ function validateUiSummaryJson(issuesData) {
 function validateOrgStatsJson() {
   const filePath = 'data/org-stats.json';
   const data = loadJson(filePath);
-  if (!data) return;
+  if (data === undefined) return;
 
   // Current generated data is {}; no field schema is defined yet.
   expectPlainObject(filePath, '', data);
@@ -351,9 +353,9 @@ function validateProjectFactsJson() {
   // Absent means "not fetched yet", which is a valid state for a generated file.
   if (!fs.existsSync(path.join(ROOT_DIR, filePath))) return;
   const data = loadJson(filePath);
-  // loadJson reports unreadable or invalid JSON. Anything else that parsed but
-  // is not an object (null, false, 0) is still wrong.
-  if (data === null) return;
+  // undefined means the file could not be read or parsed, and loadJson has
+  // already reported it. Anything that parsed, including null, is checked.
+  if (data === undefined) return;
   if (!isPlainObject(data)) {
     addError(filePath, '', 'expected an object keyed by organisation');
     return;
@@ -374,7 +376,7 @@ function validateProjectsJson() {
   const filePath = 'data/projects-2026.json';
   if (!fs.existsSync(path.join(ROOT_DIR, filePath))) return;
   const data = loadJson(filePath);
-  if (data === null) return;
+  if (data === undefined) return;
   if (!isPlainObject(data)) {
     addError(filePath, '', 'expected an object keyed by organisation');
     return;

@@ -246,6 +246,11 @@ async function main() {
   const dryRun = args.includes('--dry-run');
   const limitArg = args.indexOf('--limit');
   const limit = limitArg > -1 ? Number(args[limitArg + 1]) : Infinity;
+  if (Number.isFinite(limit) && (!Number.isInteger(limit) || limit < 1)) {
+    console.error('--limit must be a positive integer');
+    process.exitCode = 1;
+    return;
+  }
   const concArg = args.indexOf('--concurrency');
   const requested = concArg > -1 ? Number(args[concArg + 1]) : 6;
   if (!Number.isInteger(requested) || requested < 1) {
@@ -260,6 +265,7 @@ async function main() {
   const out = {};
   let checked = 0;
   let failed = 0;
+  let parsed = 0;
 
   // Bounded concurrency: 184 serial requests at a 20 second timeout can outlast
   // the job's own timeout, and a run that is killed writes nothing at all.
@@ -279,6 +285,7 @@ async function main() {
       }
       const facts = factsFromPage(html, org.ideas);
       if (facts) {
+        parsed += 1;
         out[org.name] = facts;
       }
     }
@@ -292,7 +299,12 @@ async function main() {
   // A smoke test is meant to check a handful of pages, so a small result is the
   // point rather than a regression. It also writes nothing.
   if (dryRun) {
-    console.log(`dry run: checked ${checked} ideas pages (${failed} unreachable), ${after} would be recorded`);
+    console.log(`dry run: checked ${checked} ideas pages (${failed} unreachable), ${parsed} parsed, ${after} would be recorded`);
+    // A smoke test that parsed nothing proves nothing, so it fails.
+    if (parsed === 0) {
+      console.error('dry run parsed no pages; treating that as a failure');
+      process.exitCode = 1;
+    }
     return;
   }
   if (before > 20 && after < before * 0.7) {

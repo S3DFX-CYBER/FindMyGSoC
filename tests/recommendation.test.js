@@ -11,7 +11,7 @@ globalThis.ORGS = require('../src/js/org.js');
 require('../src/js/skillExtractor.js');
 
 // Import recommender
-const { getRecommendations } = require('../src/js/recommender.js');
+const { getRecommendations, calculateActivityScore } = require('../src/js/recommender.js');
 
 test('getRecommendations returns top 6 recommendations sorted by score', () => {
   const resumeSkills = ['Python', 'Docker', 'Machine Learning'];
@@ -62,4 +62,25 @@ test('getRecommendations includes stability bonus for veteran organizations', ()
   assert.ok(lfRec, 'The Linux Foundation should be recommended');
   const hasVeteranReason = lfRec.reasons.some(r => r.includes('GSoC Veteran'));
   assert.ok(hasVeteranReason, 'Should have GSoC Veteran stability bonus reason');
+});
+
+test('unknown organisation activity is neutral, not low', () => {
+  const reasons = [];
+  const score = calculateActivityScore({ activity: 'low' }, { name: 'X' }, reasons);
+  assert.strictEqual(score, 10, 'an org with no activity data must not be scored as low');
+  assert.ok(
+    !reasons.some((r) => /manageable pacing/i.test(r)),
+    'and must not be given the low-activity reason'
+  );
+});
+
+test('known organisation activity still scores and explains itself', () => {
+  const reasons = [];
+  const high = calculateActivityScore({ activity: 'high' }, { _gh: { activity: 'active' } }, reasons);
+  assert.ok(high > 10, 'a known active org scores above the neutral baseline');
+  assert.ok(reasons.length > 0, 'and the match is explained');
+
+  const reasons2 = [];
+  const low = calculateActivityScore({ activity: 'low' }, { _gh: { activity: 'low' } }, reasons2);
+  assert.ok(low >= 10, 'a known low-activity org still scores');
 });
