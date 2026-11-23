@@ -101,3 +101,31 @@ test('debounce preserves caller context (this binding)', async () => {
 
   assert.strictEqual(capturedContext, contextObj, 'should preserve this binding');
 });
+
+test('debounce cancel() clears any pending scheduled invocation', async () => {
+  let callCount = 0;
+
+  const fn = debounce(() => {
+    callCount++;
+  }, 50);
+
+  fn();
+  assert.strictEqual(callCount, 0);
+
+  // Cancel before timeout fires
+  fn.cancel();
+
+  await new Promise((resolve) => setTimeout(resolve, 80));
+  assert.strictEqual(callCount, 0, 'invocation should have been canceled');
+});
+
+test('index.html inline script wires debounced handlers with cancellation', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const htmlContent = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+
+  assert.ok(htmlContent.includes('createDebouncedHandler'), 'index.html should define debounced handler');
+  assert.ok(htmlContent.includes('debouncedPerformSearch'), 'index.html should wire debounced search');
+  assert.ok(htmlContent.includes('debouncedPerformSearch.cancel()'), 'hero search submit should cancel pending debounce');
+  assert.ok(htmlContent.includes('debouncedRenderMentorFinder.cancel()'), 'mentor filter change should cancel pending debounce');
+});

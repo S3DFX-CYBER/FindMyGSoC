@@ -6387,18 +6387,25 @@ if(org.ideas){
     applyFilters();
   }
 
-  function debounce(fn, delay = 250) {
-    let timer;
-    return function (...args) {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        fn.apply(this, args);
-      }, delay);
+  const createDebouncedHandler = (callback, wait = 250) => {
+    let timeoutId = null;
+    const debounced = (...params) => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        callback(...params);
+      }, wait);
     };
-  }
+    debounced.cancel = () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+    };
+    return debounced;
+  };
 
-  const debouncedPerformSearch = debounce((val) => performSearch(val, false), 250);
-  const debouncedRenderMentorFinder = debounce(() => {
+  const debouncedPerformSearch = createDebouncedHandler((val) => performSearch(val, false), 250);
+  const debouncedRenderMentorFinder = createDebouncedHandler(() => {
     mentorCurrentPage = 1;
     renderMentorFinder();
   }, 250);
@@ -6424,6 +6431,7 @@ if(org.ideas){
   document.getElementById('mentorSearchInput')?.addEventListener('input', debouncedRenderMentorFinder);
 
   document.getElementById('mentorChannelFilter')?.addEventListener('change', () => {
+    debouncedRenderMentorFinder.cancel();
     mentorCurrentPage = 1;
     renderMentorFinder();
   });
@@ -6443,6 +6451,7 @@ if(org.ideas){
   if (heroSearch) {
     heroSearch.value = document.getElementById('searchInput')?.value || new URLSearchParams(location.search).get('q') || '';
     const heroSearchSubmit = () => {
+      debouncedPerformSearch.cancel();
       document.getElementById('searchInput').value = heroSearch.value;
       performSearch(heroSearch.value, true);
       document.getElementById('orgs')?.scrollIntoView({ behavior: 'smooth' });

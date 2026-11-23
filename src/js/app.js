@@ -44,15 +44,19 @@ async function loadProjectFacts() {
   });
 }
 
-/** Debounce utility to prevent rapid successive function calls */
+/** Debounce utility to prevent rapid successive function calls with cancellation support */
 function debounce(fn, delay = 250) {
   let timer;
-  return function (...args) {
+  const debounced = function (...args) {
     clearTimeout(timer);
     timer = setTimeout(() => {
       fn.apply(this, args);
     }, delay);
   };
+  debounced.cancel = function () {
+    clearTimeout(timer);
+  };
+  return debounced;
 }
 
 /** Published project sizes, when the facts dataset has them for this org. */
