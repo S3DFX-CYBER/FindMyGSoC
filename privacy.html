@@ -192,6 +192,11 @@
             classes. If jsDelivr fails to serve one of those libraries, the page falls
             back to unpkg.com for the same file, so that host may appear in your network
             log instead.</p>
+          <p>As with any website, the request itself carries standard metadata to
+            whoever serves it: your IP address, your browser's user agent and the page
+            you asked for. Vercel and the CDNs above see that, and it is what any host
+            sees. The list in this section is about the application data the site sends,
+            not about that transport-level metadata.</p>
         </section>
 
         <section id="third-parties">

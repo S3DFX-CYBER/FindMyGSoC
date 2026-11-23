@@ -1610,11 +1610,15 @@ globalThis.openModal = function (name, triggerElement = null) {
   renderMentorContactSection(org);
   openModalElement('orgModal', triggerElement);
 
-  // Lazily retrieve GFIs if missing
+  // Lazily retrieve GFIs if missing. The modal may have moved on by the time the
+  // answer arrives, so the result is only written if the same org is still open.
   if (org.github && (org._gh?.gfi === null || org._gh?.gfi === undefined)) {
     const placeholder = document.getElementById('mGfiPlaceholder');
     if (placeholder) placeholder.textContent = '…';
+    const requestedOrg = org.name;
     fetchGFI(org.github).then(gfi => {
+      const stillOpen = document.querySelector('#mHeader h2')?.textContent || '';
+      if (!stillOpen.startsWith(requestedOrg)) return;
       if (gfi !== null) {
         if (!org._gh) org._gh = {};
         org._gh.gfi = gfi;
