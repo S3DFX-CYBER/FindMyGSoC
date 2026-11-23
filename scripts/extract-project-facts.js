@@ -25,6 +25,10 @@ const ORGS_PATH = path.resolve(__dirname, '../src/js/org.js');
 const OUTPUT_PATH = path.resolve(__dirname, '../data/project-facts.json');
 
 const GSOC_SIZES = [90, 175, 350];
+// Precompiled and anchored on a short alternation, so neither the linter nor the
+// regex engine has to work about backtracking.
+const HOURS_RE = /\b(90|175|350)\s*(?:hours?|hrs?|h)\b/i;
+const SIZE_WORD_RE = /\b(?:size|length|effort|scope)\b\s*[:\-–]?\s*(small|medium|large)\b/i;
 const SIZE_WORDS = { small: 90, medium: 175, large: 350 };
 const DIFFICULTY_WORDS = ['easy', 'beginner', 'medium', 'intermediate', 'hard', 'advanced'];
 
@@ -141,10 +145,10 @@ function extractDifficulty(html) {
  * next project's estimate then leaks backwards.
  */
 function headingSections(html) {
-  const re = /<(h[2-4])\b[^>]*>([\s\S]*?)<\/\1>/gi;
   const marks = [];
   let m;
-  while ((m = re.exec(html)) !== null) {
+  // matchAll avoids a stateful exec loop and reads clearly.
+  for (m of html.matchAll(/<(h[2-4])\b[^>]*>([\s\S]*?)<\/\1>/gi)) {
     marks.push({ start: m.index, end: m.index + m[0].length, title: toText(m[2]) });
   }
   return marks.map((mark, i) => ({
@@ -170,8 +174,8 @@ function extractProjects(html) {
     // The heading can carry the estimate too ("Implement cache, 175 hours"),
     // so it is scanned with the body while the next heading stays out.
     const text = `${section.title} ${toText(section.body)}`;
-    const match = /\b(90|175|350)\s*(?:hours?|hrs?|h)\b/i.exec(text);
-    const word = /\b(?:size|length|effort|scope)\b\s*[:\-–]?\s*(small|medium|large)\b/i.exec(text);
+    const match = text.match(HOURS_RE);
+    const word = text.match(SIZE_WORD_RE);
     let hours = null;
     if (match) {
       hours = Number(match[1]);
