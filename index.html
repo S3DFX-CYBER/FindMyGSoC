@@ -4948,12 +4948,12 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     updateAIInsights();
 
     // The recommender scores on the published sizes. Results produced before
-    // this fetch landed are re-computed by re-running the same button the user
-    // pressed, so nothing is left stale and no second code path is invented.
+    // this fetch landed are recomputed from the input that produced them, not
+    // from whatever is in the form now, so an automatic refresh cannot change
+    // what is being analysed.
     const results = document.getElementById('aiResultsContainer');
-    const recsBtn = document.getElementById('btnGetRecommendations');
-    if (results && results.children.length && recsBtn && !recsBtn.disabled) {
-      recsBtn.click();
+    if (results && results.children.length && typeof globalThis.refreshRecommendations === 'function') {
+      globalThis.refreshRecommendations();
     }
     const openModalEl = document.getElementById('orgModal');
     if (openModalEl && openModalEl.classList.contains('open')) {

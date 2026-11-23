@@ -167,7 +167,9 @@ function extractProjects(html) {
     if (seen.has(section.title)) continue;
     seen.add(section.title);
 
-    const text = toText(section.body);
+    // The heading can carry the estimate too ("Implement cache, 175 hours"),
+    // so it is scanned with the body while the next heading stays out.
+    const text = `${section.title} ${toText(section.body)}`;
     const match = /\b(90|175|350)\s*(?:hours?|hrs?|h)\b/i.exec(text);
     const word = /\b(?:size|length|effort|scope)\b\s*[:\-–]?\s*(small|medium|large)\b/i.exec(text);
     let hours = null;
