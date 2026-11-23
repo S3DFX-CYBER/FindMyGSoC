@@ -48,7 +48,7 @@ still works when your connection does not.
 | **Search and filter** | 184 organisations by category, language and published project size, with instant client-side filtering and no round trips. |
 | **Good first issues** | 45 open, beginner-friendly issues pulled from the organisations' own repositories. A daily snapshot, not a live feed. Filtered by language and category. |
 | **Skill matching** | Paste a GitHub username or a resume and get a ranked shortlist, with the reasoning shown rather than a black box. |
-| **Compare** | Put up to three organisations side by side: years in GSoC, mentor contacts, stack, published project sizes and open good first issues. |
+| **Compare** | Put up to three organisations side by side: years in GSoC, first year, stack, published project sizes and competition history. |
 | **Watchlist and deadlines** | Save organisations locally, and follow the GSoC timeline with the dates that matter for the current cycle. |
 | **Proposal workspace** | Draft your proposal against the org's ideas page, and export it as a PDF when it is ready. |
 | **Works offline** | A service worker caches the shell, the dataset and the fonts after the first visit, so a flaky connection does not lose your place. The very first load still needs the network. |
@@ -209,9 +209,10 @@ The datasets are separate on purpose, because they age differently:
   username you choose to analyse, repository identifiers when stats or issues are
   fetched, and aggregate performance data on the deployed site. [privacy.html](privacy.html)
   lists every field.
-- Markdown and HTML coming back from the GitHub API are rendered through marked
-  and sanitised with DOMPurify before insertion. Other values are escaped, not
-  sanitised, because they are inserted as text.
+- Values from the GitHub API (issue titles, organisation names, mentor handles)
+  are escaped and inserted as text. The app does not fetch or render Markdown or
+  HTML bodies from GitHub. The one place DOMPurify runs is the proposal editor's
+  preview, which sanitises what you typed before rendering it.
 - The jsDelivr libraries are pinned to exact versions, and the PDF exporter
   carries a subresource integrity hash. Tailwind is the exception: the app page
   loads it from the unversioned CDN, which is a known gap rather than a claim.
@@ -261,9 +262,11 @@ still to build.
 
 ## Contributors
 
-Everyone who has landed a pull request or a commit on `main`, in the order the
-[backfill workflow](.github/workflows/add-contributor.yml) writes them, which is
-alphabetical rather than chronological. Excludes bots.
+Everyone whose pull request has been merged, plus commit authors on `main`, in
+the order this block was generated rather than chronological order. The
+[backfill workflow](.github/workflows/add-contributor.yml) rebuilds it from
+merged pull-request authors only, so a hand-added commit author is dropped the
+next time it runs. Excludes bots.
 
 <!-- CONTRIBUTORS_START -->
 <a href="https://github.com/S3DFX-CYBER"><img src="https://github.com/S3DFX-CYBER.png" width="50px" alt="S3DFX-CYBER" /></a>

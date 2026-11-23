@@ -145,3 +145,16 @@ test('reads an org ideas page shaped like OWASP publishes them', () => {
   assert.ok(titles.some((t) => /BLT-Next/.test(t)), 'idea headings become titles');
   assert.ok(!titles.some((t) => /^List of Project Ideas$/.test(t)), 'section labels are rejected');
 });
+
+test('a project does not inherit the next project\'s size', () => {
+  const page = `
+    <h3>First idea, no estimate</h3>
+    <p>We have not sized this one yet.</p>
+    <h3>Second idea</h3>
+    <p>This one is 350 hours.</p>`;
+  const projects = extractProjects(page);
+  const first = projects.find((p) => /First idea/.test(p.title || ''));
+  const second = projects.find((p) => /Second idea/.test(p.title || ''));
+  assert.strictEqual(first.hours, null, 'the unsized idea keeps a null size');
+  assert.strictEqual(second.hours, 350);
+});

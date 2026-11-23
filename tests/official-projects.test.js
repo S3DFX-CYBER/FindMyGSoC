@@ -171,3 +171,8 @@ test('reads the payload the archive endpoint really returns', () => {
   assert.strictEqual(project.codeUrl, 'https://samyak003.in/gsoc-report.html');
   assert.strictEqual(project.url, 'https://summerofcode.withgoogle.com/programs/2026/projects/qeGHeh6D');
 });
+
+test('reads a size written with markup and a non-breaking space', () => {
+  assert.strictEqual(hoursFromText('This is a <b>175</b>&nbsp;hours project.'), 175);
+  assert.strictEqual(hoursFromText('Medium&nbsp;350 hours'), 350);
+});

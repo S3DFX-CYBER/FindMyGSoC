@@ -329,11 +329,21 @@ function validateOrgStatsJson() {
  * to write. The refresh workflow uses it so that pre-existing warnings in
  * hand-curated files cannot block a refresh that never touches them.
  */
+const DATASETS = new Set(['project-facts', 'projects']);
+
 function selected(args) {
   const flag = args.find((a) => a.startsWith('--only'));
   if (!flag) return null;
   const list = flag.includes('=') ? flag.split('=')[1] : args[args.indexOf(flag) + 1];
-  return new Set(String(list || '').split(',').map((v) => v.trim()).filter(Boolean));
+  const names = String(list || '').split(',').map((v) => v.trim()).filter(Boolean);
+  if (!names.length) {
+    throw new Error('--only needs at least one dataset name');
+  }
+  const unknown = names.filter((n) => !DATASETS.has(n));
+  if (unknown.length) {
+    throw new Error(`--only does not know ${unknown.join(', ')}; known: ${Array.from(DATASETS).join(', ')}`);
+  }
+  return new Set(names);
 }
 
 function validateProjectFactsJson() {
@@ -341,7 +351,9 @@ function validateProjectFactsJson() {
   // Absent means "not fetched yet", which is a valid state for a generated file.
   if (!fs.existsSync(path.join(ROOT_DIR, filePath))) return;
   const data = loadJson(filePath);
-  if (!data) return;
+  // loadJson reports unreadable or invalid JSON. Anything else that parsed but
+  // is not an object (null, false, 0) is still wrong.
+  if (data === null) return;
   if (!isPlainObject(data)) {
     addError(filePath, '', 'expected an object keyed by organisation');
     return;
@@ -362,7 +374,7 @@ function validateProjectsJson() {
   const filePath = 'data/projects-2026.json';
   if (!fs.existsSync(path.join(ROOT_DIR, filePath))) return;
   const data = loadJson(filePath);
-  if (!data) return;
+  if (data === null) return;
   if (!isPlainObject(data)) {
     addError(filePath, '', 'expected an object keyed by organisation');
     return;
@@ -374,7 +386,11 @@ function validateProjectsJson() {
       return;
     }
     projects.forEach((project, i) => {
-      if (!isPlainObject(project) || !isNonEmptyString(project.title)) {
+      if (!isPlainObject(project)) {
+        addError(filePath, `${org}[${i}]`, 'expected an object');
+        return;
+      }
+      if (!isNonEmptyString(project.title)) {
         addError(filePath, `${org}[${i}].title`, 'expected a string');
       }
       if (project.hours !== null && project.hours !== undefined && typeof project.hours !== 'number') {
@@ -385,7 +401,13 @@ function validateProjectsJson() {
 }
 
 function main() {
-  const only = selected(process.argv.slice(2));
+  let only;
+  try {
+    only = selected(process.argv.slice(2));
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
   const want = (name) => !only || only.has(name);
 
   if (want('project-facts')) validateProjectFactsJson();

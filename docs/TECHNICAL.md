@@ -53,7 +53,9 @@ arrive from outside the application. Treat every one of them as hostile.
 - `safeHTML` is a tagged template that escapes interpolated values. Use it, or the
   `escapeHtml` helper, for anything going into markup.
 - Never build markup by concatenating unescaped values into `innerHTML`.
-- HTML returned by the GitHub API is sanitised with DOMPurify before insertion.
+- The app does not render Markdown or HTML returned by the GitHub API; those
+  values are escaped and inserted as text. DOMPurify runs in one place, the
+  proposal editor's preview, because that renders what the user typed.
 - `textContent` is the right tool when you only need text.
 
 The rule of thumb: if the value came from `fetch`, from `localStorage`, from a

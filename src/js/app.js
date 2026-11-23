@@ -16,21 +16,32 @@ const bookmarkedSet = new Set(parseStoredBookmarks());
 const GSOC_CURRENT_YEAR = 2026;
 /** Project facts for this mirror, loaded once so sizes can be shown. */
 let PROJECT_FACTS = {};
+let ACCEPTED_PROJECTS = {};
 
 async function loadProjectFacts() {
   try {
-    const res = await fetch('/data/project-facts.json');
-    if (!res.ok) return;
-    const data = await res.json();
-    PROJECT_FACTS = (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};
+    const [factsRes, acceptedRes] = await Promise.all([
+      fetch('/data/project-facts.json').catch(() => null),
+      fetch(`/data/projects-${GSOC_CURRENT_YEAR}.json`).catch(() => null),
+    ]);
+    const facts = factsRes && factsRes.ok ? await factsRes.json() : null;
+    const accepted = acceptedRes && acceptedRes.ok ? await acceptedRes.json() : null;
+    const isMap = (v) => v && typeof v === 'object' && !Array.isArray(v);
+    PROJECT_FACTS = isMap(facts) ? facts : {};
+    ACCEPTED_PROJECTS = isMap(accepted) ? accepted : {};
     delete PROJECT_FACTS._meta;
-    ORGS.forEach((o) => {
-      const facts = PROJECT_FACTS[o.name];
-      o.projectSizes = facts && Array.isArray(facts.sizes) ? facts.sizes.filter(Number.isFinite) : [];
-    });
+    delete ACCEPTED_PROJECTS._meta;
   } catch (_err) {
     PROJECT_FACTS = {};
+    ACCEPTED_PROJECTS = {};
   }
+  ORGS.forEach((o) => {
+    // Accepted projects win over ideas pages, as in the inline renderer.
+    const accepted = (ACCEPTED_PROJECTS[o.name] || []).map((p) => p.hours).filter(Number.isFinite);
+    const facts = PROJECT_FACTS[o.name];
+    const ideaSizes = facts && Array.isArray(facts.sizes) ? facts.sizes.filter(Number.isFinite) : [];
+    o.projectSizes = Array.from(new Set(accepted.length ? accepted : ideaSizes)).sort((a, b) => a - b);
+  });
 }
 
 /** Published project sizes, when the facts dataset has them for this org. */
@@ -1493,9 +1504,9 @@ globalThis.openModal = function (name, triggerElement = null) {
       cards.push(`<div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${sizesLabel(org)}</p><p class="metric-label">Project size</p></div>`);
     }
     const gfi = org._gh && typeof org._gh.gfi === 'number' ? org._gh.gfi : null;
-    if (gfi !== null) {
-      cards.push(`<div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--green)" id="mGfiPlaceholder">${gfi}</p><p class="metric-label">Good 1st Issues</p></div>`);
-    }
+    // The count arrives after the strip is painted, so the card exists whenever
+    // the lookup is possible and is filled in when it lands.
+    cards.push(`<div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--green)" id="mGfiPlaceholder">${gfi === null ? '-' : gfi}</p><p class="metric-label">Good 1st Issues</p></div>`);
     mMetrics.innerHTML = cards.slice(0, 4).join('');
   }
 

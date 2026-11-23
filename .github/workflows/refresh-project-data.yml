@@ -63,7 +63,9 @@ jobs:
             case "${LIMIT}" in
               *[!0-9]*) echo "limit must be a number" >&2; exit 1 ;;
             esac
-            node scripts/extract-project-facts.js --limit "${LIMIT}"
+            # A smoke test writes nothing and skips the coverage comparison:
+            # a five-page result is the point, not a regression.
+            node scripts/extract-project-facts.js --limit "${LIMIT}" --dry-run
           else
             node scripts/extract-project-facts.js
           fi
