@@ -1,30 +1,17 @@
 const test = require('node:test');
 const assert = require('node:assert');
 
-// Mock browser globals for Node.js test environment before importing app.js
-globalThis.window = {};
-globalThis.localStorage = {
-  getItem: () => null,
-  setItem: () => {},
-  removeItem: () => {}
-};
-globalThis.sessionStorage = {
-  getItem: () => null,
-  setItem: () => {}
-};
+// Provide minimal stubs for importing app.js in Node
+const noop = () => {};
+const mockStorage = { getItem: () => null, setItem: noop, removeItem: noop };
+globalThis.localStorage = mockStorage;
+globalThis.sessionStorage = mockStorage;
 globalThis.document = {
-  documentElement: {
-    classList: {
-      toggle: () => {}
-    }
-  },
+  documentElement: { classList: { toggle: noop } },
   getElementById: () => null,
-  querySelectorAll: () => [],
-  addEventListener: () => {}
+  addEventListener: noop
 };
-
-// Set up global ORGS required by app.js initialization
-globalThis.ORGS = require('../src/js/org.js');
+globalThis.ORGS = [];
 
 const { debounce } = require('../src/js/app.js');
 
