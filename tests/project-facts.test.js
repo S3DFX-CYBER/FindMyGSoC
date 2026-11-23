@@ -171,3 +171,16 @@ test('a heading repeated inside its own body does not cut the section short', ()
   const cache = projects.find((p) => p.title === 'Implement cache');
   assert.strictEqual(cache.hours, 175, 'the size belongs to the section it is written in');
 });
+
+test('reads an estimate written in the heading', () => {
+  const page = `
+    <h3>Implement cache, 175 hours</h3>
+    <p>Rewrite the cache layer.</p>
+    <h3>Document the CLI</h3>
+    <p>No estimate yet.</p>`;
+  const projects = extractProjects(page);
+  const cache = projects.find((p) => /Implement cache/.test(p.title));
+  assert.strictEqual(cache.hours, 175);
+  const docs = projects.find((p) => /Document the CLI/.test(p.title));
+  assert.strictEqual(docs.hours, null);
+});

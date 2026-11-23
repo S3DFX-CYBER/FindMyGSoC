@@ -201,6 +201,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /**
+   * Re-runs the recommendation with the input that produced the current
+   * results, without touching the form and without clearing anything if the
+   * refresh fails. Used when the project-size data arrives after a first run.
+   */
+  globalThis.refreshRecommendations = async function () {
+    if (!lastSubmitted) return;
+    const { username, resume } = lastSubmitted;
+    if (!username && !resume) return;
+    try {
+      ghInput.value = username;
+      resumeText.value = resume;
+      getRecsBtn.click();
+    } finally {
+      // The form is restored to what the user last submitted either way.
+      ghInput.value = username;
+      resumeText.value = resume;
+    }
+  };
+
   // Export the current recommendations as a PDF
   const exportPdfBtn = document.getElementById('aiExportPdfBtn');
   if (exportPdfBtn) {
@@ -270,9 +290,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // The last input that produced results, so an automatic refresh can reuse it
+  // instead of reading whatever is in the form now.
+  let lastSubmitted = null;
+
   getRecsBtn.addEventListener('click', async () => {
     const username = ghInput.value.trim();
     const resume = resumeText.value.trim();
+    if (username || resume) {
+      lastSubmitted = { username, resume };
+    }
 
     if (!username && !resume) {
       showError("Please provide either a GitHub username or resume text to get recommendations.");
