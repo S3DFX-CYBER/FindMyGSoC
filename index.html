@@ -2590,7 +2590,9 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     <div class="rounded-[22px] border border-[color:var(--rd-line-soft)] bg-[color:var(--rd-bg)] p-6 shadow-sm">
       <div class="flex items-center justify-between mb-5">
         <h3 class="font-[family-name:var(--rd-display)] text-xl font-medium tracking-tight text-[color:var(--rd-ink)]">2026 Timeline</h3>
-        <span class="font-[family-name:var(--rd-mono)] text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 rounded-full bg-[color:var(--rd-blue-soft)] text-[color:var(--rd-blue-dark)]">Live</span>
+        <!-- Not "Live": this is a fixed 2026 schedule, and the footer of this card
+             says the selection is complete. A live badge would be a false claim. -->
+        <span class="font-[family-name:var(--rd-mono)] text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 rounded-full bg-[color:var(--rd-surface-2)] text-[color:var(--rd-faint)]">2026</span>
       </div>
       <div id="timeline-milestones" aria-label="GSoC timeline milestones"
         class="space-y-3 overflow-y-auto max-h-[340px] pl-4 no-scrollbar focus:outline-none focus:ring-2 focus:ring-orange-300 rounded-lg"></div>
