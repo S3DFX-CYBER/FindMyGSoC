@@ -91,7 +91,12 @@ function calculateActivityScore(githubProfile, org, matchReasons) {
   if (!githubProfile) return 8;
 
   const userAct = (githubProfile.activity || 'low').toLowerCase();
-  const orgAct = (org._gh?.activity || org.activity || 'low').toLowerCase();
+  // Unknown activity is not low activity. Scoring an org as "low" because
+  // nothing has been fetched yet handed a beginner 15 points and a reason on a
+  // first visit, when nothing was known about the org at all.
+  const rawActivity = org._gh?.activity || org.activity || null;
+  if (!rawActivity) return 10;
+  const orgAct = String(rawActivity).toLowerCase();
   const isHigh = orgAct === 'active' || orgAct === 'high' || orgAct === 'hot';
   const isMed = orgAct === 'moderate' || orgAct === 'medium';
   const isLow = orgAct === 'low' || orgAct === 'chill';

@@ -50,7 +50,12 @@ function endpoints(year) {
 
 /** Size in hours, read from prose. Returns null when the text does not say. */
 function hoursFromText(text) {
-  const flat = String(text || '');
+  // abstract_html is markup: "175&nbsp;hours" and "<b>175</b> hours" both have
+  // to read as 175 hours.
+  const flat = String(text || '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/\s+/g, ' ');
   const re = /\b(90|175|350)\s*(?:hours?|hrs?)\b/i;
   const m = re.exec(flat);
   if (m) {
@@ -227,7 +232,10 @@ async function request(url, { accept = '*/*', timeoutMs = 25000 } = {}) {
       },
     });
     if (!res.ok) return null;
-    return res;
+    // The body is read inside the timed window: fetch() can resolve before the
+    // body has arrived, so returning the response and clearing the timer would
+    // let a slow body outlive the deadline.
+    return { res, body: await res.text() };
   } catch (_err) {
     return null;
   } finally {
@@ -236,12 +244,12 @@ async function request(url, { accept = '*/*', timeoutMs = 25000 } = {}) {
 }
 
 async function fetchJson(url) {
-  const res = await request(url, { accept: 'application/json' });
-  if (!res) return null;
-  const type = res.headers.get('content-type') || '';
+  const out = await request(url, { accept: 'application/json' });
+  if (!out) return null;
+  const type = out.res.headers.get('content-type') || '';
   if (!/json/i.test(type)) return null;
   try {
-    return await res.json();
+    return JSON.parse(out.body);
   } catch (_err) {
     return null;
   }
@@ -253,7 +261,12 @@ async function fetchJson(url) {
  * the fields; the page is a fallback for years whose endpoint differs.
  */
 async function fetchProjectDetail(id, year, section) {
-  const api = await fetchJson(`${SITE}/api/${section}/programs/${year}/projects/${id}/`);
+  // The archive API is namespaced by section; the live programme API is not, so
+  // "/api/programs/programs/2026/..." 404s.
+  const apiPath = section === 'archive'
+    ? `${SITE}/api/archive/programs/${year}/projects/${id}/`
+    : `${SITE}/api/programs/${year}/projects/${id}/`;
+  const api = await fetchJson(apiPath);
   if (api && typeof api === 'object') {
     return {
       technologies: listOf(api.tech_tags || api.projectTechnologies || api.technologies),
@@ -298,13 +311,8 @@ async function enrichProjects(projects, year, { limit = 5, cap = 400 } = {}) {
 }
 
 async function fetchText(url) {
-  const res = await request(url, { accept: 'text/html' });
-  if (!res) return null;
-  try {
-    return await res.text();
-  } catch (_err) {
-    return null;
-  }
+  const out = await request(url, { accept: 'text/html' });
+  return out ? out.body : null;
 }
 
 async function main() {
@@ -347,6 +355,11 @@ async function main() {
     const concurrency = concIdx > -1 ? Number(args[concIdx + 1]) : 5;
     const { attempted, enriched } = await enrichProjects(items, year, { limit: concurrency });
     console.log(`enriched ${enriched} of ${attempted} projects from their detail pages`);
+  }
+  if (!items.length) {
+    console.error('no usable projects in the payload; keeping the current dataset');
+    process.exitCode = 1;
+    return;
   }
   const dataset = buildDataset({ results: items }, year);
   const outputPath = outputPathFor(year);

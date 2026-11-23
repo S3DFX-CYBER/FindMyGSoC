@@ -55,9 +55,8 @@ the pull request is closed rather than merged. This is not a punishment for usin
 AI; it is the same standard applied to every contribution: the person submitting
 it understands it.
 
-Automated review runs on pull requests from people, which is most of them. The
-security review skips bot-authored pull requests, and skips its own review when
-the change does not touch what it watches, so "every pull request" would be an
-overstatement. It is useful, but it is not the decision. A bot approving a change does not make it correct, and a bot objecting
+Automated review runs on pull requests from people: the security review workflow
+skips two named bot accounts and does not filter by path, so any non-empty diff
+from a human gets it. It is useful, but it is not the decision. A bot approving a change does not make it correct, and a bot objecting
 to one does not make it wrong. If a review comment is mistaken, reply with your
 reasoning in the thread.

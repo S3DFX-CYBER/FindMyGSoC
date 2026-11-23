@@ -2674,12 +2674,8 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
         <button id="mob-chip-newcomer" data-mobile-chip="chip-newcomer" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
           <span class="material-symbols-outlined text-sm">fiber_new</span> Newcomers
         </button>
-        <button id="mob-chip-hot" data-mobile-chip="chip-hot" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
-          <span class="material-symbols-outlined text-sm">local_fire_department</span> High Competition
-        </button>
-        <button id="mob-chip-chill" data-mobile-chip="chip-chill" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
-          <span class="material-symbols-outlined text-sm">sentiment_satisfied</span> Low Competition
-        </button>
+        <button id="mob-chip-large-projects" data-mobile-chip="chip-large-projects" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors w-full"><span class="material-symbols-outlined text-sm">timer</span> 350h projects</button>
+        <button id="mob-chip-small-projects" data-mobile-chip="chip-small-projects" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors w-full"><span class="material-symbols-outlined text-sm">timer</span> 90h projects</button>
         <button id="mob-chip-active" data-mobile-chip="chip-active" onclick="toggleMobileChip(this)" class="mobile-filter-option flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium hover:bg-surface-container-low transition-colors text-left">
           <span class="material-symbols-outlined text-sm">bolt</span> Actively Maintained
         </button>
@@ -4575,8 +4571,11 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     const rows = shown.map((project) => {
       const size = Number.isFinite(project.hours) ? `<span class="project-size-badge">${project.hours}h</span>` : '';
       const tech = (project.technologies || []).slice(0, 3).join(', ');
-      const title = project.url
-        ? `<a href="${escapeHtml(project.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(project.title)}</a>`
+      // Sanitised like every other outbound link: the dataset is generated, but
+      // a hand-edited entry must not be able to produce a javascript: href.
+      const projectUrl = sanitizeHrefUrl(project.url);
+      const title = projectUrl
+        ? `<a href="${escapeHtml(projectUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(project.title)}</a>`
         : escapeHtml(project.title);
       // Every project page links its code; showing it saves the extra click.
       const codeUrl = sanitizeHrefUrl(project.codeUrl);
@@ -4942,8 +4941,11 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     ORGS.forEach((o) => { o.projectSizes = projectSizes(o); });
 
     // applyFilters() is what populates the grid; renderOrgs() on its own would
-    // paint an empty list.
+    // paint an empty list. The watchlist and the AI panel were rendered before
+    // the sizes existed, so they are re-rendered here too.
     applyFilters();
+    renderWatchlist();
+    updateAIInsights();
     const openModalEl = document.getElementById('orgModal');
     if (openModalEl && openModalEl.classList.contains('open')) {
       const orgName = document.querySelector('#mHeader h2')?.textContent;
@@ -6248,7 +6250,9 @@ if(org.ideas){
     filteredOrgs = ORGS.filter(o => {
       const matchSearch = o.name.toLowerCase().includes(query);
       const matchCat = !cat || o.cat === cat;
-      const matchComp = comp === 'all' || String(projectSizes(o)[0] || '') === comp;
+      // Membership, not the smallest size: an org listing 90 and 350 hours
+      // belongs in both the 90 and the 350 selection.
+      const matchComp = comp === 'all' || projectSizes(o).includes(Number(comp));
       const tags = (o.tags || []).map(t => String(t).toLowerCase());
       const matchLang = selectedLanguages.size === 0
         || (matchAllLanguages

@@ -152,10 +152,15 @@ function extractProjects(html) {
     if (seen.has(head.text)) continue;
     seen.add(head.text);
 
-    // The 600 characters after the heading, which is where a size would sit.
-    const after = text.slice(0, 0);
+    // The text between this heading and the next one, which is where this
+    // project's own size would sit. A fixed 600 character window ran into the
+    // next project and gave it that project's estimate.
     const idx = text.indexOf(head.text);
-    const window = idx === -1 ? '' : text.slice(idx + head.text.length, idx + head.text.length + 600);
+    const nextHeads = heads
+      .map((h) => text.indexOf(h.text, idx + head.text.length))
+      .filter((i) => i > -1);
+    const stop = nextHeads.length ? Math.min(...nextHeads) : text.length;
+    const window = idx === -1 ? '' : text.slice(idx + head.text.length, Math.min(stop, idx + head.text.length + 600));
     const match = /\b(90|175|350)\s*(?:hours?|hrs?|h)\b/i.exec(window);
     const word = /\b(?:size|length|effort|scope)\b\s*[:\-–]?\s*(small|medium|large)\b/i.exec(window);
     let hours = null;
@@ -238,10 +243,17 @@ function readPrevious() {
 
 async function main() {
   const args = process.argv.slice(2);
+  const dryRun = args.includes('--dry-run');
   const limitArg = args.indexOf('--limit');
   const limit = limitArg > -1 ? Number(args[limitArg + 1]) : Infinity;
   const concArg = args.indexOf('--concurrency');
-  const concurrency = concArg > -1 ? Math.max(1, Number(args[concArg + 1])) : 6;
+  const requested = concArg > -1 ? Number(args[concArg + 1]) : 6;
+  if (!Number.isInteger(requested) || requested < 1) {
+    console.error('--concurrency must be a positive integer');
+    process.exitCode = 1;
+    return;
+  }
+  const concurrency = requested;
 
   const orgs = loadOrgs().filter((o) => o && o.name && o.ideas).slice(0, Number.isFinite(limit) ? limit : undefined);
   const previous = readPrevious();
@@ -277,6 +289,12 @@ async function main() {
   // smaller dataset. Refuse to publish it rather than open a deletion PR.
   const before = Object.keys(previous).length;
   const after = Object.keys(out).length;
+  // A smoke test is meant to check a handful of pages, so a small result is the
+  // point rather than a regression. It also writes nothing.
+  if (dryRun) {
+    console.log(`dry run: checked ${checked} ideas pages (${failed} unreachable), ${after} would be recorded`);
+    return;
+  }
   if (before > 20 && after < before * 0.7) {
     console.error(`refusing to write: coverage fell from ${before} to ${after} orgs`);
     process.exitCode = 1;
