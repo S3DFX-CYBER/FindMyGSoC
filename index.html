@@ -6387,8 +6387,24 @@ if(org.ideas){
     applyFilters();
   }
 
+  function debounce(fn, delay = 250) {
+    let timer;
+    return function (...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        fn.apply(this, args);
+      }, delay);
+    };
+  }
+
+  const debouncedPerformSearch = debounce((val) => performSearch(val, false), 250);
+  const debouncedRenderMentorFinder = debounce(() => {
+    mentorCurrentPage = 1;
+    renderMentorFinder();
+  }, 250);
+
   document.getElementById('searchInput').addEventListener('input', (e) => {
-    performSearch(e.target.value, false);
+    debouncedPerformSearch(e.target.value);
   });
   document.getElementById('categoryFilter').addEventListener('change', () => {
     // Track filter badge when user changes category
@@ -6405,10 +6421,7 @@ if(org.ideas){
     applyFilters();
   });
   document.getElementById('sortSelect')?.addEventListener('change', applyFilters);
-  document.getElementById('mentorSearchInput')?.addEventListener('input', () => {
-    mentorCurrentPage = 1;
-    renderMentorFinder();
-  });
+  document.getElementById('mentorSearchInput')?.addEventListener('input', debouncedRenderMentorFinder);
 
   document.getElementById('mentorChannelFilter')?.addEventListener('change', () => {
     mentorCurrentPage = 1;
@@ -6437,7 +6450,7 @@ if(org.ideas){
 
     heroSearch.addEventListener('input', (e) => {
       document.getElementById('searchInput').value = e.target.value;
-      performSearch(e.target.value, false);
+      debouncedPerformSearch(e.target.value);
     });
 
     heroSearch.addEventListener('keydown', (e) => {
