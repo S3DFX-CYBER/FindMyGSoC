@@ -158,3 +158,16 @@ test('a project does not inherit the next project\'s size', () => {
   assert.strictEqual(first.hours, null, 'the unsized idea keeps a null size');
   assert.strictEqual(second.hours, 350);
 });
+
+test('a heading repeated inside its own body does not cut the section short', () => {
+  // The title appears again in the paragraph, which a text search would treat
+  // as the next heading and leave this project without its size.
+  const page = `
+    <h3>Implement cache</h3>
+    <p>Implement cache requires 175 hours. Implement cache is the whole job.</p>
+    <h3>Next idea</h3>
+    <p>350 hours.</p>`;
+  const projects = extractProjects(page);
+  const cache = projects.find((p) => p.title === 'Implement cache');
+  assert.strictEqual(cache.hours, 175, 'the size belongs to the section it is written in');
+});

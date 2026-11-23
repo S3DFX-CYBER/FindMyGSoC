@@ -4946,6 +4946,15 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
     applyFilters();
     renderWatchlist();
     updateAIInsights();
+
+    // The recommender scores on the published sizes. Results produced before
+    // this fetch landed are re-computed by re-running the same button the user
+    // pressed, so nothing is left stale and no second code path is invented.
+    const results = document.getElementById('aiResultsContainer');
+    const recsBtn = document.getElementById('btnGetRecommendations');
+    if (results && results.children.length && recsBtn && !recsBtn.disabled) {
+      recsBtn.click();
+    }
     const openModalEl = document.getElementById('orgModal');
     if (openModalEl && openModalEl.classList.contains('open')) {
       const orgName = document.querySelector('#mHeader h2')?.textContent;

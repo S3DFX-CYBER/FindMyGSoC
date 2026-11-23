@@ -133,36 +133,43 @@ function extractDifficulty(html) {
 }
 
 /**
- * Project entries: one per usable heading, with the size stated near it.
+ * The page split at its headings: each section is a heading and the markup that
+ * follows it, up to the next heading.
  *
- * Ideas pages differ in where they put the size. Some write it under the
- * heading ("175 hours"), some state it once for the whole page. So the heading
- * is the anchor and the size is looked for in the text that follows it; when
- * there is none, the entry keeps a null size rather than borrowing another
- * project's.
+ * This is structural on purpose. Searching the flattened text for a heading's
+ * own words finds them again inside the body when a title is repeated, and the
+ * next project's estimate then leaks backwards.
+ */
+function headingSections(html) {
+  const re = /<(h[2-4])\b[^>]*>([\s\S]*?)<\/\1>/gi;
+  const marks = [];
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    marks.push({ start: m.index, end: m.index + m[0].length, title: toText(m[2]) });
+  }
+  return marks.map((mark, i) => ({
+    title: mark.title,
+    body: html.slice(mark.end, i + 1 < marks.length ? marks[i + 1].start : html.length),
+  }));
+}
+
+/**
+ * Project entries: one per usable heading, with the size stated in its own
+ * section. When the section states no size the entry keeps a null rather than
+ * borrowing the next project's.
  */
 function extractProjects(html) {
-  const text = toText(html);
-  const heads = headings(html);
   const projects = [];
   const seen = new Set();
 
-  for (const head of heads) {
-    if (!isUsableTitle(head.text)) continue;
-    if (seen.has(head.text)) continue;
-    seen.add(head.text);
+  for (const section of headingSections(html)) {
+    if (!isUsableTitle(section.title)) continue;
+    if (seen.has(section.title)) continue;
+    seen.add(section.title);
 
-    // The text between this heading and the next one, which is where this
-    // project's own size would sit. A fixed 600 character window ran into the
-    // next project and gave it that project's estimate.
-    const idx = text.indexOf(head.text);
-    const nextHeads = heads
-      .map((h) => text.indexOf(h.text, idx + head.text.length))
-      .filter((i) => i > -1);
-    const stop = nextHeads.length ? Math.min(...nextHeads) : text.length;
-    const window = idx === -1 ? '' : text.slice(idx + head.text.length, Math.min(stop, idx + head.text.length + 600));
-    const match = /\b(90|175|350)\s*(?:hours?|hrs?|h)\b/i.exec(window);
-    const word = /\b(?:size|length|effort|scope)\b\s*[:\-–]?\s*(small|medium|large)\b/i.exec(window);
+    const text = toText(section.body);
+    const match = /\b(90|175|350)\s*(?:hours?|hrs?|h)\b/i.exec(text);
+    const word = /\b(?:size|length|effort|scope)\b\s*[:\-–]?\s*(small|medium|large)\b/i.exec(text);
     let hours = null;
     if (match) {
       hours = Number(match[1]);
@@ -170,7 +177,7 @@ function extractProjects(html) {
       hours = SIZE_WORDS[word[1].toLowerCase()] || null;
     }
 
-    projects.push({ title: head.text, hours });
+    projects.push({ title: section.title, hours });
   }
 
   return projects.slice(0, 40);
@@ -326,4 +333,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { factsFromPage, extractSizes, extractProjects, extractDifficulty, isUsableTitle, toText };
+module.exports = { factsFromPage, extractSizes, extractProjects, extractDifficulty, isUsableTitle, headingSections, toText };
