@@ -91,7 +91,12 @@ function calculateActivityScore(githubProfile, org, matchReasons) {
   if (!githubProfile) return 8;
 
   const userAct = (githubProfile.activity || 'low').toLowerCase();
-  const orgAct = (org._gh?.activity || org.activity || org.competition || 'low').toLowerCase();
+  // Unknown activity is not low activity. Scoring an org as "low" because
+  // nothing has been fetched yet handed a beginner 15 points and a reason on a
+  // first visit, when nothing was known about the org at all.
+  const rawActivity = org._gh?.activity || org.activity || null;
+  if (!rawActivity) return 10;
+  const orgAct = String(rawActivity).toLowerCase();
   const isHigh = orgAct === 'active' || orgAct === 'high' || orgAct === 'hot';
   const isMed = orgAct === 'moderate' || orgAct === 'medium';
   const isLow = orgAct === 'low' || orgAct === 'chill';
@@ -116,17 +121,21 @@ function calculateExperienceScore(githubProfile, org, matchReasons) {
   const userLangCount = githubProfile?.languages?.length || 0;
   const isExperienced = userStars > 50 || userLangCount > 5;
   const isBeginner = !githubProfile || (userStars < 10 && userLangCount < 3);
-  const orgCodebase = (org.codebase || 'intermediate').toLowerCase();
+  // Score on the project sizes the org publishes, not on a guess about its
+  // codebase. A large org can list a 90 hour project, and often does.
+  const sizes = Array.isArray(org.projectSizes) ? org.projectSizes : [];
+  const hasSmall = sizes.includes(90);
+  const hasLarge = sizes.includes(350);
 
-  if (isBeginner && orgCodebase === 'beginner') {
-    matchReasons.push("Very beginner-friendly codebase");
+  if (isBeginner && hasSmall) {
+    matchReasons.push("Lists a 90 hour project, the smallest GSoC size");
     return 25;
   }
-  if (isExperienced && orgCodebase === 'advanced') {
-    matchReasons.push("Challenging project for your experience");
+  if (isExperienced && hasLarge) {
+    matchReasons.push("Lists a 350 hour project for a longer run");
     return 20;
   }
-  if (orgCodebase === 'intermediate') {
+  if (sizes.length) {
     return 15;
   }
   return 10;
@@ -179,5 +188,5 @@ function calculateScoreForOrg(org, index, userLanguages, userTopics, githubProfi
 globalThis.getRecommendations = getRecommendations;
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { getRecommendations };
+  module.exports = { getRecommendations, calculateActivityScore };
 }

@@ -5,7 +5,7 @@ const path = require('node:path');
 
 const TARGETS = [
   path.resolve(__dirname, 'orgs.js'),
-  path.resolve(__dirname, '../../src/js/org.js')
+  path.resolve(__dirname, '../src/js/org.js')
 ];
 
 const IDEAS_SLUG_REGEX = /summerofcode\.withgoogle\.com\/(?:programs|archive)\/\d+\/organizations\/([a-z0-9-]+)/i;

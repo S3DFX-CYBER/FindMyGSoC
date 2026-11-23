@@ -1,0 +1,105 @@
+name: 📐 Refresh Project Data
+
+# Two sources, two jobs.
+#
+# 1. Google's own project pages: what was actually accepted, with mentors,
+#    technologies, topics and the stated size. Authoritative.
+# 2. Each org's ideas page: what is still just an idea, which is what next
+#    year's applicant actually needs to read.
+#
+# Nothing is inferred anywhere. A size that is not stated is recorded as null,
+# and the UI renders nothing for it.
+
+on:
+  schedule:
+    # Weekly, Monday 04:00 UTC (09:30 IST). Project pages change rarely; this
+    # job makes one API call plus roughly 184 outbound requests.
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Smoke test: check only the first N organisations and publish nothing."
+        required: false
+        default: ""
+
+concurrency:
+  group: refresh-project-data
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a #v4.2.0
+        with:
+          node-version: "24"
+
+      # The authoritative dataset. On a smoke test it is skipped: it is one call
+      # and has no per-org limit to slice.
+      - name: Fetch accepted projects
+        if: inputs.limit == ''
+        run: node scripts/fetch-official-projects.js
+
+      # inputs.limit reaches this step through the environment, never as an
+      # expression spliced into the script, and it is checked to be a number.
+      - name: Extract org ideas pages
+        env:
+          LIMIT: ${{ inputs.limit }}
+        run: |
+          set -euo pipefail
+          if [ -n "${LIMIT}" ]; then
+            case "${LIMIT}" in
+              *[!0-9]*) echo "limit must be a number" >&2; exit 1 ;;
+            esac
+            # A smoke test writes nothing and skips the coverage comparison:
+            # a five-page result is the point, not a regression.
+            node scripts/extract-project-facts.js --limit "${LIMIT}" --dry-run
+          else
+            node scripts/extract-project-facts.js
+          fi
+
+      # validate:data also checks datasets this job does not touch, and reports
+      # pre-existing warnings in data/mentors.json. Only the two files this job
+      # writes are checked here, and a warning there is fatal.
+      - name: Validate the result
+        run: node scripts/validate-generated-data.js --only project-facts,projects
+
+      - name: Commit and open a pull request
+        if: github.ref == 'refs/heads/main' && inputs.limit == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- data/projects-2026.json data/project-facts.json; then
+            echo "No change in the project data."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          BRANCH="chore/refresh-project-data"
+          git checkout -B "$BRANCH"
+          git add data/projects-2026.json data/project-facts.json
+          git commit -s -m "chore(data): refresh project data for $(date -u +%Y-%m-%d)"
+          git push --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/${BRANCH}"
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore(data): refresh project data" \
+            --body "Automated refresh of the two project datasets.
+
+          - \`data/projects-2026.json\` comes from Google's own project pages: what was accepted, with mentors, technologies and the stated size.
+          - \`data/project-facts.json\` comes from each org's ideas page: what is still an idea.
+
+          Sizes are read from the text Google and the orgs write. Where nothing is stated, the value is null and the UI shows nothing, rather than guessing from the org's size or reputation." \
+            || gh pr view "$BRANCH" --json number >/dev/null 2>&1 \
+            || { echo "gh pr create failed" >&2; exit 1; }

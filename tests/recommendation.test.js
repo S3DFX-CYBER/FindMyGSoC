@@ -11,7 +11,7 @@ globalThis.ORGS = require('../src/js/org.js');
 require('../src/js/skillExtractor.js');
 
 // Import recommender
-const { getRecommendations } = require('../src/js/recommender.js');
+const { getRecommendations, calculateActivityScore } = require('../src/js/recommender.js');
 
 test('getRecommendations returns top 6 recommendations sorted by score', () => {
   const resumeSkills = ['Python', 'Docker', 'Machine Learning'];
@@ -39,10 +39,19 @@ test('getRecommendations calculates matching scores and yields logical match rea
   const resumeSkills = ['Kotlin', 'Android'];
   const recommendations = getRecommendations(resumeSkills, null);
 
-  // FOSSASIA is a known android/java org, so it should be recommended
-  const fossasiaRec = recommendations.find(r => r.org.name === 'FOSSASIA');
-  assert.ok(fossasiaRec, 'FOSSASIA should be recommended');
+  // FOSSASIA is a known android/java org, so it should rank on the skill match.
+  // It used to be pushed into the top 6 by an "intermediate codebase" label that
+  // no longer exists: difficulty is a property of a project, not of an org, and
+  // the recommender now scores on the project sizes an org actually publishes.
+  // What matters is that the match is real and explained, not its exact rank.
+  const ranked = getRecommendations(resumeSkills, null, 15);
+  const fossasiaRec = ranked.find(r => r.org.name === 'FOSSASIA');
+  assert.ok(fossasiaRec, 'FOSSASIA should appear for Kotlin/Android skills');
   assert.ok(fossasiaRec.score > 0, 'FOSSASIA score should be positive with Kotlin/Android skills');
+  assert.ok(
+    fossasiaRec.reasons.some((r) => /android|kotlin|stack/i.test(r)),
+    'the reason should name the stack that matched'
+  );
 });
 
 test('getRecommendations includes stability bonus for veteran organizations', () => {
@@ -53,4 +62,25 @@ test('getRecommendations includes stability bonus for veteran organizations', ()
   assert.ok(lfRec, 'The Linux Foundation should be recommended');
   const hasVeteranReason = lfRec.reasons.some(r => r.includes('GSoC Veteran'));
   assert.ok(hasVeteranReason, 'Should have GSoC Veteran stability bonus reason');
+});
+
+test('unknown organisation activity is neutral, not low', () => {
+  const reasons = [];
+  const score = calculateActivityScore({ activity: 'low' }, { name: 'X' }, reasons);
+  assert.strictEqual(score, 10, 'an org with no activity data must not be scored as low');
+  assert.ok(
+    !reasons.some((r) => /manageable pacing/i.test(r)),
+    'and must not be given the low-activity reason'
+  );
+});
+
+test('known organisation activity still scores and explains itself', () => {
+  const reasons = [];
+  const high = calculateActivityScore({ activity: 'high' }, { _gh: { activity: 'active' } }, reasons);
+  assert.ok(high > 10, 'a known active org scores above the neutral baseline');
+  assert.ok(reasons.length > 0, 'and the match is explained');
+
+  const reasons2 = [];
+  const low = calculateActivityScore({ activity: 'low' }, { _gh: { activity: 'low' } }, reasons2);
+  assert.ok(low >= 10, 'a known low-activity org still scores');
 });

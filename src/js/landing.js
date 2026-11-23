@@ -1,5 +1,5 @@
 /**
- * landing.js — FindMyGSoC Landing Page Scripts
+ * landing.js, FindMyGSoC Landing Page Scripts
  *
  * Responsibilities:
  *  - Safe client-side storage (theme persistence) with input validation
@@ -34,7 +34,7 @@ const SafeStorage = {
     try {
       window.localStorage.setItem(key, value);
     } catch (_e) {
-      // Storage unavailable (private mode, quota exceeded, etc.) — fail silently
+      // Storage unavailable (private mode, quota exceeded, etc.), fail silently
     }
   },
 
@@ -48,7 +48,7 @@ const SafeStorage = {
     try {
       const raw = window.localStorage.getItem(key);
       if (allowList && raw !== null && !allowList.includes(raw)) {
-        // Value is not in the allowlist — treat as absent and clean up
+        // Value is not in the allowlist, treat as absent and clean up
         window.localStorage.removeItem(key);
         return null;
       }
@@ -61,7 +61,7 @@ const SafeStorage = {
 
 // ── Comparison Table Data ─────────────────────────────────────────────────────
 
-/** Single source of truth — eliminates duplicated table rows in markup */
+/** Single source of truth, eliminates duplicated table rows in markup */
 const COMPARISON_DATA = [
   { feature: 'AI skill matching',          fmg: 'primary',   gsoc: false,       god: false,       gh: false },
   { feature: 'Live Good First Issues',     fmg: 'primary',   gsoc: false,       god: false,       gh: 'secondary' },
@@ -82,7 +82,7 @@ const COMPETITORS = [
 
 // ── FAQ Data ──────────────────────────────────────────────────────────────────
 
-/** Single source of truth — eliminates duplicated accordion blocks in markup */
+/** Single source of truth, eliminates duplicated accordion blocks in markup */
 const FAQ_DATA = [
   {
     id: 'faq-ans-1',
@@ -110,25 +110,27 @@ const FAQ_DATA = [
 
 /**
  * Creates a single comparison-table <td> cell using DOM APIs (no innerHTML).
- * @param {string|false} value  Tailwind color name or false for ✗
+ * @param {string|false} value  'primary', 'secondary' or false
+ * @param {boolean} [isUs]      Marks the FindMyGSoC column
  * @returns {HTMLTableCellElement}
  */
-function createComparisonCell(value) {
+function createComparisonCell(value, isUs) {
   const td = document.createElement('td');
-  td.className = 'py-3_5 px-4 text-center';
+  if (isUs) { td.className = 'us'; }
 
-  const icon = document.createElement('span');
-  icon.className = 'material-symbols-outlined text-xl';
-
+  const mark = document.createElement('span');
   if (!value) {
-    icon.classList.add('text-zinc-300', 'dark:text-zinc-600');
-    icon.textContent = 'cancel';
+    mark.className = 'n';
+    mark.textContent = '-';
+  } else if (value === 'secondary') {
+    mark.className = 'p';
+    mark.textContent = 'Partial';
   } else {
-    icon.classList.add(`text-${value}`, 'icon-fill');
-    icon.textContent = 'check_circle';
+    mark.className = 'y';
+    mark.textContent = ' Yes';
   }
 
-  td.appendChild(icon);
+  td.appendChild(mark);
   return td;
 }
 
@@ -146,11 +148,10 @@ function renderComparisonRows() {
     const tr = document.createElement('tr');
 
     const featureTd = document.createElement('td');
-    featureTd.className = 'py-3_5 pr-6 text-zinc-700 dark:text-zinc-300 font-medium';
     featureTd.textContent = row.feature;
     tr.appendChild(featureTd);
 
-    tr.appendChild(createComparisonCell(row.fmg));
+    tr.appendChild(createComparisonCell(row.fmg, true));
     tr.appendChild(createComparisonCell(row.gsoc));
     tr.appendChild(createComparisonCell(row.god));
     tr.appendChild(createComparisonCell(row.gh));
@@ -172,11 +173,10 @@ function renderMobileComparisonRows(competitorKey) {
     const tr = document.createElement('tr');
 
     const featureTd = document.createElement('td');
-    featureTd.className = 'py-3.5 pr-3 text-zinc-700 dark:text-zinc-300 font-medium';
     featureTd.textContent = row.feature;
     tr.appendChild(featureTd);
 
-    tr.appendChild(createComparisonCell(row.fmg));
+    tr.appendChild(createComparisonCell(row.fmg, true));
     tr.appendChild(createComparisonCell(row[competitorKey]));
 
     fragment.appendChild(tr);
@@ -196,7 +196,7 @@ function updateMobileCompetitorHeader(competitor) {
     link.href = competitor.href;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.className = 'hover:text-primary transition-colors underline decoration-dotted';
+    link.className = 'mob-head';
     link.textContent = competitor.label;
     labelEl.appendChild(link);
   } else {
@@ -204,19 +204,11 @@ function updateMobileCompetitorHeader(competitor) {
   }
 }
 
-const TAB_ACTIVE_CLASSES = [
-  'bg-white', 'dark:bg-zinc-900', 'text-zinc-900', 'dark:text-zinc-50',
-  'border-primary', 'shadow-sm',
-];
-const TAB_INACTIVE_CLASSES = ['border-transparent', 'text-zinc-500', 'dark:text-zinc-400'];
-
 function setActiveCompetitorTab(key) {
-  document.querySelectorAll('.compare-tab-btn').forEach((btn) => {
+  document.querySelectorAll('.cmp-tab-btn').forEach((btn) => {
     const isActive = btn.dataset.competitor === key;
     btn.setAttribute('aria-selected', String(isActive));
     btn.setAttribute('tabindex', isActive ? '0' : '-1');
-    btn.classList.remove(...TAB_ACTIVE_CLASSES, ...TAB_INACTIVE_CLASSES);
-    btn.classList.add('border', ...(isActive ? TAB_ACTIVE_CLASSES : TAB_INACTIVE_CLASSES));
 
     if (isActive) {
       const panel = document.getElementById('comparisonTabpanel');
@@ -229,7 +221,7 @@ function initComparisonTabs() {
   const container = document.getElementById('competitorTabs');
   if (!container) { return; }
 
-  const tabs = Array.from(container.querySelectorAll('.compare-tab-btn'));
+  const tabs = Array.from(container.querySelectorAll('.cmp-tab-btn'));
 
   const activate = (key) => {
     const competitor = COMPETITORS.find((c) => c.key === key);
@@ -240,7 +232,7 @@ function initComparisonTabs() {
   };
 
   container.addEventListener('click', (e) => {
-    const btn = e.target.closest('.compare-tab-btn');
+    const btn = e.target.closest('.cmp-tab-btn');
     if (!btn) { return; }
     activate(btn.dataset.competitor);
   });
@@ -280,52 +272,32 @@ function renderFaqList() {
 
   const fragment = document.createDocumentFragment();
 
-  const wrapClass = [
-    'border', 'border-zinc-200/70', 'dark:border-zinc-800/80',
-    'bg-white/80', 'dark:bg-[#1a1108]/40', 'glass',
-    'rounded-2xl', 'overflow-hidden', 'transition-colors', 'duration-300',
-  ];
-
-  const btnClass = [
-    'faq-trigger', 'flex', 'items-center', 'justify-between', 'w-full',
-    'p-6', 'text-left', 'font-bold', 'text-sm', 'sm:text-base',
-    'text-zinc-800', 'dark:text-zinc-100',
-    'hover:bg-zinc-50/50', 'dark:hover:bg-zinc-800/35',
-    'transition-colors', 'focus:outline-none',
-  ];
-
   for (const item of FAQ_DATA) {
-    const wrapper = document.createElement('div');
-    wrapper.classList.add(...wrapClass);
+    const details = document.createElement('details');
 
-    // Button
-    const btn = document.createElement('button');
-    btn.classList.add(...btnClass);
-    btn.setAttribute('aria-expanded', 'false');
-    btn.setAttribute('aria-controls', item.id);
-
+    const summary = document.createElement('summary');
     const questionSpan = document.createElement('span');
     questionSpan.textContent = item.q;
-    btn.appendChild(questionSpan);
+    summary.appendChild(questionSpan);
 
-    const iconSpan = document.createElement('span');
-    iconSpan.className = 'material-symbols-outlined faq-icon transition-transform duration-200';
-    iconSpan.textContent = 'expand_more';
-    btn.appendChild(iconSpan);
+    // Decorative plus marker, the <details> element owns the open/closed state
+    const marker = document.createElement('span');
+    marker.className = 'pm';
+    marker.setAttribute('aria-hidden', 'true');
+    marker.textContent = '+';
+    summary.appendChild(marker);
 
-    // Answer panel
-    const panel = document.createElement('div');
-    panel.id = item.id;
-    panel.className = 'faq-content transition-all duration-300';
+    const answer = document.createElement('div');
+    answer.className = 'ans';
+    answer.id = item.id;
 
     const answerPara = document.createElement('p');
-    answerPara.className = 'p-6 pt-0 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed border-t border-zinc-100/50 dark:border-zinc-800/50';
     answerPara.textContent = item.a;
+    answer.appendChild(answerPara);
 
-    panel.appendChild(answerPara);
-    wrapper.appendChild(btn);
-    wrapper.appendChild(panel);
-    fragment.appendChild(wrapper);
+    details.appendChild(summary);
+    details.appendChild(answer);
+    fragment.appendChild(details);
   }
 
   container.appendChild(fragment);
@@ -333,39 +305,105 @@ function renderFaqList() {
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
 
+/**
+ * Applies a theme to <html>. Both the class and the data attribute are set:
+ * the class is what the legacy stylesheet keys on, the attribute is what the
+ * redesign tokens key on, so either layer switches with the toggle.
+ * @param {boolean} isDark
+ */
+function applyTheme(isDark) {
+  const root = document.documentElement;
+  root.classList.toggle('dark', isDark);
+  if (isDark) {
+    root.dataset.theme = 'dark';
+  } else {
+    root.dataset.theme = 'light';
+  }
+}
+
 /** Syncs the theme toggle button icon and aria attributes to current state. */
 function updateThemeIcon() {
   const btn = document.getElementById('themeToggleBtn');
-  const icon = btn ? btn.querySelector('.material-symbols-outlined') : null;
-  if (!icon) { return; }
+  if (!btn) { return; }
 
   const isDark = document.documentElement.classList.contains('dark');
-  icon.textContent = isDark ? 'light_mode' : 'dark_mode';
   btn.setAttribute('aria-pressed', String(isDark));
   btn.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+  btn.setAttribute('title', isDark ? 'Switch to light theme' : 'Switch to dark theme');
 }
 
 /** Toggles dark/light theme and persists the choice via SafeStorage. */
 function toggleTheme() {
-  const isDark = document.documentElement.classList.toggle('dark');
+  const isDark = !document.documentElement.classList.contains('dark');
+  applyTheme(isDark);
   SafeStorage.set('theme', isDark ? 'dark' : 'light');
   updateThemeIcon();
 }
 
 // ── Mobile Menu ───────────────────────────────────────────────────────────────
 
-/** Toggles the mobile navigation drawer. */
-function toggleMenu() {
+/** Element that had focus before the drawer opened, so it can be restored. */
+let lastFocused = null;
+
+/** Focusable controls inside the open drawer, in tab order. */
+function getDrawerFocusables() {
+  const menu = document.getElementById('mobileMenu');
+  if (!menu) { return []; }
+  return Array.from(menu.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+    .filter((el) => el.offsetParent !== null);
+}
+
+/** Keeps Tab and Shift+Tab inside the drawer while it is open. */
+function trapDrawerFocus(event) {
+  const menu = document.getElementById('mobileMenu');
+  if (!menu || menu.dataset.open !== 'true' || event.key !== 'Tab') { return; }
+
+  const focusables = getDrawerFocusables();
+  if (!focusables.length) { return; }
+
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+
+  // Clicking a non-focusable part of the panel parks focus on <body>, so pull
+  // it back before letting Tab walk into the page behind the overlay.
+  if (!menu.contains(document.activeElement)) {
+    event.preventDefault();
+    first.focus();
+    return;
+  }
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+/**
+ * Opens or closes the mobile navigation drawer.
+ * @param {boolean} [force]  Explicit state; toggles when omitted
+ */
+function toggleMenu(force) {
   const menu = document.getElementById('mobileMenu');
   const btn  = document.getElementById('menuBtn');
   if (!menu || !btn) { return; }
 
-  const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-  menu.classList.toggle('hidden');
-  btn.setAttribute('aria-expanded', String(!isExpanded));
+  const isOpen = typeof force === 'boolean' ? force : menu.dataset.open !== 'true';
+  menu.dataset.open = String(isOpen);
 
-  const icon = btn.querySelector('.material-symbols-outlined');
-  if (icon) { icon.textContent = !isExpanded ? 'close' : 'menu'; }
+  if (isOpen) {
+    lastFocused = document.activeElement;
+    const focusables = getDrawerFocusables();
+    if (focusables.length) { focusables[0].focus(); }
+  } else if (lastFocused && typeof lastFocused.focus === 'function') {
+    lastFocused.focus();
+    lastFocused = null;
+  }
+  btn.setAttribute('aria-expanded', String(isOpen));
+  btn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+
 }
 
 // ── Footer Patch ──────────────────────────────────────────────────────────────
@@ -392,6 +430,9 @@ function applyFooterPatch(footer) {
  * Uses MutationObserver so it fires exactly once with no polling overhead.
  */
 function patchFooterLinks() {
+  // The landing page ships its own footer markup; only patch the injected one.
+  if (!document.getElementById('footer-placeholder')) { return; }
+
   const existing = document.querySelector('footer.premium-footer');
   if (existing) { applyFooterPatch(existing); return; }
 
@@ -414,7 +455,7 @@ function patchFooterLinks() {
 /** Wires smooth-scroll behaviour on all in-page anchor links. */
 function wireAnchorScroll() {
   const NAVBAR_HEIGHT = 72;
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href').slice(1);
       if (!targetId) { return; }
@@ -422,10 +463,11 @@ function wireAnchorScroll() {
       if (!target) { return; }
       e.preventDefault();
 
-      // Close mobile menu if open
+      // Close the mobile drawer if it is open. The drawer tracks state on
+      // data-open, not a `hidden` class, so test that instead.
       const mobileMenu = document.getElementById('mobileMenu');
-      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-        toggleMenu();
+      if (mobileMenu && mobileMenu.dataset.open === 'true') {
+        toggleMenu(false);
       }
 
       const top = target.getBoundingClientRect().top + window.scrollY - NAVBAR_HEIGHT;
@@ -442,6 +484,17 @@ function initHiwAnimations() {
   const steps = document.querySelectorAll('.hiw-step');
   if (!steps.length) { return; }
 
+  // Check for support before hiding anything: without an observer the steps
+  // would stay hidden, and a throw here would abort the rest of the bootstrap.
+  if (!('IntersectionObserver' in globalThis)) {
+    steps.forEach((step) => { step.style.opacity = '1'; step.style.transform = 'none'; });
+    return;
+  }
+
+  // The steps are hidden by .js-reveal, so opt in here too: this runs even when
+  // the page has no [data-rv] targets for initReveals to opt in on.
+  document.documentElement.classList.add('js-reveal');
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -453,6 +506,59 @@ function initHiwAnimations() {
   }, { threshold: 0.15 });
 
   steps.forEach((step) => observer.observe(step));
+}
+
+// ── Reveal on scroll ──────────────────────────────────────────────────────────
+
+/**
+ * Adds the `in` class to every `[data-rv]` element as it enters the viewport.
+ * The CSS keeps these elements visible when reduced motion is requested, so this
+ * is purely additive.
+ */
+function initReveals() {
+  const targets = document.querySelectorAll('[data-rv]');
+  if (!targets.length) { return; }
+
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach((el) => el.classList.add('in'));
+    return;
+  }
+
+  // Only now is it safe to hide the elements we are about to reveal. Anything
+  // already on screen is marked visible in the same frame, so the hero does not
+  // flash out and fade back in on a slow load.
+  document.documentElement.classList.add('js-reveal');
+  const viewportHeight = globalThis.innerHeight || 800;
+  const revealed = [];
+  targets.forEach((el) => {
+    if (el.getBoundingClientRect().top < viewportHeight) {
+      el.classList.add('in');
+      revealed.push(el);
+    }
+  });
+  const pending = Array.from(targets).filter((el) => !revealed.includes(el));
+  if (!pending.length) { return; }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+
+  pending.forEach((el) => observer.observe(el));
+}
+
+/** Adds the hairline border to the sticky nav once the page has scrolled. */
+function initNavScrollState() {
+  const nav = document.getElementById('nav');
+  if (!nav) { return; }
+
+  const sync = () => nav.classList.toggle('stuck', window.scrollY > 8);
+  window.addEventListener('scroll', sync, { passive: true });
+  sync();
 }
 
 // ── Live Statistics ───────────────────────────────────────────────────────────
@@ -479,8 +585,66 @@ function renderLiveStats() {
   setText('statNewcomers',        `${newcomerOrgs}+`);
   setText('org-count-text',       `${totalOrgs}+ organizations`);
   setText('dash-org-count',       `${totalOrgs} Orgs`);
+  setText('org-count',            String(totalOrgs));
   setText('footerOrgCount',       String(totalOrgs));
   setText('footerVeteranOrgCount', String(veteranOrgs));
+}
+
+// ── Live good-first issue ─────────────────────────────────────────────────────
+
+/**
+ * Puts one real, currently-open good first issue in the hero card instead of a
+ * hardcoded sample. Degrades to a plain link to the issue list if the dataset
+ * cannot be reached.
+ */
+async function renderLiveGfi() {
+  const repoEl = document.getElementById('gfiRepo');
+  const labelEl = document.getElementById('gfiLabel');
+  const ageEl = document.getElementById('gfiAge');
+  const row = document.getElementById('gfiRow');
+  if (!repoEl || !row) { return; }
+
+  const relativeAge = (iso) => {
+    const then = Date.parse(iso);
+    if (!Number.isFinite(then)) { return ''; }
+    const days = Math.max(0, Math.floor((Date.now() - then) / 86400000));
+    if (days === 0) { return 'today'; }
+    if (days === 1) { return '1 day ago'; }
+    if (days < 30) { return `${days} days ago`; }
+    const months = Math.floor(days / 30);
+    return months === 1 ? '1 month ago' : `${months} months ago`;
+  };
+
+  try {
+    const res = await fetch('/data/issues.json');
+    if (!res.ok) { throw new Error(`HTTP ${res.status}`); }
+    const data = await res.json();
+    const issues = Array.isArray(data.issues) ? data.issues : [];
+    if (!issues.length) { throw new Error('empty dataset'); }
+
+    const issue = issues[0];
+    repoEl.textContent = issue.repo || issue.org || 'good first issues';
+    labelEl.textContent = (issue.labels && issue.labels[0]) || 'good first issue';
+    ageEl.textContent = relativeAge(issue.updated_at);
+    row.title = issue.title || 'Browse good first issues';
+    const rawUrl = String(issue.url || '').trim();
+    const safeUrl = (() => {
+      // Mirror the app's helper: absolute http(s) only, never relative.
+      if (!rawUrl) { return ''; }
+      try {
+        const parsed = new URL(rawUrl);
+        return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.href : '';
+      } catch (_err) {
+        return '';
+      }
+    })();
+    if (safeUrl) { row.href = safeUrl; row.target = '_blank'; row.rel = 'noopener noreferrer'; }
+  } catch (_e) {
+    repoEl.textContent = 'good first issues';
+    labelEl.textContent = '';
+    ageEl.textContent = '';
+    row.href = '/app#issues';
+  }
 }
 
 // ── Bootstrap ─────────────────────────────────────────────────────────────────
@@ -497,23 +661,24 @@ document.addEventListener('DOMContentLoaded', () => {
   if (themeBtn) { themeBtn.addEventListener('click', toggleTheme); }
 
   const menuBtn = document.getElementById('menuBtn');
-  if (menuBtn) { menuBtn.addEventListener('click', toggleMenu); }
+  if (menuBtn) { menuBtn.addEventListener('click', () => toggleMenu()); }
+
+  // Drawer: close on backdrop, close button, Escape, or any link inside the panel
+  const drawer = document.getElementById('mobileMenu');
+  if (drawer) {
+    drawer.addEventListener('click', (e) => {
+      if (e.target.closest('[data-drawer-close]')) { toggleMenu(false); }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.dataset.open === 'true') { toggleMenu(false); }
+    });
+    document.addEventListener('keydown', trapDrawerFocus);
+  }
 
   // Render data-driven sections
   renderComparisonRows();
   initComparisonTabs();
   renderFaqList();
-
-  // FAQ accordion — event delegation on the dynamically rendered list
-  const faqList = document.getElementById('faqList');
-  if (faqList) {
-    faqList.addEventListener('click', (e) => {
-      const btn = e.target.closest('.faq-trigger');
-      if (!btn) { return; }
-      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!isExpanded));
-    });
-  }
 
   // Patch footer after dynamic injection
   patchFooterLinks();
@@ -523,7 +688,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Scroll animations
   initHiwAnimations();
+  initReveals();
+  initNavScrollState();
 
   // Live org statistics
   renderLiveStats();
+
+  // One real good first issue in the hero card. If the fetch fails the card
+  // keeps the static example it shipped with, so the rejection is swallowed on
+  // purpose rather than left unhandled.
+  renderLiveGfi().catch(() => {});
 });

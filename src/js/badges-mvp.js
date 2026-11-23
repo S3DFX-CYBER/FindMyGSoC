@@ -23,25 +23,25 @@ const BadgeSystem = (function() {
   // Badge definitions with thresholds (4 types)
   const BADGE_DEFINITIONS = {
     explorer: {
-      name: '🔍 Explorer',
+      name: 'Explorer', icon: 'travel_explore',
       description: 'Viewed organizations',
       thresholds: [10, 25, 50, 100],
       levels: ['Bronze', 'Silver', 'Gold', 'Platinum']
     },
     comparator: {
-      name: '⚖️ Comparator',
+      name: 'Comparator', icon: 'compare_arrows',
       description: 'Compared organizations',
       thresholds: [5, 15, 30, 50],
       levels: ['Bronze', 'Silver', 'Gold', 'Platinum']
     },
     search_master: {
-      name: '🔎 Search Master',
+      name: 'Search Master', icon: 'search',
       description: 'Performed searches',
       thresholds: [10, 30, 75, 150],
       levels: ['Bronze', 'Silver', 'Gold', 'Platinum']
     },
     filter_pro: {
-      name: '🏷️ Filter Pro',
+      name: 'Filter Pro', icon: 'filter_alt',
       description: 'Applied filters',
       thresholds: [15, 40, 100, 200],
       levels: ['Bronze', 'Silver', 'Gold', 'Platinum']
@@ -72,7 +72,7 @@ const BadgeSystem = (function() {
         Array.isArray(parsed.unlockedBadges);
 
       if (!isValid) {
-        console.warn('Badge data schema mismatch — resetting to defaults.');
+        console.warn('Badge data schema mismatch, resetting to defaults.');
         return {
           explorer: 0,
           comparator: 0,
@@ -170,7 +170,7 @@ const BadgeSystem = (function() {
     
     notification.innerHTML = `
       <div class="badge-notification-content">
-        <div class="badge-notification-icon">${def.name.split(' ')[0]}</div>
+        <div class="badge-notification-icon"><span class="material-symbols-outlined">${def.icon || 'emoji_events'}</span></div>
         <div class="badge-notification-text">
           <div class="badge-notification-title">Badge Unlocked!</div>
           <div class="badge-notification-desc">${def.name} - ${level.levelName}</div>
@@ -244,6 +244,7 @@ const BadgeSystem = (function() {
 
       stats[badgeType] = {
         name: def.name,
+        icon: def.icon,
         description: def.description,
         count: count,
         level: level,
@@ -273,7 +274,7 @@ const BadgeSystem = (function() {
       try {
         localStorage.removeItem(STORAGE_KEY);
       } catch (e) {
-        console.warn('Failed to reset badge progress — localStorage unavailable:', e);
+        console.warn('Failed to reset badge progress, localStorage unavailable:', e);
         return false;
       }
       // Dispatch event to update UI

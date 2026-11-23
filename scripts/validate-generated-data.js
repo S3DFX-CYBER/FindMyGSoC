@@ -4,7 +4,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const ROOT_DIR = path.resolve(__dirname, '../..');
+const ROOT_DIR = path.resolve(__dirname, '..');
 
 const errors = [];
 
@@ -22,14 +22,16 @@ function loadJson(relativePath) {
     raw = fs.readFileSync(absolutePath, 'utf8');
   } catch (error) {
     addError(relativePath, '', `could not read file (${error.message})`);
-    return null;
+    // undefined means "no value to check". A parsed `null` is a value, and it
+    // has to reach the object-type check rather than look like a read failure.
+    return undefined;
   }
 
   try {
     return JSON.parse(raw);
   } catch (error) {
     addError(relativePath, '', `invalid JSON (${error.message})`);
-    return null;
+    return undefined;
   }
 }
 
@@ -318,13 +320,110 @@ function validateUiSummaryJson(issuesData) {
 function validateOrgStatsJson() {
   const filePath = 'data/org-stats.json';
   const data = loadJson(filePath);
-  if (!data) return;
+  if (data === undefined) return;
 
   // Current generated data is {}; no field schema is defined yet.
   expectPlainObject(filePath, '', data);
 }
 
+/**
+ * --only=project-facts,projects limits the run to the datasets a caller is about
+ * to write. The refresh workflow uses it so that pre-existing warnings in
+ * hand-curated files cannot block a refresh that never touches them.
+ */
+const DATASETS = new Set(['project-facts', 'projects']);
+
+function selected(args) {
+  const flag = args.find((a) => a.startsWith('--only'));
+  if (!flag) return null;
+  const list = flag.includes('=') ? flag.split('=')[1] : args[args.indexOf(flag) + 1];
+  const names = String(list || '').split(',').map((v) => v.trim()).filter(Boolean);
+  if (!names.length) {
+    throw new Error('--only needs at least one dataset name');
+  }
+  const unknown = names.filter((n) => !DATASETS.has(n));
+  if (unknown.length) {
+    throw new Error(`--only does not know ${unknown.join(', ')}; known: ${Array.from(DATASETS).join(', ')}`);
+  }
+  return new Set(names);
+}
+
+function validateProjectFactsJson() {
+  const filePath = 'data/project-facts.json';
+  // Absent means "not fetched yet", which is a valid state for a generated file.
+  if (!fs.existsSync(path.join(ROOT_DIR, filePath))) return;
+  const data = loadJson(filePath);
+  // undefined means the file could not be read or parsed, and loadJson has
+  // already reported it. Anything that parsed, including null, is checked.
+  if (data === undefined) return;
+  if (!isPlainObject(data)) {
+    addError(filePath, '', 'expected an object keyed by organisation');
+    return;
+  }
+  Object.entries(data).forEach(([org, facts]) => {
+    if (org === '_meta') return;
+    if (!isPlainObject(facts)) {
+      addError(filePath, org, 'expected an object');
+      return;
+    }
+    if (facts.sizes !== undefined && !Array.isArray(facts.sizes)) {
+      addError(filePath, `${org}.sizes`, 'expected an array');
+    }
+  });
+}
+
+function validateProjectsJson() {
+  const filePath = 'data/projects-2026.json';
+  if (!fs.existsSync(path.join(ROOT_DIR, filePath))) return;
+  const data = loadJson(filePath);
+  if (data === undefined) return;
+  if (!isPlainObject(data)) {
+    addError(filePath, '', 'expected an object keyed by organisation');
+    return;
+  }
+  Object.entries(data).forEach(([org, projects]) => {
+    if (org === '_meta') return;
+    if (!Array.isArray(projects)) {
+      addError(filePath, org, 'expected an array of projects');
+      return;
+    }
+    projects.forEach((project, i) => {
+      if (!isPlainObject(project)) {
+        addError(filePath, `${org}[${i}]`, 'expected an object');
+        return;
+      }
+      if (!isNonEmptyString(project.title)) {
+        addError(filePath, `${org}[${i}].title`, 'expected a string');
+      }
+      if (project.hours !== null && project.hours !== undefined && typeof project.hours !== 'number') {
+        addError(filePath, `${org}[${i}].hours`, 'expected a number or null');
+      }
+    });
+  });
+}
+
 function main() {
+  let only;
+  try {
+    only = selected(process.argv.slice(2));
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
+  const want = (name) => !only || only.has(name);
+
+  if (want('project-facts')) validateProjectFactsJson();
+  if (want('projects')) validateProjectsJson();
+  if (only) {
+    if (errors.length > 0) {
+      console.error('Generated data validation failed:\n');
+      errors.forEach((error) => console.error(`- ${error}`));
+      process.exit(1);
+    }
+    console.log('Generated data validation passed for ' + Array.from(only).join(', '));
+    return;
+  }
+
   const issuesData = validateIssuesJson();
   validateLastUpdatedJson();
   validateMentorsJson();

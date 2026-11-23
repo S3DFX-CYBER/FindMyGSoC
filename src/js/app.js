@@ -11,6 +11,56 @@ const compareList = []; // list of org names
 const bookmarkedSet = new Set(parseStoredBookmarks());
 
 // Recently Viewed Organizations
+// Google moves a year's organisation list to /archive/<year>/ once the programme
+// ends; only the live year lives under /programs/<year>/.
+const GSOC_CURRENT_YEAR = 2026;
+/** Project facts for this mirror, loaded once so sizes can be shown. */
+let PROJECT_FACTS = {};
+let ACCEPTED_PROJECTS = {};
+
+async function loadProjectFacts() {
+  try {
+    const [factsRes, acceptedRes] = await Promise.all([
+      fetch('/data/project-facts.json').catch(() => null),
+      fetch(`/data/projects-${GSOC_CURRENT_YEAR}.json`).catch(() => null),
+    ]);
+    const facts = factsRes && factsRes.ok ? await factsRes.json() : null;
+    const accepted = acceptedRes && acceptedRes.ok ? await acceptedRes.json() : null;
+    const isMap = (v) => v && typeof v === 'object' && !Array.isArray(v);
+    PROJECT_FACTS = isMap(facts) ? facts : {};
+    ACCEPTED_PROJECTS = isMap(accepted) ? accepted : {};
+    delete PROJECT_FACTS._meta;
+    delete ACCEPTED_PROJECTS._meta;
+  } catch (_err) {
+    PROJECT_FACTS = {};
+    ACCEPTED_PROJECTS = {};
+  }
+  ORGS.forEach((o) => {
+    // Accepted projects win over ideas pages, as in the inline renderer.
+    const accepted = (ACCEPTED_PROJECTS[o.name] || []).map((p) => p.hours).filter(Number.isFinite);
+    const facts = PROJECT_FACTS[o.name];
+    const ideaSizes = facts && Array.isArray(facts.sizes) ? facts.sizes.filter(Number.isFinite) : [];
+    o.projectSizes = Array.from(new Set(accepted.length ? accepted : ideaSizes)).sort((a, b) => a - b);
+  });
+}
+
+/** Published project sizes, when the facts dataset has them for this org. */
+function sizesLabel(org) {
+  const sizes = Array.isArray(org && org.projectSizes) ? org.projectSizes.filter(Number.isFinite) : [];
+  return sizes.length ? sizes.map((n) => `${n}h`).join(' + ') : '';
+}
+
+function gsocYearIsListed(org, year) {
+  if (year === GSOC_CURRENT_YEAR) return true;
+  const span = GSOC_CURRENT_YEAR - Number(org.firstYear || GSOC_CURRENT_YEAR) + 1;
+  return Number(org.years) >= span;
+}
+
+function gsocOrgYearUrl(slug, year) {
+  const section = year < GSOC_CURRENT_YEAR ? 'archive' : 'programs';
+  return `https://summerofcode.withgoogle.com/${section}/${year}/organizations/${slug}`;
+}
+
 const RECENTLY_VIEWED_KEY = 'recentlyViewedOrgs';
 const RECENTLY_VIEWED_LIMIT = 8;
 let recentlyViewed = (() => {
@@ -92,7 +142,7 @@ const UMBRELLA_ORGS = new Set([
 ]);
 
 const CHANNEL_ICONS = {
-  Slack: '💬', Zulip: '💬', Discord: '🎮', Matrix: '🔗', IRC: '🖥️', 'Mailing list': '📧'
+  Slack: 'chat', Zulip: 'forum', Discord: 'forum', Matrix: 'link', IRC: 'terminal', 'Mailing list': 'mail'
 };
 
 const CONTACT_TIPS = {
@@ -221,7 +271,7 @@ function updateCountdown() {
 
     if (!next) {
       labelEl.textContent = 'GSoC 2026 selection complete';
-      countdownEl.textContent = '🎉 All done!';
+      countdownEl.textContent = ' All done!';
       countdownEl.classList.remove('text-primary');
       countdownEl.classList.add('text-green-600');
       return;
@@ -265,7 +315,7 @@ const AN = {
   trackOrg(n) { this.inc('views'); const oc = this.g('orgs', {}); oc[n] = (oc[n] || 0) + 1; this.s('orgs', oc); },
   todayVisits() { return this.g('daily', {})[this.today()] || 0; },
   sessionTime() {
-    const s = sessionStorage.getItem('gaf_s'); if (!s) return '—';
+    const s = sessionStorage.getItem('gaf_s'); if (!s) return '-';
     const sec = Math.floor((Date.now() - parseInt(s)) / 1000);
     return sec < 60 ? sec + 's' : Math.floor(sec / 60) + 'm' + (sec % 60) + 's';
   },
@@ -379,7 +429,7 @@ function sanitizeHrefUrl(url) {
 // URL VALIDATION & SANITIZATION
 // ══════════════════════════════════════════════
 /**
- * Generic URL validator — ensures only http/https protocols are allowed.
+ * Generic URL validator, ensures only http/https protocols are allowed.
  * Does NOT auto-prepend a protocol. The caller must pass a fully-formed URL.
  *
  * @param {string} url - A fully-formed URL string to validate
@@ -479,7 +529,7 @@ async function checkAPI() {
       if (fetchBtn) fetchBtn.style.display = 'flex';
     } else {
       banner.className = 'api-banner api-warn';
-      document.getElementById('apiStrong').textContent = '⚠ API Error';
+      document.getElementById('apiStrong').textContent = ' API Error';
       document.getElementById('apiText').textContent = 'Add GITHUB_TOKEN in Vercel dashboard and redeploy.';
     }
   } catch {
@@ -894,7 +944,7 @@ function renderWatchlist() {
             </span>
             <span class="flex items-center gap-1">
               <span class="material-symbols-outlined text-xs">bar_chart</span>
-              ${org.competition || '—'}
+              ${sizesLabel(org) || 'size not stated'}
             </span>
           </div>
           <button data-bookmark-org="${org.name}"
@@ -936,6 +986,9 @@ function renderCompare() {
   if (typeof document.createElement !== 'function') return;
   container.innerHTML = '';
 
+  // With nothing selected the placeholder photo and copy stand in for the grid.
+  if (!compareList.length) return;
+
   compareList.forEach(name => {
     const org = ORGS.find(o => o.name === name);
     if (!org) return;
@@ -949,7 +1002,7 @@ function renderCompare() {
         <img src="${logoUrl}" data-org-name="${org.name}" class="w-full h-full object-contain" />
       </div>
       <p class="font-bold text-sm truncate">${org.name}</p>
-      <p class="text-[10px] text-zinc-500 dark:text-zinc-400 font-label uppercase mt-1">${String(org.years)}y · ${org.competition}</p>
+      <p class="text-[10px] text-zinc-500 dark:text-zinc-400 font-label uppercase mt-1">${String(org.years)}y${sizesLabel(org) ? ` · ${sizesLabel(org)}` : ''}</p>
       <button data-compare-org="${org.name}" class="text-[9px] text-red-500 font-bold uppercase mt-2 hover:underline">Remove</button>
     `;
     container.appendChild(item);
@@ -988,11 +1041,11 @@ function renderCompareModal() {
     ['Category', org => getCategoryMeta(org.cat).label],
     ['GSoC Years', org => org.years],
     ['First Year', org => org.firstYear],
-    ['Competition', org => org.competition],
+    ['Project size', org => sizesLabel(org) || 'not stated'],
     ['Codebase', org => org.codebase],
     ['Tech Stack', org => org.tags.join(', ')],
     ['Best Fit', org => org.fit.join(', ')],
-    ['Repository', org => org.github || '—'],
+    ['Repository', org => org.github || '-'],
   ];
 
   body.innerHTML = `
@@ -1056,8 +1109,8 @@ function matchesFilters(o, cat, compF, search) {
     if (activeChip === 'bookmarked' && !bookmarkedSet.has(o.name)) return false;
     if (activeChip === 'veterans' && o.years < 10) return false;
     if (activeChip === 'newcomers' && o.years > 3) return false;
-    if (activeChip === 'low-competition' && o.competition !== 'chill') return false;
-    if (activeChip === 'high-competition' && o.competition !== 'hot') return false;
+    if (activeChip === 'small-projects' && !(o.projectSizes || []).includes(90)) return false;
+    if (activeChip === 'large-projects' && !(o.projectSizes || []).includes(350)) return false;
     if (activeChip === 'active' && (!o._gh || o._gh.activity !== 'active')) return false;
   }
 
@@ -1108,7 +1161,7 @@ function applyFilters() {
 function applySecondarySort(a, b, sortType) {
   if (sortType === 'years-desc') return b.years - a.years;
   if (sortType === 'years-asc') return a.years - b.years;
-  if (sortType === 'comp-low') return ['chill', 'moderate', 'hot'].indexOf(a.competition) - ['chill', 'moderate', 'hot'].indexOf(b.competition);
+  if (sortType === 'size-asc') return ((a.projectSizes || [])[0] || 9999) - ((b.projectSizes || [])[0] || 9999);
   if (sortType === 'stars') return (b._gh?.stars || 0) - (a._gh?.stars || 0);
   if (sortType === 'gfi') return (b._gh?.gfi || 0) - (a._gh?.gfi || 0);
   return a.name.localeCompare(b.name);
@@ -1141,7 +1194,7 @@ function renderOrgs(reset = true) {
     const isComparing = compareList.includes(org.name);
     const isFocused = focusedIdx === (visibleCount - 12 + i);
     const card = document.createElement('article');
-    card.className = `group bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-100 dark:border-zinc-800 transition-all hover:shadow-xl hover:border-primary/20 animate-fade-up ${isComparing ? 'ring-2 ring-primary/30' : ''} ${isFocused ? 'ring-2 ring-primary' : ''}`;
+    card.className = `org-card ocard group p-6 animate-fade-up ${isComparing ? 'ring-2 ring-primary/30' : ''} ${isFocused ? 'ring-2 ring-primary' : ''}`;
     card.dataset.org = org.name;
     card.setAttribute('role', 'article');
     card.setAttribute('aria-label', `Organization: ${org.name}`);
@@ -1151,41 +1204,41 @@ function renderOrgs(reset = true) {
     const logoUrl = githubOwner ? `https://github.com/${githubOwner}.png?size=80` : '';
 
     const logoHtml = logoUrl
-      ? safeHTML`<img src="${logoUrl}" data-org-name="${org.name}" alt="${org.name} logo" class="w-full h-full object-contain rounded-lg" />`
-      : safeHTML`<div class="logo-placeholder flex w-full h-full items-center justify-center text-primary font-bold text-xl bg-primary/5">${(org.name || '?')[0].toUpperCase()}</div>`;
+      ? safeHTML`<img src="${logoUrl}" data-org-name="${org.name}" alt="${org.name} logo" />`
+      : safeHTML`<div class="logo-placeholder">${(org.name || '?')[0].toUpperCase()}</div>`;
 
-    const tagsHtml = org.tags.slice(0, 3).map(t => safeHTML`<span class="px-2 py-0.5 bg-surface-container-low dark:bg-zinc-800 text-[10px] font-mono rounded text-zinc-600 dark:text-zinc-400">${t}</span>`);
-    const moreTagsHtml = org.tags.length > 3 ? safeHTML`<span class="px-2 py-0.5 bg-surface-container-low dark:bg-zinc-800 text-[10px] font-mono rounded text-zinc-600 dark:text-zinc-400 cursor-help" title="${org.tags.slice(3).join(', ')}">+${String(org.tags.length - 3)}</span>` : '';
+    const tagsHtml = org.tags.slice(0, 3).map(t => safeHTML`<span class="ocard-tag">${t}</span>`);
+    const moreTagsHtml = org.tags.length > 3 ? safeHTML`<span class="ocard-tag" title="${org.tags.slice(3).join(', ')}">+${String(org.tags.length - 3)}</span>` : '';
 
     const catLabel = getCategoryMeta(org.cat).label.toUpperCase();
     const isBookmarkedStr = isBookmarked ? 'true' : 'false';
 
     card.innerHTML = safeHTML`
-      <div class="flex justify-between items-start mb-4">
-        <div class="w-14 h-14 rounded-xl bg-surface-container-low dark:bg-zinc-800 flex items-center justify-center p-2 overflow-hidden border border-zinc-100 dark:border-zinc-700">
+      <div class="ocard-top">
+        <div class="ocard-ava">
           ${logoHtml}
         </div>
-        <div class="flex items-center gap-2">
-          <span class="bg-primary/10 text-primary text-[10px] font-label uppercase tracking-widest px-2 py-1 rounded-full font-bold">${String(org.years)}y Veteran</span>
-          <span class="complexity-badge ${org.codebase}">${org.codebase}</span>
-          <button class="bookmark-btn ${isBookmarked ? 'active text-orange-500' : 'text-zinc-300'}" data-bookmark-org="${org.name}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}" aria-pressed="${isBookmarkedStr}" aria-label="${isBookmarked ? 'Remove bookmark from ' : 'Add bookmark to '}${org.name}">
+        <div class="ocard-id">
+          <h3>${org.name}</h3>
+          <div class="ocard-sub">${catLabel}<span class="complexity-badge ${org.codebase}">${org.codebase}</span></div>
+        </div>
+        <div class="ocard-badges">
+          <span class="years-badge">${String(org.years)}y veteran</span>
+          <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-bookmark-org="${org.name}" title="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}" aria-pressed="${isBookmarkedStr}" aria-label="${isBookmarked ? 'Remove bookmark from ' : 'Add bookmark to '}${org.name}">
             <span class="material-symbols-outlined text-lg ${isBookmarked ? 'icon-fill' : ''}">star</span>
           </button>
         </div>
       </div>
-      <h3 class="font-headline text-lg font-bold text-on-surface mb-1 group-hover:text-primary transition-colors dark:text-zinc-100">${org.name}</h3>
-      <span class="category-tag inline-block mb-3">${catLabel}</span>
-      <p class="text-on-surface-variant text-sm leading-relaxed mb-4 line-clamp-2 dark:text-zinc-400">${org.desc}</p>
-      <div class="flex flex-wrap gap-1.5 mb-4">
+      <p class="ocard-desc">${org.desc}</p>
+      <div class="ocard-tags">
         ${tagsHtml}
         ${moreTagsHtml}
       </div>
-
-      <div class="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">
-        <button data-compare-org="${org.name}" class="text-[10px] font-bold uppercase tracking-widest ${isComparing ? 'text-primary' : 'text-zinc-400'} hover:text-primary flex items-center gap-1">
-          <span class="material-symbols-outlined text-sm">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Compare'}
+      <div class="ocard-acts">
+        <button data-compare-org="${org.name}" class="mini-btn ${isComparing ? 'on' : ''}">
+          <span class="material-symbols-outlined">${isComparing ? 'check_circle' : 'compare_arrows'}</span> ${isComparing ? 'Comparing' : 'Compare'}
         </button>
-        <button data-open-org="${org.name}" class="text-primary font-bold text-xs uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">View Details <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+        <button data-open-org="${org.name}" class="mini-btn accent">View details <span class="material-symbols-outlined">arrow_forward</span></button>
       </div>`;
 
     grid.appendChild(card);
@@ -1379,7 +1432,7 @@ globalThis.fetchModalGH = async function () {
   }
 };
 
-function fmt(n) { return (!n && n !== 0) ? '—' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n); }
+function fmt(n) { return (!n && n !== 0) ? '-' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n); }
 
 // ══════════════════════════════════════════════
 // MODAL DETAILS POPULATOR
@@ -1390,7 +1443,7 @@ function renderModalHeader(org) {
   const isComparing = compareList.includes(org.name);
   const ideasLinkHTML = (() => {
     const u = sanitizeHrefUrl(org.ideas);
-    return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span>💡</span><span>Visit ideas page</span></a>` : '';
+    return u ? `<a href="${escapeHtml(u)}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip"><span></span><span>Visit ideas page</span></a>` : '';
   })();
 
   return `
@@ -1436,18 +1489,25 @@ globalThis.openModal = function (name, triggerElement = null) {
   const mDesc = document.getElementById('mDesc');
   if (mDesc) mDesc.textContent = org.desc;
 
-  const cc = { hot: 'var(--red)', moderate: '#92600A', chill: 'var(--green)' };
+
   const mMetrics = document.getElementById('mMetrics');
   if (mMetrics) {
     const yearsColor = org.years >= 8 ? '#C2410C' : org.years >= 4 ? 'var(--blue)' : 'var(--purple)';
-    const competitionColor = cc[org.competition] || '#ccc';
-    const competitionIcon = org.competition === 'hot' ? '🔥' : org.competition === 'moderate' ? '🟡' : '😎';
-    mMetrics.innerHTML = safeHTML`
-      <div class="metric-card"><p class="metric-value" style="color:${yearsColor}">${String(org.years)}</p><p class="metric-label">Years In</p></div>
-      <div class="metric-card"><p class="metric-value" style="color:${competitionColor}">${competitionIcon}</p><p class="metric-label">Competition</p></div>
-      <div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${String(org.firstYear)}</p><p class="metric-label">First Year</p></div>
-      <div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--green)" id="mGfiPlaceholder">—</p><p class="metric-label">Good 1st Issues</p></div>
-    `;
+    const sizes = Array.isArray(org.projectSizes) ? org.projectSizes : [];
+    // Same rule as the inline renderer: no card that would read "-" or
+    // "not stated". A card only appears when it carries a fact.
+    const cards = [
+      `<div class="metric-card"><p class="metric-value" style="color:${yearsColor}">${String(org.years)}</p><p class="metric-label">Years In</p></div>`,
+      `<div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${String(org.firstYear)}</p><p class="metric-label">First Year</p></div>`,
+    ];
+    if (sizes.length) {
+      cards.push(`<div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--orange)">${sizesLabel(org)}</p><p class="metric-label">Project size</p></div>`);
+    }
+    const gfi = org._gh && typeof org._gh.gfi === 'number' ? org._gh.gfi : null;
+    // The count arrives after the strip is painted, so the card exists whenever
+    // the lookup is possible and is filled in when it lands.
+    cards.push(`<div class="metric-card"><p class="metric-value font-mono text-sm" style="color:var(--green)" id="mGfiPlaceholder">${gfi === null ? '-' : gfi}</p><p class="metric-label">Good 1st Issues</p></div>`);
+    mMetrics.innerHTML = cards.slice(0, 4).join('');
   }
 
   const gh = org._gh;
@@ -1456,9 +1516,9 @@ globalThis.openModal = function (name, triggerElement = null) {
   const mIssues = document.getElementById('mIssues');
   const mActivity = document.getElementById('mActivity');
 
-  if (mStars) mStars.textContent = gh ? fmt(gh.stars) : '—';
-  if (mForks) mForks.textContent = gh ? fmt(gh.forks) : '—';
-  if (mIssues) mIssues.textContent = gh ? fmt(gh.issues) : '—';
+  if (mStars) mStars.textContent = gh ? fmt(gh.stars) : '-';
+  if (mForks) mForks.textContent = gh ? fmt(gh.forks) : '-';
+  if (mIssues) mIssues.textContent = gh ? fmt(gh.issues) : '-';
   if (mActivity) {
     const act = gh ? (gh.activity || 'moderate') : 'moderate';
     mActivity.textContent = act.charAt(0).toUpperCase() + act.slice(1);
@@ -1483,7 +1543,16 @@ globalThis.openModal = function (name, triggerElement = null) {
   let timelineHtml = '';
   for (let y = 2020; y <= 2026; y++) {
     const active = (y >= org.firstYear);
-    timelineHtml += `<span class="${y === 2026 ? 'current-year' : ''} ${active ? 'opacity-100' : 'opacity-30'}">${y}</span>`;
+    const isCurrent = (y === GSOC_CURRENT_YEAR);
+    let url = null;
+    if (active) {
+      if (y === 2020) url = sanitizeHrefUrl(org['2020_project_url'] || null);
+      else if (y === 2021) url = sanitizeHrefUrl(org['2021_project_url'] || null);
+      else if (org.slug && gsocYearIsListed(org, y)) url = sanitizeHrefUrl(gsocOrgYearUrl(org.slug, y));
+    }
+    timelineHtml += url
+      ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="timeline-year-link${isCurrent ? ' current-year' : ''}" title="View ${escapeHtml(org.name)} at GSoC ${y}">${y}</a>`
+      : `<span class="${isCurrent ? 'current-year' : ''} ${active ? 'opacity-100' : 'opacity-30'}">${y}</span>`;
   }
   const mTimeline = document.getElementById('mTimeline');
   if (mTimeline) mTimeline.innerHTML = timelineHtml;
@@ -1541,11 +1610,15 @@ globalThis.openModal = function (name, triggerElement = null) {
   renderMentorContactSection(org);
   openModalElement('orgModal', triggerElement);
 
-  // Lazily retrieve GFIs if missing
+  // Lazily retrieve GFIs if missing. The modal may have moved on by the time the
+  // answer arrives, so the result is only written if the same org is still open.
   if (org.github && (org._gh?.gfi === null || org._gh?.gfi === undefined)) {
     const placeholder = document.getElementById('mGfiPlaceholder');
     if (placeholder) placeholder.textContent = '…';
+    const requestedOrg = org.name;
     fetchGFI(org.github).then(gfi => {
+      const stillOpen = document.querySelector('#mHeader h2')?.textContent || '';
+      if (!stillOpen.startsWith(requestedOrg)) return;
       if (gfi !== null) {
         if (!org._gh) org._gh = {};
         org._gh.gfi = gfi;
@@ -1555,7 +1628,7 @@ globalThis.openModal = function (name, triggerElement = null) {
         renderCompareModal();
       } else {
         const placeholders = document.querySelectorAll('.metric-card #mGfiPlaceholder');
-        placeholders.forEach(p => p.textContent = '—');
+        placeholders.forEach(p => p.textContent = '-');
       }
     });
   }
@@ -1574,7 +1647,7 @@ globalThis.closeHelpModal = closeHelpModal;
 globalThis.openRandomOrg = function () {
   const orgsToUse = filteredOrgs.length > 0 ? filteredOrgs : ORGS;
   if (!orgsToUse.length) {
-    alert('No organizations match your filters — try clearing some!');
+    alert('No organizations match your filters, try clearing some!');
     return;
   }
   const array = new Uint32Array(1);
@@ -1874,10 +1947,10 @@ function updateAIInsights() {
   const advice = DOMAIN_ADVICE[topCat] || DOMAIN_ADVICE.other;
 
   const strategyMsg = highComp
-    ? '⚠️ Your watchlist skews towards <strong>high-competition</strong> orgs — consider adding a few <em>Chill</em> orgs to diversify your odds.'
+    ? ' Your watchlist skews towards <strong>high-competition</strong> orgs, consider adding a few <em>Chill</em> orgs to diversify your odds.'
     : lowComp
-      ? '✅ Smart move — your watchlist is weighted towards <strong>lower-competition</strong> orgs, which improves acceptance probability.'
-      : '📊 Your watchlist has a <strong>balanced mix</strong> of competition levels — a solid hedging strategy.';
+      ? ' Smart move, your watchlist is weighted towards <strong>lower-competition</strong> orgs, which improves acceptance probability.'
+      : ' Your watchlist has a <strong>balanced mix</strong> of competition levels, a solid hedging strategy.';
 
   const stackLine = topTags.length
     ? `Your saved orgs centre on <strong>${topTags.map(t => escapeHtml(t)).join(', ')}</strong>.`
@@ -1886,12 +1959,12 @@ function updateAIInsights() {
   el.innerHTML = `
     <div class="space-y-3 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
       <p>
-        <span class="font-bold">📌 Stack Focus:</span>
+        <span class="font-bold"> Stack Focus:</span>
         ${stackLine}
         Highlight experience with <strong>${escapeHtml(advice.tools)}</strong> in your proposals.
       </p>
       <p>
-        <span class="font-bold">🎯 Domain Strategy (${escapeHtml(getCategoryMeta(topCat).label)}):</span>
+        <span class="font-bold"> Domain Strategy (${escapeHtml(getCategoryMeta(topCat).label)}):</span>
         Before submitting, ${escapeHtml(advice.action)} to demonstrate early commitment to mentors.
       </p>
       <p>${strategyMsg}</p>
@@ -2069,12 +2142,12 @@ function renderIssues() {
   if (!container || !statsDiv || !loadMore) return;
 
   if (!allIssues.length) {
-    container.innerHTML = `<div class="issue-empty"><div class="ei">🟢</div><h3>Ready to find your first issue?</h3><p>Click "Load Issues" to fetch Good First Issues from all GSoC orgs.</p></div>`;
+    container.innerHTML = `<div class="issue-empty"><div class="ei"></div><h3>Ready to find your first issue?</h3><p>Click "Load Issues" to fetch Good First Issues from all GSoC orgs.</p></div>`;
     statsDiv.style.display = 'none'; loadMore.style.display = 'none'; return;
   }
 
   if (!filteredIssues.length) {
-    container.innerHTML = `<div class="issue-empty"><div class="ei">🔍</div><h3>No issues match your filters</h3><p>Try adjusting the search or category.</p></div>`;
+    container.innerHTML = `<div class="issue-empty"><div class="ei"></div><h3>No issues match your filters</h3><p>Try adjusting the search or category.</p></div>`;
     statsDiv.style.display = 'flex'; loadMore.style.display = 'none';
   } else {
     shownIssues = Math.min(shownIssues + ISSUES_PAGE_SIZE, filteredIssues.length);
@@ -2104,7 +2177,7 @@ function renderIssueCard(iss) {
     : '';
 
   const commentsHtml = iss.comments > 0
-    ? safeHTML`<span style="font-size:10px;color:var(--muted)">💬 ${String(iss.comments)}</span>`
+    ? safeHTML`<span style="font-size:10px;color:var(--muted)"> ${String(iss.comments)}</span>`
     : '';
 
   const timeStr = relativeTime(iss.created_at);
@@ -2297,15 +2370,15 @@ function renderMentorFinder() {
     card.className = 'mentor-card p-6 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl flex flex-col justify-between hover:shadow-lg transition-all animate-fade-up';
 
     const channelsHtml = (m.channels || []).map(c => {
-      const icon = CHANNEL_ICONS[c.type] || '💬';
+      const icon = CHANNEL_ICONS[c.type] || 'chat';
       const isUrl = sanitizeHrefUrl(c.value);
       if (isUrl) {
         return safeHTML`<a href="${isUrl}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip" title="${CONTACT_TIPS[c.type] || ''}">
-          ${icon} ${c.type}
+          <span class="material-symbols-outlined">${icon}</span> ${c.type}
         </a>`;
       } else {
         return safeHTML`<span class="mentor-handle-chip" title="${CONTACT_TIPS[c.type] || ''}">
-          ${icon} ${c.value}
+          <span class="material-symbols-outlined">${icon}</span> ${c.value}
         </span>`;
       }
     });
@@ -2345,15 +2418,15 @@ function renderMentorContactSection(org) {
     card.className = 'mentor-card p-4 bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-100 dark:border-zinc-800 rounded-xl mb-3 last:mb-0';
 
     const channelsHtml = (m.channels || []).map(c => {
-      const icon = CHANNEL_ICONS[c.type] || '💬';
+      const icon = CHANNEL_ICONS[c.type] || 'chat';
       const isUrl = sanitizeHrefUrl(c.value);
       if (isUrl) {
         return safeHTML`<a href="${isUrl}" target="_blank" rel="noopener noreferrer" class="mentor-link-chip hover:shadow-sm">
-          ${icon} ${c.type}: Connect
+          <span class="material-symbols-outlined">${icon}</span> ${c.type}: Connect
         </a>`;
       } else {
         return safeHTML`<span class="mentor-handle-chip">
-          ${icon} ${c.type}: ${c.value}
+          <span class="material-symbols-outlined">${icon}</span> ${c.type}: ${c.value}
         </span>`;
       }
     });
@@ -2434,8 +2507,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (text.includes('bookmarked')) key = 'bookmarked';
         else if (text.includes('veteran')) key = 'veterans';
         else if (text.includes('newcomer')) key = 'newcomers';
-        else if (text.includes('low competition')) key = 'low-competition';
-        else if (text.includes('high competition')) key = 'high-competition';
+        else if (text.includes('90h')) key = 'small-projects';
+        else if (text.includes('350h')) key = 'large-projects';
         else if (text.includes('actively')) key = 'active';
 
         if (key === chip) {
@@ -2543,8 +2616,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (text.includes('bookmarked')) activeChip = 'bookmarked';
         else if (text.includes('veteran')) activeChip = 'veterans';
         else if (text.includes('newcomer')) activeChip = 'newcomers';
-        else if (text.includes('low competition')) activeChip = 'low-competition';
-        else if (text.includes('high competition')) activeChip = 'high-competition';
+        else if (text.includes('90h')) activeChip = 'small-projects';
+        else if (text.includes('350h')) activeChip = 'large-projects';
         else if (text.includes('actively')) activeChip = 'active';
         else activeChip = null;
       }

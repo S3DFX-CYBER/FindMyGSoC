@@ -1,69 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
-  <title>Page Not Found — FindMyGSoC</title>
+  <meta name="version" content="1.1.3" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page not found | FindMyGSoC</title>
+  <meta name="description" content="That page does not exist. Head back to FindMyGSoC." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/png" href="/src/assets/icon-512.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/src/landing.css" />
+
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.documentElement.dataset.theme = 'dark';
+        }
+      } catch (e) { /* storage blocked, stay light */ }
+    }());
+  </script>
 
   <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      gap: 12px;
-      text-align: center;
-      padding: 16px;
+    .lost {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 40px 20px; gap: 0;
     }
-
-    h1 {
-      margin: 0;
+    .lost .code {
+      font-family: var(--f-mono); font-size: 11px; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
     }
-
-    p {
-      margin: 0;
+    .lost h1 {
+      font-family: var(--f-display); font-weight: 400;
+      font-size: clamp(34px, 5.4vw, 58px); line-height: 1.04; letter-spacing: -.03em;
+      margin: 0 0 14px; max-width: 16ch;
     }
-
-    a {
-      text-decoration: none;
-      font-weight: bold;
+    .lost p { color: var(--muted); font-size: 15px; line-height: 1.65; max-width: 52ch; margin: 0 0 26px; }
+    .lost .acts { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px; }
+    .lost .note {
+      font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--faint); display: flex; gap: 10px; align-items: center;
     }
+    .lost .note button {
+      font: inherit; letter-spacing: inherit; text-transform: inherit;
+      background: none; border: 0; color: var(--accent); cursor: pointer; text-decoration: underline;
+      text-underline-offset: 3px; padding: 0;
+    }
+    .lost .links { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-top: 34px; font-size: 13px; }
+    .lost .links a { color: var(--muted); text-decoration: none; }
+    .lost .links a:hover { color: var(--accent); }
   </style>
 </head>
 
 <body>
-  <h1>404 — Page Not Found</h1>
 
-  <p aria-live="polite" aria-atomic="true">
-    Redirecting you back to the home page in
-    <span id="count">3</span>
-    seconds…
-  </p>
-
-  <a href="/">Go Home Now →</a>
-
-  <noscript>
+  <main class="lost">
+    <span class="code">Error 404 · v1.1.3</span>
+    <h1>This page does not exist.</h1>
     <p>
-      JavaScript is disabled. Please use the link above to return to the homepage.
+      The link may be out of date, or the address may have a typo in it. Both the
+      landing page and the organisation finder are one click away.
     </p>
-  </noscript>
+
+    <div class="acts">
+      <a class="btn primary" href="/app">Open the organisation finder</a>
+      <a class="btn ghost" href="/">Back to the home page</a>
+    </div>
+
+    <p class="note" id="redirectNote" hidden>
+      <span aria-live="polite" aria-atomic="true">Returning home in <span id="count">8</span>s</span>
+      <button type="button" id="stay">Stay here</button>
+    </p>
+
+    <div class="links">
+      <a href="/privacy.html">Privacy</a>
+      <a href="https://github.com/S3DFX-CYBER/FindMyGSoC" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/S3DFX-CYBER/FindMyGSoC/issues" target="_blank" rel="noopener noreferrer">Report a broken link</a>
+    </div>
+  </main>
 
   <script>
-    let timeLeft = 3;
+    (function () {
+      'use strict';
+      var seconds = 8;
+      var countEl = document.getElementById('count');
+      var stay = document.getElementById('stay');
+      var cancelled = false;
+      // Without JavaScript there is no countdown and no redirect, so the whole
+      // note stays hidden rather than offering a control that cannot work.
+      var noteEl = document.getElementById('redirectNote');
+      if (noteEl) { noteEl.hidden = false; }
 
-    const countElement = document.getElementById("count");
+      var timer = setInterval(function () {
+        if (cancelled) { return; }
+        seconds -= 1;
+        if (countEl) { countEl.textContent = String(Math.max(0, seconds)); }
+        if (seconds <= 0) {
+          clearInterval(timer);
+          location.replace('/');
+        }
+      }, 1000);
 
-    const timer = setInterval(() => {
-      timeLeft--;
-      countElement.textContent = timeLeft;
-
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        location.replace("/");
+      if (stay) {
+        stay.addEventListener('click', function () {
+          cancelled = true;
+          clearInterval(timer);
+          var note = stay.parentElement;
+          if (note) { note.textContent = 'Staying on this page.'; }
+        });
       }
-    }, 1000);
+    }());
   </script>
+
 </body>
+
 </html>

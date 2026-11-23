@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const DATA_PATH = path.resolve(__dirname, '../../data/mentors.json');
+const DATA_PATH = path.resolve(__dirname, '../data/mentors.json');
 const MAX_FETCH_FAILED = 35;
 const MAX_NO_CONTACT = 100;
 
