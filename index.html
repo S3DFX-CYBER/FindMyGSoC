@@ -4882,6 +4882,9 @@ body{background:var(--rd-bg);color:var(--rd-ink)}
       grid.appendChild(article);
     });
     renderPaginationControls('mentorPagination', filteredRecords.length, mentorCurrentPage, (page) => {
+      if (typeof debouncedRenderMentorFinder !== 'undefined' && debouncedRenderMentorFinder.cancel) {
+        debouncedRenderMentorFinder.cancel();
+      }
       mentorCurrentPage = page;
       renderMentorFinder(false);
       scrollDirectoryToTop('mentorGrid');
@@ -6387,10 +6390,34 @@ if(org.ideas){
     applyFilters();
   }
 
+  const createDebouncedHandler = (callback, wait = 250) => {
+    let timeoutId = null;
+    const debounced = (...params) => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        callback(...params);
+      }, wait);
+    };
+    debounced.cancel = () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+    };
+    return debounced;
+  };
+
+  const debouncedPerformSearch = createDebouncedHandler((val) => performSearch(val, false), 250);
+  const debouncedRenderMentorFinder = createDebouncedHandler(() => {
+    mentorCurrentPage = 1;
+    renderMentorFinder();
+  }, 250);
+
   document.getElementById('searchInput').addEventListener('input', (e) => {
-    performSearch(e.target.value, false);
+    debouncedPerformSearch(e.target.value);
   });
   document.getElementById('categoryFilter').addEventListener('change', () => {
+    debouncedPerformSearch.cancel();
     // Track filter badge when user changes category
     if (typeof BadgeSystem !== 'undefined') {
       BadgeSystem.trackFilter();
@@ -6398,19 +6425,21 @@ if(org.ideas){
     applyFilters();
   });
   document.getElementById('complexityFilter').addEventListener('change', () => {
+    debouncedPerformSearch.cancel();
     // Track filter badge when user changes complexity
     if (typeof BadgeSystem !== 'undefined') {
       BadgeSystem.trackFilter();
     }
     applyFilters();
   });
-  document.getElementById('sortSelect')?.addEventListener('change', applyFilters);
-  document.getElementById('mentorSearchInput')?.addEventListener('input', () => {
-    mentorCurrentPage = 1;
-    renderMentorFinder();
+  document.getElementById('sortSelect')?.addEventListener('change', () => {
+    debouncedPerformSearch.cancel();
+    applyFilters();
   });
+  document.getElementById('mentorSearchInput')?.addEventListener('input', debouncedRenderMentorFinder);
 
   document.getElementById('mentorChannelFilter')?.addEventListener('change', () => {
+    debouncedRenderMentorFinder.cancel();
     mentorCurrentPage = 1;
     renderMentorFinder();
   });
@@ -6430,6 +6459,7 @@ if(org.ideas){
   if (heroSearch) {
     heroSearch.value = document.getElementById('searchInput')?.value || new URLSearchParams(location.search).get('q') || '';
     const heroSearchSubmit = () => {
+      debouncedPerformSearch.cancel();
       document.getElementById('searchInput').value = heroSearch.value;
       performSearch(heroSearch.value, true);
       document.getElementById('orgs')?.scrollIntoView({ behavior: 'smooth' });
@@ -6437,7 +6467,7 @@ if(org.ideas){
 
     heroSearch.addEventListener('input', (e) => {
       document.getElementById('searchInput').value = e.target.value;
-      performSearch(e.target.value, false);
+      debouncedPerformSearch(e.target.value);
     });
 
     heroSearch.addEventListener('keydown', (e) => {

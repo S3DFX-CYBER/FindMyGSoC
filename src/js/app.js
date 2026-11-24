@@ -44,6 +44,21 @@ async function loadProjectFacts() {
   });
 }
 
+/** Debounce utility to prevent rapid successive function calls with cancellation support */
+function debounce(fn, delay = 250) {
+  let timer;
+  const debounced = function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  };
+  debounced.cancel = function () {
+    clearTimeout(timer);
+  };
+  return debounced;
+}
+
 /** Published project sizes, when the facts dataset has them for this org. */
 function sizesLabel(org) {
   const sizes = Array.isArray(org && org.projectSizes) ? org.projectSizes.filter(Number.isFinite) : [];
@@ -2536,12 +2551,27 @@ document.addEventListener('DOMContentLoaded', () => {
   renderGoodFirstIssues();
 
   // Wire up filter event listeners
-  document.getElementById('searchInput')?.addEventListener('input', applyFilters);
-  document.getElementById('categoryFilter')?.addEventListener('change', applyFilters);
-  document.getElementById('complexityFilter')?.addEventListener('change', applyFilters);
-  document.getElementById('sortSelect')?.addEventListener('change', applyFilters);
-  document.getElementById('mentorSearchInput')?.addEventListener('input', renderMentorFinder);
-  document.getElementById('mentorChannelFilter')?.addEventListener('change', renderMentorFinder);
+  const debouncedApplyFilters = debounce(applyFilters, 250);
+  const debouncedRenderMentorFinder = debounce(renderMentorFinder, 250);
+
+  document.getElementById('searchInput')?.addEventListener('input', debouncedApplyFilters);
+  document.getElementById('categoryFilter')?.addEventListener('change', () => {
+    debouncedApplyFilters.cancel();
+    applyFilters();
+  });
+  document.getElementById('complexityFilter')?.addEventListener('change', () => {
+    debouncedApplyFilters.cancel();
+    applyFilters();
+  });
+  document.getElementById('sortSelect')?.addEventListener('change', () => {
+    debouncedApplyFilters.cancel();
+    applyFilters();
+  });
+  document.getElementById('mentorSearchInput')?.addEventListener('input', debouncedRenderMentorFinder);
+  document.getElementById('mentorChannelFilter')?.addEventListener('change', () => {
+    debouncedRenderMentorFinder.cancel();
+    renderMentorFinder();
+  });
   document.getElementById('matchAllLanguagesToggle')?.addEventListener('change', (e) => {
     matchAllLanguages = e.target.checked;
     globalThis.matchAllLanguages = e.target.checked;
@@ -2591,7 +2621,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.value = e.target.value;
         const orgsSec = document.getElementById('orgs');
         if (orgsSec) orgsSec.scrollIntoView({ behavior: 'smooth' });
-        applyFilters();
+        debouncedApplyFilters();
       }
     });
   }
@@ -2700,6 +2730,7 @@ if (typeof module !== 'undefined' && module.exports) {
     closeModal,
     safeHTML,
     rawHTML,
-    renderGoodFirstIssues
+    renderGoodFirstIssues,
+    debounce
   };
 }
