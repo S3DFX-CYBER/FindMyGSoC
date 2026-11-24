@@ -40,7 +40,11 @@ function getRecommendations(resumeSkills = [], githubProfile = null, count = 6) 
   );
   
   scoredOrgs.sort((a, b) => b.rawScore - a.rawScore);
-  return scoredOrgs.slice(0, safeCount);
+  return scoredOrgs.slice(0, safeCount).map((item) => {
+    const copy = { ...item };
+    delete copy.rawScore;
+    return copy;
+  });
 }
 
 function calculateLanguageScore(userLanguages, orgTags, orgCat, matchedSkills, matchReasons) {

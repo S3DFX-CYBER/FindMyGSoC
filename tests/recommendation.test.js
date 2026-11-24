@@ -19,16 +19,16 @@ test('getRecommendations returns top 6 recommendations sorted by score', () => {
 
   assert.strictEqual(recommendations.length, 6);
   
-  // Verify they are sorted in descending order of rawScore
+  // Verify they are sorted in descending order of score
   for (let i = 0; i < recommendations.length - 1; i++) {
-    assert.ok(recommendations[i].rawScore >= recommendations[i + 1].rawScore);
+    assert.ok(recommendations[i].score >= recommendations[i + 1].score);
   }
 
-  // Each recommendation object must have required properties
+  // Each recommendation object must have required properties and must not expose internal rawScore
   recommendations.forEach(rec => {
     assert.ok('org' in rec);
     assert.ok('score' in rec);
-    assert.ok('rawScore' in rec);
+    assert.strictEqual('rawScore' in rec, false, 'rawScore must not be exposed in recommendation results');
     assert.ok(Array.isArray(rec.matchedSkills));
     assert.ok(Array.isArray(rec.reasons));
   });
