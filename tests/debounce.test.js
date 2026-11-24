@@ -115,4 +115,14 @@ test('index.html inline script wires debounced handlers with cancellation', () =
   assert.ok(htmlContent.includes('debouncedPerformSearch'), 'index.html should wire debounced search');
   assert.ok(htmlContent.includes('debouncedPerformSearch.cancel()'), 'hero search submit should cancel pending debounce');
   assert.ok(htmlContent.includes('debouncedRenderMentorFinder.cancel()'), 'mentor filter change should cancel pending debounce');
+  assert.ok(htmlContent.includes("renderPaginationControls('mentorPagination'"), 'mentor pagination controls should exist');
+});
+
+test('src/js/app.js wires debounced handlers with cancellation', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const appContent = fs.readFileSync(path.join(__dirname, '../src/js/app.js'), 'utf8');
+
+  assert.ok(appContent.includes('debouncedRenderMentorFinder.cancel()'), 'app.js should cancel mentor debounce on filter change');
+  assert.ok(appContent.includes('debouncedApplyFilters.cancel()'), 'app.js should cancel search debounce on dropdown changes');
 });

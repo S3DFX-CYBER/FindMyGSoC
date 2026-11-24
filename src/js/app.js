@@ -2555,11 +2555,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const debouncedRenderMentorFinder = debounce(renderMentorFinder, 250);
 
   document.getElementById('searchInput')?.addEventListener('input', debouncedApplyFilters);
-  document.getElementById('categoryFilter')?.addEventListener('change', applyFilters);
-  document.getElementById('complexityFilter')?.addEventListener('change', applyFilters);
-  document.getElementById('sortSelect')?.addEventListener('change', applyFilters);
+  document.getElementById('categoryFilter')?.addEventListener('change', () => {
+    debouncedApplyFilters.cancel();
+    applyFilters();
+  });
+  document.getElementById('complexityFilter')?.addEventListener('change', () => {
+    debouncedApplyFilters.cancel();
+    applyFilters();
+  });
+  document.getElementById('sortSelect')?.addEventListener('change', () => {
+    debouncedApplyFilters.cancel();
+    applyFilters();
+  });
   document.getElementById('mentorSearchInput')?.addEventListener('input', debouncedRenderMentorFinder);
-  document.getElementById('mentorChannelFilter')?.addEventListener('change', renderMentorFinder);
+  document.getElementById('mentorChannelFilter')?.addEventListener('change', () => {
+    debouncedRenderMentorFinder.cancel();
+    renderMentorFinder();
+  });
   document.getElementById('matchAllLanguagesToggle')?.addEventListener('change', (e) => {
     matchAllLanguages = e.target.checked;
     globalThis.matchAllLanguages = e.target.checked;
