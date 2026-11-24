@@ -1,0 +1,78 @@
+name: Data correction
+description: An organisation, mentor, issue or project detail is wrong or missing.
+title: "fix(data): "
+labels: ["bug", "area:data"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This project shows facts, so a wrong fact is a bug. Please link where the
+        correct value comes from: an organisation's own site, its GSoC ideas
+        page, Google's project listing, or a maintainer comment in the org's
+        public channel. A correction without a source cannot be applied.
+
+        Generated datasets are not hand-edited. If you can, say which script
+        under `scripts/` produces the file instead of pasting a patch to the JSON.
+
+  - type: checkboxes
+    id: existing
+    attributes:
+      label: Before you file
+      options:
+        - label: I checked the value against a primary source, not another directory that copies it.
+          required: true
+
+  - type: dropdown
+    id: dataset
+    attributes:
+      label: Which data
+      options:
+        - Organisation details (name, category, links, years)
+        - Mentor contact (channel, handle, mailing list)
+        - Project size or project list
+        - Accepted proposals archive
+        - Good first issues
+        - Something else
+    validations:
+      required: true
+
+  - type: input
+    id: subject
+    attributes:
+      label: Which organisation or entry
+      placeholder: AnkiDroid
+    validations:
+      required: true
+
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What it says now
+      description: Quote the current value, and where you saw it in the site.
+    validations:
+      required: true
+
+  - type: textarea
+    id: correct
+    attributes:
+      label: What it should say
+      description: The correct value, exactly as the source states it.
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: A link to where this is stated. This field is the point of the issue.
+      placeholder: https://github.com/ankidroid/Anki-Android/wiki/GSOC
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: For example, whether the value changes every cycle.
+    validations:
+      required: false

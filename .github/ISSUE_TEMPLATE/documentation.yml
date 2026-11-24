@@ -1,0 +1,44 @@
+name: Documentation correction
+description: The README, the guides or the in-app copy is wrong, stale or unclear.
+title: "docs: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Documentation that describes something the code does not do is treated as
+        a bug here, not a nitpick. Quote the sentence and say what the code
+        actually does.
+
+  - type: input
+    id: where
+    attributes:
+      label: Where
+      description: File and section, or the page and the words on screen.
+      placeholder: README.md, "Data and correctness"
+    validations:
+      required: true
+
+  - type: textarea
+    id: says
+    attributes:
+      label: What it says
+      description: Quote it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: should-say
+    attributes:
+      label: What it should say, and why
+      description: Point at the code or the behaviour that proves it.
+    validations:
+      required: true
+
+  - type: input
+    id: evidence
+    attributes:
+      label: Evidence
+      description: A file and line, a command and its output, or a screenshot.
+    validations:
+      required: false

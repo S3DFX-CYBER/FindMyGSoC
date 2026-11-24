@@ -137,8 +137,9 @@ review comment is wrong, say so in the thread with your reasoning and resolve it
 
 These are not style preferences. A PR that breaks one of them will be sent back.
 
-1. **No build step.** The site must keep working by opening `index.html`. No
-   bundler, no framework, no transpiler.
+1. **No build step.** What you write is what ships: no bundler, no framework, no
+   transpiler. Serve the folder with `npx serve .` rather than opening
+   `index.html` from disk, because the pages fetch their datasets over HTTP.
 2. **No new runtime dependencies.** The browser side runs on vanilla JavaScript.
    Dev dependencies for linting and testing are fine.
 3. **Static first.** Anything that can be computed from `data/` in the browser
