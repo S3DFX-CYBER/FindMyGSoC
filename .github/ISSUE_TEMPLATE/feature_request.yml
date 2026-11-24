@@ -18,6 +18,20 @@ body:
         - label: I searched the open issues and this is not already suggested.
           required: true
 
+  - type: dropdown
+    id: programme
+    attributes:
+      label: Which programme are you contributing through
+      description: A maintainer applies the programme label when assigning. It does not change the requirements, which are the same for everyone.
+      options:
+        - Not part of a programme
+        - GSSoC26
+        - NSoC26
+        - Hacktoberfest
+        - Something else
+    validations:
+      required: true
+
   - type: textarea
     id: problem
     attributes:
