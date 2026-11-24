@@ -84,3 +84,26 @@ test('known organisation activity still scores and explains itself', () => {
   const low = calculateActivityScore({ activity: 'low' }, { _gh: { activity: 'low' } }, reasons2);
   assert.ok(low >= 10, 'a known low-activity org still scores');
 });
+
+test('getRecommendations sorts ties deterministically using internal tiebreaker without exposing rawScore', () => {
+  const originalOrgs = globalThis.ORGS;
+  try {
+    globalThis.ORGS = [
+      { name: 'OrgA', tags: ['python'], cat: 'python', years: 0 },
+      { name: 'OrgWithLongerName', tags: ['python'], cat: 'python', years: 0 },
+    ];
+    const recs = getRecommendations(['python'], null, 2);
+    assert.strictEqual(recs.length, 2);
+    // Both orgs have the exact same base score
+    assert.strictEqual(recs[0].score, recs[1].score);
+    // OrgWithLongerName has higher tiebreaker ((17 % 10)/100 = 0.07 vs (4 % 10)/100 = 0.04)
+    // so it must be ranked first deterministically
+    assert.strictEqual(recs[0].org.name, 'OrgWithLongerName');
+    assert.strictEqual(recs[1].org.name, 'OrgA');
+    // rawScore must not be exposed on either object
+    assert.strictEqual('rawScore' in recs[0], false);
+    assert.strictEqual('rawScore' in recs[1], false);
+  } finally {
+    globalThis.ORGS = originalOrgs;
+  }
+});
