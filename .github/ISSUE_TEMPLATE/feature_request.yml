@@ -1,0 +1,85 @@
+name: Feature request
+description: Suggest a capability the site does not have.
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the problem before the solution. A well-stated problem often has
+        a simpler fix than the one it arrives with, and this project stays small
+        on purpose: no framework, no build step, no new runtime dependencies.
+
+  - type: checkboxes
+    id: existing
+    attributes:
+      label: Before you file
+      options:
+        - label: I searched the open issues and this is not already suggested.
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What are you trying to do that the site makes hard or impossible?
+      placeholder: I cannot tell which organisations will accept a beginner project.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would like to see
+      description: Your suggested solution. Sketches and mockups welcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+      description: Including doing nothing, and why that is worse.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Organisations grid or filters
+        - Organisation panel
+        - AI recommender
+        - Watchlist
+        - Issues panel
+        - Mentors and contact
+        - Proposal builder
+        - Compare
+        - Landing page
+        - Accessibility or keyboard
+        - Documentation
+        - Something else
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Fit with the project
+      description: These are the house rules in CONTRIBUTING.md, not preferences.
+      options:
+        - label: This can work without a framework, a build step or a new runtime dependency.
+          required: true
+        - label: This can be computed from `data/` in the browser, without a new service.
+          required: true
+        - label: Any fact it shows will come from a named source, not an estimate.
+          required: true
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: If this needs data, link where it comes from.
+    validations:
+      required: false

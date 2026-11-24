@@ -1,1 +1,11 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/S3DFX-CYBER/FindMyGSoC/security/advisories/new
+    about: Report privately. Do not open a public issue for a security problem. See SECURITY.md.
+  - name: Question or idea that is not a bug
+    url: https://github.com/S3DFX-CYBER/FindMyGSoC/discussions
+    about: Ask in Discussions. Issues are for things that need a fix.
+  - name: How to contribute
+    url: https://github.com/S3DFX-CYBER/FindMyGSoC/blob/main/CONTRIBUTING.md
+    about: Setup, commit style, the DCO, the house rules and what gets reviewed.

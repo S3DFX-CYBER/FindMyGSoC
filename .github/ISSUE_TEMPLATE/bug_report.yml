@@ -1,0 +1,97 @@
+name: Bug report
+description: Something in the site or the data is wrong.
+title: "fix: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. One issue per report, please:
+        a bug and a feature request in the same thread are hard to close.
+
+        If you are reporting a security problem, do not open an issue. See
+        [SECURITY.md](https://github.com/S3DFX-CYBER/FindMyGSoC/blob/main/SECURITY.md).
+
+  - type: checkboxes
+    id: existing
+    attributes:
+      label: Before you file
+      options:
+        - label: I searched the open issues and this is not a duplicate.
+          required: true
+        - label: This is not a security vulnerability.
+          required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you saw, in plain language.
+      placeholder: The organisation card title runs past the card edge at 390px.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps, starting from the page you were on.
+      placeholder: |
+        1. Open the app at 390px width
+        2. Filter by a long organisation name
+        3. The title overflows the card
+    validations:
+      required: true
+
+  - type: input
+    id: where
+    attributes:
+      label: Where did you see it
+      description: The page and, if you can, the URL.
+      placeholder: https://findmygsoc.vercel.app/app, organisations grid
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Organisations grid or filters
+        - Organisation panel
+        - AI recommender
+        - Watchlist
+        - Issues panel
+        - Mentors and contact
+        - Proposal builder
+        - Compare
+        - Landing page
+        - Data (an organisation, mentor or issue is wrong)
+        - Accessibility or keyboard
+        - Something else
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and screen size
+      description: For example, Firefox 133 on Android, 390px wide.
+      placeholder: Chrome 131 on Windows, 1280px wide
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots, console output or a recording
+      description: Drag images in, or paste the console error. Redact anything personal.
+    validations:
+      required: false
