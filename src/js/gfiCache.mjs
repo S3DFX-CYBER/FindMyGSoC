@@ -1,8 +1,10 @@
-/* eslint-env node */
 /*
  * The cache policy for /api/gfi, kept out of the handler so it can be tested.
  *
- * The handler runs on the edge, where the module-level map survives between
+ * ESM on purpose: the handler runs on the Vercel Edge runtime, which does not
+ * load CommonJS. An `export` here is what makes the module loadable there.
+ *
+ * The handler runs on the edge, where the module-level cache survives between
  * requests on the same instance. Two numbers decide how old a client's copy can
  * be, and both used to be written by hand in two places, which is how they drift:
  *
@@ -13,16 +15,16 @@
  * is twelve hours, against a dataset that is republished once a day.
  */
 
-const TTL_MS = 6 * 60 * 60 * 1000;
-const MAX_ENTRIES = 4;
-const MIN_CDN_TTL_S = 60;
+export const TTL_MS = 6 * 60 * 60 * 1000;
+export const MAX_ENTRIES = 4;
+export const MIN_CDN_TTL_S = 60;
 
 /**
  * The Cache-Control header for a response, given how long the underlying entry
  * has left. A response built from a five-hour-old entry must not advertise six
  * fresh hours to the CDN, or the client ends up with an eleven-hour-old copy.
  */
-function primaryCacheControl(remainingMs) {
+export function primaryCacheControl(remainingMs) {
   const safe = Number.isFinite(remainingMs) ? remainingMs : 0;
   const seconds = Math.max(MIN_CDN_TTL_S, Math.floor(safe / 1000));
   return `public, s-maxage=${seconds}, stale-while-revalidate=${seconds}`;
@@ -31,8 +33,11 @@ function primaryCacheControl(remainingMs) {
 /**
  * A tiny bounded cache: every read reports what is left on the entry, so the
  * caller can bound the CDN lifetime with it.
+ *
+ * An entry is expired at exactly `ttlMs`, not only after it: "valid for six
+ * hours" means the sixth hour is the last, not the seventh.
  */
-function createCache({ ttlMs = TTL_MS, max = MAX_ENTRIES, now = Date.now } = {}) {
+export function createCache({ ttlMs = TTL_MS, max = MAX_ENTRIES, now = Date.now } = {}) {
   const entries = new Map();
 
   return {
@@ -40,14 +45,18 @@ function createCache({ ttlMs = TTL_MS, max = MAX_ENTRIES, now = Date.now } = {})
       const hit = entries.get(key);
       if (!hit) return null;
       const age = now() - hit.ts;
-      if (age > ttlMs) {
+      if (age >= ttlMs) {
         entries.delete(key);
         return null;
       }
       return { value: hit.value, remainingMs: ttlMs - age };
     },
     set(key, value) {
-      if (!entries.has(key) && entries.size >= max) {
+      // Delete first: assigning to an existing key keeps its original position
+      // in a Map, so a rewritten entry would still look like the oldest one and
+      // could be evicted moments after it was refreshed.
+      entries.delete(key);
+      if (entries.size >= max) {
         entries.delete(entries.keys().next().value);
       }
       entries.set(key, { value, ts: now() });
@@ -57,5 +66,3 @@ function createCache({ ttlMs = TTL_MS, max = MAX_ENTRIES, now = Date.now } = {})
     },
   };
 }
-
-module.exports = { TTL_MS, MIN_CDN_TTL_S, primaryCacheControl, createCache };

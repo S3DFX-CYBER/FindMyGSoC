@@ -23,7 +23,7 @@
 // window plus the stale window, twelve hours with the values below, not six.
 export const config = { runtime: 'edge' };
 
-import gfiCache from '../src/js/gfiCache.js';
+import { TTL_MS, primaryCacheControl, createCache } from '../src/js/gfiCache.mjs';
 
 const REPO = 'S3DFX-CYBER/FindMyGSoC';
 const PRIMARY_URL = `https://raw.githubusercontent.com/${REPO}/data/latest/data/issues.json`;
@@ -32,17 +32,15 @@ const FALLBACK_URL = `https://raw.githubusercontent.com/${REPO}/main/data/issues
 const CACHE_KEY = 'gfi-dataset';
 const FETCH_TIMEOUT_MS = 8000;
 
-const { TTL_MS: CACHE_TTL_MS, primaryCacheControl, createCache } = gfiCache;
-
 const CACHE_CONTROL = {
   // Derived from the same constant the in-memory cache uses, so the header and
   // the TTL cannot drift apart.
-  primary: primaryCacheControl(CACHE_TTL_MS),
+  primary: primaryCacheControl(TTL_MS),
   fallback: 'public, s-maxage=600, stale-while-revalidate=600',
   none: 'no-store',
 };
 
-const CACHE = createCache({ ttlMs: CACHE_TTL_MS });
+const CACHE = createCache({ ttlMs: TTL_MS });
 
 function isDataset(data) {
   return Boolean(data) && typeof data === 'object' && Array.isArray(data.issues);
