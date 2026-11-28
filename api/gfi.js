@@ -12,44 +12,35 @@
 //
 // Cache policy differs per source, so a degraded answer is never cached as if
 // it were a good one:
-//   data/latest  → 24h, and kept in the in-memory cache
+//   data/latest  → 6h, and kept in the in-memory cache
 //   main         → 10min, never cached in memory (retry the primary soon)
 //   neither      → no-store, so the next request retries immediately
+//
+// Six hours, not twenty-four: the refresh runs once a day, so a day-long cache
+// meant the site showed yesterday's dataset for most of today. The trade is
+// explicit: six hours means about four times as many origin fetches as a
+// twenty-four hour cache. The worst-case age a client can receive is the fresh
+// window plus the stale window, twelve hours with the values below, not six.
 export const config = { runtime: 'edge' };
+
+import { TTL_MS, primaryCacheControl, createCache } from '../src/js/gfiCache.mjs';
 
 const REPO = 'S3DFX-CYBER/FindMyGSoC';
 const PRIMARY_URL = `https://raw.githubusercontent.com/${REPO}/data/latest/data/issues.json`;
 const FALLBACK_URL = `https://raw.githubusercontent.com/${REPO}/main/data/issues.json`;
 
 const CACHE_KEY = 'gfi-dataset';
-const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
-const CACHE_MAX_SIZE = 4;
 const FETCH_TIMEOUT_MS = 8000;
 
 const CACHE_CONTROL = {
-  primary: 'public, s-maxage=86400, stale-while-revalidate=604800',
+  // Derived from the same constant the in-memory cache uses, so the header and
+  // the TTL cannot drift apart.
+  primary: primaryCacheControl(TTL_MS),
   fallback: 'public, s-maxage=600, stale-while-revalidate=600',
   none: 'no-store',
 };
 
-const CACHE = new Map();
-
-function cacheGet(key) {
-  const hit = CACHE.get(key);
-  if (!hit) return null;
-  if (Date.now() - hit.ts > CACHE_TTL_MS) {
-    CACHE.delete(key);
-    return null;
-  }
-  return hit.value;
-}
-
-function cacheSet(key, value) {
-  if (!CACHE.has(key) && CACHE.size >= CACHE_MAX_SIZE) {
-    CACHE.delete(CACHE.keys().next().value);
-  }
-  CACHE.set(key, { value, ts: Date.now() });
-}
+const CACHE = createCache({ ttlMs: TTL_MS });
 
 function isDataset(data) {
   return Boolean(data) && typeof data === 'object' && Array.isArray(data.issues);
@@ -96,17 +87,17 @@ export default async function handler(req) {
     });
   }
 
-  const cached = cacheGet(CACHE_KEY);
+  const cached = CACHE.get(CACHE_KEY);
   if (cached) {
-    return new Response(JSON.stringify(cached), {
+    return new Response(JSON.stringify(cached.value), {
       status: 200,
-      headers: { ...baseHeaders, 'Cache-Control': CACHE_CONTROL.primary },
+      headers: { ...baseHeaders, 'Cache-Control': primaryCacheControl(cached.remainingMs) },
     });
   }
 
   const primary = await fetchDataset(PRIMARY_URL);
   if (primary) {
-    cacheSet(CACHE_KEY, primary);
+    CACHE.set(CACHE_KEY, primary);
     return new Response(JSON.stringify(primary), {
       status: 200,
       headers: { ...baseHeaders, 'Cache-Control': CACHE_CONTROL.primary },

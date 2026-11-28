@@ -19,6 +19,9 @@ concurrency:
 permissions:
   contents: write
   issues: read
+  # Needed for the fallback path below: when the push to main is rejected by
+  # branch protection, the refreshed files go up as a pull request instead.
+  pull-requests: write
 
 jobs:
   refresh:
@@ -139,6 +142,39 @@ jobs:
             "https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
             HEAD:main
 
+      # Branch protection rejects the push above (GH006, "Changes must be made
+      # through a pull request"), which left main's copy of the dataset frozen
+      # at 2026-11-08 while data/latest moved on. /api/gfi prefers data/latest,
+      # but its fallback and anything reading the committed file were twenty
+      # days behind. The refreshed files go up as a pull request instead.
+      - name: Open a pull request when main is protected
+        id: pr
+        if: steps.commit.outputs.changed == 'true' && steps.push.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GFI_PUSH_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          BRANCH="chore/refresh-issues-data"
+          git push --force \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            "HEAD:refs/heads/${BRANCH}"
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore(data): refresh good first issues" \
+            --body "Automated daily refresh of the good first issue dataset.
+
+          - \`data/issues.json\`: the issues themselves, from the GitHub API.
+          - \`data/ui-summary.json\`: counts derived from it.
+          - \`data/last-updated.json\`: the timestamp the site shows.
+
+          The workflow publishes to \`data/latest\` on every run, which is what
+          \`/api/gfi\` serves. This pull request keeps the committed copy on \`main\`
+          in step, so the static fallback and a fresh clone are not weeks behind." \
+            || gh pr list --head "$BRANCH" --base main --state open \
+                 --json number,headRepositoryOwner,headRepository \
+                 --jq "[.[] | select(.headRepositoryOwner.login == \"${{ github.repository_owner }}\" and .headRepository.name == \"${{ github.event.repository.name }}\")] | length > 0" \
+                 | grep -q true \
+            || { echo "gh pr create failed and no open pull request from this repository exists for $BRANCH" >&2; exit 1; }
+
       - name: Summarise
         if: always()
         run: |
@@ -157,4 +193,5 @@ jobs:
             echo "- committed: ${{ steps.commit.outputs.changed || 'false' }}"
             echo "- published to data/latest: ${{ steps.publish.outcome || 'skipped' }}"
             echo "- pushed to main: ${{ steps.push.outcome || 'skipped' }}"
+            echo "- pull request when main is protected: ${{ steps.pr.outcome || 'not needed' }}"
           } >> "$GITHUB_STEP_SUMMARY"

@@ -82,7 +82,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          if git diff --quiet -- data/projects-2026.json data/project-facts.json; then
+          # git diff --quiet reports "no change" for a file that git is not
+          # tracking yet, and both of these files are generated and absent from
+          # main. The first run after a checkout therefore looked unchanged and
+          # exited before committing anything, which is why the job went green
+          # and no branch or pull request ever appeared. git status sees an
+          # untracked file as a change, which is what it is.
+          if [ -z "$(git status --porcelain -- data/projects-2026.json data/project-facts.json)" ]; then
             echo "No change in the project data."
             exit 0
           fi
