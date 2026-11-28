@@ -12,9 +12,13 @@
 //
 // Cache policy differs per source, so a degraded answer is never cached as if
 // it were a good one:
-//   data/latest  → 24h, and kept in the in-memory cache
+//   data/latest  → 6h, and kept in the in-memory cache
 //   main         → 10min, never cached in memory (retry the primary soon)
 //   neither      → no-store, so the next request retries immediately
+//
+// Six hours, not twenty-four: the refresh runs once a day, so a day-long cache
+// meant the site showed yesterday's dataset for most of today. Six hours keeps
+// the lag under a working day at roughly a quarter of the edge fetches.
 export const config = { runtime: 'edge' };
 
 const REPO = 'S3DFX-CYBER/FindMyGSoC';
@@ -22,12 +26,12 @@ const PRIMARY_URL = `https://raw.githubusercontent.com/${REPO}/data/latest/data/
 const FALLBACK_URL = `https://raw.githubusercontent.com/${REPO}/main/data/issues.json`;
 
 const CACHE_KEY = 'gfi-dataset';
-const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 const CACHE_MAX_SIZE = 4;
 const FETCH_TIMEOUT_MS = 8000;
 
 const CACHE_CONTROL = {
-  primary: 'public, s-maxage=86400, stale-while-revalidate=604800',
+  primary: 'public, s-maxage=21600, stale-while-revalidate=86400',
   fallback: 'public, s-maxage=600, stale-while-revalidate=600',
   none: 'no-store',
 };
