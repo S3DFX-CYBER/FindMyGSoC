@@ -23,50 +23,26 @@
 // window plus the stale window, twelve hours with the values below, not six.
 export const config = { runtime: 'edge' };
 
+import gfiCache from '../src/js/gfiCache.js';
+
 const REPO = 'S3DFX-CYBER/FindMyGSoC';
 const PRIMARY_URL = `https://raw.githubusercontent.com/${REPO}/data/latest/data/issues.json`;
 const FALLBACK_URL = `https://raw.githubusercontent.com/${REPO}/main/data/issues.json`;
 
 const CACHE_KEY = 'gfi-dataset';
-const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
-const CACHE_MAX_SIZE = 4;
 const FETCH_TIMEOUT_MS = 8000;
 
+const { TTL_MS: CACHE_TTL_MS, primaryCacheControl, createCache } = gfiCache;
+
 const CACHE_CONTROL = {
-  primary: 'public, s-maxage=21600, stale-while-revalidate=21600',
+  // Derived from the same constant the in-memory cache uses, so the header and
+  // the TTL cannot drift apart.
+  primary: primaryCacheControl(CACHE_TTL_MS),
   fallback: 'public, s-maxage=600, stale-while-revalidate=600',
   none: 'no-store',
 };
 
-const CACHE = new Map();
-
-/** The cached entry and how long it has left, or null when it has expired. */
-function cacheGetEntry(key) {
-  const hit = CACHE.get(key);
-  if (!hit) return null;
-  const age = Date.now() - hit.ts;
-  if (age > CACHE_TTL_MS) {
-    CACHE.delete(key);
-    return null;
-  }
-  return { value: hit.value, remainingMs: CACHE_TTL_MS - age };
-}
-
-/** The primary header, with the TTL cut to what is actually left on the entry. */
-function primaryCacheControl(remainingMs) {
-  // An entry served from memory may be nearly six hours old. Sending the full
-  // s-maxage would let the CDN store it for another six, so the response could
-  // be twelve hours old before anyone saw a fresh one.
-  const seconds = Math.max(60, Math.floor(remainingMs / 1000));
-  return `public, s-maxage=${seconds}, stale-while-revalidate=${seconds}`;
-}
-
-function cacheSet(key, value) {
-  if (!CACHE.has(key) && CACHE.size >= CACHE_MAX_SIZE) {
-    CACHE.delete(CACHE.keys().next().value);
-  }
-  CACHE.set(key, { value, ts: Date.now() });
-}
+const CACHE = createCache({ ttlMs: CACHE_TTL_MS });
 
 function isDataset(data) {
   return Boolean(data) && typeof data === 'object' && Array.isArray(data.issues);
@@ -113,7 +89,7 @@ export default async function handler(req) {
     });
   }
 
-  const cached = cacheGetEntry(CACHE_KEY);
+  const cached = CACHE.get(CACHE_KEY);
   if (cached) {
     return new Response(JSON.stringify(cached.value), {
       status: 200,
@@ -123,7 +99,7 @@ export default async function handler(req) {
 
   const primary = await fetchDataset(PRIMARY_URL);
   if (primary) {
-    cacheSet(CACHE_KEY, primary);
+    CACHE.set(CACHE_KEY, primary);
     return new Response(JSON.stringify(primary), {
       status: 200,
       headers: { ...baseHeaders, 'Cache-Control': CACHE_CONTROL.primary },
