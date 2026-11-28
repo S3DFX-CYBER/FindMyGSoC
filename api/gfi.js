@@ -17,8 +17,10 @@
 //   neither      → no-store, so the next request retries immediately
 //
 // Six hours, not twenty-four: the refresh runs once a day, so a day-long cache
-// meant the site showed yesterday's dataset for most of today. Six hours keeps
-// the lag under a working day at roughly a quarter of the edge fetches.
+// meant the site showed yesterday's dataset for most of today. The trade is
+// explicit: six hours means about four times as many origin fetches as a
+// twenty-four hour cache. The worst-case age a client can receive is the fresh
+// window plus the stale window, twelve hours with the values below, not six.
 export const config = { runtime: 'edge' };
 
 const REPO = 'S3DFX-CYBER/FindMyGSoC';
@@ -31,21 +33,32 @@ const CACHE_MAX_SIZE = 4;
 const FETCH_TIMEOUT_MS = 8000;
 
 const CACHE_CONTROL = {
-  primary: 'public, s-maxage=21600, stale-while-revalidate=86400',
+  primary: 'public, s-maxage=21600, stale-while-revalidate=21600',
   fallback: 'public, s-maxage=600, stale-while-revalidate=600',
   none: 'no-store',
 };
 
 const CACHE = new Map();
 
-function cacheGet(key) {
+/** The cached entry and how long it has left, or null when it has expired. */
+function cacheGetEntry(key) {
   const hit = CACHE.get(key);
   if (!hit) return null;
-  if (Date.now() - hit.ts > CACHE_TTL_MS) {
+  const age = Date.now() - hit.ts;
+  if (age > CACHE_TTL_MS) {
     CACHE.delete(key);
     return null;
   }
-  return hit.value;
+  return { value: hit.value, remainingMs: CACHE_TTL_MS - age };
+}
+
+/** The primary header, with the TTL cut to what is actually left on the entry. */
+function primaryCacheControl(remainingMs) {
+  // An entry served from memory may be nearly six hours old. Sending the full
+  // s-maxage would let the CDN store it for another six, so the response could
+  // be twelve hours old before anyone saw a fresh one.
+  const seconds = Math.max(60, Math.floor(remainingMs / 1000));
+  return `public, s-maxage=${seconds}, stale-while-revalidate=${seconds}`;
 }
 
 function cacheSet(key, value) {
@@ -100,11 +113,11 @@ export default async function handler(req) {
     });
   }
 
-  const cached = cacheGet(CACHE_KEY);
+  const cached = cacheGetEntry(CACHE_KEY);
   if (cached) {
-    return new Response(JSON.stringify(cached), {
+    return new Response(JSON.stringify(cached.value), {
       status: 200,
-      headers: { ...baseHeaders, 'Cache-Control': CACHE_CONTROL.primary },
+      headers: { ...baseHeaders, 'Cache-Control': primaryCacheControl(cached.remainingMs) },
     });
   }
 
